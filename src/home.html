@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticqer</title>
+    <link rel="stylesheet" href=./style/style.scss>
+    <link id="tab_logo" rel="shortcut icon" href="./assets/stockmkt.png" type="image/x-icon">
+    <script type="module" src="js/home.js"></script>
+</head>
+
+<body id="home_body">
+    <header>
+        <h2 contenteditable="true"><span>Enter ticker...</span></h2>
+    </header>
+    <div id="timer_container">
+        <h6 id="market_status"> </h6>
+        <p id="market_clock"></p>
+    </div>
+    <div id="mkt_status_notification_container">
+        <h6 id="mkt_status_notification"></h6>
+    </div>
+    <section id="index_section_container">
+        <div class="index_container">
+            <h6 class="mkt_name">
+                S&P 500
+            </h6>
+            <h6 class="snp price"></h6>
+            <div class="img_container">
+                <img id="arrow_img" alt="arrow">
+                <h6 class="snp percent_change">
+
+                </h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Nasdaq</h6>
+            <h6 id="nasdaq" class="nasdaq price"></h6>
+            <div class="img_container">
+                <img id="arrow_img" alt="arrow">
+                <h6 class="nasdaq percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">FTSE 100</h6>
+            <h6 id="ftse" class="ftse price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="ftse percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Nikkei 225</h6>
+            <h6 id="nikkei" class="nikkei price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="nikkei percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Hang Seng</h6>
+            <h6 id="hang" class="hang price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="hang percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Shanghai</h6>
+            <h6 id="shanghai" class="shanghai price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="shanghai percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">WTI Crude</h6>
+            <h6 id="wti" class="wti price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="wti percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Natural Gas</h6>
+            <h6 id="natgas" class="natgas price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="natgas percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Gold</h6>
+            <h6 id="gold" class="gold price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="gold percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Silver</h6>
+            <h6 id="silver" class="silver price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="silver percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Vix</h6>
+            <h6 id="vix" class="vix price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="vix percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">U.S. 10-Yr</h6>
+            <h6 id="ustenyr" class="ustenyr price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="ustenyr percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">ICE USD</h6>
+            <h6 id="dollar" class="dollar price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="dollar percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">Russell 2000</h6>
+            <h6 id="russell" class="russell price"></h6>
+            <div class="img_container"><img id="arrow_img" alt="arrow">
+                <h6 class="russell percent_change"></h6>
+            </div>
+        </div>
+        <div class="index_container">
+            <h6 class="mkt_name">EUR/USD</h6>
+            <h6 id="eurusd" class="eurusd price"></h6>
+            <div class="img_container">
+                <img id="arrow_img" alt="arrow">
+                <h6 class="eurusd percent_change"></h6>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container" id="footer-top-row">
+            <div class="first-child" id="about">
+                <h5>About</h5>
+                <p>Aliqua officia sit enim aliquip sint cillum consequat do veniam esse minim ad dolor velit.</p>
+            </div>
+            <div class="second-child" id="links">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Contact</a></li>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Terms</a></li>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Privacy</a></li>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container" id="footer-bottom-row">
+            <div class="first-child">
+                <h6>Copyright &#169; 2023
+                    <a class="link" href="https://chiahao.io" target="_blank" rel="noopener">Chiahao Chou</a>
+                </h6>
+            </div>
+            <div class="second-child">
+                <h6>Icons by <a class="link" href="" rel="noopener" target="_blank">Icons8</a></h6>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

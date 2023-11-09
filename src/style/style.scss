@@ -1,0 +1,269 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --cold-white: #ffffff;
+    --greenish: #012c12;
+    --purp: #a90f6e;
+    --lightgreen: #097969;
+    --footgreen: #113921;
+    --midnight: #03000f;
+}
+
+body {
+    display: none;
+}
+
+/*mobile display*/
+@media screen and (min-width: 320px) {
+    #home_body {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: "Noto Sans", sans-serif;
+        width: 100%;
+        min-height: 100vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        background-color: var(--greenish);
+    }
+
+    #ticker_body {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: "Noto Sans", sans-serif;
+        width: 100%;
+        min-height: 100vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        background-color: white;
+    }
+
+    #ticker_body>section {
+        background-color: var(--lightgreen);
+        width: 100%;
+        height: 200px;
+    }
+
+
+    #home_body header {
+        width: 100%;
+        height: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    #home_body header h2 {
+        display: inline-block;
+        position: relative;
+        font-family: inherit;
+        font-weight: 700;
+        padding: 3px 1px 1px 2px;
+        height: 35px;
+        width: 250px;
+        outline: none;
+        background-color: var(--greenish);
+        color: var(--cold-white);
+        border: 1px solid var(--cold-white);
+        border-radius: 5px;
+        cursor: pointer;
+        caret-color: transparent;
+        box-shadow: 0 .5px 5px rgb(23, 23, 23);
+        overflow: hidden;
+        white-space: nowrap;
+
+    }
+
+
+    #home_body header h2 span {
+        display: inline-block;
+        height: 100%;
+        min-width: 1px;
+    }
+
+    #home_body header h2 br,
+    #home_body header h2 div {
+        display: none;
+    }
+
+
+    #home_body header h2:focus {
+        border-color: var(--lightgreen);
+        background-color: var(--lightgreen);
+    }
+
+    @keyframes blink {
+        from {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
+        }
+    }
+
+
+    #home_body header h2::after {
+        content: "";
+        display: inline-block;
+        position: relative;
+        bottom: -2px;
+        left: 2.2px;
+        width: 7px;
+        height: 25px;
+        background-color: var(--purp);
+        animation-name: blink;
+        animation-duration: 500ms;
+        animation-iteration-count: infinite;
+        opacity: 1;
+    }
+
+    #home_body #timer_container {
+        position: relative;
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: max-content;
+        row-gap: 2px;
+        font-family: 'Noto Sans', sans-serif;
+        color: white;
+    }
+
+    #home_body #mkt_status_notification_container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 30px;
+    }
+
+    #home_body>#mkt_status_notification_container>#mkt_status_notification {
+        color: var(--cold-white);
+    }
+
+    #home_body #index_section_container {
+        display: grid;
+        justify-content: center;
+        padding: 10px;
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(5, 75px);
+        row-gap: 28px;
+        column-gap: 20px;
+        width: 100%;
+        height: max-content;
+        position: relative;
+        top: 40px;
+        color: var(--cold-white);
+    }
+
+    #home_body #index_section_container .index_container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 2px;
+        border: 1px solid white;
+        box-shadow: 0 .5px 5px rgb(23, 23, 23);
+        background-color: var(--greenish);
+        border-radius: 8px;
+        overflow: visible;
+    }
+
+    #index_section_container .index_container .mkt_name {
+        text-align: center;
+        color: var(--cold-white);
+        font-weight: 600;
+    }
+
+    #index_section_container .index_container .price {
+        text-align: center;
+        color: var(--cold-white);
+        font-weight: 600;
+    }
+
+    #index_section_container .index_container .img_container {
+        position: relative;
+        top: 3px;
+        bottom: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        column-gap: 2.5px;
+    }
+
+    #home_body footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        position: relative;
+        top: 100px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: max-content;
+        padding: 10px 20px 8px;
+        font-size: 15px;
+        line-height: 24px;
+        color: var(--midnight);
+        background-color: rgb(255, 255, 255)
+    }
+
+    #home_body footer .container {
+        display: flex;
+        justify-content: space-around;
+        column-gap: 3px;
+        width: 100%;
+    }
+
+    #home_body footer #footer-top-row {
+        padding-bottom: 5px;
+        border-bottom-width: .7px;
+        border-bottom-style: solid;
+        border-bottom-color: var(--midnight);
+    }
+
+    #home_body footer .container .first-child {
+        width: 175px;
+    }
+
+    #home_body footer .container .second-child {
+        width: 80px;
+    }
+
+    #home_body footer .container #about p {
+        font-size: 9px;
+        color: inherit;
+    }
+
+    #home_body footer .container #links ul {
+        list-style: none;
+        font-size: 9px;
+    }
+
+    footer .container .first-child h6 .link,
+    footer .container .second-child ul li .link,
+    footer .container .second-child h6 .link {
+        color: rgb(3, 0, 15);
+        ;
+        text-decoration: none;
+    }
+
+}
+
+@media screen and (max-width: 480px) {}
