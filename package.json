@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "",
-    "start": "parcel src/home.html"
+    "start": "parcel src/home.html src/ticker.html"
   },
   "author": "",
   "license": "ISC",
