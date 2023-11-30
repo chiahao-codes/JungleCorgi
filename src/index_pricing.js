@@ -1,4 +1,4 @@
-import cnbcMarket from "cnbc-market";
+const cnbcMarket = require("cnbc-market");
 
 //update prices of index;
 let updateIndexData = async (
@@ -74,4 +74,4 @@ let updateIndexData = async (
   }
 };
 
-export default updateIndexData;
+module.exports = updateIndexData;

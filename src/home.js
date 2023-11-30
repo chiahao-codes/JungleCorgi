@@ -1,5 +1,5 @@
-import {marketStatusCheck,startCountDown,mktStatusNotification,} from "./market_clock.js";
-import updateIndexData from "./index_pricing.js";
+const {marketStatusCheck,startCountDown,mktStatusNotification,} = require("./market_clock.js") ;
+const updateIndexData = require("./index_pricing.js");
 
 const h2Box = document.querySelector("header>h2");
 const mktNotification = document.querySelector(
@@ -15,13 +15,12 @@ const imgContainer = document.querySelectorAll(
   "section > .index_container > .img_container"
 );
 
-const up17 = new URL("../assets/up17.png", import.meta.url) ;
-const down17 = new URL("../assets/down17.png", import.meta.url);
+const up17 = new URL("../assets/up17.png") ;
+const down17 = new URL("../assets/down17.png");
 const regExp = /[a-zA-Z]/;
 let mktStatus = marketStatusCheck();
 
-document.querySelector(
-  "body > #timer_container > h5"
+document.querySelector( "body > #timer_container > h5"
 ).innerText = `${mktStatus} Bell in:`;
 document.querySelector("body>#timer_container>#market_clock").innerText =
   startCountDown(mktStatus);
@@ -91,6 +90,7 @@ h2Box.addEventListener("focus", () => {
   return;
 });
 
+
 h2Box.addEventListener("keydown", (e) => {
   let textString = h2Box.innerText;
   if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
@@ -135,9 +135,10 @@ h2Box.addEventListener("keydown", (e) => {
       //enter the ticker string into the url parameter
       //grab the URL;
       let url = window.location.href;
-      let tickerSearch = `${url}ticker?symbol=${textString}`;
+      let tickerSearch = `${url}ticker/${textString}`;
       //
       window.location.href = tickerSearch;
+      
     }
   }
 
@@ -150,7 +151,7 @@ h2Box.addEventListener("keydown", (e) => {
       alert("Invalid entry");
     }
   }
-  return;
+  
 });
 
 h2Box.addEventListener("keyup", (e) => {
@@ -167,6 +168,6 @@ h2Box.addEventListener("keyup", (e) => {
       divBr.remove();
     }
   }
-
   return;
 });
+
