@@ -1,4 +1,4 @@
-const yahooFinance = require("yahoo-finance2"); 
+import yahooFinance from "yahoo-finance2"; 
 
 let yf2 = async (stockTicker)=> {
     let response = await yahooFinance.quote(stockTicker).then((data) => {
@@ -8,4 +8,4 @@ let yf2 = async (stockTicker)=> {
     return response
 }
 
-module.exports = yf2
+export default yf2

@@ -108,4 +108,4 @@ let startCountDown = (mkt) => {
   return counter;
 };
 
-module.exports = { marketStatusCheck, startCountDown, mktStatusNotification };
+export default { marketStatusCheck, startCountDown, mktStatusNotification };
