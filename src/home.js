@@ -1,5 +1,8 @@
 import {marketStatusCheck,startCountDown,mktStatusNotification,} from "./market_clock.js" ;
 import updateIndexData from "./index_pricing.js";
+import runServer from "./server.js";
+
+runServer();
 
 const h2Box = document.querySelector("header>h2");
 const mktNotification = document.querySelector(
