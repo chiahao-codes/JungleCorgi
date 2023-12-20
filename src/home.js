@@ -1,8 +1,8 @@
-import {marketStatusCheck,startCountDown,mktStatusNotification,} from "./market_clock.js" ;
-import updateIndexData from "./index_pricing.js";
-import runServer from "./server.js";
+import './assets/up17.png';
+import './assets/down17.png';
 
-runServer();
+import { marketStatusCheck, startCountDown, mktStatusNotification } from "./market_clock.js";
+import updateIndexData from "./index_pricing.js";
 
 const h2Box = document.querySelector("header>h2");
 const mktNotification = document.querySelector(
@@ -18,8 +18,8 @@ const imgContainer = document.querySelectorAll(
   "section > .index_container > .img_container"
 );
 
-const up17 = "../public/assets/up17.png"
-const down17 = "../public/assets/down17.png";
+const up17 = new URL("./assets/up17.png", import.meta.url);
+const down17 = new URL("./assets/down17.png", import.meta.url);
 const regExp = /[a-zA-Z]/;
 let mktStatus = marketStatusCheck();
 

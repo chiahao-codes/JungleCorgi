@@ -2,31 +2,37 @@
   "name": "ticqer2",
   "version": "1.0.0",
   "description": "",
-  "main": "home.js",
   "type": "module",
   "scripts": {
-    "serve": "node public/server.js",
-    "build": "esbuild src/home.js --bundle --outfile=public/homeBundle.js && esbuild src/ticker.js --bundle --outfile=public/tickerBundle.js"
+    "server": "node src/server.js",
+    "serve": "parcel -p 8000",
+    "dev": "parcel src/*.html",
+    "build": "parcel build src/*.html ",
+    "concur": "concurrently \"npm:build\" \"npm:serve\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cnbc-market": "^3.0.0",
     "dotenv": "^16.3.1",
+    "esbuild": "^0.19.8",
     "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
     "nodemon": "^3.0.1",
-    "yahoo-finance2": "^2.8.1"
+    "yahoo-finance2": "^2.9.0"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.10.2",
+    "@parcel/transformer-sass": "^2.10.3",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
+    "concurrently": "^8.2.2",
+    "crypto-browserify": "^3.12.0",
     "esmify": "^2.1.1",
     "events": "^3.3.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
-    "parcel": "^2.10.3",
+    "parcel": "^2.10.2",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "querystring-es3": "^0.2.1",

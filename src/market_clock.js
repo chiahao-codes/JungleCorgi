@@ -25,7 +25,7 @@ const marketStatusCheck = () => {
   return status;
 };
 
-let startCountDown = (mkt) => {
+const startCountDown = (mkt) => {
   let currFullDate = new Date();
   let currDate = currFullDate.getDate();
   let currMonth = currFullDate.getMonth();
@@ -108,4 +108,4 @@ let startCountDown = (mkt) => {
   return counter;
 };
 
-export default { marketStatusCheck, startCountDown, mktStatusNotification };
+export { marketStatusCheck, startCountDown, mktStatusNotification };

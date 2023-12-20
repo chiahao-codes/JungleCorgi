@@ -1,5 +1,5 @@
-import cnbcMarket from 'cnbc-market'
-console.log(cnbcMarket);
+import cnbcMarket  from "cnbc-market";
+
 //update prices of index;
 let updateIndexData = async (
   iterable,
