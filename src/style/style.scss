@@ -142,6 +142,11 @@ body {
         color: white;
     }
 
+    #home_body #timer_container > #todayDate {
+        position:relative;
+        margin-bottom: 17px;
+    }
+
     #home_body #mkt_status_notification_container {
         position: relative;
         display: flex;

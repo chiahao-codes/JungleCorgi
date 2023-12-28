@@ -39,9 +39,20 @@ const startCountDown = (mkt) => {
   let openingBellCountdown = () => {
     //if next day is a weekend:
 
-    if (dayOfWeek === 5) nextDay = currDate + 3;
+    if (dayOfWeek === 5) {
+      if (currHour >= 0 && currHour <= 6) {
+        nextDay = currDate;
+      } else {
+        nextDay = currDate + 3;
+      }
+        
+    } 
     if (dayOfWeek === 6) nextDay = currDate + 2;
     if (dayOfWeek === 0) nextDay = currDate + 1;
+
+    //check for bank holidays:
+    //xmas
+    if (currMonth === 11 && nextDay === 25) nextDay = nextDay + 1;
 
     //set next morning: 6:30am PST
     let openingBell = new Date(

@@ -3,19 +3,24 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
+  "source": [
+    "src/home.html",
+    "src/ticker.html"
+  ],
   "scripts": {
-    "server": "node src/server.js",
-    "serve": "parcel -p 8000",
+    "serve": "node server.js",
     "dev": "parcel src/*.html",
-    "build": "parcel build src/*.html ",
+    "watch": "parcel watch",
+    "build": "parcel build",
     "concur": "concurrently \"npm:build\" \"npm:serve\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "barchart-dot-com": "^1.0.7",
     "cnbc-market": "^3.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "esbuild": "^0.19.8",
     "express": "^4.18.2",
     "http-proxy-middleware": "^2.0.6",
     "nodemon": "^3.0.1",

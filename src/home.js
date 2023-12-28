@@ -1,10 +1,12 @@
 import './assets/up17.png';
 import './assets/down17.png';
-
 import { marketStatusCheck, startCountDown, mktStatusNotification } from "./market_clock.js";
 import updateIndexData from "./index_pricing.js";
+import setTodaysDate from './date.js';
 
+const homePageBody = document.querySelector("body");
 const h2Box = document.querySelector("header>h2");
+const todaysDateH4 = document.querySelector("#timer_container > #todayDate");
 const mktNotification = document.querySelector(
   "body > #mkt_status_notification_container > #mkt_status_notification"
 );
@@ -21,12 +23,17 @@ const imgContainer = document.querySelectorAll(
 const up17 = new URL("./assets/up17.png", import.meta.url);
 const down17 = new URL("./assets/down17.png", import.meta.url);
 const regExp = /[a-zA-Z]/;
+
+todaysDateH4.innerText = setTodaysDate();
+setInterval(() => {
+  todaysDateH4.innerText = setTodaysDate();
+}, 10000);
+
+
 let mktStatus = marketStatusCheck();
 
-document.querySelector( "body > #timer_container > h5"
-).innerText = `${mktStatus} Bell in:`;
-document.querySelector("body>#timer_container>#market_clock").innerText =
-  startCountDown(mktStatus);
+document.querySelector( "body > #timer_container > h5").innerText = `${mktStatus} Bell in:`;
+document.querySelector("body>#timer_container>#market_clock").innerText = startCountDown(mktStatus);
 
 mktStatusNotification(mktStatus, mktNotification);
 const clockImgInterval = () => {
@@ -93,14 +100,13 @@ h2Box.addEventListener("focus", () => {
   return;
 });
 
-
+let tickerCheck;
 h2Box.addEventListener("keydown", (e) => {
-  let textString = h2Box.innerText;
+ const textString = h2Box.innerText;
   if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
     e.preventDefault();
     alert("Character amount exceeded");
   }
-
   //prevent navigation keys;
   //enter ticker into url param;
   if (textString.length > 0) {
@@ -137,14 +143,12 @@ h2Box.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && textString !== "") {
       //enter the ticker string into the url parameter
       //grab the URL;
-      let url = window.location.href;
-      let tickerSearch = `${url}ticker/${textString}`;
-      //
-      window.location.href = tickerSearch;
-      
+      const url = window.location.href;
+      const tickerPage = `${url}tickrpro/${textString}`;
+      //check ticker string
+      window.location.href = tickerPage;
     }
   }
-
   //prevent non-letters
   //Allow Backspace, Enter keys;
   //Note: navigation keys are failing the regexp test;
@@ -154,7 +158,6 @@ h2Box.addEventListener("keydown", (e) => {
       alert("Invalid entry");
     }
   }
-  
 });
 
 h2Box.addEventListener("keyup", (e) => {
@@ -173,4 +176,6 @@ h2Box.addEventListener("keyup", (e) => {
   }
   return;
 });
+
+
 
