@@ -4,6 +4,7 @@ let yf2 = async (stockTicker) => {
   let response = await yahooFinance
     .quote(stockTicker)
     .then((data) => {
+      console.log(data);
       return data;
     })
     .catch((e) => {

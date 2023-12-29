@@ -27,7 +27,7 @@ const regExp = /[a-zA-Z]/;
 todaysDateH4.innerText = setTodaysDate();
 setInterval(() => {
   todaysDateH4.innerText = setTodaysDate();
-}, 10000);
+}, 900);
 
 
 let mktStatus = marketStatusCheck();
@@ -51,7 +51,7 @@ const clockImgInterval = () => {
     updateIndexData(priceOfIndex, "value");
     updateIndexData(percentChangeIndex, "change");
     updateIndexData(imgContainer, "arrow", up17, down17);
-  }, 5000);
+  }, 2000);
 };
 
 updateIndexData(priceOfIndex, "value")
@@ -100,7 +100,6 @@ h2Box.addEventListener("focus", () => {
   return;
 });
 
-let tickerCheck;
 h2Box.addEventListener("keydown", (e) => {
  const textString = h2Box.innerText;
   if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {

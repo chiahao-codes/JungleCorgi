@@ -1,7 +1,7 @@
 import express from 'express';
-import yf2 from './src/yahoo2.js';
 import path from 'path';
 import cors from 'cors';
+import yf2 from './src/yahoo2.js';
 import { fileURLToPath } from 'url';
 
 const PORT = process.env.PORT || 3000;
@@ -16,8 +16,17 @@ app.get("/", (req, res, next) => {
     res.sendFile('./dist/home.html', { root:path.dirname(__filename)});
 });
 
-app.get("/tickrpro/:symbol", (req, res) => {
-    res.sendStatus(res.statusCode);
+app.get("/tickrpro/:symbol", async (req, res) => {
+    let symbol = req.params.symbol;
+    symbol = symbol.toUpperCase();
+    let result = await yf2(symbol);
+    const __filename2 = fileURLToPath(import.meta.url);
+    if (result !== undefined) {
+        res.sendFile("./dist/ticker.html", { root: path.dirname(__filename2)});
+    } else {
+        res.sendStatus(404);
+    }
+    
 })
 
 app.listen(PORT, () => {
