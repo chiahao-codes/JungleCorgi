@@ -45,13 +45,13 @@ const clockImgInterval = () => {
     document.querySelector("body>#timer_container>#market_clock").innerText =
       startCountDown(mktStatus);
     mktStatusNotification(mktStatus, mktNotification);
-  }, 1000);
+  }, 900);
 
   setInterval(() => {
     updateIndexData(priceOfIndex, "value");
     updateIndexData(percentChangeIndex, "change");
     updateIndexData(imgContainer, "arrow", up17, down17);
-  }, 2000);
+  }, 1099);
 };
 
 updateIndexData(priceOfIndex, "value")

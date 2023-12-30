@@ -26,7 +26,6 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     } else {
         res.sendStatus(404);
     }
-    
 })
 
 app.listen(PORT, () => {
