@@ -1,5 +1,5 @@
-import cnbcMarket  from "cnbc-market";
-
+import cnbcMarket from "cnbc-market";
+import yf2 from "./yahoo2.js";
 //update prices of index;
 let updateIndexData = async (
   iterable,
@@ -14,14 +14,12 @@ let updateIndexData = async (
       return data;
     })
     .catch((e) => {
-      return e.message;
+      console.log(e);
+      return e;
     });
 
-  if (!marketData) {
-    console.log("Error: CnbcMarket Api error");
-    return;
-  }
-
+  //get dow jones;  dowjones: dji,
+  
   let cnbc = {
     snp: marketData[0],
     nasdaq: marketData[1],
@@ -44,15 +42,29 @@ let updateIndexData = async (
     let attr = iterable[i].classList[0];
 
     if (cnbc[attr]) {
-      if (prop === "value" && cnbc[attr].value) {
-        let value = parseFloat(cnbc[attr].value);
-        let formatCcy = new Intl.NumberFormat("en-US");
-        let cnbcValue = formatCcy.format(value);
+      if (prop === "value") {
+        let value;
+        if (cnbc[attr].value !== undefined) {
+          value = parseFloat(cnbc[attr].value);
+        }
+        if (cnbc[attr].regularMarketPrice !== undefined) {
+          value = cnbc[attr].regularMarketPrice;
+        }
+        value = value.toFixed(2);
+        let cnbcValue = value;
         iterable[i].innerText = cnbcValue;
       }
 
-      if (prop === "change" && cnbc[attr].change) {
-        iterable[i].innerText = cnbc[attr].change;
+      if (prop === "change") {
+        let pctChange;
+        if (cnbc[attr].change !== undefined) {
+          pctChange = cnbc[attr].change;
+        }
+
+        if (cnbc[attr].regularMarketChangePercent !== undefined) {
+          pctChange = cnbc[attr].regularMarketChangePercent;
+        }
+        iterable[i].innerText = pctChange;
       }
     }
 
@@ -74,5 +86,5 @@ let updateIndexData = async (
   }
 };
 
-export default updateIndexData;
+export default updateIndexData
 

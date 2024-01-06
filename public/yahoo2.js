@@ -15,4 +15,6 @@ let yf2 = async (stockTicker) => {
   return response;
 };
 
+
+ 
 export default yf2

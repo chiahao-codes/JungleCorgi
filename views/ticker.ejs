@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head.ejs') %>
+</head>
+
+<body id="ticker_body">
+    <section id="stock_price_container">
+        <h5 id="company_name"></h5>
+        <div id="price_percent_container">
+            <div id="reg_hours_container">
+                <h3 id="reg_hours_price"></h3>
+                <h5 id="reg_hours_change"></h5>
+                <h5 id="reg_hours_pct"></h5>
+            </div>
+            <div id="after_hours_container">
+                <h3 id="after_hours_price"></h3>
+                <h5 id="after_hours_change"></h5>
+                <h5 id="after_hours_pct"></h5>
+            </div>
+        </div>
+        <div id="mkt_time_container">
+            <div id="at_close_container">
+                <p id="at_close_txt"></p>
+                <p id="at_close_time"></p>
+            </div>
+            <div id="after_hours_container">
+                <p id="after_hours_txt"></p>
+                <p id="after_hours_time"></p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

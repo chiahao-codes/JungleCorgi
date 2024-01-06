@@ -70,8 +70,8 @@ body {
         font-family: inherit;
         font-weight: 700;
         padding: 3px 1px 1px 2px;
-        height: 35px;
-        width: 250px;
+        height: 40px;
+        width: 255px;
         outline: none;
         background-color: var(--greenish);
         color: var(--cold-white);
@@ -231,9 +231,9 @@ body {
 
     #home_body footer .container {
         display: flex;
-        justify-content: space-around;
-        column-gap: 3px;
-        width: 100%;
+        justify-content: space-evenly;
+        column-gap: 5%;
+        width:100%;
     }
 
     #home_body footer #footer-top-row {
@@ -268,7 +268,69 @@ body {
         ;
         text-decoration: none;
     }
-
 }
 
-@media screen and (max-width: 480px) {}
+
+@media screen and (min-width: 580px) {
+    #home_body header h2 {
+       width: 275px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    #home_body header h2 {
+        width: 300px;
+    }
+
+    #home_body #index_section_container {
+        display: grid;
+            justify-content: center;
+            padding: 10px;
+            grid-template-columns: repeat(5, 80px);
+            grid-template-rows: repeat(3, 75px);
+            row-gap: 28px;
+            column-gap: 20px;
+            width: 100%;
+            height: max-content;
+            position: relative;
+            top: 40px;
+    }
+
+    #home_body footer > #footer-top-row {
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items: center;
+        row-gap: 46px;
+    }
+
+  #home_body footer>#footer-top-row .first-child {
+    display: flex;
+    justify-content: center;
+    width:450px;
+    font-weight: 500;
+    position: relative;
+    top:10px;
+  }
+
+    #home_body footer>#footer-top-row .first-child p{
+        font-size: 18px;
+    }
+
+  #home_body footer>#footer-top-row .second-child {
+        width:100%;
+        position:relative;
+  }
+
+    #home_body footer .container .first-child h5, #home_body footer .container .second-child h5 {
+            display: none;
+        }
+
+        #home_body footer .container #links ul {
+            display:flex;
+            justify-content:space-evenly;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+}
