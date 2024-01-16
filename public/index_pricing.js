@@ -1,13 +1,7 @@
 import cnbcMarket from "cnbc-market";
 import yf2 from "./yahoo2.js";
 //update prices of index;
-let updateIndexData = async (
-  iterable,
-  prop,
-  imgUp,
-  imgDown,
-  runcnbc = cnbcMarket
-) => {
+let updateIndexData = async () => {
   //get prices from cnbc;
   let marketData = await cnbcMarket()
     .then((data) => {
@@ -19,8 +13,8 @@ let updateIndexData = async (
     });
 
   //get dow jones;  dowjones: dji,
-  
-  let cnbc = {
+  //let dji = await yf2("^DJI");
+  return {
     snp: marketData[0],
     nasdaq: marketData[1],
     ftse: marketData[2],
@@ -37,10 +31,13 @@ let updateIndexData = async (
     eurusd: marketData[25],
     russell: marketData[28],
   };
+};
 
-  for (let i = 0; i < iterable.length; i++) {
+export default updateIndexData;
+
+/**
+ *  for (let i = 0; i < iterable.length; i++) {
     let attr = iterable[i].classList[0];
-
     if (cnbc[attr]) {
       if (prop === "value") {
         let value;
@@ -84,7 +81,4 @@ let updateIndexData = async (
       children[0].src = dir;
     }
   }
-};
-
-export default updateIndexData
-
+ */

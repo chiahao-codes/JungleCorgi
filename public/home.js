@@ -6,7 +6,6 @@ const mktNotification = document.querySelector(
 
 const setTodaysDate = () => {
   const todaysDate = new Date();
-  console.log(todaysDate, typeof todaysDate);
   const dateFormat = new Intl.DateTimeFormat("en-GB", {
     dateStyle: "full",
   });
@@ -68,6 +67,7 @@ const startCountDown = (mkt) => {
     //check for bank holidays:
     if (currMonth === 11 && nextDay === 25) nextDay = nextDay + 1; //xmas
     if (currMonth === 11 && nextDay === 32) nextDay = nextDay + 1; //nye
+    if (currMonth === 0 && nextDay === 15) nextDay = nextDay + 1; //mlk
 
     //set next morning: 6:30am PST
     let openingBell = new Date(
@@ -137,21 +137,28 @@ const startCountDown = (mkt) => {
 const regExp = /[a-zA-Z.^]/;
 
 todaysDateH4.innerText = setTodaysDate();
-setInterval(() => {todaysDateH4.innerText = setTodaysDate()}, 899);
+setInterval(() => {
+  todaysDateH4.innerText = setTodaysDate();
+}, 899);
 
 let mktStatus = marketStatusCheck();
 mktStatusNotification(mktStatus, mktNotification);
 
-document.querySelector("body > #timer_container > h5").innerText = `${mktStatus} Bell in:`;
-document.querySelector("body>#timer_container>#market_clock").innerText = startCountDown(mktStatus);
+document.querySelector(
+  "body > #timer_container > h5"
+).innerText = `${mktStatus} Bell in:`;
+document.querySelector("body>#timer_container>#market_clock").innerText =
+  startCountDown(mktStatus);
 
 setInterval(() => {
   mktStatus = marketStatusCheck();
-   document.querySelector("body > #timer_container > h5").innerText = `${mktStatus} Bell in:`;
-   document.querySelector("body>#timer_container>#market_clock").innerText = startCountDown(mktStatus);
-   mktStatusNotification(mktStatus, mktNotification);
- }, 900);
-
+  document.querySelector(
+    "body > #timer_container > h5"
+  ).innerText = `${mktStatus} Bell in:`;
+  document.querySelector("body>#timer_container>#market_clock").innerText =
+    startCountDown(mktStatus);
+  mktStatusNotification(mktStatus, mktNotification);
+}, 900);
 
 h2Box.addEventListener("click", () => {
   const h2ChildNodes = h2Box.childNodes;
@@ -259,68 +266,3 @@ h2Box.addEventListener("keyup", (e) => {
   }
   return;
 });
-
-/**
- * import { marketStatusCheck, startCountDown, mktStatusNotification } from "./market_clock.js";
-import updateIndexData from "./index_pricing.js";
-import setTodaysDate from './date.js';
-
-
-const todaysDateH4 = document.querySelector("#timer_container > #todayDate");
-const mktNotification = document.querySelector(
-  "body > #mkt_status_notification_container > #mkt_status_notification"
-);
-const priceOfIndex = document.querySelectorAll(
-  "body > section > .index_container > .price"
-);
-const percentChangeIndex = document.querySelectorAll(
-  "body > section > .index_container > .img_container> .percent_change"
-);
-const imgContainer = document.querySelectorAll(
-  "section > .index_container > .img_container"
-);
-
-const up17 = new URL("../assets/up17.png", import.meta.url);
-const down17 = new URL("../assets/down17.png", import.meta.url);
-
-
-todaysDateH4.innerText = setTodaysDate();
-setInterval(() => {
-  todaysDateH4.innerText = setTodaysDate();
-}, 900);
-
-let mktStatus = marketStatusCheck();
-mktStatusNotification(mktStatus, mktNotification);
-
-document.querySelector("body > #timer_container > h5").innerText = `${mktStatus} Bell in:`;
-document.querySelector("body>#timer_container>#market_clock").innerText = startCountDown(mktStatus);
-
-updateIndexData(priceOfIndex, "value")
-  .then(() => {
-    updateIndexData(percentChangeIndex, "change");
-  })
-  .then(() => {
-    updateIndexData(imgContainer, "arrow", up17, down17);
-  })
-  .then(() => {
-    clockImgInterval();
-  })
-  .catch((e) => {
-    console.log(e);
-    return;
-  });
-
-const clockImgInterval = () => {
- 
-};
-
- setInterval(() => {
-    updateIndexData(priceOfIndex, "value");
-    updateIndexData(percentChangeIndex, "change");
-    updateIndexData(imgContainer, "arrow", up17, down17);
-  }, 999);
-
-
-  //import '../assets/up17.png';
-//import '../assets/down17.png';
- */

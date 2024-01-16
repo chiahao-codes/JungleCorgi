@@ -7,7 +7,9 @@
 
 <body id="ticker_body">
     <section id="stock_price_container">
-        <h5 id="company_name"></h5>
+        <h5 id="company_name">
+            <%= checkSymbol.price.shortName %>
+        </h5>
         <div id="price_percent_container">
             <div id="reg_hours_container">
                 <h3 id="reg_hours_price"></h3>
@@ -32,4 +34,5 @@
         </div>
     </section>
 </body>
+
 </html>

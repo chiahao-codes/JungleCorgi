@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-   <%- include('./partials/head.ejs') %>
+    <%- include('./partials/head.ejs') %>
+        <% %>
 </head>
 
 <body id="home_body">
@@ -15,150 +16,327 @@
         <p id="market_clock"></p>
     </div>
     <div id="mkt_status_notification_container">
-        <h6 id="mkt_status_notification"></h6>
+        <h5 id="mkt_status_notification"></h5>
     </div>
     <section id="index_section_container">
         <div class="index_container">
-            <h6 class="mkt_name">
+            <h5 class="mkt_name">
                 S&P 500
-            </h6>
-            <h6 class="snp price"></h6>
-            <div class="img_container">
-                <img id="arrow_img" src="" alt="arrow">
-                <h6 class="snp percent_change">
+            </h5>
+            <h5 class="snp price">
+                <%=prices.snp.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
 
-                </h6>
+                <h5 class="point_change">
+                    <%=prices.snp.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="snp percent_change">
+                    <%=(prices.snp.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">Nasdaq</h6>
-            <h6 id="nasdaq" class="nasdaq price"></h6>
-            <div class="img_container">
-                <img id="arrow_img" alt="arrow">
-                <h6 class="nasdaq percent_change"></h6>
-            </div>
-        </div>
-        <div class="index_container">
-            <h6 class="mkt_name">Dow Jones</h6>
-            <h6 id="dowjones" class="dowjones price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="dowjones percent_change"></h6>
-            </div>
-        </div>
-        <div class="index_container">
-            <h6 class="mkt_name">Nikkei 225</h6>
-            <h6 id="nikkei" class="nikkei price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="nikkei percent_change"></h6>
-            </div>
-        </div>
-        <div class="index_container">
-            <h6 class="mkt_name">Hang Seng</h6>
-            <h6 id="hang" class="hang price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="hang percent_change"></h6>
-            </div>
-        </div>
+            <h5 class="mkt_name">Nasdaq</h5>
+            <h5 id="nasdaq" class="nasdaq price">
+                <%=prices.nasdaq.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
 
-        <div class="index_container">
-            <h6 class="mkt_name">Shanghai</h6>
-            <h6 id="shanghai" class="shanghai price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="shanghai percent_change"></h6>
+                <h5 class="point_change">
+                    <%=prices.nasdaq.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="nasdaq percent_change">
+                    <%=(prices.nasdaq.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">WTI Crude</h6>
-            <h6 id="wti" class="wti price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="wti percent_change"></h6>
+            <h5 class="mkt_name">Dow Jones</h5>
+            <h5 id="dowjones" class="dowjones price">
+                <%=prices.dji.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.dji.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="dowjones percent_change">
+                    <%=(prices.dji.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">Natural Gas</h6>
-            <h6 id="natgas" class="natgas price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="natgas percent_change"></h6>
+            <h5 class="mkt_name">Nikkei 225</h5>
+            <h5 id="nikkei" class="nikkei price">
+                <%=prices.nikkei.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.nikkei.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="nikkei percent_change">
+                    <%=(prices.nikkei.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">Gold</h6>
-            <h6 id="gold" class="gold price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="gold percent_change"></h6>
+            <h5 class="mkt_name">Hang Seng</h5>
+            <h5 id="hang" class="hang price">
+                <%=prices.hang.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.hang.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="hang percent_change">
+                    <%=(prices.hang.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">Silver</h6>
-            <h6 id="silver" class="silver price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="silver percent_change"></h6>
+            <h5 class="mkt_name">FTSE 100</h5>
+            <h5 id="ftse" class="ftse price">
+                <%=prices.ftse.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.ftse.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="ftse percent_change">
+                    <%=(prices.ftse.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">Vix</h6>
-            <h6 id="vix" class="vix price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="vix percent_change"></h6>
+            <h5 class="mkt_name">Bitcoin USD</h5>
+            <h5 id="bitcoin" class="bitcoin price">
+                <%=prices.bitcoin.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.bitcoin.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="bitcoin percent_change">
+                    <%=(prices.bitcoin.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">U.S. 10-Yr</h6>
-            <h6 id="ustenyr" class="ustenyr price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="ustenyr percent_change"></h6>
+            <h5 class="mkt_name">VIX</h5>
+            <h5 id="vix" class="vix price">
+                <%=prices.vix.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.vix.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="vix percent_change">
+                    <%=(prices.vix.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">ICE USD</h6>
-            <h6 id="dollar" class="dollar price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="dollar percent_change"></h6>
+            <h5 class="mkt_name">Gold</h5>
+            <h5 id="gold" class="gold price">
+                <%=prices.gold.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.gold.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="gold percent_change">
+                    <%=(prices.gold.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">Russell 2000</h6>
-            <h6 id="russell" class="russell price"></h6>
-            <div class="img_container"><img id="arrow_img" alt="arrow">
-                <h6 class="russell percent_change"></h6>
+            <h5 class="mkt_name">Crude Oil</h5>
+            <h5 id="crudeoil" class="crudeoil price">
+                <%=prices.crudeoil.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.crudeoil.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="crudeoil percent_change">
+                    <%=(prices.crudeoil.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
         <div class="index_container">
-            <h6 class="mkt_name">EUR/USD</h6>
-            <h6 id="eurusd" class="eurusd price"></h6>
-            <div class="img_container">
-                <img id="arrow_img" alt="arrow">
-                <h6 class="eurusd percent_change"></h6>
+            <h5 class="mkt_name">Natural Gas</h5>
+            <h5 id="natgas" class="natgas price">
+                <%=prices.natgas.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.natgas.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="natgas percent_change">
+                    <%=(prices.natgas.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
+            </div>
+        </div>
+        <div class="index_container">
+            <h5 class="mkt_name">U.S. 10-Yr</h5>
+            <h5 id="ustenyr" class="ustenyr price">
+                <%=prices.ustenyr.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.ustenyr.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="ustenyr percent_change">
+                    <%=(prices.ustenyr.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
+            </div>
+        </div>
+        <div class="index_container">
+            <h5 class="mkt_name">JPY/USD</h5>
+            <h5 id="jpyusd" class="jpyusd price">
+                <%=prices.jpyusd.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.jpyusd.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="jpyusd percent_change">
+                    <%=(prices.jpyusd.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
+            </div>
+        </div>
+        <div class="index_container">
+            <h5 class="mkt_name">EUR/USD</h5>
+            <h5 id="eurusd" class="eurusd price">
+                <%=prices.eurusd.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.eurusd.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="eurusd percent_change">
+                    <%=(prices.eurusd.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
+            </div>
+        </div>
+        <div class="index_container">
+            <h5 class="mkt_name">Russell 2000</h5>
+            <h5 id="russell" class="russell price">
+                <%=prices.russell.price.regularMarketPrice.toFixed(2)%>
+            </h5>
+            <div class="ppc_container">
+                <h5 class="point_change">
+                    <%=prices.russell.price.regularMarketChange.toFixed(2)%>
+                </h5>
+                <h5 class="russell percent_change">
+                    <%=(prices.russell.price.regularMarketChangePercent*100).toFixed(2)%>%
+                </h5>
             </div>
         </div>
     </section>
     <footer>
-        <div class="container" id="footer-top-row">
-            <div class="first-child" id="about">
-                <h5>About</h5>
-                <p>Aliqua officia sit enim aliquip sint cillum consequat do veniam esse minim ad dolor velit.</p>
-            </div>
-            <div class="second-child" id="links">
-                <h5>Quick Links</h5>
-                <ul>
-                    <li><a class="link" href="" target="_self" rel="noreferrer">Contact</a></li>
-                    <li><a class="link" href="" target="_self" rel="noreferrer">Terms</a></li>
-                    <li><a class="link" href="" target="_self" rel="noreferrer">Privacy</a></li>
-                    <li><a class="link" href="" target="_self" rel="noreferrer">Disclaimer</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="container" id="footer-bottom-row">
-            <div class="first-child">
-                <h6>Copyright &#169; 2024
-                </h6>
-            </div>
-            <div class="second-child">
-                <h6>Icons by <a class="link" href="" rel="noopener" target="_blank">Icons8</a></h6>
-            </div>
-        </div>
+        <%- include('./partials/footer.ejs') %>
     </footer>
-    <script src="home.js"></script>
+    <script src="home.js">
+    </script>
+    <script async="false">
+        const apiKey = '<%=API_KEY%>';
+        const indexContainers = document.querySelectorAll("body > section > .index_container");
+        const priceOfIndex = document.querySelectorAll("body > section > .index_container > .price");
+        const changePctPointsColor = (indexContainers, priceOfIndex) => {
+            let regExMinus = new RegExp(/[-]/);
+            let regExParens = new RegExp(/[()]/);
+            let regExPlus = new RegExp(/[+]/);
+            let regExComma = new RegExp(/[,]/);
+
+            //format number to price;
+            for (let i = 0; i < priceOfIndex.length; i++) {
+                let priceString = priceOfIndex[i].innerText;
+                if (regExComma.test(priceString) !== true) {
+                    // console.log(priceString, typeof priceString)
+                    priceString *= 1;
+                    let formatPrice = new Intl.NumberFormat("en", {
+                        minimumFractionDigits: 2,
+                    }).format(priceString);
+                    priceOfIndex[i].innerText = formatPrice;
+                }
+            }
+
+            for (let i = 0; i < indexContainers.length; i++) {
+                let pointsChangeNumText =
+                    indexContainers[i].children[2].children[0].innerText;
+                let percentChangeNumText =
+                    indexContainers[i].children[2].children[1].innerText;
+
+                if (regExMinus.test(percentChangeNumText)) {
+                    indexContainers[i].children[1].style.color = "red";
+                    indexContainers[i].children[2].children[0].style.color = "red";
+                    indexContainers[i].children[2].children[1].style.color = "red";
+                    if (regExParens.test(percentChangeNumText) !== true) {
+                        indexContainers[
+                            i
+                        ].children[2].children[1].innerText = `(${percentChangeNumText})`;
+                    }
+                } else {
+                    indexContainers[i].children[1].style.color = "#00e813";
+                    indexContainers[i].children[2].children[0].style.color = "#00e813";
+                    indexContainers[i].children[2].children[1].style.color = "#00e813";
+
+                    //add plus sign to pointstext;
+                    if (regExPlus.test(pointsChangeNumText) !== true) {
+                        indexContainers[
+                            i
+                        ].children[2].children[0].innerText = `+${pointsChangeNumText}`;
+                    }
+
+                    //add parentheses
+                    if (regExParens.test(percentChangeNumText) !== true) {
+                        indexContainers[
+                            i
+                        ].children[2].children[1].innerText = `(+${percentChangeNumText})`;
+                    }
+                }
+            }
+        };
+        const getPrices = async (indexContainers, api) => {
+            const url =
+                "https://yahoo-finance127.p.rapidapi.com/multi-quote/%5EGSPC,%5EIXIC,%5EDJI,%5EN225,%5EHSI,%5EFTSE,BTC-USD,%5EVIX,CL=F,NG=F,GC=F,%5ETNX,JPY=X,EURUSD=X,%5ERUT";
+            const options = {
+                method: "GET",
+                headers: {
+                    "X-RapidAPI-Key": api,
+                    "X-RapidAPI-Host": "yahoo-finance127.p.rapidapi.com",
+                },
+            };
+
+            const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
+            const result = await response.json();
+
+            let regMktPrice, regMktChange, regMktChangePercent, tickrUrl = window.location.href;
+            for (let i = 0; i < indexContainers.length; i++) {
+                regMktPrice = result[i].regularMarketPrice.raw;
+                regMktChange = result[i].regularMarketChange.fmt;
+                regMktChangePercent = result[i].regularMarketChangePercent.fmt;
+
+                indexContainers[i].children[1].innerText = regMktPrice;
+                indexContainers[i].children[2].children[0].innerText = regMktChange;
+                indexContainers[i].children[2].children[1].innerText = regMktChangePercent;
+                indexContainers[i].addEventListener("click", () => {
+                    window.location.href = `${tickrUrl}tickrpro/${result[i].symbol}`;
+                });
+            }
+            return;
+        };
+        changePctPointsColor(indexContainers, priceOfIndex);
+        getPrices(indexContainers, apiKey)
+
+        /*
+         setInterval(async () => {
+            await getPrices(indexContainers, apiKey);
+            changePctPointsColor(indexContainers, priceOfIndex);
+        }, 10000)
+        */
+    </script>
 </body>
 
 </html>

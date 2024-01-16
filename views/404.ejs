@@ -1,9 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<%- include('./partials/head.ejs') %>
+    <%- include('./partials/head.ejs') %>
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                display: none;
+                font-family: 'Noto Sans', sans-serif;
+            }
+
+            @media screen and (min-width:320px) {
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+                    background-color: #097969
+                }
+
+                body main {
+                    background-color: inherit;
+                    position: relative;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    align-items: center;
+                    row-gap: 25px;
+                    padding-top: 25px;
+                    padding-bottom: 25px;
+                    margin-bottom: 15px;
+                }
+
+                body main img {
+                    margin-top: 25px;
+                    width: 310px;
+                }
+
+                body main #container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                body main #container p {
+                    color: white;
+                    font-family: 'Noto Sans';
+                }
+
+                body main button {
+                    background-color: #012c12;
+                    color: white;
+                    font-family: 'Noto Sans', sans-serif;
+                    min-width: 75px;
+                    min-height: 40px;
+                    padding: 5px;
+                    text-align: center;
+                    border: none;
+                    border-radius: 7px;
+                    box-shadow: 1.5px 1.5px 1px #03000f;
+                    cursor: pointer;
+                    margin: 2px 8px 2px 8px;
+                }
+
+                body main button:active {
+                    box-shadow: 0 0 0 #4a494e;
+                    margin: 4px 8px 1px 8px;
+                }
+
+                body footer {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 6px;
+                    position: relative;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    width: 100%;
+                    max-height: fit-content;
+                    padding: 10px 20px 8px;
+                    font-size: 15px;
+                    line-height: 24px;
+                    color: var(--midnight);
+                    background-color: rgb(255, 255, 255);
+                }
+
+                body footer .container {
+                    display: flex;
+                    justify-content: space-evenly;
+                    column-gap: 5%;
+                    width: 100%;
+                }
+
+                body footer #footer-top-row {
+                    padding-bottom: 5px;
+                    border-bottom-width: 0.7px;
+                    border-bottom-style: solid;
+                    border-bottom-color: var(--midnight);
+                }
+
+                body footer .container .first-child {
+                    width: 175px;
+                }
+
+                body footer .container .second-child {
+                    width: 80px;
+                }
+
+                body footer .container #about p {
+                    font-size: 9px;
+                    color: inherit;
+                }
+
+                body footer .container #links ul {
+                    text-align: left;
+                    list-style: none;
+                    font-size: 9px;
+                }
+
+                footer .container .first-child h6 .link,
+                footer .container .second-child ul li .link,
+                footer .container .second-child h6 .link {
+                    color: rgb(3, 0, 15);
+                    text-decoration: none;
+                }
+            }
+
+            @media screen and (min-width:900px) {
+                body main img {
+                    width: 500px;
+                }
+            }
+
+            @media screen and (min-width:1000px) {
+                body footer>#footer-top-row {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    row-gap: 46px;
+                }
+
+                body footer>#footer-top-row .first-child {
+                    display: flex;
+                    justify-content: center;
+                    width: 450px;
+                    font-weight: 500;
+                    position: relative;
+                    top: 10px;
+                }
+
+                body footer>#footer-top-row .first-child p {
+                    font-size: 18px;
+                }
+
+                body footer>#footer-top-row .second-child {
+                    width: 100%;
+                    position: relative;
+                }
+
+                body footer .container .first-child h5,
+                body footer .container .second-child h5 {
+                    display: none;
+                }
+
+                body footer .container #links ul {
+                    display: flex;
+                    justify-content: space-evenly;
+                    font-size: 11px;
+                    font-weight: 400;
+                }
+            }
+        </style>
 </head>
-<body>
-    <p>Sorry, ticker not found.</p>
+
+<body id="four_body">
+    <main>
+        <img src="/beagle.jpg" alt="beagle">
+        <div id="container">
+            <p>Sorry, ticker not found :(</p>
+        </div>
+        <button id="back-button" type="reset" onclick="window.location.href = '/'">Back</button>
+    </main>
+
+    <footer>
+        <%- include('./partials/footer.ejs') %>
+    </footer>
+    <!---->
 </body>
+
 </html>
