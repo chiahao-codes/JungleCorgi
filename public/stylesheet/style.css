@@ -211,7 +211,7 @@ body {
     row-gap: 1px;
   }
 
-  #home_body footer {
+  body footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -230,34 +230,34 @@ body {
     background-color: rgb(255, 255, 255);
   }
 
-  #home_body footer .container {
+  body footer .container {
     display: flex;
     justify-content: space-evenly;
     column-gap: 5%;
     width: 100%;
   }
 
-  #home_body footer #footer-top-row {
+  body footer #footer-top-row {
     padding-bottom: 5px;
     border-bottom-width: 0.7px;
     border-bottom-style: solid;
     border-bottom-color: var(--midnight);
   }
 
-  #home_body footer .container .first-child {
+  body footer .container .first-child {
     width: 175px;
   }
 
-  #home_body footer .container .second-child {
+  body footer .container .second-child {
     width: 80px;
   }
 
-  #home_body footer .container #about p {
+  body footer .container #about p {
     font-size: 9px;
     color: inherit;
   }
 
-  #home_body footer .container #links ul {
+  body footer .container #links ul {
     list-style: none;
     font-size: 9px;
   }
@@ -295,7 +295,7 @@ body {
     top: 40px;
   }
 
-  #home_body footer > #footer-top-row {
+  body footer > #footer-top-row {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -303,7 +303,7 @@ body {
     row-gap: 46px;
   }
 
-  #home_body footer > #footer-top-row .first-child {
+  body footer > #footer-top-row .first-child {
     display: flex;
     justify-content: center;
     width: 450px;
@@ -312,21 +312,21 @@ body {
     top: 10px;
   }
 
-  #home_body footer > #footer-top-row .first-child p {
+  body footer > #footer-top-row .first-child p {
     font-size: 18px;
   }
 
-  #home_body footer > #footer-top-row .second-child {
+  body footer > #footer-top-row .second-child {
     width: 100%;
     position: relative;
   }
 
-  #home_body footer .container .first-child h5,
-  #home_body footer .container .second-child h5 {
+  body footer .container .first-child h5,
+  body footer .container .second-child h5 {
     display: none;
   }
 
-  #home_body footer .container #links ul {
+  body footer .container #links ul {
     display: flex;
     justify-content: space-evenly;
     font-size: 11px;

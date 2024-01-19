@@ -4,6 +4,28 @@ const mktNotification = document.querySelector(
   "body > #mkt_status_notification_container > #mkt_status_notification"
 );
 
+const symbols = [
+  "^GSPC",
+  "^IXIC",
+  "^DJI",
+  "^N225",
+  "^HSI",
+  "^FTSE",
+  "BTC-USD",
+  "^VIX",
+  "GC=F",
+  "CL=F",
+  "NG=F",
+  "^TNX",
+  "JPY=X",
+  "EURUSD=X",
+  "^RUT",
+];
+
+const indexContainers2 = document.querySelectorAll(
+  "body > section > .index_container"
+);
+
 const setTodaysDate = () => {
   const todaysDate = new Date();
   const dateFormat = new Intl.DateTimeFormat("en-GB", {
@@ -134,8 +156,18 @@ const startCountDown = (mkt) => {
   return counter;
 };
 
+const tickrUrl = window.location.href;
+
+const indexContainerEvents = (symbol) => {
+  for (let i = 0; i < indexContainers2.length; i++) {
+    indexContainers2[i].addEventListener("click", () => {
+      window.location.href = `${tickrUrl}tickrpro/${symbol[i]}`;
+    });
+  }
+};
 const regExp = /[a-zA-Z.^]/;
 
+indexContainerEvents(symbols);
 todaysDateH4.innerText = setTodaysDate();
 setInterval(() => {
   todaysDateH4.innerText = setTodaysDate();

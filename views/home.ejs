@@ -3,7 +3,6 @@
 
 <head>
     <%- include('./partials/head.ejs') %>
-        <% %>
 </head>
 
 <body id="home_body">
@@ -312,7 +311,7 @@
             const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
             const result = await response.json();
 
-            let regMktPrice, regMktChange, regMktChangePercent, tickrUrl = window.location.href;
+            let regMktPrice, regMktChange, regMktChangePercent;
             for (let i = 0; i < indexContainers.length; i++) {
                 regMktPrice = result[i].regularMarketPrice.raw;
                 regMktChange = result[i].regularMarketChange.fmt;
@@ -321,21 +320,35 @@
                 indexContainers[i].children[1].innerText = regMktPrice;
                 indexContainers[i].children[2].children[0].innerText = regMktChange;
                 indexContainers[i].children[2].children[1].innerText = regMktChangePercent;
-                indexContainers[i].addEventListener("click", () => {
-                    window.location.href = `${tickrUrl}tickrpro/${result[i].symbol}`;
-                });
             }
             return;
         };
-        changePctPointsColor(indexContainers, priceOfIndex);
-        getPrices(indexContainers, apiKey)
 
-        /*
-         setInterval(async () => {
-            await getPrices(indexContainers, apiKey);
-            changePctPointsColor(indexContainers, priceOfIndex);
-        }, 10000)
-        */
+        let timeout = undefined;
+        const idlePage = () => {
+            if (timeout) {
+                clearInterval(timeout);
+            }
+            timeout = setInterval(() => {
+                location.reload();
+            }, 10000);
+        }
+        let timeout2 = undefined;
+        const activePage = () => {
+            if (timeout2) clearInterval(timeout2);
+            timeout2 = setInterval(async () => {
+                await getPrices(indexContainers, apiKey);
+                changePctPointsColor(indexContainers, priceOfIndex);
+                console.log("active page");
+            }, 120000);
+        }
+        document.addEventListener("click", idlePage);
+        document.addEventListener("keypress", idlePage);
+        document.addEventListener("mousemove", idlePage);
+
+        changePctPointsColor(indexContainers, priceOfIndex);
+        idlePage();
+        activePage();
     </script>
 </body>
 
