@@ -6,7 +6,7 @@
 </head>
 
 <body id="home_body">
-    <header>
+    <header class="header">
         <h2 contenteditable="true"><span>Enter ticker...</span></h2>
     </header>
     <div id="timer_container">
@@ -331,7 +331,7 @@
             }
             timeout = setInterval(() => {
                 location.reload();
-            }, 10000);
+            }, 8000);
         }
         let timeout2 = undefined;
         const activePage = () => {

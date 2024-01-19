@@ -3,100 +3,173 @@
 
 <head>
     <%- include('./partials/head.ejs') %>
-        <!--
-<style>
-            body footer {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                gap: 6px;
-                position: relative;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                width: 100%;
-                max-height: fit-content;
-                padding: 10px 20px 8px;
-                font-size: 15px;
-                line-height: 24px;
-                color: var(--midnight);
-                background-color: rgb(255, 255, 255);
-            }
-
-            body footer .container {
-                display: flex;
-                justify-content: space-evenly;
-                column-gap: 5%;
-                width: 100%;
-            }
-
-            body footer #footer-top-row {
-                padding-bottom: 5px;
-                border-bottom-width: 0.7px;
-                border-bottom-style: solid;
-                border-bottom-color: var(--midnight);
-            }
-
-            body footer .container .first-child {
-                width: 175px;
-            }
-
-            body footer .container .second-child {
-                width: 80px;
-            }
-
-            body footer .container #about p {
-                font-size: 9px;
-                color: inherit;
-            }
-
-            body footer .container #links ul {
-                text-align: left;
-                list-style: none;
-                font-size: 9px;
-            }
-
-            footer .container .first-child h6 .link,
-            footer .container .second-child ul li .link,
-            footer .container .second-child h6 .link {
-                color: rgb(3, 0, 15);
-                text-decoration: none;
-            }
-        </style>
-    -->
 </head>
 
 <body id="ticker_body">
+    <header class="headerBox">
+        <h2 contenteditable="true"><span>Enter ticker...</span></h2>
+    </header>
     <section id="stock_price_container">
         <h5 id="company_name">
             <%= checkSymbol.price.shortName %>
         </h5>
-        <div id="price_percent_container">
-            <div id="reg_hours_container">
-                <h3 id="reg_hours_price"></h3>
-                <h5 id="reg_hours_change"></h5>
-                <h5 id="reg_hours_pct"></h5>
+        <div id="price_hours_container">
+            <div id="price_percent_container">
+                <div id="reg_hours_container">
+                    <h3 id="reg_hours_price">123.25</h3>
+                    <h5 id="reg_hours_change">+5.35</h5>
+                    <h5 id="reg_hours_pct">(+8.56%)</h5>
+                </div>
+                <div id="after_hours_container">
+                    <h3 id="after_hours_price">125.00</h3>
+                    <h5 id="after_hours_change">+6.54</h5>
+                    <h5 id="after_hours_pct">(+8.45%)</h5>
+                </div>
             </div>
-            <div id="after_hours_container">
-                <h3 id="after_hours_price"></h3>
-                <h5 id="after_hours_change"></h5>
-                <h5 id="after_hours_pct"></h5>
+            <div id="mkt_time_container">
+                <div id="at_close_container">
+                    <p id="at_close_txt">Closed At:</p>
+                    <p id="at_close_time">4:00 PM</p>
+                </div>
+                <div id="after_hours_container">
+                    <p id="after_hours_txt">Extended Hours:</p>
+                    <p id="after_hours_time">10:15 PM</p>
+                </div>
             </div>
         </div>
-        <div id="mkt_time_container">
-            <div id="at_close_container">
-                <p id="at_close_txt"></p>
-                <p id="at_close_time"></p>
+        <div id="summary_profile_container">
+            <div id="summary_container">
+                <h6>Summary</h6>
+                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et
+                    dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                    commodo
+                    consequat. Duis
+                    aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
             </div>
-            <div id="after_hours_container">
-                <p id="after_hours_txt"></p>
-                <p id="after_hours_time"></p>
+            <div id="profile_container">
+                <h6 id="address">Profile</h6>
+                <p id="address">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+                <div id="key_execs_container">
+                    <ul>
+                        <li>Elon Musk</li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <ul>
+                        <li>CEO</li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div id="employee_container">
+                    <h6>Full Time Employees</h6>
+                    <p>17500</p>
+                </div>
             </div>
         </div>
     </section>
     <footer id="ticker_footer">
         <%- include('./partials/footer.ejs') %>
     </footer>
+    <script>
+        const regExp = /[a-zA-Z.^]/;
+        const h2Box = document.querySelector("header>h2");
+        h2Box.addEventListener("click", () => {
+            const h2ChildNodes = h2Box.childNodes;
+            const selection = window.getSelection();
+            if (h2Box.innerText === "Enter ticker...") {
+                h2Box.innerText = "";
+            }
+            //set caret position after text node
+            if (h2ChildNodes.length > 0) {
+                selection.setPosition(h2ChildNodes[0], h2ChildNodes[0].length);
+            } else {
+                selection.setPosition(h2Box, 0);
+            }
+            return;
+        });
+
+        h2Box.addEventListener("focus", () => {
+            const h2ChildNodes = h2Box.childNodes;
+            const selection = window.getSelection();
+            if (h2Box.innerText === "Enter ticker...") {
+                h2Box.innerText = "";
+            }
+            //set caret position after text node
+            if (h2ChildNodes.length > 0) {
+                selection.setPosition(h2ChildNodes[0], h2ChildNodes[0].length);
+            } else {
+                selection.setPosition(h2Box, 0);
+            }
+
+            return;
+        });
+
+        h2Box.addEventListener("keydown", (e) => {
+            const textString = h2Box.innerText;
+            if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
+                e.preventDefault();
+                alert("Character amount exceeded");
+            }
+            //prevent navigation keys;
+            //enter ticker into url param;
+            if (textString.length > 0) {
+                let navKeys = [
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "ArrowDown",
+                    "ArrowUp",
+                    "Left",
+                    "Right",
+                    "Up",
+                    "Down",
+                    "Home",
+                    "End",
+                    "Del",
+                    "Delete",
+                    "PageUp",
+                    "PageDown",
+                    "Insert",
+                ];
+
+                for (const ele of navKeys) {
+                    if (e.key === ele) {
+                        e.preventDefault();
+                        alert("Invalid entry");
+                    }
+                }
+
+                if (textString === "" && e.key === "Enter") {
+                    e.preventDefault();
+                    alert("enter a valid ticker");
+                }
+
+                if (e.key === "Enter" && textString !== "") {
+                    //enter the ticker string into the url parameter
+                    //grab the URL;
+                    const url = `http://localhost:3000/tickrpro/${textString}`
+                    console.log(url, typeof url);
+
+                    //check ticker string
+                    window.location.href = url;
+                }
+            }
+            //prevent non-letters
+            //Allow Backspace, Enter keys;
+            //Note: navigation keys are failing the regexp test;
+            if (regExp.test(e.key) === false) {
+                if (e.key !== "Backspace" && e.key !== "Enter") {
+                    e.preventDefault();
+                    alert("Invalid entry");
+                }
+            }
+        });
+
+    </script>
 </body>
 
 </html>
