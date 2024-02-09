@@ -7,7 +7,7 @@
 
 <body id="home_body">
     <header class="header">
-        <h2 contenteditable="true"><span>Enter ticker...</span></h2>
+        <h2 contenteditable>Enter ticker...</h2>
     </header>
     <div id="timer_container">
         <h4 id="todayDate"></h4>
@@ -240,9 +240,20 @@
     </script>
     <script async="false">
         const apiKey = '<%=API_KEY%>';
+        const mboum = '<%=MBQHOME%>';
+        const rapidURL = '<%=RAPID%>'
         const indexContainers = document.querySelectorAll("body > section > .index_container");
         const priceOfIndex = document.querySelectorAll("body > section > .index_container > .price");
+        const formatPrice = (num) => {
+            const formatted = new Intl.NumberFormat("en-US", {
+                style: "decimal",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            }).format(num);
+            return formatted;
+        };
         const changePctPointsColor = (indexContainers, priceOfIndex) => {
+
             let regExMinus = new RegExp(/[-]/);
             let regExParens = new RegExp(/[()]/);
             let regExPlus = new RegExp(/[+]/);
@@ -250,15 +261,8 @@
 
             //format number to price;
             for (let i = 0; i < priceOfIndex.length; i++) {
-                let priceString = priceOfIndex[i].innerText;
-                if (regExComma.test(priceString) !== true) {
-                    // console.log(priceString, typeof priceString)
-                    priceString *= 1;
-                    let formatPrice = new Intl.NumberFormat("en", {
-                        minimumFractionDigits: 2,
-                    }).format(priceString);
-                    priceOfIndex[i].innerText = formatPrice;
-                }
+                let formatted = formatPrice(priceOfIndex[i].innerText);
+                priceOfIndex[i].innerText = formatted;
             }
 
             for (let i = 0; i < indexContainers.length; i++) {
@@ -268,18 +272,18 @@
                     indexContainers[i].children[2].children[1].innerText;
 
                 if (regExMinus.test(percentChangeNumText)) {
-                    indexContainers[i].children[1].style.color = "red";
-                    indexContainers[i].children[2].children[0].style.color = "red";
-                    indexContainers[i].children[2].children[1].style.color = "red";
+                    indexContainers[i].children[1].style.color = "#c4283c";
+                    indexContainers[i].children[2].children[0].style.color = "#c4283c";
+                    indexContainers[i].children[2].children[1].style.color = "#c4283c";
                     if (regExParens.test(percentChangeNumText) !== true) {
                         indexContainers[
                             i
                         ].children[2].children[1].innerText = `(${percentChangeNumText})`;
                     }
                 } else {
-                    indexContainers[i].children[1].style.color = "#00e813";
-                    indexContainers[i].children[2].children[0].style.color = "#00e813";
-                    indexContainers[i].children[2].children[1].style.color = "#00e813";
+                    indexContainers[i].children[1].style.color = "#148a61";
+                    indexContainers[i].children[2].children[0].style.color = "#148a61";
+                    indexContainers[i].children[2].children[1].style.color = "#148a61";
 
                     //add plus sign to pointstext;
                     if (regExPlus.test(pointsChangeNumText) !== true) {
@@ -298,14 +302,13 @@
             }
         };
         const getPrices = async (indexContainers, api) => {
-            const url =
-                "https://yahoo-finance127.p.rapidapi.com/multi-quote/%5EGSPC,%5EIXIC,%5EDJI,%5EN225,%5EHSI,%5EFTSE,BTC-USD,%5EVIX,CL=F,NG=F,GC=F,%5ETNX,JPY=X,EURUSD=X,%5ERUT";
+            const url = mboum;
             const options = {
                 method: "GET",
                 headers: {
                     "X-RapidAPI-Key": api,
-                    "X-RapidAPI-Host": "yahoo-finance127.p.rapidapi.com",
-                },
+                    "X-RapidAPI-Host": rapidURL
+                }
             };
 
             const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
@@ -313,17 +316,18 @@
 
             let regMktPrice, regMktChange, regMktChangePercent;
             for (let i = 0; i < indexContainers.length; i++) {
-                regMktPrice = result[i].regularMarketPrice.raw;
-                regMktChange = result[i].regularMarketChange.fmt;
-                regMktChangePercent = result[i].regularMarketChangePercent.fmt;
+
+                regMktPrice = formatPrice(result[i].regularMarketPrice);
+                regMktChange = formatPrice(result[i].regularMarketChange);
+                regMktChangePercent = formatPrice(result[i].regularMarketChangePercent);
 
                 indexContainers[i].children[1].innerText = regMktPrice;
                 indexContainers[i].children[2].children[0].innerText = regMktChange;
                 indexContainers[i].children[2].children[1].innerText = regMktChangePercent;
             }
+            console.log(result);
             return;
         };
-
         let timeout = undefined;
         const idlePage = () => {
             if (timeout) {
@@ -331,7 +335,7 @@
             }
             timeout = setInterval(() => {
                 location.reload();
-            }, 8000);
+            }, 10000);
         }
         let timeout2 = undefined;
         const activePage = () => {
@@ -342,6 +346,7 @@
                 console.log("active page");
             }, 120000);
         }
+
         document.addEventListener("click", idlePage);
         document.addEventListener("keypress", idlePage);
         document.addEventListener("mousemove", idlePage);

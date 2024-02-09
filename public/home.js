@@ -157,6 +157,7 @@ const startCountDown = (mkt) => {
 };
 
 const tickrUrl = window.location.href;
+localStorage.setItem("url", tickrUrl);
 
 const indexContainerEvents = (symbol) => {
   for (let i = 0; i < indexContainers2.length; i++) {
@@ -192,21 +193,6 @@ setInterval(() => {
   mktStatusNotification(mktStatus, mktNotification);
 }, 900);
 
-h2Box.addEventListener("click", () => {
-  const h2ChildNodes = h2Box.childNodes;
-  const selection = window.getSelection();
-  if (h2Box.innerText === "Enter ticker...") {
-    h2Box.innerText = "";
-  }
-  //set caret position after text node
-  if (h2ChildNodes.length > 0) {
-    selection.setPosition(h2ChildNodes[0], h2ChildNodes[0].length);
-  } else {
-    selection.setPosition(h2Box, 0);
-  }
-  return;
-});
-
 h2Box.addEventListener("focus", () => {
   const h2ChildNodes = h2Box.childNodes;
   const selection = window.getSelection();
@@ -221,6 +207,13 @@ h2Box.addEventListener("focus", () => {
   }
 
   return;
+});
+
+h2Box.addEventListener("focusout", () => {
+  if (h2Box.innerText === "") h2Box.innerText = "Enter ticker...";
+  if (h2Box.style.backgroundColor === "#15192f") {
+    h2Box.style.backgroundColor = "#012c12";
+  }
 });
 
 h2Box.addEventListener("keydown", (e) => {

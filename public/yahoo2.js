@@ -79,4 +79,10 @@ updateIndexData(priceOfIndex, "value")
 
   //import '../assets/up17.png';
 //import '../assets/down17.png';
+
+ if (result.body[0].postMarketPrice === null && result.body[0].preMarketPrice === null) {
+                //after.style.display = "none";
+            } else {
+
+            }
  */

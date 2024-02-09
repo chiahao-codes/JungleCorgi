@@ -2,20 +2,226 @@
 <html lang="en">
 
 <head>
-    <%- include('./partials/head.ejs') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+SC&family=Crimson+Text&family=Noto+Sans:wght@500&family=Roboto:wght@300&display=swap"
+        rel="stylesheet">
+    <title>TickrPro</title>
+    <link id="tab_logo" rel="shortcut icon" href="/stockmkt.png" type="image/x-icon">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #error_body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            position: relative;
+            background-color: #faf2d1;
+        }
+
+        #error_body main {
+            background-color: #faf2d1;
+            position: relative;
+            max-width: min-content;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 33px;
+            padding-top: 25px;
+        }
+
+        #error_body main img {
+            margin-top: 25px;
+            width: 310px;
+        }
+
+        #error_body main #container {
+            display: flex;
+            flex-direction: column;
+            row-gap: 5px;
+            justify-content: center;
+            align-items: center;
+            color: #03000f;
+            font-family: "Noto Sans", sans-serif;
+        }
+
+        #error_body main button {
+            background-color: #012c12;
+            color: white;
+            font-family: "Noto Sans", sans-serif;
+            min-width: 75px;
+            min-height: 40px;
+            padding: 5px;
+            text-align: center;
+            border: none;
+            border-radius: 7px;
+            box-shadow: 1.7px 1.7px 1.5px #03000f;
+            cursor: pointer;
+            margin: 2px 8px 2px 8px;
+        }
+
+        #error_body main button:active {
+            box-shadow: 0 0 0 #4a494e;
+            margin: 3px 8px 0.5px 8px;
+        }
+
+        body footer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 6px;
+            position: relative;
+            top: 100px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: max-content;
+            padding: 10px 20px 8px;
+            font-family: "Noto Sans", sans-serif;
+            line-height: 24px;
+            color: #f7f4f4;
+            background-color: #012c12;
+        }
+
+        body footer .container {
+            display: flex;
+            justify-content: space-evenly;
+            position: relative;
+            column-gap: 5%;
+            width: 100%;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        body footer #footer-top-row {
+            padding-bottom: 5px;
+            border-bottom-width: 0.7px;
+            border-bottom-style: solid;
+            border-bottom-color: #f7f4f4;
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        body footer .container .first-child {
+            width: 175px;
+        }
+
+        body footer .container .second-child {
+            width: 80px;
+        }
+
+        body footer .container #about p {
+            font-size: 10px;
+            color: #f7f4f4;
+        }
+
+        body footer .container #links ul {
+            list-style: none;
+            font-size: 10px;
+        }
+
+        footer .container .first-child h6,
+        footer .container .second-child ul li .link,
+        footer .container .second-child h6,
+        footer .container .second-child h6 .link {
+            color: #f7f4f4;
+            text-decoration: none;
+            font-size: 8.5px;
+        }
+
+        @media screen and (min-width: 600px) {
+            body footer>#footer-top-row {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                row-gap: 46px;
+            }
+
+            body footer>#footer-top-row .first-child {
+                display: flex;
+                justify-content: center;
+                width: 450px;
+                font-weight: 500;
+                position: relative;
+                top: 10px;
+            }
+
+            body footer>#footer-top-row .first-child p {
+                font-size: 18px;
+            }
+
+            body footer>#footer-top-row .second-child {
+                width: 100%;
+                position: relative;
+            }
+
+            body footer .container .first-child h5,
+            body footer .container .second-child h5 {
+                display: none;
+            }
+
+            body footer .container #links ul {
+                display: flex;
+                justify-content: space-evenly;
+                font-size: 11px;
+                font-weight: 400;
+            }
+        }
+    </style>
 </head>
 
 <body id="error_body">
     <main id="error_main">
         <img src="/beagle.jpg" alt="beagle">
         <div id="container">
-            <p>Sorry, ticker not found :(</p>
+            <h4>Sorry, ticker not found :(</h4>
+            <h6>Note: Mutual Funds and ECN quotes are unavailable.</h6>
         </div>
-        <button id="back-button" type="reset" onclick="window.location.href = '/'">Back</button>
+        <button id="back-button" type="reset">Back</button>
     </main>
     <footer id="error_footer">
-        <%- include('./partials/footer.ejs') %>
+        <div class="container" id="footer-top-row">
+            <div class="first-child" id="about">
+                <h5>About</h5>
+                <p>Aliqua officia sit enim aliquip sint cillum consequat do veniam esse minim ad dolor velit.</p>
+            </div>
+            <div class="second-child" id="links">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Contact</a></li>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Terms</a></li>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Privacy</a></li>
+                    <li><a class="link" href="" target="_self" rel="noreferrer">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container" id="footer-bottom-row">
+            <div class="first-child">
+                <h6>Copyright &#169; 2024
+                </h6>
+            </div>
+            <div class="second-child">
+                <h6>Icons by <a class="link" href="" rel="noopener" target="_blank">Icons8</a></h6>
+            </div>
     </footer>
+    <script>
+        const button = document.querySelector("body > main > button");
+        const goBackUrl = localStorage.getItem("url");
+        button.addEventListener("click", () => {
+            window.location.href = goBackUrl;
+        })
+    </script>
 </body>
 
 </html>

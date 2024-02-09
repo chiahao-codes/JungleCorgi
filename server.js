@@ -2,11 +2,16 @@ import express from "express";
 import cors from "cors";
 import yahooFinance from "yahoo-finance2";
 import "dotenv/config";
+import Swiper from "swiper";
 
 const PORT = process.env.PORT;
 const API_KEY = process.env.KEY;
-
+const MBOUMQUOTES = process.env.MBQ;
+const MBQHOME = process.env.MBQHOME;
+const RAPID = process.env.RAPID;
+const swiper = new Swiper();
 const app = express();
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static("assets"));
@@ -22,9 +27,9 @@ let symbols = [
   "^FTSE",
   "BTC-USD",
   "^VIX",
+  "GC=F",
   "CL=F",
   "NG=F",
-  "GC=F",
   "^TNX",
   "JPY=X",
   "EURUSD=X",
@@ -62,22 +67,40 @@ let runQuery = async (symbols) => {
 
 app.get("/", async (req, res, next) => {
   let prices = await runQuery(symbols);
-  console.log(prices);
-  res.render("home", { prices, API_KEY });
+  //console.log(prices);
+  res.render("home", { prices, API_KEY, MBQHOME, RAPID });
 });
 
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol;
   let checkSymbol = await yahooFinance
-    .quoteSummary(symbol)
+    .quoteSummary(symbol, {
+      modules: ["price", "summaryDetail", "assetProfile", "summaryProfile"],
+    })
     .then((data) => {
       console.log(data);
       return data;
     })
     .catch((e) => {
-      res.render("404");
+      console.log(e);
     });
-  if (checkSymbol) res.render("ticker", { checkSymbol });
+
+  if (
+    !checkSymbol ||
+    checkSymbol.price.quoteType === "ECNQUOTE" ||
+    checkSymbol.price.quoteType === "MUTUALFUND"
+  ) {
+    res.render("404");
+  }
+  if (checkSymbol) {
+    res.render("ticker", {
+      checkSymbol,
+      API_KEY,
+      swiper,
+      MBOUMQUOTES,
+      RAPID,
+    });
+  }
 });
 
 app.listen(PORT, () => {

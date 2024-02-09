@@ -7,68 +7,301 @@
 
 <body id="ticker_body">
     <header class="headerBox">
-        <h2 contenteditable="true"><span>Enter ticker...</span></h2>
+        <h2 contenteditable></h2>
     </header>
+
     <section id="stock_price_container">
-        <h5 id="company_name">
-            <%= checkSymbol.price.shortName %>
-        </h5>
+        <div id="home_link_container">
+            <a href="http://localhost:3000" target="_self">Home</a>
+            <span id="arrow">></span>
+            <span id="symbol">
+                <%=checkSymbol.price.symbol%>
+            </span>
+        </div>
         <div id="price_hours_container">
-            <div id="price_percent_container">
-                <div id="reg_hours_container">
-                    <h3 id="reg_hours_price">123.25</h3>
-                    <h5 id="reg_hours_change">+5.35</h5>
-                    <h5 id="reg_hours_pct">(+8.56%)</h5>
+            <h5 id="company_name">
+                <% const longName=checkSymbol.price.longName %>
+                    <% const shortName=checkSymbol.price.shortName %>
+                        <% let name=longName ? longName:shortName%>
+                            <%= name %>
+            </h5>
+            <div id="price_time_container">
+                <div id="reg_container" class="reg_after_container">
+                    <div id="reg_hours_container" class="reg_after_hours_container">
+                        <h3 id="reg_hours_price" class="price">
+                            <% let regMkPr=checkSymbol.price.regularMarketPrice%>
+                                <%=regMkPr%>
+                        </h3>
+                        <div class="hours_pct_container">
+                            <h5 id="reg_hours_change" class="price">
+                                <% let regMktChange=checkSymbol.price.regularMarketChange%>
+                                    <%=regMktChange%>
+                            </h5>
+                            <h5 id="reg_hours_pct" class="price">
+                                <%let regMktChgPct=checkSymbol.price.regularMarketChangePercent%>
+                                    <%=regMktChgPct%>
+                            </h5>
+                        </div>
+                    </div>
+                    <div id="at_close_container" class="trading_hours_container">
+                        <h6 id="at_close_txt"></h6>
+                        <h6 id="at_close_time"></h6>
+                    </div>
                 </div>
-                <div id="after_hours_container">
-                    <h3 id="after_hours_price">125.00</h3>
-                    <h5 id="after_hours_change">+6.54</h5>
-                    <h5 id="after_hours_pct">(+8.45%)</h5>
-                </div>
-            </div>
-            <div id="mkt_time_container">
-                <div id="at_close_container">
-                    <p id="at_close_txt">Closed At:</p>
-                    <p id="at_close_time">4:00 PM</p>
-                </div>
-                <div id="after_hours_container">
-                    <p id="after_hours_txt">Extended Hours:</p>
-                    <p id="after_hours_time">10:15 PM</p>
+                <div id="after_container" class="reg_after_container">
+                    <div id="after_hours_pp_container" class="reg_after_hours_container">
+                        <h5 id="after_hours_price" class="price">
+                            <% let postMktPrc=checkSymbol.price.postMarketPrice%>
+                                <% let preMktPrc=checkSymbol.price.preMarketPrice%>
+                                    <%if(postMktPrc===undefined && preMktPrc !==undefined){ %>
+                                        <% postMktPrc=preMktPrc} %>
+                                            <%=postMktPrc%>
+                        </h5>
+                        <div class="hours_pct_container">
+                            <h6 id="after_hours_change" class="price">
+                                <% let postMktChange=checkSymbol.price.postMarketChange %>
+                                    <%=postMktChange%>
+                            </h6>
+                            <h6 id="after_hours_pct" class="price">
+                                <% let postMktChangePct=checkSymbol.price.postMarketChangePercent%>
+                                    <%= postMktChangePct%>
+                            </h6>
+                        </div>
+                    </div>
+                    <div id="after_hours_time_container" class="trading_hours_container">
+                        <h6 id="after_hours_txt"></h6>
+                        <h6 id="after_hours_time"></h6>
+                    </div>
                 </div>
             </div>
         </div>
+        <section id="index_data_container" class="index_data_container">
+            <div class="border-line">
+                <div id="prevClose">Previous Close</div>
+                <% let prvClose="N/A" %>
+                    <% if(checkSymbol.summaryDetail.previousClose){ %>
+                        <% prvClose=checkSymbol.summaryDetail.previousClose} %>
+                            <div id="prevClosData" class="indexData">
+                                <%=prvClose %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id="open">Market Open</div>
+                <% let open="N/A" %>
+                    <% if(checkSymbol.summaryDetail.open){ %>
+                        <% open=checkSymbol.summaryDetail.open} %>
+                            <div id="openData" class="indexData">
+                                <%=open %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id="dayLow">Market Low</div>
+                <% let dayLow="N/A" %>
+                    <% if(checkSymbol.summaryDetail.dayLow){ %>
+                        <% dayLow=checkSymbol.summaryDetail.dayLow} %>
+                            <div id="dayLowData" class="indexData">
+                                <%=dayLow %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id="dayHigh">Market High</div>
+                <% let dayHigh="N/A" %>
+                    <% if(checkSymbol.summaryDetail.dayHigh){ %>
+                        <% dayHigh=checkSymbol.summaryDetail.dayHigh} %>
+                            <div id="dayHighData" class="indexData">
+                                <%=dayHigh %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id="fifty2WkLow">52 Week Low</div>
+                <% let fifty2WkLo="N/A" %>
+                    <% if(checkSymbol.summaryDetail.fiftyTwoWeekLow){ %>
+                        <% fifty2WkLo=checkSymbol.summaryDetail.fiftyTwoWeekLow} %>
+                            <div id="fifty2WkLowData" class="indexData">
+                                <%=fifty2WkLo %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id="fifty2WkHigh">52 Week High</div>
+                <% let fifty2WkHi="N/A" %>
+                    <% if(checkSymbol.summaryDetail.fiftyTwoWeekHigh){ %>
+                        <% fifty2WkHi=checkSymbol.summaryDetail.fiftyTwoWeekHigh} %>
+                            <div id="fifty2WkHighData" class="indexData">
+                                <%=fifty2WkHi %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id="twoHundDayAvg">200 Day Avg</div>
+                <% let twoHDAvg="N/A" %>
+                    <% if(checkSymbol.summaryDetail.twoHundredDayAverage){ %>
+                        <% twoHDAvg=checkSymbol.summaryDetail.twoHundredDayAverage} %>
+                            <div id="twoHundDayAvgData" class="indexData">
+                                <%=twoHDAvg %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id='bid'>Bid</div>
+                <% let bid="N/A" %>
+                    <% if(checkSymbol.summaryDetail.bid !==undefined){ %>
+                        <% bid=checkSymbol.summaryDetail.bid} %>
+                            <div id='bidData' class="indexData">
+                                <%=bid %>
+                            </div>
+            </div>
+            <div class="border-line">
+                <div id="ask">Ask</div>
+                <%let ask="N/A" %>
+                    <% if(checkSymbol.summaryDetail.ask !==undefined){ %>
+                        <% ask=checkSymbol.summaryDetail.ask} %>
+                            <div id="askData" class="indexData">
+                                <%=ask %>
+                            </div>
+            </div>
+        </section>
         <div id="summary_profile_container">
             <div id="summary_container">
                 <h6>Summary</h6>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                    commodo
-                    consequat. Duis
-                    aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <p id="company_desc">
+                    <%let resultLB="" %>
+                        <%if(checkSymbol.assetProfile){ %>
+                            <%resultLB=checkSymbol.assetProfile.longBusinessSummary}%>
+                                <%=resultLB%>
+                </p>
             </div>
             <div id="profile_container">
-                <h6 id="address">Profile</h6>
-                <p id="address">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
-                <div id="key_execs_container">
-                    <ul>
-                        <li>Elon Musk</li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                    <ul>
-                        <li>CEO</li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                </div>
-                <div id="employee_container">
-                    <h6>Full Time Employees</h6>
-                    <p>17500</p>
-                </div>
+                <% let h="" %>
+                    <%if(checkSymbol.assetProfile){ %>
+                        <%if(checkSymbol.assetProfile.address1){ %>
+                            <% h="Profile" }}%>
+                                <h6>
+                                    <%=h %>
+                                </h6>
+                                <div id="profile_container2">
+                                    <div id="address_container">
+                                        <p id="address">
+                                            <%let resultAd="" %>
+                                                <%if(checkSymbol.assetProfile){ %>
+                                                    <%resultAd=checkSymbol.assetProfile.address1}%>
+                                                        <%=resultAd%>
+                                        </p>
+                                        <div id="city_state_container">
+                                            <p id="city">
+                                                <%let resultCi="" %>
+                                                    <%if(checkSymbol.assetProfile){ %>
+                                                        <%resultCi=checkSymbol.assetProfile.city}%>
+                                                            <%=resultCi%>
+                                            </p>
+                                            <p id="state">
+                                                <%let resultSt="" %>
+                                                    <%if(checkSymbol.assetProfile){ %>
+                                                        <%resultSt=checkSymbol.assetProfile.state}%>
+                                                            <%=resultSt%>
+                                            </p>
+                                            <p id="zip">
+                                                <%let resultZ="" %>
+                                                    <%if(checkSymbol.assetProfile){ %>
+                                                        <%resultZ=checkSymbol.assetProfile.zip}%>
+                                                            <%=resultZ%>
+                                            </p>
+                                        </div>
+
+                                        <p id="country">
+                                            <%let resultCoun="" %>
+                                                <%if(checkSymbol.assetProfile){ %>
+                                                    <%resultCoun=checkSymbol.assetProfile.country}%>
+                                                        <%=resultCoun%>
+                                        </p>
+                                        <p id="phone">
+                                            <%let resultPh="" %>
+                                                <%if(checkSymbol.assetProfile){ %>
+                                                    <%resultPh=checkSymbol.assetProfile.phone}%>
+                                                        <%=resultPh%>
+                                        </p>
+                                        <p id="website">
+                                            <%let resultWeb="" %>
+                                                <%if(checkSymbol.assetProfile){ %>
+                                                    <% if(checkSymbol.assetProfile.website){ %>
+                                                        <%resultWeb=checkSymbol.assetProfile.website}}%>
+                                                            <a href="<%=resultWeb%>" target="_blank">
+                                                                <%=resultWeb%>
+                                                            </a>
+
+
+                                        </p>
+                                        <p id="industry">
+                                            <%let rInd="" %>
+                                                <%if(checkSymbol.assetProfile){ %>
+                                                    <% if(checkSymbol.assetProfile.industry){%>
+                                                        <%rInd=checkSymbol.assetProfile.industry%>
+                                                            <% rInd=`Industry: ${rInd}` }}%>
+                                                                <%=rInd %>
+                                        </p>
+                                        <p id="sector">
+                                            <%let rSec="" %>
+                                                <%if(checkSymbol.assetProfile){ %>
+                                                    <% if(checkSymbol.assetProfile.sector){%>
+                                                        <%rSec=checkSymbol.assetProfile.sector%>
+                                                            <% rSec=`Sector: ${rSec}`}} %>
+                                                                <%=rSec%>
+                                        </p>
+                                    </div>
+                                    <div id="key_execs_container">
+                                        <ul id="title_name1">
+                                            <li>
+                                                <% let tit="" %>
+                                                    <%if(checkSymbol.assetProfile){ %>
+                                                        <% if(checkSymbol.assetProfile.companyOfficers[0]){ %>
+                                                            <%tit=`${checkSymbol.assetProfile.companyOfficers[0].title}:`}}%>
+                                                                <%=tit%>
+                                            </li>
+                                            <li>
+                                                <% let nam="" %>
+                                                    <% if(checkSymbol.assetProfile){ %>
+                                                        <% if(checkSymbol.assetProfile.companyOfficers[0]){%>
+                                                            <%nam=checkSymbol.assetProfile.companyOfficers[0].name}} %>
+                                                                <%= nam %>
+
+                                            </li>
+                                            <li></li>
+                                        </ul>
+                                        <ul id="title_name2">
+                                            <li>
+                                                <% let tit2="" %>
+                                                    <%if(checkSymbol.assetProfile){ %>
+                                                        <% if(checkSymbol.assetProfile.companyOfficers[1]){ %>
+                                                            <%tit2=`${checkSymbol.assetProfile.companyOfficers[1].title}:`}}%>
+                                                                <%=tit2%>
+                                            </li>
+                                            <li>
+                                                <% let nam2="" %>
+
+                                                    <% if(checkSymbol.assetProfile){ %>
+                                                        <% if(checkSymbol.assetProfile.companyOfficers[1]){%>
+                                                            <%nam2=checkSymbol.assetProfile.companyOfficers[1].name}} %>
+                                                                <%= nam2 %>
+                                            </li>
+                                            <li></li>
+                                        </ul>
+                                    </div>
+                                    <div id="employee_container">
+                                        <p>
+                                            <% let emH="" %>
+                                                <% if(checkSymbol.assetProfile){ %>
+                                                    <% if(checkSymbol.assetProfile.fullTimeEmployees){%>
+                                                        <%emH="Full Time Employees:"%>
+                                                            <% }} %>
+                                                                <%=emH%>
+                                        </p>
+                                        <p>
+                                            <% let em="" %>
+                                                <% if(checkSymbol.assetProfile){ %>
+                                                    <% if(checkSymbol.assetProfile.fullTimeEmployees){%>
+                                                        <% em=checkSymbol.assetProfile.fullTimeEmployees}} %>
+                                                            <%= em %>
+                                        </p>
+                                    </div>
+                                </div>
+
             </div>
         </div>
     </section>
@@ -76,22 +309,223 @@
         <%- include('./partials/footer.ejs') %>
     </footer>
     <script>
+        const pageUrl = window.location.href;
+        localStorage.setItem("url", pageUrl);
+        const apiKey = '<%=API_KEY%>';
+        const swiper = '<%=swiper%>';
+        const stockTicker = '<%=checkSymbol.price.symbol%>';
+        const rapidURL = '<%=RAPID%>';
+        const mboumQuotes = '<%=MBOUMQUOTES%>';
         const regExp = /[a-zA-Z.^]/;
+        const regExNums = /[0-9]/;
         const h2Box = document.querySelector("header>h2");
-        h2Box.addEventListener("click", () => {
-            const h2ChildNodes = h2Box.childNodes;
-            const selection = window.getSelection();
-            if (h2Box.innerText === "Enter ticker...") {
-                h2Box.innerText = "";
+        const h2ChildNodes = h2Box.childNodes;
+        const selection = window.getSelection();
+        const pricePctContainers = document.querySelectorAll(".reg_after_hours_container");
+        const priceTimeContainer = document.querySelector("#price_time_container");
+        const afterHoursContainer = document.querySelector("#after_container");
+        const atCloseContainer = document.querySelector("#at_close_container");
+        const afterHoursTimeContainer = document.querySelector("#after_hours_time_container");
+        const pricesAndPercents = document.querySelectorAll(".price");
+        let postMktChangePct = document.querySelector("#after_hours_pct").innerText;
+        const summaryProfileContainer = document.querySelector("#summary_profile_container");
+        const companyDesc = document.querySelector("#company_desc");
+        const indexDataContainer = document.querySelector("#index_data_container");
+        const indexData = document.querySelectorAll("#index_data_container > .border-line > .indexData");
+        console.log(indexData);
+
+        const setMarketTime = (timeStamp) => {
+            let date, sessionTime, nycTime, nycDate;
+            const timeStampCheck = Number(timeStamp);
+
+            //yahoo time
+            if (!timeStampCheck) {
+                date = new Date(`${timeStamp}`);
             }
-            //set caret position after text node
-            if (h2ChildNodes.length > 0) {
-                selection.setPosition(h2ChildNodes[0], h2ChildNodes[0].length);
-            } else {
-                selection.setPosition(h2Box, 0);
+
+            //epoch time given by rapidapi,
+            if (timeStampCheck) {
+                date = new Date(timeStamp * 1000);
             }
+
+            nycTime = date.toLocaleTimeString("en-US", { timeZone: "America/New_York", timeZoneName: "short" });
+            nycDate = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+            sessionTime = `${nycDate} at ${nycTime}`;
+            if (nycDate === "Invalid Date" || nycTime === "Invalid Date") sessionTime = "Not Available"
+            return sessionTime;
+
+        }
+        const changePctPointsColor = (pricePctContainers) => {
+            let regExMinus = new RegExp(/[-]/);
+            let regExParens = new RegExp(/[()]/);
+            let regExPlus = new RegExp(/[+]/);
+            for (let i = 0; i < pricePctContainers.length; i++) {
+                let priceString = pricePctContainers[i].children[0].innerText;
+                let pointsText = pricePctContainers[i].children[1].children[0].innerText;
+                let percentText = pricePctContainers[i].children[1].children[1].innerText
+
+                if (regExMinus.test(pointsText)) {
+                    pricePctContainers[i].children[0].style.color = "#c4283c";
+                    pricePctContainers[i].children[1].children[0].style.color = "#c4283c";
+                    pricePctContainers[i].children[1].children[1].style.color = "#c4283c";
+                    if (regExParens.test(percentText) !== true) {
+                        pricePctContainers[i].children[1].children[1].innerText = `(${percentText}%)`
+                    }
+                } else {
+                    pricePctContainers[i].children[0].style.color = "#148a61";
+                    pricePctContainers[i].children[1].children[0].style.color = "#148a61";
+                    pricePctContainers[i].children[1].children[1].style.color = "#148a61";
+
+                    if (regExPlus.test(pointsText) !== true) {
+                        pricePctContainers[i].children[1].children[0].innerText = `+${pointsText}`
+                    }
+
+                    if (regExParens.test(percentText) !== true) {
+                        pricePctContainers[i].children[1].children[1].innerText = `(+${percentText}%)`
+                    }
+                }
+            }
+        };
+        const formatPrice = (container) => {
+            for (let ele of container) {
+                const formatNum = ele.innerText;
+                const formatted = new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                }).format(formatNum);
+
+                ele.innerText = formatted;
+            }
+            return
+        };
+        const getRapidPrices = async (api, symbol) => {
+            const url = `${mboumQuotes}${symbol}`;
+            const options = {
+                method: "GET",
+                headers: {
+                    "X-RapidAPI-Key": api,
+                    "X-RapidAPI-Host": rapidURL,
+                },
+            };
+
+            const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
+            const result = await response.json();
+            const marketState = result.body[0].marketState;
+            const regMarketTime = result.body[0].regularMarketTime;
+            const preMarketTime = result.body[0].preMarketTime;
+            const postMarketTime = result.body[0].postMarketTime;
+
+            console.log(result.body[0]);
+
+            let regMktState = "Last Closed:", regMktPrice, regMktChange, regMktChangePercent,
+                mktStatePrice, mktStateChange, mktStateChangePct, extendedMkTime, mktState;
+            regMktPrice = result.body[0].regularMarketPrice;
+            regMktChange = result.body[0].regularMarketChange;
+            regMktChangePercent = result.body[0].regularMarketChangePercent;
+
+            if (marketState === "REGULAR") regMktState = "Current Session:";
+            //reg hours
+            priceTimeContainer.children[0].children[0].children[0].innerText = regMktPrice;
+            priceTimeContainer.children[0].children[0].children[1].children[0].innerText = regMktChange;
+            priceTimeContainer.children[0].children[0].children[1].children[1].innerText = regMktChangePercent;
+            if (regMarketTime) {
+                atCloseContainer.children[0].innerText = regMktState;
+                atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
+            }
+
+            if (result.body[0].postMarketPrice) {
+                mktState = "After Hours:";
+                mktStatePrice = result.body[0].postMarketPrice;
+                mktStateChange = result.body[0].postMarketChange;
+                mktStateChangePct = result.body[0].postMarketChangePercent;
+                extendedMkTime = postMarketTime;
+            }
+
+            if (result.body[0].preMarketPrice) {
+                mktState = "Pre-Market Hours:";
+                mktStatePrice = result.body[0].preMarketPrice;
+                mktStateChange = result.body[0].preMarketChange;
+                mktStateChangePct = result.body[0].preMarketChangePercent;
+                extendedMkTime = preMarketTime;
+            }
+
+            //extended hours
+            priceTimeContainer.children[1].children[0].children[0].innerText = mktStatePrice;
+            priceTimeContainer.children[1].children[0].children[1].children[0].innerText = mktStateChange;
+            priceTimeContainer.children[1].children[0].children[1].children[1].innerText = mktStateChangePct;
+            afterHoursTimeContainer.children[0].innerText = mktState;
+            afterHoursTimeContainer.children[1].innerText = setMarketTime(extendedMkTime);
+
             return;
-        });
+        };
+        const yahooSetMktTime = () => {
+            const yf2PrePrice = '<%=checkSymbol.price.preMarketPrice%>'
+            let preTime = '<%=checkSymbol.price.preMarketTime%>'
+            const yf2PostPrice = '<%=checkSymbol.price.postMarketPrice%>'
+            let postTime = '<%=checkSymbol.price.postMarketTime%>'
+            const regMktPrice = '<%=checkSymbol.price.regularMarketPrice%>'
+            const regTime = '<%=checkSymbol.price.regularMarketTime%>';
+            const marketStateYahoo = '<%=checkSymbol.price.marketState%>';
+            let mktState, regDateTime = "Last Closed:", dateAndTime;
+
+            if (marketStateYahoo === "REGULAR") {
+                regDateTime = "Current Session:";
+            }
+
+            if (marketStateYahoo === "PRE" || marketStateYahoo === "PREPRE") {
+                if (preTime) {
+                    mktState = "Pre-Market Hours:";
+                    dateAndTime = preTime;
+                } else {
+                    mktState = "After Hours:";
+                    dateAndTime = postTime;
+                }
+            }
+
+            if (marketStateYahoo === "POST" || marketStateYahoo === "POSTPOST" || marketStateYahoo === "CLOSED") {
+
+                mktState = "After Hours:";
+                dateAndTime = postTime;
+
+            }
+
+            atCloseContainer.children[0].innerText = regDateTime;
+            atCloseContainer.children[1].innerText = setMarketTime(regTime);
+
+            afterHoursTimeContainer.children[0].innerText = mktState;
+            afterHoursTimeContainer.children[1].innerText = setMarketTime(dateAndTime);
+
+            if (companyDesc.innerText === "") {
+                summaryProfileContainer.style.display = "none";
+                indexDataContainer.removeAttribute("style");
+            }
+            if (setMarketTime(dateAndTime) === "Not Available") afterHoursContainer.style.display = "none";
+        }
+
+        let timeout = undefined, timeout2 = undefined;
+        const idlePage = () => {
+            if (timeout) {
+                clearInterval(timeout);
+            }
+            timeout = setInterval(() => {
+                location.reload();
+                console.log("idle")
+            }, 100000);
+        }
+        const activePage = () => {
+            if (timeout2) clearInterval(timeout2);
+            timeout2 = setTimeout(async () => {
+                await getRapidPrices(apiKey, stockTicker);
+                formatPrice(pricesAndPercents);
+                changePctPointsColor(pricePctContainers);
+                console.log("active");
+            }, 120000);
+        }
+
+        document.addEventListener("click", idlePage);
+        document.addEventListener("keypress", idlePage);
+        document.addEventListener("mousemove", idlePage);
 
         h2Box.addEventListener("focus", () => {
             const h2ChildNodes = h2Box.childNodes;
@@ -108,7 +542,12 @@
 
             return;
         });
-
+        h2Box.addEventListener("focusout", () => {
+            if (h2Box.innerText === "") h2Box.innerText = "Enter ticker...";
+            if (h2Box.style.backgroundColor === "#15192f") {
+                h2Box.style.backgroundColor === "#012c12";
+            }
+        });
         h2Box.addEventListener("keydown", (e) => {
             const textString = h2Box.innerText;
             if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
@@ -116,7 +555,6 @@
                 alert("Character amount exceeded");
             }
             //prevent navigation keys;
-            //enter ticker into url param;
             if (textString.length > 0) {
                 let navKeys = [
                     "ArrowLeft",
@@ -152,8 +590,7 @@
                     //enter the ticker string into the url parameter
                     //grab the URL;
                     const url = `http://localhost:3000/tickrpro/${textString}`
-                    console.log(url, typeof url);
-
+                    console.log(url, typeof url)
                     //check ticker string
                     window.location.href = url;
                 }
@@ -169,6 +606,16 @@
             }
         });
 
+        h2Box.focus();
+        indexDataContainer.style.display = "none";
+        afterHoursContainer.removeAttribute("style");
+        summaryProfileContainer.removeAttribute("style");
+        yahooSetMktTime();
+        formatPrice(indexData);
+        formatPrice(pricesAndPercents);
+        changePctPointsColor(pricePctContainers);
+        idlePage();
+        activePage();
     </script>
 </body>
 
