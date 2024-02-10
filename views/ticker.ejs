@@ -76,87 +76,110 @@
             </div>
         </div>
         <section id="index_data_container" class="index_data_container">
-            <div class="border-line">
-                <div id="prevClose">Previous Close</div>
-                <% let prvClose="N/A" %>
-                    <% if(checkSymbol.summaryDetail.previousClose){ %>
-                        <% prvClose=checkSymbol.summaryDetail.previousClose} %>
-                            <div id="prevClosData" class="indexData">
-                                <%=prvClose %>
-                            </div>
+            <div id="ratio-container">
+                <div class="border-line">
+                    <div id="peRatio">P/E Ratio</div>
+                    <% let peRatio="N/A" %>
+                        <% if(checkSymbol.indexTrend.peRatio){ %>
+                            <% peRatio=checkSymbol.indexTrend.peRatio} %>
+                                <div id="peRatioData" class="indexData">
+                                    <%=peRatio %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="eps">EPS (TTM)</div>
+                    <% let eps="N/A" %>
+                        <% if(checkSymbol.defaultKeyStatistics.trailingEps){ %>
+                            <% eps=checkSymbol.defaultKeyStatistics.trailingEps} %>
+                                <div id="epsData" class="indexData">
+                                    <%=eps%>
+                                </div>
+                </div>
             </div>
-            <div class="border-line">
-                <div id="open">Market Open</div>
-                <% let open="N/A" %>
-                    <% if(checkSymbol.summaryDetail.open){ %>
-                        <% open=checkSymbol.summaryDetail.open} %>
-                            <div id="openData" class="indexData">
-                                <%=open %>
-                            </div>
+            <div id="prev-close-container">
+                <div class="border-line">
+                    <div id="prevClose">Previous Close</div>
+                    <% let prvClose="N/A" %>
+                        <% if(checkSymbol.summaryDetail.previousClose){ %>
+                            <% prvClose=checkSymbol.summaryDetail.previousClose} %>
+                                <div id="prevClosData" class="indexData">
+                                    <%=prvClose %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="open">Market Open</div>
+                    <% let open="N/A" %>
+                        <% if(checkSymbol.summaryDetail.open){ %>
+                            <% open=checkSymbol.summaryDetail.open} %>
+                                <div id="openData" class="indexData">
+                                    <%=open %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="dayLow">Market Low</div>
+                    <% let dayLow="N/A" %>
+                        <% if(checkSymbol.summaryDetail.dayLow){ %>
+                            <% dayLow=checkSymbol.summaryDetail.dayLow} %>
+                                <div id="dayLowData" class="indexData">
+                                    <%=dayLow %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="dayHigh">Market High</div>
+                    <% let dayHigh="N/A" %>
+                        <% if(checkSymbol.summaryDetail.dayHigh){ %>
+                            <% dayHigh=checkSymbol.summaryDetail.dayHigh} %>
+                                <div id="dayHighData" class="indexData">
+                                    <%=dayHigh %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="fifty2WkLow">52 Week Low</div>
+                    <% let fifty2WkLo="N/A" %>
+                        <% if(checkSymbol.summaryDetail.fiftyTwoWeekLow){ %>
+                            <% fifty2WkLo=checkSymbol.summaryDetail.fiftyTwoWeekLow} %>
+                                <div id="fifty2WkLowData" class="indexData">
+                                    <%=fifty2WkLo %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="fifty2WkHigh">52 Week High</div>
+                    <% let fifty2WkHi="N/A" %>
+                        <% if(checkSymbol.summaryDetail.fiftyTwoWeekHigh){ %>
+                            <% fifty2WkHi=checkSymbol.summaryDetail.fiftyTwoWeekHigh} %>
+                                <div id="fifty2WkHighData" class="indexData">
+                                    <%=fifty2WkHi %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="twoHundDayAvg">200 Day Avg</div>
+                    <% let twoHDAvg="N/A" %>
+                        <% if(checkSymbol.summaryDetail.twoHundredDayAverage){ %>
+                            <% twoHDAvg=checkSymbol.summaryDetail.twoHundredDayAverage} %>
+                                <div id="twoHundDayAvgData" class="indexData">
+                                    <%=twoHDAvg %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id='bid'>Bid</div>
+                    <% let bid="N/A" %>
+                        <% if(checkSymbol.summaryDetail.bid !==undefined){ %>
+                            <% bid=checkSymbol.summaryDetail.bid} %>
+                                <div id='bidData' class="indexData">
+                                    <%=bid %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="ask">Ask</div>
+                    <%let ask="N/A" %>
+                        <% if(checkSymbol.summaryDetail.ask !==undefined){ %>
+                            <% ask=checkSymbol.summaryDetail.ask} %>
+                                <div id="askData" class="indexData">
+                                    <%=ask %>
+                                </div>
+                </div>
             </div>
-            <div class="border-line">
-                <div id="dayLow">Market Low</div>
-                <% let dayLow="N/A" %>
-                    <% if(checkSymbol.summaryDetail.dayLow){ %>
-                        <% dayLow=checkSymbol.summaryDetail.dayLow} %>
-                            <div id="dayLowData" class="indexData">
-                                <%=dayLow %>
-                            </div>
-            </div>
-            <div class="border-line">
-                <div id="dayHigh">Market High</div>
-                <% let dayHigh="N/A" %>
-                    <% if(checkSymbol.summaryDetail.dayHigh){ %>
-                        <% dayHigh=checkSymbol.summaryDetail.dayHigh} %>
-                            <div id="dayHighData" class="indexData">
-                                <%=dayHigh %>
-                            </div>
-            </div>
-            <div class="border-line">
-                <div id="fifty2WkLow">52 Week Low</div>
-                <% let fifty2WkLo="N/A" %>
-                    <% if(checkSymbol.summaryDetail.fiftyTwoWeekLow){ %>
-                        <% fifty2WkLo=checkSymbol.summaryDetail.fiftyTwoWeekLow} %>
-                            <div id="fifty2WkLowData" class="indexData">
-                                <%=fifty2WkLo %>
-                            </div>
-            </div>
-            <div class="border-line">
-                <div id="fifty2WkHigh">52 Week High</div>
-                <% let fifty2WkHi="N/A" %>
-                    <% if(checkSymbol.summaryDetail.fiftyTwoWeekHigh){ %>
-                        <% fifty2WkHi=checkSymbol.summaryDetail.fiftyTwoWeekHigh} %>
-                            <div id="fifty2WkHighData" class="indexData">
-                                <%=fifty2WkHi %>
-                            </div>
-            </div>
-            <div class="border-line">
-                <div id="twoHundDayAvg">200 Day Avg</div>
-                <% let twoHDAvg="N/A" %>
-                    <% if(checkSymbol.summaryDetail.twoHundredDayAverage){ %>
-                        <% twoHDAvg=checkSymbol.summaryDetail.twoHundredDayAverage} %>
-                            <div id="twoHundDayAvgData" class="indexData">
-                                <%=twoHDAvg %>
-                            </div>
-            </div>
-            <div class="border-line">
-                <div id='bid'>Bid</div>
-                <% let bid="N/A" %>
-                    <% if(checkSymbol.summaryDetail.bid !==undefined){ %>
-                        <% bid=checkSymbol.summaryDetail.bid} %>
-                            <div id='bidData' class="indexData">
-                                <%=bid %>
-                            </div>
-            </div>
-            <div class="border-line">
-                <div id="ask">Ask</div>
-                <%let ask="N/A" %>
-                    <% if(checkSymbol.summaryDetail.ask !==undefined){ %>
-                        <% ask=checkSymbol.summaryDetail.ask} %>
-                            <div id="askData" class="indexData">
-                                <%=ask %>
-                            </div>
-            </div>
+
         </section>
         <div id="summary_profile_container">
             <div id="summary_container">

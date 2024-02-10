@@ -293,24 +293,42 @@ body {
   }
 
   #stock_price_container > #index_data_container {
+    position: relative;
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     min-height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    row-gap: 12px;
+    row-gap: 20px;
     font-size: 14px;
     font-family: "Noto Sans", sans-serif;
     color: var(--eve);
   }
+  #ratio-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 12px;
+  }
 
-  #index_data_container > .border-line {
+  #prev-close-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 12px;
+  }
+
+  #prev-close-container > .border-line,
+  #ratio-container > .border-line {
     width: 100%;
     display: flex;
     justify-content: space-between;
-
     align-items: center;
     border-bottom: 1px solid var(--eve);
   }

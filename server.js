@@ -75,7 +75,15 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol;
   let checkSymbol = await yahooFinance
     .quoteSummary(symbol, {
-      modules: ["price", "summaryDetail", "assetProfile", "summaryProfile"],
+      modules: [
+        "price",
+        "summaryDetail",
+        "assetProfile",
+        "summaryProfile",
+        "indexTrend",
+        "defaultKeyStatistics",
+        "financialData",
+      ],
     })
     .then((data) => {
       console.log(data);
