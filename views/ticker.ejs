@@ -78,23 +78,83 @@
         <section id="index_data_container" class="index_data_container">
             <div id="ratio-container">
                 <div class="border-line">
-                    <div id="peRatio">P/E Ratio</div>
-                    <% let peRatio="N/A" %>
-                        <% if(checkSymbol.indexTrend.peRatio){ %>
-                            <% peRatio=checkSymbol.indexTrend.peRatio} %>
-                                <div id="peRatioData" class="indexData">
-                                    <%=peRatio %>
-                                </div>
+                    <div id="fwdPeRatio">Forward P/E</div>
+                    <% let fwdPeRatio="N/A" %>
+                        <% if(checkSymbol.defaultKeyStatistics){ %>
+                            <% if(checkSymbol.defaultKeyStatistics.forwardPE){ %>
+                                <% fwdPeRatio=checkSymbol.defaultKeyStatistics.forwardPE}} %>
+                                    <div id="fwdPeRatioData" class="indexData">
+                                        <%=fwdPeRatio %>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="eps">EPS (TTM)</div>
                     <% let eps="N/A" %>
-                        <% if(checkSymbol.defaultKeyStatistics.trailingEps){ %>
-                            <% eps=checkSymbol.defaultKeyStatistics.trailingEps} %>
-                                <div id="epsData" class="indexData">
-                                    <%=eps%>
+                        <% if(checkSymbol.defaultKeyStatistics){ %>
+                            <% if(checkSymbol.defaultKeyStatistics.trailingEps){ %>
+                                <% eps=checkSymbol.defaultKeyStatistics.trailingEps}} %>
+                                    <div id="epsData" class="indexData">
+                                        <%=eps%>
+                                    </div>
+                </div>
+                <div class="border-line">
+                    <div id="curr-ratio">Current Ratio</div>
+                    <% let currRatio="N/A" %>
+
+                        <% if(checkSymbol.financialData){ %>
+                            <% currRatio=checkSymbol.financialData.currentRatio} %>
+                                <div id="curr-ratio" class="indexData">
+                                    <%=currRatio%>
                                 </div>
                 </div>
+                <div class="border-line">
+                    <div id="quick-ratio">Quick Ratio</div>
+                    <% let quickRatio="N/A" %>
+
+                        <% if(checkSymbol.financialData){ %>
+                            <% quickRatio=checkSymbol.financialData.quickRatio} %>
+                                <div id="quick-ratio" class="indexData">
+                                    <%=quickRatio%>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="debt-ratio">Debt-to-Equity Ratio</div>
+                    <% let debtRatio="N/A" %>
+
+                        <% if(checkSymbol.financialData){ %>
+                            <% debtRatio=checkSymbol.financialData.debtToEquity}%>
+                                <div id="debt-ratio" class="indexData">
+                                    <%=debtRatio%>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="pb-ratio">Price-to-Book Ratio</div>
+                    <% let pb="N/A" %>
+                        <% if(checkSymbol.defaultKeyStatistics){ %>
+                            <% pb=checkSymbol.defaultKeyStatistics.priceToBook} %>
+                                <div id="pb-ratio" class="indexData">
+                                    <%=pb%>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="op-Margin">Operating Margin</div>
+                    <% let opMargin="N/A" %>
+                        <% if(checkSymbol.financialData){ %>
+                            <% opMargin=checkSymbol.financialData.operatingMargins} %>
+                                <div id="op-Margin" class="indexData">
+                                    <%=opMargin%>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="prof-Margin">Profit Margin</div>
+                    <% let profMargin="N/A" %>
+                        <% if(checkSymbol.financialData){ %>
+                            <% profMargin=checkSymbol.financialData.profitMargins} %>
+                                <div id="prof-Margin" class="indexData">
+                                    <%=profMargin%>
+                                </div>
+                </div>
+
             </div>
             <div id="prev-close-container">
                 <div class="border-line">
@@ -176,6 +236,24 @@
                             <% ask=checkSymbol.summaryDetail.ask} %>
                                 <div id="askData" class="indexData">
                                     <%=ask %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="beta">Beta</div>
+                    <%let beta="N/A" %>
+                        <% if(checkSymbol.summaryDetail.beta !==undefined){ %>
+                            <% beta=checkSymbol.summaryDetail.beta} %>
+                                <div id="beta" class="indexData">
+                                    <%=beta %>
+                                </div>
+                </div>
+                <div class="border-line">
+                    <div id="mktCap">Market Cap</div>
+                    <%let mktCap="N/A" %>
+                        <% if(checkSymbol.summaryDetail.marketCap !==undefined){ %>
+                            <% mktCap=checkSymbol.summaryDetail.marketCap} %>
+                                <div id="mktCap" class="indexData">
+                                    <%=mktCap %>
                                 </div>
                 </div>
             </div>
@@ -353,8 +431,9 @@
         let postMktChangePct = document.querySelector("#after_hours_pct").innerText;
         const summaryProfileContainer = document.querySelector("#summary_profile_container");
         const companyDesc = document.querySelector("#company_desc");
-        const indexDataContainer = document.querySelector("#index_data_container");
-        const indexData = document.querySelectorAll("#index_data_container > .border-line > .indexData");
+        // const indexDataContainer = document.querySelector("#index_data_container");
+        const ratioContainer = document.querySelector("#ratio-container");
+        const indexData = document.querySelectorAll("#index_data_container > div > .border-line > .indexData");
         console.log(indexData);
 
         const setMarketTime = (timeStamp) => {
@@ -521,7 +600,8 @@
 
             if (companyDesc.innerText === "") {
                 summaryProfileContainer.style.display = "none";
-                indexDataContainer.removeAttribute("style");
+                ratioContainer.style.display = "none";
+
             }
             if (setMarketTime(dateAndTime) === "Not Available") afterHoursContainer.style.display = "none";
         }
@@ -630,7 +710,7 @@
         });
 
         h2Box.focus();
-        indexDataContainer.style.display = "none";
+        ratioContainer.removeAttribute("style");
         afterHoursContainer.removeAttribute("style");
         summaryProfileContainer.removeAttribute("style");
         yahooSetMktTime();

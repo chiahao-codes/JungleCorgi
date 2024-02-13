@@ -80,11 +80,12 @@ app.get("/tickrpro/:symbol", async (req, res) => {
         "summaryDetail",
         "assetProfile",
         "summaryProfile",
-        "indexTrend",
+
         "defaultKeyStatistics",
         "financialData",
       ],
     })
+
     .then((data) => {
       console.log(data);
       return data;

@@ -152,7 +152,6 @@ body {
     width: 100%;
     height: max-content;
     position: relative;
-
     color: var(--cold-white);
   }
 
@@ -299,24 +298,18 @@ body {
     min-height: 150px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    row-gap: 20px;
+    row-gap: 35px;
     font-size: 14px;
     font-family: "Noto Sans", sans-serif;
     color: var(--eve);
   }
-  #ratio-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 12px;
-  }
 
+  #ratio-container,
   #prev-close-container {
     position: relative;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -335,13 +328,13 @@ body {
 
   #ticker_body > section > #summary_profile_container {
     position: relative;
+    top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     row-gap: 12px;
     width: 100%;
     height: max-content;
-
     overflow: hidden;
   }
 
