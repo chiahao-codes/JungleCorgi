@@ -90,6 +90,7 @@ const startCountDown = (mkt) => {
     if (currMonth === 11 && nextDay === 25) nextDay = nextDay + 1; //xmas
     if (currMonth === 11 && nextDay === 32) nextDay = nextDay + 1; //nye
     if (currMonth === 0 && nextDay === 15) nextDay = nextDay + 1; //mlk
+    if (currMonth === 1 && nextDay === 19) nextDay = nextDay + 1; //president's day
 
     //set next morning: 6:30am PST
     let openingBell = new Date(

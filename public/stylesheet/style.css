@@ -206,7 +206,7 @@ body {
     row-gap: 30px;
   }
 
-  #ticker_body > section {
+  #ticker_body > #stock_price_container {
     background-color: inherit;
     position: relative;
     color: var(--midnight);
@@ -219,7 +219,64 @@ body {
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 5px;
+    bottom: 15px;
   }
+
+  #home-chart-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    row-gap: 17px;
+    height: max-content;
+    width: 100%;
+  }
+
+  #home-price-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
+    height: max-content;
+    width: 100%;
+  }
+
+  #chart_container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 15px;
+    border: 1px solid black;
+    width: 100%;
+    max-width: 1100px;
+    height: max-content;
+    max-height: max-content;
+  }
+
+  #chart_container > #chart {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+  }
+
+  #chart-timeline-container {
+    position: relative;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    width: fit-content;
+    height: fit-content;
+    border: 1px solid black;
+  }
+
+  #chart-timeline-container > .timeline-link:hover {
+    cursor: pointer;
+  }
+
   #home_link_container {
     width: 100%;
     position: relative;
@@ -239,7 +296,7 @@ body {
     font-weight: bold;
     font-size: 12px;
   }
-  #ticker_body > section > #price_hours_container {
+  #price_hours_container {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -247,7 +304,7 @@ body {
     row-gap: 5px;
   }
 
-  #ticker_body > section > #price_hours_container > #price_time_container {
+  #price_hours_container > #price_time_container {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -255,20 +312,14 @@ body {
     row-gap: 6px;
   }
 
-  #ticker_body
-    > section
-    > #price_hours_container
-    > #price_time_container
-    > .reg_after_container {
+  #price_hours_container > #price_time_container > .reg_after_container {
     position: relative;
     display: flex;
     flex-direction: column;
     row-gap: 1px;
   }
 
-  #ticker_body
-    > section
-    > #price_hours_container
+  #price_hours_container
     > #price_time_container
     > .reg_after_container
     > .trading_hours_container {
@@ -278,9 +329,7 @@ body {
     column-gap: 3px;
   }
 
-  #ticker_body
-    > section
-    > #price_hours_container
+  #price_hours_container
     > #price_time_container
     > .reg_after_container
     > .reg_after_hours_container
@@ -293,6 +342,7 @@ body {
 
   #stock_price_container > #index_data_container {
     position: relative;
+    margin-top: 10px;
     width: 100%;
     max-width: 550px;
     min-height: 150px;
@@ -326,7 +376,7 @@ body {
     border-bottom: 1px solid var(--eve);
   }
 
-  #ticker_body > section > #summary_profile_container {
+  #summary_profile_container {
     position: relative;
     top: 20px;
     display: flex;
@@ -338,7 +388,7 @@ body {
     overflow: hidden;
   }
 
-  #ticker_body > section > #summary_profile_container > #summary_container {
+  #summary_profile_container > #summary_container {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -349,12 +399,12 @@ body {
     max-width: max-content;
   }
 
-  #ticker_body > section > #summary_profile_container > #summary_container > p {
+  #summary_profile_container > #summary_container > p {
     font-size: 12.5px;
     font-family: inherit;
   }
 
-  #ticker_body > section > #summary_profile_container > #profile_container {
+  #summary_profile_container > #profile_container {
     position: relative;
     display: flex;
     flex-direction: column;

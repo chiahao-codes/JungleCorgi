@@ -11,69 +11,85 @@
     </header>
 
     <section id="stock_price_container">
-        <div id="home_link_container">
-            <a href="http://localhost:3000" target="_self">Home</a>
-            <span id="arrow">></span>
-            <span id="symbol">
-                <%=checkSymbol.price.symbol%>
-            </span>
-        </div>
-        <div id="price_hours_container">
-            <h5 id="company_name">
-                <% const longName=checkSymbol.price.longName %>
-                    <% const shortName=checkSymbol.price.shortName %>
-                        <% let name=longName ? longName:shortName%>
-                            <%= name %>
-            </h5>
-            <div id="price_time_container">
-                <div id="reg_container" class="reg_after_container">
-                    <div id="reg_hours_container" class="reg_after_hours_container">
-                        <h3 id="reg_hours_price" class="price">
-                            <% let regMkPr=checkSymbol.price.regularMarketPrice%>
-                                <%=regMkPr%>
-                        </h3>
-                        <div class="hours_pct_container">
-                            <h5 id="reg_hours_change" class="price">
-                                <% let regMktChange=checkSymbol.price.regularMarketChange%>
-                                    <%=regMktChange%>
-                            </h5>
-                            <h5 id="reg_hours_pct" class="price">
-                                <%let regMktChgPct=checkSymbol.price.regularMarketChangePercent%>
-                                    <%=regMktChgPct%>
-                            </h5>
-                        </div>
-                    </div>
-                    <div id="at_close_container" class="trading_hours_container">
-                        <h6 id="at_close_txt"></h6>
-                        <h6 id="at_close_time"></h6>
-                    </div>
+        <div id="home-chart-container">
+            <div id="home-price-container">
+                <div id="home_link_container">
+                    <a href="http://localhost:3000" target="_self">Home</a>
+                    <span id="arrow">></span>
+                    <span id="symbol">
+                        <%=checkSymbol.price.symbol%>
+                    </span>
                 </div>
-                <div id="after_container" class="reg_after_container">
-                    <div id="after_hours_pp_container" class="reg_after_hours_container">
-                        <h5 id="after_hours_price" class="price">
-                            <% let postMktPrc=checkSymbol.price.postMarketPrice%>
-                                <% let preMktPrc=checkSymbol.price.preMarketPrice%>
-                                    <%if(postMktPrc===undefined && preMktPrc !==undefined){ %>
-                                        <% postMktPrc=preMktPrc} %>
-                                            <%=postMktPrc%>
-                        </h5>
-                        <div class="hours_pct_container">
-                            <h6 id="after_hours_change" class="price">
-                                <% let postMktChange=checkSymbol.price.postMarketChange %>
-                                    <%=postMktChange%>
-                            </h6>
-                            <h6 id="after_hours_pct" class="price">
-                                <% let postMktChangePct=checkSymbol.price.postMarketChangePercent%>
-                                    <%= postMktChangePct%>
-                            </h6>
+                <div id="price_hours_container">
+                    <h5 id="company_name">
+                        <% const longName=checkSymbol.price.longName %>
+                            <% const shortName=checkSymbol.price.shortName %>
+                                <% let name=longName ? longName:shortName%>
+                                    <%= name %>
+                    </h5>
+                    <div id="price_time_container">
+                        <div id="reg_container" class="reg_after_container">
+                            <div id="reg_hours_container" class="reg_after_hours_container">
+                                <h3 id="reg_hours_price" class="price">
+                                    <% let regMkPr=checkSymbol.price.regularMarketPrice%>
+                                        <%=regMkPr%>
+                                </h3>
+                                <div class="hours_pct_container">
+                                    <h5 id="reg_hours_change" class="price">
+                                        <% let regMktChange=checkSymbol.price.regularMarketChange%>
+                                            <%=regMktChange%>
+                                    </h5>
+                                    <h5 id="reg_hours_pct" class="price">
+                                        <%let regMktChgPct=checkSymbol.price.regularMarketChangePercent%>
+                                            <%=regMktChgPct%>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div id="at_close_container" class="trading_hours_container">
+                                <h6 id="at_close_txt"></h6>
+                                <h6 id="at_close_time"></h6>
+                            </div>
                         </div>
-                    </div>
-                    <div id="after_hours_time_container" class="trading_hours_container">
-                        <h6 id="after_hours_txt"></h6>
-                        <h6 id="after_hours_time"></h6>
+                        <div id="after_container" class="reg_after_container">
+                            <div id="after_hours_pp_container" class="reg_after_hours_container">
+                                <h5 id="after_hours_price" class="price">
+                                    <% let postMktPrc=checkSymbol.price.postMarketPrice%>
+                                        <% let preMktPrc=checkSymbol.price.preMarketPrice%>
+                                            <%if(postMktPrc===undefined && preMktPrc !==undefined){ %>
+                                                <% postMktPrc=preMktPrc} %>
+                                                    <%=postMktPrc%>
+                                </h5>
+                                <div class="hours_pct_container">
+                                    <h6 id="after_hours_change" class="price">
+                                        <% let postMktChange=checkSymbol.price.postMarketChange %>
+                                            <%=postMktChange%>
+                                    </h6>
+                                    <h6 id="after_hours_pct" class="price">
+                                        <% let postMktChangePct=checkSymbol.price.postMarketChangePercent%>
+                                            <%= postMktChangePct%>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div id="after_hours_time_container" class="trading_hours_container">
+                                <h6 id="after_hours_txt"></h6>
+                                <h6 id="after_hours_time"></h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div id="chart_container">
+                <canvas id="chart"></canvas>
+                <div id="chart-timeline-container">
+                    <h6 class="timeline-link">1D</h6>
+                    <h6 class="timeline-link">1M</h6>
+                    <h6 class="timeline-link">1Y</h6>
+                    <h6 class="timeline-link">YTD</h6>
+                    <h6 class="timeline-link">5Y</h6>
+                    <h6 class="timeline-link">All Time</h6>
+                </div>
+            </div>
+
         </div>
         <section id="index_data_container" class="index_data_container">
             <div id="ratio-container">
@@ -102,96 +118,104 @@
                     <% let currRatio="N/A" %>
 
                         <% if(checkSymbol.financialData){ %>
-                            <% currRatio=checkSymbol.financialData.currentRatio} %>
-                                <div id="curr-ratio" class="indexData">
-                                    <%=currRatio%>
-                                </div>
+                            <% if(checkSymbol.financialData.currentRatio){ %>
+                                <% currRatio=checkSymbol.financialData.currentRatio}} %>
+                                    <div id="curr-ratio" class="indexData">
+                                        <%=currRatio%>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="quick-ratio">Quick Ratio</div>
                     <% let quickRatio="N/A" %>
 
                         <% if(checkSymbol.financialData){ %>
-                            <% quickRatio=checkSymbol.financialData.quickRatio} %>
-                                <div id="quick-ratio" class="indexData">
-                                    <%=quickRatio%>
-                                </div>
+                            <% if(checkSymbol.financialData.quickRatio){ %>
+                                <% quickRatio=checkSymbol.financialData.quickRatio}} %>
+                                    <div id="quick-ratio" class="indexData">
+                                        <%=quickRatio%>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="debt-ratio">Debt-to-Equity Ratio</div>
                     <% let debtRatio="N/A" %>
-
                         <% if(checkSymbol.financialData){ %>
-                            <% debtRatio=checkSymbol.financialData.debtToEquity}%>
-                                <div id="debt-ratio" class="indexData">
-                                    <%=debtRatio%>
-                                </div>
+                            <% if(checkSymbol.financialData.debtToEquity){ %>
+                                <% debtRatio=checkSymbol.financialData.debtToEquity}}%>
+                                    <div id="debt-ratio" class="indexData">
+                                        <%=debtRatio%>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="pb-ratio">Price-to-Book Ratio</div>
                     <% let pb="N/A" %>
                         <% if(checkSymbol.defaultKeyStatistics){ %>
-                            <% pb=checkSymbol.defaultKeyStatistics.priceToBook} %>
-                                <div id="pb-ratio" class="indexData">
-                                    <%=pb%>
-                                </div>
+                            <% if(checkSymbol.defaultKeyStatistics.priceToBook){ %>
+                                <% pb=checkSymbol.defaultKeyStatistics.priceToBook}} %>
+                                    <div id="pb-ratio" class="indexData">
+                                        <%=pb%>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="op-Margin">Operating Margin</div>
                     <% let opMargin="N/A" %>
                         <% if(checkSymbol.financialData){ %>
-                            <% opMargin=checkSymbol.financialData.operatingMargins} %>
-                                <div id="op-Margin" class="indexData">
-                                    <%=opMargin%>
-                                </div>
+                            <% if(checkSymbol.financialData.operatingMargins){ %>
+                                <% opMargin=checkSymbol.financialData.operatingMargins}} %>
+                                    <div id="op-Margin" class="indexData">
+                                        <%=opMargin%>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="prof-Margin">Profit Margin</div>
                     <% let profMargin="N/A" %>
                         <% if(checkSymbol.financialData){ %>
-                            <% profMargin=checkSymbol.financialData.profitMargins} %>
-                                <div id="prof-Margin" class="indexData">
-                                    <%=profMargin%>
-                                </div>
+                            <% if(checkSymbol.financialData.profitMargins){ %>
+                                <% profMargin=checkSymbol.financialData.profitMargins}} %>
+                                    <div id="prof-Margin" class="indexData">
+                                        <%=profMargin%>
+                                    </div>
                 </div>
-
             </div>
             <div id="prev-close-container">
                 <div class="border-line">
                     <div id="prevClose">Previous Close</div>
                     <% let prvClose="N/A" %>
-                        <% if(checkSymbol.summaryDetail.previousClose){ %>
-                            <% prvClose=checkSymbol.summaryDetail.previousClose} %>
-                                <div id="prevClosData" class="indexData">
-                                    <%=prvClose %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.previousClose){ %>
+                                <% prvClose=checkSymbol.summaryDetail.previousClose}} %>
+                                    <div id="prevClosData" class="indexData">
+                                        <%=prvClose %>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="open">Market Open</div>
                     <% let open="N/A" %>
-                        <% if(checkSymbol.summaryDetail.open){ %>
-                            <% open=checkSymbol.summaryDetail.open} %>
-                                <div id="openData" class="indexData">
-                                    <%=open %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.open){ %>
+                                <% open=checkSymbol.summaryDetail.open}} %>
+                                    <div id="openData" class="indexData">
+                                        <%=open %>
+                                    </div>
                 </div>
                 <div class="border-line">
-                    <div id="dayLow">Market Low</div>
+                    <div id="dayLow">Day's Low</div>
                     <% let dayLow="N/A" %>
-                        <% if(checkSymbol.summaryDetail.dayLow){ %>
-                            <% dayLow=checkSymbol.summaryDetail.dayLow} %>
-                                <div id="dayLowData" class="indexData">
-                                    <%=dayLow %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.dayLow){ %>
+                                <% dayLow=checkSymbol.summaryDetail.dayLow}} %>
+                                    <div id="dayLowData" class="indexData">
+                                        <%=dayLow %>
+                                    </div>
                 </div>
                 <div class="border-line">
-                    <div id="dayHigh">Market High</div>
+                    <div id="dayHigh">Day's High</div>
                     <% let dayHigh="N/A" %>
-                        <% if(checkSymbol.summaryDetail.dayHigh){ %>
-                            <% dayHigh=checkSymbol.summaryDetail.dayHigh} %>
-                                <div id="dayHighData" class="indexData">
-                                    <%=dayHigh %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.dayHigh){ %>
+                                <% dayHigh=checkSymbol.summaryDetail.dayHigh}} %>
+                                    <div id="dayHighData" class="indexData">
+                                        <%=dayHigh %>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="fifty2WkLow">52 Week Low</div>
@@ -241,7 +265,7 @@
                 <div class="border-line">
                     <div id="beta">Beta</div>
                     <%let beta="N/A" %>
-                        <% if(checkSymbol.summaryDetail.beta !==undefined){ %>
+                        <% if(checkSymbol.summaryDetail.beta){ %>
                             <% beta=checkSymbol.summaryDetail.beta} %>
                                 <div id="beta" class="indexData">
                                     <%=beta %>
@@ -250,7 +274,7 @@
                 <div class="border-line">
                     <div id="mktCap">Market Cap</div>
                     <%let mktCap="N/A" %>
-                        <% if(checkSymbol.summaryDetail.marketCap !==undefined){ %>
+                        <% if(checkSymbol.summaryDetail.marketCap){ %>
                             <% mktCap=checkSymbol.summaryDetail.marketCap} %>
                                 <div id="mktCap" class="indexData">
                                     <%=mktCap %>
@@ -409,11 +433,14 @@
     <footer id="ticker_footer">
         <%- include('./partials/footer.ejs') %>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
         const apiKey = '<%=API_KEY%>';
         const swiper = '<%=swiper%>';
+
+        const canvas = document.querySelector("#chart");
         const stockTicker = '<%=checkSymbol.price.symbol%>';
         const rapidURL = '<%=RAPID%>';
         const mboumQuotes = '<%=MBOUMQUOTES%>';
@@ -431,10 +458,8 @@
         let postMktChangePct = document.querySelector("#after_hours_pct").innerText;
         const summaryProfileContainer = document.querySelector("#summary_profile_container");
         const companyDesc = document.querySelector("#company_desc");
-        // const indexDataContainer = document.querySelector("#index_data_container");
         const ratioContainer = document.querySelector("#ratio-container");
         const indexData = document.querySelectorAll("#index_data_container > div > .border-line > .indexData");
-        console.log(indexData);
 
         const setMarketTime = (timeStamp) => {
             let date, sessionTime, nycTime, nycDate;
@@ -467,9 +492,9 @@
                 let percentText = pricePctContainers[i].children[1].children[1].innerText
 
                 if (regExMinus.test(pointsText)) {
-                    pricePctContainers[i].children[0].style.color = "#c4283c";
-                    pricePctContainers[i].children[1].children[0].style.color = "#c4283c";
-                    pricePctContainers[i].children[1].children[1].style.color = "#c4283c";
+                    pricePctContainers[i].children[0].style.color = "#b11e31";
+                    pricePctContainers[i].children[1].children[0].style.color = "#b11e31";
+                    pricePctContainers[i].children[1].children[1].style.color = "#b11e31";
                     if (regExParens.test(percentText) !== true) {
                         pricePctContainers[i].children[1].children[1].innerText = `(${percentText}%)`
                     }
@@ -490,14 +515,17 @@
         };
         const formatPrice = (container) => {
             for (let ele of container) {
+                let formatted;
                 const formatNum = ele.innerText;
-                const formatted = new Intl.NumberFormat("en-US", {
-                    style: "decimal",
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                }).format(formatNum);
-
-                ele.innerText = formatted;
+                console.log(ele, formatNum)
+                if (formatNum !== "N/A") {
+                    formatted = new Intl.NumberFormat("en-US", {
+                        style: "decimal",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    }).format(formatNum);
+                    ele.innerText = formatted;
+                }
             }
             return
         };
@@ -614,7 +642,7 @@
             timeout = setInterval(() => {
                 location.reload();
                 console.log("idle")
-            }, 100000);
+            }, 120000);
         }
         const activePage = () => {
             if (timeout2) clearInterval(timeout2);
@@ -719,7 +747,73 @@
         changePctPointsColor(pricePctContainers);
         idlePage();
         activePage();
+
+        //create chart
+        const dataDay = {
+            datasets: [{
+                label: "Day's Price", data: [1205],
+                borderColor: "#b11e31"
+            }],
+            labels: ["9:00 AM"],
+        }
+
+        let dotHoverColor = '#c4283c';
+
+        const options = {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    stacked: true,
+                    grid: {
+                        display: true,
+                        color: "#0d0042"
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        callback: (index) => {
+                            console.log(dataDay.labels[index]);
+                        }
+                    },
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            animations: {
+                radius: {
+                    duration: 800,
+                    easing: 'linear',
+                    loop: true,
+                    radius: 8,
+                    backgroundColor: dotHoverColor
+                }
+            },
+            // hoverRadius: 8,
+            // hoverBackgroundColor: dotHoverColor,
+            interaction: {
+                mode: 'furthest',
+                intersect: false,
+                axis: 'x'
+            }
+
+        }
+
+        const config = {
+            type: "line",
+            data: dataDay,
+            options: options
+        }
+
+        const chart = new Chart(canvas, config)
     </script>
+
 </body>
 
 </html>

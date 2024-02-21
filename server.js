@@ -9,8 +9,8 @@ const API_KEY = process.env.KEY;
 const MBOUMQUOTES = process.env.MBQ;
 const MBQHOME = process.env.MBQHOME;
 const RAPID = process.env.RAPID;
-const swiper = new Swiper();
 const app = express();
+const swiper = new Swiper();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -80,12 +80,10 @@ app.get("/tickrpro/:symbol", async (req, res) => {
         "summaryDetail",
         "assetProfile",
         "summaryProfile",
-
         "defaultKeyStatistics",
         "financialData",
       ],
     })
-
     .then((data) => {
       console.log(data);
       return data;
