@@ -79,14 +79,14 @@
                 </div>
             </div>
             <div id="chart_container">
-                <canvas id="chart"></canvas>
+                <canvas id="chart" class="charts"></canvas>
+
                 <div id="chart-timeline-container">
                     <h6 class="timeline-link">1D</h6>
+                    <h6 class="timeline-link">5D</h6>
                     <h6 class="timeline-link">1M</h6>
-                    <h6 class="timeline-link">1Y</h6>
                     <h6 class="timeline-link">YTD</h6>
-                    <h6 class="timeline-link">5Y</h6>
-                    <h6 class="timeline-link">All Time</h6>
+                    <h6 class="timeline-link">3Y</h6>
                 </div>
             </div>
 
@@ -220,29 +220,32 @@
                 <div class="border-line">
                     <div id="fifty2WkLow">52 Week Low</div>
                     <% let fifty2WkLo="N/A" %>
-                        <% if(checkSymbol.summaryDetail.fiftyTwoWeekLow){ %>
-                            <% fifty2WkLo=checkSymbol.summaryDetail.fiftyTwoWeekLow} %>
-                                <div id="fifty2WkLowData" class="indexData">
-                                    <%=fifty2WkLo %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.fiftyTwoWeekLow){ %>
+                                <% fifty2WkLo=checkSymbol.summaryDetail.fiftyTwoWeekLow} }%>
+                                    <div id="fifty2WkLowData" class="indexData">
+                                        <%=fifty2WkLo %>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="fifty2WkHigh">52 Week High</div>
                     <% let fifty2WkHi="N/A" %>
-                        <% if(checkSymbol.summaryDetail.fiftyTwoWeekHigh){ %>
-                            <% fifty2WkHi=checkSymbol.summaryDetail.fiftyTwoWeekHigh} %>
-                                <div id="fifty2WkHighData" class="indexData">
-                                    <%=fifty2WkHi %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.fiftyTwoWeekHigh){ %>
+                                <% fifty2WkHi=checkSymbol.summaryDetail.fiftyTwoWeekHigh}} %>
+                                    <div id="fifty2WkHighData" class="indexData">
+                                        <%=fifty2WkHi %>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="twoHundDayAvg">200 Day Avg</div>
                     <% let twoHDAvg="N/A" %>
-                        <% if(checkSymbol.summaryDetail.twoHundredDayAverage){ %>
-                            <% twoHDAvg=checkSymbol.summaryDetail.twoHundredDayAverage} %>
-                                <div id="twoHundDayAvgData" class="indexData">
-                                    <%=twoHDAvg %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.twoHundredDayAverage){ %>
+                                <% twoHDAvg=checkSymbol.summaryDetail.twoHundredDayAverage}} %>
+                                    <div id="twoHundDayAvgData" class="indexData">
+                                        <%=twoHDAvg %>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id='bid'>Bid</div>
@@ -265,20 +268,22 @@
                 <div class="border-line">
                     <div id="beta">Beta</div>
                     <%let beta="N/A" %>
-                        <% if(checkSymbol.summaryDetail.beta){ %>
-                            <% beta=checkSymbol.summaryDetail.beta} %>
-                                <div id="beta" class="indexData">
-                                    <%=beta %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.beta){ %>
+                                <% beta=checkSymbol.summaryDetail.beta}} %>
+                                    <div id="beta" class="indexData">
+                                        <%=beta %>
+                                    </div>
                 </div>
                 <div class="border-line">
                     <div id="mktCap">Market Cap</div>
                     <%let mktCap="N/A" %>
-                        <% if(checkSymbol.summaryDetail.marketCap){ %>
-                            <% mktCap=checkSymbol.summaryDetail.marketCap} %>
-                                <div id="mktCap" class="indexData">
-                                    <%=mktCap %>
-                                </div>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.marketCap){ %>
+                                <% mktCap=checkSymbol.summaryDetail.marketCap}}%>
+                                    <div id="mktCap" class="indexData">
+                                        <%=mktCap %>
+                                    </div>
                 </div>
             </div>
 
@@ -434,18 +439,21 @@
         <%- include('./partials/footer.ejs') %>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script>
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
         const apiKey = '<%=API_KEY%>';
-        const swiper = '<%=swiper%>';
-
-        const canvas = document.querySelector("#chart");
         const stockTicker = '<%=checkSymbol.price.symbol%>';
+        const stockPriceChange = '<%=checkSymbol.price.regularMarketChange%>'
         const rapidURL = '<%=RAPID%>';
         const mboumQuotes = '<%=MBOUMQUOTES%>';
+        const mboumHist = '<%=MBQHIST%>';
+
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
+
         const h2Box = document.querySelector("header>h2");
         const h2ChildNodes = h2Box.childNodes;
         const selection = window.getSelection();
@@ -460,6 +468,9 @@
         const companyDesc = document.querySelector("#company_desc");
         const ratioContainer = document.querySelector("#ratio-container");
         const indexData = document.querySelectorAll("#index_data_container > div > .border-line > .indexData");
+        const canvas = document.querySelector("#chart");
+        console.log(canvas)
+        let currMktState, timeout = undefined, timeout2 = undefined;
 
         const setMarketTime = (timeStamp) => {
             let date, sessionTime, nycTime, nycDate;
@@ -482,7 +493,10 @@
             return sessionTime;
 
         }
-        const changePctPointsColor = (pricePctContainers) => {
+
+        let dataLineColor;
+        const changePctPointsColor = (pricePctContainers, pricechange) => {
+
             let regExMinus = new RegExp(/[-]/);
             let regExParens = new RegExp(/[()]/);
             let regExPlus = new RegExp(/[+]/);
@@ -495,6 +509,7 @@
                     pricePctContainers[i].children[0].style.color = "#b11e31";
                     pricePctContainers[i].children[1].children[0].style.color = "#b11e31";
                     pricePctContainers[i].children[1].children[1].style.color = "#b11e31";
+
                     if (regExParens.test(percentText) !== true) {
                         pricePctContainers[i].children[1].children[1].innerText = `(${percentText}%)`
                     }
@@ -512,12 +527,13 @@
                     }
                 }
             }
+            dataLineColor = pricePctContainers[0].children[1].children[0].style.color
         };
         const formatPrice = (container) => {
             for (let ele of container) {
                 let formatted;
                 const formatNum = ele.innerText;
-                console.log(ele, formatNum)
+
                 if (formatNum !== "N/A") {
                     formatted = new Intl.NumberFormat("en-US", {
                         style: "decimal",
@@ -550,9 +566,11 @@
 
             let regMktState = "Last Closed:", regMktPrice, regMktChange, regMktChangePercent,
                 mktStatePrice, mktStateChange, mktStateChangePct, extendedMkTime, mktState;
+
             regMktPrice = result.body[0].regularMarketPrice;
             regMktChange = result.body[0].regularMarketChange;
             regMktChangePercent = result.body[0].regularMarketChangePercent;
+            currMktState = marketState // update global variable for chartjs
 
             if (marketState === "REGULAR") regMktState = "Current Session:";
             //reg hours
@@ -599,6 +617,8 @@
             const marketStateYahoo = '<%=checkSymbol.price.marketState%>';
             let mktState, regDateTime = "Last Closed:", dateAndTime;
 
+            currMktState = marketStateYahoo; //updates global variable for chartsjs
+
             if (marketStateYahoo === "REGULAR") {
                 regDateTime = "Current Session:";
             }
@@ -634,15 +654,187 @@
             if (setMarketTime(dateAndTime) === "Not Available") afterHoursContainer.style.display = "none";
         }
 
-        let timeout = undefined, timeout2 = undefined;
+        const mboumHistPrices = async (sym, interval, mboumhist = mboumHist, rapidurl = rapidURL, apikey = apiKey) => {
+            let result
+            const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': `${apikey}`,
+                    'X-RapidAPI-Host': `${rapidurl}`
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                result = await response.json();
+            } catch (error) {
+                console.error(error);
+            }
+            return result
+        }
+        //convert to EST time;
+        const convertToEST = (utcsec) => {
+            const date = new Date(utcsec * 1000);
+            const est = new Intl.DateTimeFormat('en-US', {
+                //   dateStyle: "medium",
+                timeStyle: "short",
+                timeZone: "America/New_York"
+            }).format(date);
+
+            return est
+        }
+        const fillChartData = async (mktstatus, ticker, interval,) => {
+            let chartData1 = {
+                datasets: [{
+                    label: "Day's Price", data: [],
+                    borderColor: dataLineColor,
+                    backgroundColor: dataLineColor,
+                    color: dataLineColor,
+                    tension: 0.1,
+                    pointBorderWidth: .5
+                }],
+                labels: []
+            };
+            const histPrices = await mboumHistPrices(ticker, interval);
+
+            console.log(mktstatus)
+            if (mktstatus !== "REGULAR") {
+                const responseBody = histPrices.body;
+
+                //Iterate over body, start from the last one, go backwards;
+                const keys = Object.keys(responseBody);
+
+                //depending on the interval, return necessary data object;
+                //start from the last one and go backwards;
+                for (let i = keys.length - 1; i >= 0; --i) {
+                    let key = keys[i];
+                    let curr = responseBody[key];
+                    let mktPrice;
+                    if (interval === "5m") {
+
+                        //verify date is today;
+                        //  let mboumDate = curr.date_utc;
+                        //  mboumDate = new Date(mboumDate * 1000);
+                        let dateNow = Date.now(); //returns ms;
+                        dateNow = new Date(dateNow);
+
+                        let mboumGetDate = mboumDate.getDate();
+                        let nowGetDate = dateNow.getDate();
+                        console.log(mboumGetDate, nowGetDate, mboumGetDate === nowGetDate);
+                        //nikkei and other countries have different days, use a diff condition for them;
+                        /*
+                            
+                        */
+                        if (mboumGetDate !== nowGetDate) {
+                            return [chartData1]
+                        }
+
+                        let estTime = convertToEST(curr.date_utc);
+                        console.log(estTime);
+                        if (estTime === "9:30 AM") {
+                            //get opening price first;
+                            mktPrice = curr.open
+                        } else {
+                            //get closing price
+                            mktPrice = curr.close;
+                        }
+
+                        //fill in chartData1
+                        chartData1.datasets[0].data.unshift(mktPrice);
+                        chartData1.labels.unshift(estTime);
+                    }
+                }
+            }
+            return [chartData1]
+        }
+        const runHistPrices = async (mktstat, sym, int = ["5m", "1h", "1d", "1mo"]) => {
+            //5m/1day, 1hr/1wk, put prices at respective intervals
+            //1d/months, 1month/years; put closing price for days;
+            let result = await Promise.all([fillChartData(mktstat, sym, int[0])]);
+            console.log("result:", result)
+            //fillChartData(mktstat, sym, int[1]), fillChartData(mktstat, sym, int[2]), fillChartData(mktstat, sym, int[3])
+            const chartData5m = result[0][0];
+            console.log("chartData5m", chartData5m)
+            const options = {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        stacked: true,
+                        grid: {
+                            display: true,
+                            color: "black"
+                        }
+                    },
+                    x: {
+                        display: true,
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            major: {
+                                enabled: true
+                            },
+                            callback: (index) => {
+                                let label = chartData5m.labels[index]
+
+                                if (label === "3:00 AM" || label === "6:00 AM" || label === "12:00 PM" || label === "9:00 AM" || label === "3:00 PM" || label === "6:00 PM") {
+                                    let str1, str2, labelStr;
+                                    str1 = label.slice(0, 1);
+                                    if (label === "12:00 PM") {
+                                        str1 = label.slice(0, 2);
+                                    }
+
+                                    str2 = label.slice(-2);
+                                    labelStr = `${str1} ${str2}`
+                                    console.log(labelStr)
+                                    return labelStr
+                                }
+
+                            }
+
+                        },
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                animations: {
+                    radius: {
+                        duration: 600,
+                        easing: 'linear',
+                        loop: true,
+                        radius: 1,
+                        backgroundColor: dataLineColor
+                    }
+                },
+
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false,
+                    axis: 'x'
+                }
+            }
+
+            const config = {
+                type: "line",
+                data: chartData5m,
+                options: options
+            }
+
+            const chart = new Chart(canvas, config);
+            return
+        }
         const idlePage = () => {
             if (timeout) {
                 clearInterval(timeout);
             }
             timeout = setInterval(() => {
                 location.reload();
-                console.log("idle")
-            }, 120000);
+            }, 60000);
         }
         const activePage = () => {
             if (timeout2) clearInterval(timeout2);
@@ -651,12 +843,13 @@
                 formatPrice(pricesAndPercents);
                 changePctPointsColor(pricePctContainers);
                 console.log("active");
-            }, 120000);
+            }, 180000);
         }
 
         document.addEventListener("click", idlePage);
         document.addEventListener("keypress", idlePage);
         document.addEventListener("mousemove", idlePage);
+        document.addEventListener("scroll", idlePage);
 
         h2Box.addEventListener("focus", () => {
             const h2ChildNodes = h2Box.childNodes;
@@ -741,77 +934,16 @@
         ratioContainer.removeAttribute("style");
         afterHoursContainer.removeAttribute("style");
         summaryProfileContainer.removeAttribute("style");
+
         yahooSetMktTime();
         formatPrice(indexData);
         formatPrice(pricesAndPercents);
-        changePctPointsColor(pricePctContainers);
-        idlePage();
-        activePage();
+        changePctPointsColor(pricePctContainers, stockPriceChange);
+        //siren:'#c4283c', fir:#148a61; tree:#096344;
+        runHistPrices(currMktState, stockTicker);
+        // idlePage()
+        //activePage();
 
-        //create chart
-        const dataDay = {
-            datasets: [{
-                label: "Day's Price", data: [1205],
-                borderColor: "#b11e31"
-            }],
-            labels: ["9:00 AM"],
-        }
-
-        let dotHoverColor = '#c4283c';
-
-        const options = {
-            responsive: true,
-            maintainAspectRatio: true,
-            scales: {
-                y: {
-                    stacked: true,
-                    grid: {
-                        display: true,
-                        color: "#0d0042"
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        callback: (index) => {
-                            console.log(dataDay.labels[index]);
-                        }
-                    },
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            animations: {
-                radius: {
-                    duration: 800,
-                    easing: 'linear',
-                    loop: true,
-                    radius: 8,
-                    backgroundColor: dotHoverColor
-                }
-            },
-            // hoverRadius: 8,
-            // hoverBackgroundColor: dotHoverColor,
-            interaction: {
-                mode: 'furthest',
-                intersect: false,
-                axis: 'x'
-            }
-
-        }
-
-        const config = {
-            type: "line",
-            data: dataDay,
-            options: options
-        }
-
-        const chart = new Chart(canvas, config)
     </script>
 
 </body>

@@ -256,10 +256,10 @@ body {
     max-height: max-content;
   }
 
-  #chart_container > #chart {
+  #chart_container > .charts {
     width: 100%;
     height: 100%;
-    border: 1px solid black;
+    position: relative;
   }
 
   #chart-timeline-container {

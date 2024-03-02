@@ -9,6 +9,7 @@ const API_KEY = process.env.KEY;
 const MBOUMQUOTES = process.env.MBQ;
 const MBQHOME = process.env.MBQHOME;
 const RAPID = process.env.RAPID;
+const MBQHIST = process.env.MBQHIST;
 const app = express();
 const swiper = new Swiper();
 
@@ -67,7 +68,6 @@ let runQuery = async (symbols) => {
 
 app.get("/", async (req, res, next) => {
   let prices = await runQuery(symbols);
-  //console.log(prices);
   res.render("home", { prices, API_KEY, MBQHOME, RAPID });
 });
 
@@ -105,6 +105,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       API_KEY,
       swiper,
       MBOUMQUOTES,
+      MBQHIST,
       RAPID,
     });
   }
