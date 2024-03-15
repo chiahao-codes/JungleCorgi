@@ -92,7 +92,7 @@
 
         </div>
         <section id="index_data_container" class="index_data_container">
-            <div id="ratio-container">
+            <div id="ratio-container" class="index-data-kids">
                 <div class="border-line">
                     <div id="fwdPeRatio">Forward P/E</div>
                     <% let fwdPeRatio="N/A" %>
@@ -104,6 +104,16 @@
                                     </div>
                 </div>
                 <div class="border-line">
+                    <div id="ttmPeRatio">P/E (TTM)</div>
+                    <% let ttmPeRatio="N/A" %>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.trailingPE){ %>
+                                <% ttmPeRatio=checkSymbol.summaryDetail.trailingPE}} %>
+                                    <div id="ttmPeRatioData" class="indexData">
+                                        <%=ttmPeRatio %>
+                                    </div>
+                </div>
+                <div class="border-line">
                     <div id="eps">EPS (TTM)</div>
                     <% let eps="N/A" %>
                         <% if(checkSymbol.defaultKeyStatistics){ %>
@@ -111,6 +121,17 @@
                                 <% eps=checkSymbol.defaultKeyStatistics.trailingEps}} %>
                                     <div id="epsData" class="indexData">
                                         <%=eps%>
+                                    </div>
+                </div>
+                <div class="border-line">
+                    <div id="peg-ratio">Peg Ratio</div>
+                    <% let pegRatio="N/A" %>
+
+                        <% if(checkSymbol.defaultKeyStatistics){ %>
+                            <% if(checkSymbol.defaultKeyStatistics.pegRatio){ %>
+                                <% pegRatio=checkSymbol.defaultKeyStatistics.pegRatio}} %>
+                                    <div id="pegRatio" class="indexData">
+                                        <%=pegRatio%>
                                     </div>
                 </div>
                 <div class="border-line">
@@ -175,8 +196,30 @@
                                         <%=profMargin%>
                                     </div>
                 </div>
+                <div class="border-line">
+                    <div id="grossMargin">Gross Margin</div>
+                    <% let grossMargin="N/A" %>
+                        <% if(checkSymbol.financialData){ %>
+                            <% if(checkSymbol.financialData.grossMargins){ %>
+                                <% grossMargin=checkSymbol.financialData.grossMargins}} %>
+                                    <div id="grossMarginPct" class="indexData">
+                                        <%=grossMargin %>
+                                    </div>
+                </div>
+                <div class="border-line">
+                    <div id="dividend">Forward Dividend</div>
+                    <div id="dividendRate" class="indexData div-rate">
+                    </div>
+                </div>
+                <div class="border-line no-border-bottom">
+                    <div id="exDividend">Ex-Dividend Date</div>
+
+                    <div id="exDivDate" class="indexData exDivDate">
+
+                    </div>
+                </div>
             </div>
-            <div id="prev-close-container">
+            <div id="prev-close-container" class="index-data-kids">
                 <div class="border-line">
                     <div id="prevClose">Previous Close</div>
                     <% let prvClose="N/A" %>
@@ -281,12 +324,200 @@
                         <% if(checkSymbol.summaryDetail){ %>
                             <% if(checkSymbol.summaryDetail.marketCap){ %>
                                 <% mktCap=checkSymbol.summaryDetail.marketCap}}%>
-                                    <div id="mktCap" class="indexData">
+                                    <div id="mktCap" class="indexData commas">
+
                                         <%=mktCap %>
+                                    </div>
+                </div>
+                <div class="border-line">
+                    <div id="volume">Volume</div>
+                    <%let volume="N/A" %>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.volume){ %>
+                                <% volume=checkSymbol.summaryDetail.volume}}%>
+                                    <div id="mktVol" class="indexData commas">
+
+                                        <%=volume %>
+                                    </div>
+                </div>
+                <div class="border-line no-border-bottom">
+                    <div id="avgVolume">Avg. Volume</div>
+                    <%let avgVol="N/A" %>
+                        <% if(checkSymbol.summaryDetail){ %>
+                            <% if(checkSymbol.summaryDetail.averageVolume){ %>
+                                <% avgVol=checkSymbol.summaryDetail.averageVolume}}%>
+                                    <div id="avgVol" class="indexData commas">
+                                        <%=avgVol %>
                                     </div>
                 </div>
             </div>
 
+        </section>
+        <section id="slide-container">
+            <!-- If we need navigation buttons -->
+            <div id="nav-buttons-container">
+                <div class="slide-prev chevrons">
+                    <img id='left-chev' src="/icons8-back-20.png" alt="left-chevron">
+                </div>
+                <div class="slide-next chevrons">
+                    <img id="right-chev" src="/icons8-forward-20.png" alt="right-chevron">
+                </div>
+            </div>
+            <!-- Slides -->
+            <div id="slides-wrapper">
+                <div id="income-statement" class="slide">
+                    <h6>Income Statement</h6>
+                    <div class="annual-label">Annual</div>
+                    <div class="slide-boxes">
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data slide-headers data-align-left">(USD)</div>
+                            <div class="slide-data slide-headers">YTD</div>
+                            <div class="slide-data slide-headers">12/31/23</div>
+                            <div class="slide-data slide-headers">12/31/22</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Revenue</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">3.756B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Gross profit</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Operating expense</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Operating income</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Net income</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">EBITA</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="balance-sheet" class="slide">
+                    <h6>Balance Sheet</h6>
+                    <div class="annual-label">Annual</div>
+                    <div class="slide-boxes">
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data slide-headers data-align-left">(USD)</div>
+                            <div class="slide-data slide-headers">YTD</div>
+                            <div class="slide-data slide-headers">12/31/23</div>
+                            <div class="slide-data slide-headers">12/31/22</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Total assets</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">3.756B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Total liabilities</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Total equity</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Total capitalization</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Total debt</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Net debt</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Shares issued</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="cash-flow" class="slide">
+                    <h6>Cash Flow</h6>
+                    <div class="annual-label">Annual</div>
+                    <div class="slide-boxes">
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data slide-headers data-align-left">(USD)</div>
+                            <div class="slide-data slide-headers">YTD</div>
+                            <div class="slide-data slide-headers">12/31/23</div>
+                            <div class="slide-data slide-headers">12/31/22</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Revenue</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">3.756B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Gross profit</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Operating expense</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Operating income</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Net income</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">EBITA</div>
+                            <div class="slide-data">2.823B</div>
+                            <div class="slide-data">1.366B</div>
+                            <div class="slide-data">1.205B</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
         </section>
         <div id="summary_profile_container">
             <div id="summary_container">
@@ -446,10 +677,14 @@
         localStorage.setItem("url", pageUrl);
         const apiKey = '<%=API_KEY%>';
         const stockTicker = '<%=checkSymbol.price.symbol%>';
-        const stockPriceChange = '<%=checkSymbol.price.regularMarketChange%>'
+        const dividendRate = '<%=checkSymbol.summaryDetail.dividendRate%>'
+        const exDivDate = '<%=checkSymbol.summaryDetail.exDividendDate%>'
+        let yhooOpenPrice = '<%=checkSymbol.summaryDetail.open%>';
+        const stockPriceChange = '<%=checkSymbol.price.regularMarketChange%>';
         const rapidURL = '<%=RAPID%>';
         const mboumQuotes = '<%=MBOUMQUOTES%>';
         const mboumHist = '<%=MBQHIST%>';
+
 
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
@@ -467,13 +702,18 @@
         const summaryProfileContainer = document.querySelector("#summary_profile_container");
         const companyDesc = document.querySelector("#company_desc");
         const ratioContainer = document.querySelector("#ratio-container");
+        const prevCloseContainer = document.querySelector("#prev-close-container");
         const indexData = document.querySelectorAll("#index_data_container > div > .border-line > .indexData");
+        const dividendData = document.querySelector("#divRateYield-container");
+
         const canvas = document.querySelector("#chart");
         console.log(canvas)
-        let currMktState, timeout = undefined, timeout2 = undefined;
+
+
+        let currMktState, timeout = undefined, timeout2 = undefined, dataLineColor;
 
         const setMarketTime = (timeStamp) => {
-            let date, sessionTime, nycTime, nycDate;
+            let date, sessionTime, formatted;
             const timeStampCheck = Number(timeStamp);
 
             //yahoo time
@@ -486,15 +726,18 @@
                 date = new Date(timeStamp * 1000);
             }
 
-            nycTime = date.toLocaleTimeString("en-US", { timeZone: "America/New_York", timeZoneName: "short" });
-            nycDate = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-            sessionTime = `${nycDate} at ${nycTime}`;
-            if (nycDate === "Invalid Date" || nycTime === "Invalid Date") sessionTime = "Not Available"
-            return sessionTime;
+            console.log("date:", date)
+
+            formatted = new Intl.DateTimeFormat('en-US', {
+                dateStyle: 'short',
+                timeStyle: 'long',
+                timeZone: 'UTC',
+            }).format(date)
+
+
+            return formatted
 
         }
-
-        let dataLineColor;
         const changePctPointsColor = (pricePctContainers, pricechange) => {
 
             let regExMinus = new RegExp(/[-]/);
@@ -530,18 +773,89 @@
             dataLineColor = pricePctContainers[0].children[1].children[0].style.color
         };
         const formatPrice = (container) => {
+
             for (let ele of container) {
                 let formatted;
-                const formatNum = ele.innerText;
+                let formatNum = ele.innerText;
 
-                if (formatNum !== "N/A") {
+                //check for ex-dividend element;
+                const exDivCheck = ele.classList.contains("exDivDate");
+                const divRate = ele.classList.contains("div-rate");
+                const commaClass = ele.classList.contains("commas");
+                if (formatNum !== "N/A" && !exDivCheck && !divRate) {
+
                     formatted = new Intl.NumberFormat("en-US", {
                         style: "decimal",
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                     }).format(formatNum);
-                    ele.innerText = formatted;
+
                 }
+
+                if (divRate) {
+                    formatted = "N/A";
+                    if (dividendRate) {
+                        formatNum = dividendRate;
+                        formatted = new Intl.NumberFormat("en-US", {
+                            style: "decimal",
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        }).format(formatNum);
+                    }
+                }
+
+                if (exDivCheck) {
+                    formatted = "N/A";
+                    if (dividendRate) {
+                        formatNum = dividendRate;
+                        formatted = new Intl.NumberFormat("en-US", {
+                            style: "decimal",
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        }).format(formatNum);
+                    }
+                    if (exDivDate) {
+                        let date = new Date(exDivDate);
+                        formatted = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeZone: "UTC" }).format(date);
+                    }
+                }
+
+                if (commaClass && formatNum !== "N/A") {
+                    let regExpComma = /,/g;
+                    console.log(formatted)
+                    //how many commas are there?
+                    let commas = formatted.match(regExpComma);
+
+                    //get the index of the first comma;
+                    let commaIndex = formatted.search(regExpComma);
+                    //turn the comma into a decimal if needed;
+                    // let firstCommaChar = formatted.charAt(commaIndex);
+
+                    //get index of next comma;
+                    //make it the endIndex;
+
+                    let str;
+                    let startIndex = 0;
+
+                    if (commas.length === 4) {
+                        str = formatted.slice(startIndex, commaIndex);
+                        formatted = `${str}T`
+                    }
+
+                    if (commas.length === 3) {
+                        str = formatted.slice(startIndex, commaIndex);
+                        formatted = `${str}B`
+                    }
+
+                    if (commas.length === 2) {
+                        str = formatted.slice(startIndex, commaIndex);
+                        formatted = `${str}M`
+                    }
+
+                }
+
+                if (!formatted) formatted = "N/A";
+                ele.innerText = formatted;
             }
             return
         };
@@ -623,37 +937,34 @@
                 regDateTime = "Current Session:";
             }
 
-            if (marketStateYahoo === "PRE" || marketStateYahoo === "PREPRE") {
+            if (marketStateYahoo === "PRE" || marketStateYahoo === "PREPRE" || marketStateYahoo === "POST" || marketStateYahoo === "POSTPOST" || marketStateYahoo === "CLOSED") {
+
                 if (preTime) {
                     mktState = "Pre-Market Hours:";
                     dateAndTime = preTime;
-                } else {
+                }
+                if (postTime) {
                     mktState = "After Hours:";
                     dateAndTime = postTime;
                 }
             }
 
-            if (marketStateYahoo === "POST" || marketStateYahoo === "POSTPOST" || marketStateYahoo === "CLOSED") {
-
-                mktState = "After Hours:";
-                dateAndTime = postTime;
-
-            }
-
             atCloseContainer.children[0].innerText = regDateTime;
             atCloseContainer.children[1].innerText = setMarketTime(regTime);
 
-            afterHoursTimeContainer.children[0].innerText = mktState;
-            afterHoursTimeContainer.children[1].innerText = setMarketTime(dateAndTime);
+            if (!dateAndTime) {
+                afterHoursContainer.style.display = "none";
+            } else {
+                afterHoursTimeContainer.children[0].innerText = mktState;
+                afterHoursTimeContainer.children[1].innerText = setMarketTime(dateAndTime);
+            }
 
             if (companyDesc.innerText === "") {
                 summaryProfileContainer.style.display = "none";
                 ratioContainer.style.display = "none";
-
+                prevCloseContainer.style.maxWidth = "100%";
             }
-            if (setMarketTime(dateAndTime) === "Not Available") afterHoursContainer.style.display = "none";
         }
-
         const mboumHistPrices = async (sym, interval, mboumhist = mboumHist, rapidurl = rapidURL, apikey = apiKey) => {
             let result
             const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
@@ -673,21 +984,10 @@
             }
             return result
         }
-        //convert to EST time;
-        const convertToEST = (utcsec) => {
-            const date = new Date(utcsec * 1000);
-            const est = new Intl.DateTimeFormat('en-US', {
-                //   dateStyle: "medium",
-                timeStyle: "short",
-                timeZone: "America/New_York"
-            }).format(date);
-
-            return est
-        }
-        const fillChartData = async (mktstatus, ticker, interval,) => {
+        const fillChartData = async (mktstatus, ticker, interval) => {
             let chartData1 = {
                 datasets: [{
-                    label: "Day's Price", data: [],
+                    label: "", data: [],
                     borderColor: dataLineColor,
                     backgroundColor: dataLineColor,
                     color: dataLineColor,
@@ -696,72 +996,74 @@
                 }],
                 labels: []
             };
+
             const histPrices = await mboumHistPrices(ticker, interval);
+            console.log("histPrices", histPrices)
 
-            console.log(mktstatus)
-            if (mktstatus !== "REGULAR") {
-                const responseBody = histPrices.body;
+            const responseBody = histPrices.body;
+            const responseMeta = histPrices.meta;
+            //Iterate over body, start from the last one, go backwards;
+            const keys = Object.keys(responseBody);
 
-                //Iterate over body, start from the last one, go backwards;
-                const keys = Object.keys(responseBody);
+            //depending on the interval, return necessary data object;
+            //start from the last one and go backwards;
+            for (let i = keys.length - 1; i >= 0; --i) {
+                let key = keys[i];
+                let prevKey = keys[i - 1];
 
-                //depending on the interval, return necessary data object;
-                //start from the last one and go backwards;
-                for (let i = keys.length - 1; i >= 0; --i) {
-                    let key = keys[i];
-                    let curr = responseBody[key];
-                    let mktPrice;
-                    if (interval === "5m") {
+                let curr = responseBody[key];
+                let mboumDate = curr.date_utc;
+                mboumDate = new Date(mboumDate * 1000);
+                let mboumGetDate = mboumDate.getUTCDate();
+                let currHours = mboumDate.getHours();
+                let currMin = mboumDate.getMinutes();
+                let mktPrice;
 
-                        //verify date is today;
-                        //  let mboumDate = curr.date_utc;
-                        //  mboumDate = new Date(mboumDate * 1000);
-                        let dateNow = Date.now(); //returns ms;
-                        dateNow = new Date(dateNow);
+                let prev = responseBody[prevKey];
+                let mboumPrevDate = prev.date_utc;
+                mboumPrevDate = new Date(mboumPrevDate * 1000);
+                let mboumPrevGetDate = mboumPrevDate.getUTCDate();
 
-                        let mboumGetDate = mboumDate.getDate();
-                        let nowGetDate = dateNow.getDate();
-                        console.log(mboumGetDate, nowGetDate, mboumGetDate === nowGetDate);
-                        //nikkei and other countries have different days, use a diff condition for them;
-                        /*
-                            
-                        */
-                        if (mboumGetDate !== nowGetDate) {
-                            return [chartData1]
-                        }
+                mktPrice = curr.close;
 
-                        let estTime = convertToEST(curr.date_utc);
-                        console.log(estTime);
-                        if (estTime === "9:30 AM") {
-                            //get opening price first;
-                            mktPrice = curr.open
-                        } else {
-                            //get closing price
-                            mktPrice = curr.close;
-                        }
+                //condition should be for any timezone:
+                //any time zone vs. NYC 9:30 am;
+                //based on the exhange, create function that returns exchange opening time, and timeZone;
+                if (currHours === 6 && currMin === 30) {
+                    //get opening price;
+                    mktPrice = yhooOpenPrice
+                    //mktPrice = curr.open;
+                }
 
-                        //fill in chartData1
-                        chartData1.datasets[0].data.unshift(mktPrice);
-                        chartData1.labels.unshift(estTime);
+                let utcTime = setMarketTime(curr.date_utc)
+
+                if (mktPrice) {
+                    chartData1.datasets[0].data.unshift(mktPrice);
+                    chartData1.labels.unshift(utcTime);
+                }
+
+                if (interval === "5m") {
+                    console.log(mboumGetDate, mboumPrevGetDate)
+                    if (mboumGetDate !== mboumPrevGetDate) {
+                        return [chartData1]
                     }
                 }
             }
-            return [chartData1]
         }
         const runHistPrices = async (mktstat, sym, int = ["5m", "1h", "1d", "1mo"]) => {
-            //5m/1day, 1hr/1wk, put prices at respective intervals
+            //5m/1day, 1hr/5d, put prices at respective intervals
             //1d/months, 1month/years; put closing price for days;
-            let result = await Promise.all([fillChartData(mktstat, sym, int[0])]);
-            console.log("result:", result)
+            let result = await Promise.all([fillChartData(mktstat, sym, "5m")]);
+
             //fillChartData(mktstat, sym, int[1]), fillChartData(mktstat, sym, int[2]), fillChartData(mktstat, sym, int[3])
             const chartData5m = result[0][0];
-            console.log("chartData5m", chartData5m)
+
             const options = {
                 responsive: true,
                 maintainAspectRatio: true,
                 scales: {
                     y: {
-                        stacked: true,
+                        beginAtZero: false,
                         grid: {
                             display: true,
                             color: "black"
@@ -778,17 +1080,19 @@
                             },
                             callback: (index) => {
                                 let label = chartData5m.labels[index]
+                                let whiteSpace = label.indexOf(" ");
+                                let timeLabel = label.slice(whiteSpace + 1);
 
-                                if (label === "3:00 AM" || label === "6:00 AM" || label === "12:00 PM" || label === "9:00 AM" || label === "3:00 PM" || label === "6:00 PM") {
+                                if (timeLabel === "12:00:00 AM UTC" || timeLabel === "3:00:00 AM UTC" || timeLabel === "6:00:00 AM UTC" || timeLabel === "9:00:00 AM UTC" || timeLabel === "12:00:00 PM UTC" || timeLabel === "3:00:00 PM UTC" || timeLabel === "6:00:00 PM UTC" || timeLabel === "9:00:00 PM UTC") {
                                     let str1, str2, labelStr;
-                                    str1 = label.slice(0, 1);
-                                    if (label === "12:00 PM") {
-                                        str1 = label.slice(0, 2);
+                                    str1 = timeLabel.slice(0, 1);
+                                    if (timeLabel === "12:00:00 PM UTC" || timeLabel === "12:00:00 AM UTC") {
+                                        str1 = timeLabel.slice(0, 2);
                                     }
 
-                                    str2 = label.slice(-2);
+                                    str2 = timeLabel.slice(-6);
                                     labelStr = `${str1} ${str2}`
-                                    console.log(labelStr)
+
                                     return labelStr
                                 }
 
@@ -828,6 +1132,7 @@
             const chart = new Chart(canvas, config);
             return
         }
+
         const idlePage = () => {
             if (timeout) {
                 clearInterval(timeout);
@@ -846,10 +1151,10 @@
             }, 180000);
         }
 
-        document.addEventListener("click", idlePage);
-        document.addEventListener("keypress", idlePage);
-        document.addEventListener("mousemove", idlePage);
-        document.addEventListener("scroll", idlePage);
+        //document.addEventListener("click", idlePage);
+        //document.addEventListener("keypress", idlePage);
+        //document.addEventListener("mousemove", idlePage);
+        //document.addEventListener("scroll", idlePage);
 
         h2Box.addEventListener("focus", () => {
             const h2ChildNodes = h2Box.childNodes;
@@ -939,11 +1244,9 @@
         formatPrice(indexData);
         formatPrice(pricesAndPercents);
         changePctPointsColor(pricePctContainers, stockPriceChange);
-        //siren:'#c4283c', fir:#148a61; tree:#096344;
-        runHistPrices(currMktState, stockTicker);
-        // idlePage()
+        // runHistPrices(currMktState, stockTicker, yhooOpenPrice);
+        //idlePage()
         //activePage();
-
     </script>
 
 </body>

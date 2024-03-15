@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import yahooFinance from "yahoo-finance2";
 import "dotenv/config";
-import Swiper from "swiper";
 
 const PORT = process.env.PORT;
 const API_KEY = process.env.KEY;
@@ -11,7 +10,6 @@ const MBQHOME = process.env.MBQHOME;
 const RAPID = process.env.RAPID;
 const MBQHIST = process.env.MBQHIST;
 const app = express();
-const swiper = new Swiper();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -56,10 +54,10 @@ let runQuery = async (symbols) => {
     russell: {},
   };
 
-  let queryOptions = { modules: ["price"] };
+  let queryOptions5m = { modules: ["price"] };
   for (let i = 0; i < symbols.length; i++) {
     let curr = symbols[i];
-    let result = await yahooFinance.quoteSummary(curr, queryOptions);
+    let result = await yahooFinance.quoteSummary(curr, queryOptions5m);
     let indexKeys = Object.keys(indexPrices);
     indexPrices[indexKeys[i]] = result;
   }
@@ -103,7 +101,6 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     res.render("ticker", {
       checkSymbol,
       API_KEY,
-      swiper,
       MBOUMQUOTES,
       MBQHIST,
       RAPID,

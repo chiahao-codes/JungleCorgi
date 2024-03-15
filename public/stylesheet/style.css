@@ -13,6 +13,7 @@
   --tree: #096344;
   --fir: #148a61;
   --sand: #eee4d6;
+
   --vanilla: #faf2d1;
   --greenish: #012c12;
   --purp: #b3237c;
@@ -112,6 +113,12 @@ body {
     animation-duration: 500ms;
     animation-iteration-count: infinite;
     opacity: 1;
+  }
+
+  #logo {
+    font-family: "Angkor", "Roboto", "Crimson Text", sans-serif;
+    color: var(--greenish);
+    font-size: 90%;
   }
 
   #home_body #timer_container {
@@ -215,11 +222,12 @@ body {
     justify-content: center;
     row-gap: 16px;
     width: 100%;
+    height: max-content;
     min-height: max-content;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 17px;
+    padding-right: 17px;
     padding-bottom: 5px;
-    bottom: 15px;
+    bottom: 20px;
   }
 
   #home-chart-container {
@@ -231,6 +239,7 @@ body {
     row-gap: 17px;
     height: max-content;
     width: 100%;
+    max-width: 760px;
   }
 
   #home-price-container {
@@ -240,7 +249,7 @@ body {
     justify-content: space-between;
     row-gap: 10px;
     height: max-content;
-    width: 100%;
+    width: max-content;
   }
 
   #chart_container {
@@ -251,9 +260,9 @@ body {
     row-gap: 15px;
     border: 1px solid black;
     width: 100%;
-    max-width: 1100px;
+    max-width: 760px;
     height: max-content;
-    max-height: max-content;
+    max-height: 300px;
   }
 
   #chart_container > .charts {
@@ -270,7 +279,6 @@ body {
     column-gap: 10px;
     width: fit-content;
     height: fit-content;
-    border: 1px solid black;
   }
 
   #chart-timeline-container > .timeline-link:hover {
@@ -302,6 +310,13 @@ body {
     flex-direction: column;
     justify-content: center;
     row-gap: 5px;
+  }
+
+  #price_hours_container > #company_name {
+    width: 315px;
+    max-width: 315px;
+    overflow: hidden;
+    text-wrap: wrap;
   }
 
   #price_hours_container > #price_time_container {
@@ -344,7 +359,7 @@ body {
     position: relative;
     margin-top: 10px;
     width: 100%;
-    max-width: 550px;
+    max-width: 100%;
     min-height: 150px;
     display: flex;
     flex-direction: column;
@@ -354,6 +369,118 @@ body {
     font-size: 14px;
     font-family: "Noto Sans", sans-serif;
     color: var(--eve);
+  }
+
+  /*slider*/
+  #slide-container {
+    position: relative;
+    top: 30px;
+    width: 100%;
+    max-width: 760px;
+    height: max-content;
+    max-height: max-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 10px;
+    border: solid 1px var(--eve);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  #nav-buttons-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+  }
+
+  #nav-buttons-container > .chevrons {
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+  }
+
+  #nav-buttons-container > .chevrons > img {
+    width: 15px;
+  }
+
+  #slide-container > #slides-wrapper {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-200%);
+    /*
+    income: 0px;
+    balance sheet: -100%;
+    cash flow: -200%
+    */
+    transition: transform 0.3s ease-out;
+    cursor: grab;
+  }
+
+  #slides-wrapper > .slide {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    row-gap: 5px;
+    min-width: 100%;
+    width: 100%;
+    max-width: 100%;
+    height: max-content;
+    max-height: 100%;
+    padding: 0 1% 0.5%;
+    user-select: none;
+  }
+
+  .annual-label {
+    font-size: 10px;
+    color: var(--eve);
+  }
+
+  .slide-boxes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    row-gap: 0.5%;
+    width: 100%;
+  }
+  .slide-data-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .slide-data {
+    font-size: 12px;
+    font-weight: 200;
+    width: 20%;
+    min-width: 20%;
+    max-width: 20%;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .slide-headers {
+    font-size: 10px;
+    width: max-content;
+    max-width: max-content;
+  }
+
+  .data-align-left {
+    text-align: left;
+    width: 40%;
+    min-width: 40%;
+    max-width: 40%;
   }
 
   #ratio-container,
@@ -376,9 +503,14 @@ body {
     border-bottom: 1px solid var(--eve);
   }
 
+  #swiper-container {
+    position: relative;
+    top: 30px;
+  }
+
   #summary_profile_container {
     position: relative;
-    top: 20px;
+    top: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -394,8 +526,6 @@ body {
     flex-direction: column;
     justify-content: center;
     row-gap: 3px;
-    word-wrap: break-word;
-    -ms-word-wrap: break-word;
     max-width: max-content;
   }
 
@@ -454,7 +584,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    row-gap: 4px;
+    row-gap: 10px;
     font-size: 12.5px;
   }
 
@@ -628,8 +758,54 @@ body {
   body footer .container #links ul {
     display: flex;
     justify-content: space-evenly;
-    font-size: 11px;
+    font-size: 16px;
     font-weight: 400;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  #ticker_body > #stock_price_container {
+    align-items: center;
+  }
+  #stock_price_container > #index_data_container {
+    flex-direction: row;
+    column-gap: 45px;
+    align-items: flex-start;
+    max-width: 760px;
+  }
+  #index_data_container > .index-data-kids {
+    max-width: 400px;
+    border: 1px solid var(--eve);
+    border-radius: 3.7px;
+  }
+
+  #prev-close-container > .border-line,
+  #ratio-container > .border-line {
+    padding: 1%;
+    max-width: 98%;
+  }
+  #prev-close-container > .no-border-bottom,
+  #ratio-container > .no-border-bottom {
+    border-bottom: none;
+  }
+  #summary_profile_container {
+    max-width: 760px;
+  }
+
+  #profile_container > #profile_container2 {
+    flex-direction: row;
+    justify-content: flex-start;
+    column-gap: 70px;
+  }
+
+  #profile_container2 > #key_execs_container {
+    justify-content: flex-start;
+  }
+
+  #profile_container2 > #employee_container {
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 7px;
   }
 }
 
