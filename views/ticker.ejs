@@ -362,7 +362,7 @@
                 </div>
             </div>
             <!-- Slides -->
-            <div class="slides-wrapper grabbing">
+            <div class="slides-wrapper">
                 <div id="income-statement" class="slide">
                     <h6>Income Statement</h6>
                     <div class="annual-label">Annual</div>
@@ -535,7 +535,6 @@
                     </div>
                 </div>
             </div>
-
             </div>
         </section>
         <div id="summary_profile_container">
@@ -910,8 +909,10 @@
             }
 
         }
+
         const slidesWrapper = document.querySelector('.slides-wrapper');
         const slides = Array.from(document.querySelectorAll(".slide"));
+        const slideNavChevrons = Array.from(document.querySelectorAll(".chevrons"));
         //starting variables;
         let isDragging = false, startPosition = 0, currTranslateX = 0, prevTranslateX = 0, animationId = 0, currSlideIndex = 0;
         slides.forEach((slide, index) => {
@@ -926,11 +927,37 @@
             slide.addEventListener('mousemove', touchMove)
         })
 
+        slideNavChevrons.forEach((chevron) => {
+            chevron.addEventListener("click", () => {
+                //next button
+                let chevronDirection = chevron.classList.contains("slide-next");
+                isDragging = true;
+                animationId = requestAnimationFrame(animation);
+                if (chevronDirection) {
+                    if (currSlideIndex < slides.length - 1) {
+                        currSlideIndex += 1
+                    }
+                }
+
+                //prev button
+                if (!chevronDirection) {
+                    if (currSlideIndex > 0) {
+                        currSlideIndex -= 1;
+                    }
+                }
+
+
+                isDragging = false;
+                cancelAnimationFrame(animationId);
+                setPostionByIndex()
+            })
+        })
+
         function touchStart(index) {
             return function (event) {
                 currSlideIndex = index;
-                startPosition = getPositionX(event)
-                console.log(startPosition)
+                startPosition = getPositionX(event);
+                console.log("startPosition aka getPositionX:", startPosition)
                 isDragging = true;
                 animationId = requestAnimationFrame(animation);
                 slidesWrapper.style.cursor = "grabbing";
@@ -941,10 +968,14 @@
             isDragging = false;
             cancelAnimationFrame(animationId);
             const movedBy = currTranslateX - prevTranslateX;
-            if (movedBy < -100 && currSlideIndex < slidesWrapper.length - 1) {
+            console.log("movedBy:", movedBy);
+
+
+            if (movedBy < -100 && currSlideIndex < slides.length - 1) {
                 currSlideIndex += 1
+                console.log("currSlideIndex:", currSlideIndex);
             }
-            if (movedBy > 100 && currSlideIndex >= 0) currSlideIndex -= 1;
+            if (movedBy > 100 && currSlideIndex > 0) currSlideIndex -= 1;
             setPostionByIndex()
             slidesWrapper.style.cursor = "grab";
         }
@@ -952,7 +983,8 @@
         function touchMove(event) {
             if (isDragging) {
                 const currentPosition = getPositionX(event)
-                currTranslateX = prevTranslateX + currentPosition - startPosition
+                currTranslateX = prevTranslateX + currentPosition - startPosition;
+                console.log("currTranslateX:", currTranslateX)
             }
         }
 
@@ -970,8 +1002,7 @@
         }
 
         function setPostionByIndex() {
-            //-window.innerWidth
-            currTranslateX = currSlideIndex * -slidesWrapper.offsetWidth;
+            currTranslateX = currSlideIndex * -105;
             prevTranslateX = currTranslateX;
             setSliderPosition()
         }
