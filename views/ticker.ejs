@@ -80,16 +80,14 @@
             </div>
             <div id="chart_container">
                 <canvas id="chart" class="charts"></canvas>
-
-                <div id="chart-timeline-container">
-                    <h6 class="timeline-link">1D</h6>
-                    <h6 class="timeline-link">5D</h6>
-                    <h6 class="timeline-link">1M</h6>
-                    <h6 class="timeline-link">YTD</h6>
-                    <h6 class="timeline-link">3Y</h6>
-                </div>
             </div>
-
+            <div id="chart-timeline-container">
+                <h6 class="timeline-link oneDay">1D</h6>
+                <h6 class="timeline-link fiveDay">5D</h6>
+                <h6 class="timeline-link oneMonth">1M</h6>
+                <h6 class="timeline-link ytd">YTD</h6>
+                <h6 class="timeline-link threeYr">3Y</h6>
+            </div>
         </div>
         <section id="index_data_container" class="index_data_container">
             <div id="ratio-container" class="index-data-kids">
@@ -364,64 +362,78 @@
                 </div>
             </div>
             <!-- Slides -->
-            <div id="slides-wrapper">
+            <div class="slides-wrapper grabbing">
                 <div id="income-statement" class="slide">
                     <h6>Income Statement</h6>
                     <div class="annual-label">Annual</div>
                     <div class="slide-boxes">
-                        <div class="slide-data-wrapper">
-                            <div class="slide-data slide-headers data-align-left">(USD)</div>
-                            <div class="slide-data slide-headers">YTD</div>
-                            <div class="slide-data slide-headers">12/31/23</div>
-                            <div class="slide-data slide-headers">12/31/22</div>
+                        <div class="slide-data-wrapper income-slide-years">
+                            <div class="slide-data slide-headers data-align-left currency"></div>
+                            <div class="slide-data slide-headers ttm"></div>
+                            <div class="slide-data slide-headers year1"></div>
+                            <div class="slide-data slide-headers year2"></div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper revenue">
                             <div class="slide-data data-align-left">Revenue</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">3.756B</div>
+                            <div class="slide-data  ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper gross-profit">
                             <div class="slide-data data-align-left">Gross profit</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data  ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper operating-expense">
                             <div class="slide-data data-align-left">Operating expense</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data  ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper operating-income">
                             <div class="slide-data data-align-left">Operating income</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data  ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper pre-tax-income">
+                            <div class="slide-data data-align-left">Pre tax income</div>
+                            <div class="slide-data  ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
+                        </div>
+                        <div class="slide-data-wrapper other-income-expense">
+                            <div class="slide-data data-align-left">Other income exp</div>
+                            <div class="slide-data ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
+                        </div>
+
+                        <div class="slide-data-wrapper basic-eps">
+                            <div class="slide-data data-align-left">Basic eps</div>
+                            <div class="slide-data  ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
+                        </div>
+                        <div class="slide-data-wrapper net-income">
                             <div class="slide-data data-align-left">Net income</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data  ttm"></div>
+                            <div class="slide-data year1"></div>
+                            <div class="slide-data year2"></div>
                         </div>
-                        <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">EBITA</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
-                        </div>
+
                     </div>
                 </div>
                 <div id="balance-sheet" class="slide">
                     <h6>Balance Sheet</h6>
                     <div class="annual-label">Annual</div>
                     <div class="slide-boxes">
-                        <div class="slide-data-wrapper">
-                            <div class="slide-data slide-headers data-align-left">(USD)</div>
-                            <div class="slide-data slide-headers">YTD</div>
-                            <div class="slide-data slide-headers">12/31/23</div>
-                            <div class="slide-data slide-headers">12/31/22</div>
+                        <div class="slide-data-wrapper slide-years">
+                            <div class="slide-data slide-headers data-align-left currency">(USD)</div>
+                            <div class="slide-data slide-headers year1">12/31/23</div>
+                            <div class="slide-data slide-headers year2">12/31/22</div>
+                            <div class="slide-data slide-headers year3">12/31/21</div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Total assets</div>
@@ -431,39 +443,39 @@
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Total liabilities</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Total equity</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Total capitalization</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Total debt</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Net debt</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Shares issued</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                     </div>
                 </div>
@@ -471,47 +483,54 @@
                     <h6>Cash Flow</h6>
                     <div class="annual-label">Annual</div>
                     <div class="slide-boxes">
-                        <div class="slide-data-wrapper">
-                            <div class="slide-data slide-headers data-align-left">(USD)</div>
-                            <div class="slide-data slide-headers">YTD</div>
-                            <div class="slide-data slide-headers">12/31/23</div>
-                            <div class="slide-data slide-headers">12/31/22</div>
+                        <div class="slide-data-wrapper slide-years">
+                            <div class="slide-data slide-headers data-align-left currency">(USD)</div>
+                            <div class="slide-data slide-headers ttm">TTM</div>
+                            <div class="slide-data slide-headers year1">12/31/23</div>
+                            <div class="slide-data slide-headers year2">12/31/22</div>
                         </div>
                         <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">Revenue</div>
+                            <div class="slide-data data-align-left">Net income</div>
                             <div class="slide-data">6.53B</div>
                             <div class="slide-data">6.53B</div>
                             <div class="slide-data">3.756B</div>
                         </div>
                         <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">Gross profit</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data data-align-left">Operating cash flow</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">6.53B</div>
+                            <div class="slide-data">3.756B</div>
                         </div>
                         <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">Operating expense</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data data-align-left">Investing cash flow</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">Operating income</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data data-align-left">Financing cash flow</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">Net income</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data data-align-left">End cash flow</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">EBITA</div>
-                            <div class="slide-data">2.823B</div>
-                            <div class="slide-data">1.366B</div>
-                            <div class="slide-data">1.205B</div>
+                            <div class="slide-data data-align-left">Capital expenditure</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                        </div>
+
+                        <div class="slide-data-wrapper">
+                            <div class="slide-data data-align-left">Free cash flow</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                     </div>
                 </div>
@@ -684,7 +703,9 @@
         const rapidURL = '<%=RAPID%>';
         const mboumQuotes = '<%=MBOUMQUOTES%>';
         const mboumHist = '<%=MBQHIST%>';
-
+        const yahooURL = '<%=YHOOURL%>'
+        const yahooURLTail = '<%=YHURLTAIL%>'
+        const yahooHost = '<%=YHOOHOST%>'
 
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
@@ -705,10 +726,255 @@
         const prevCloseContainer = document.querySelector("#prev-close-container");
         const indexData = document.querySelectorAll("#index_data_container > div > .border-line > .indexData");
         const dividendData = document.querySelector("#divRateYield-container");
-
+        const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
-        console.log(canvas)
 
+        //slides
+        let dataCache = {
+        }
+        const grabSlidesData = async () => {
+            let results;
+            const url = `${yahooURL}${stockTicker}${yahooURLTail}`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': `${apiKey}`,
+                    'X-RapidAPI-Host': `${yahooHost}`
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                results = await response.json();
+
+            } catch (error) {
+                console.error(error);
+            }
+
+            return results
+        }
+        const fillInCache = (category, iterableData, ttm = "--") => {
+            let count = 1, year = "year";
+            for (let i = 0; i < iterableData.length; i++) {
+                year = `${year}${count}`;
+                if (category === "endingYear") {
+                    let asOfDate = iterableData[i].endDate.fmt;
+                    if (asOfDate !== undefined) {
+                        //fill in formatted dates of statement;
+                        asOfDate = new Date(asOfDate);
+                        dataCache[year] = new Intl.DateTimeFormat("en-US", {
+                            dateStyle: 'short',
+                            timeZone: 'UTC',
+                        }).format(asOfDate)
+                    }
+
+                }
+
+                if (category === "annualTotalRevenue" || category === "annualGrossProfit" || category === "operatingExpense" || category === "operatingIncome"
+                    || category === "preTaxIncome" || category === "otherIncomeExpense" || category === "net-income" || category === "basic-eps") {
+                    let endObj = iterableData.length - 1;
+                    let endIndex = endObj - i;
+
+                    if (endIndex >= 0) {
+                        let fmtData = "--";
+
+                        if (iterableData[endIndex] !== null) {
+                            fmtData = iterableData[endIndex].reportedValue.fmt;
+
+                            if (!dataCache["currency-code"]) {
+                                let currency = iterableData[endIndex].currencyCode;
+                                dataCache["currency-code"] = currency;
+                            }
+                        };
+
+                        dataCache[year] = fmtData;
+                    }
+                }
+                if (ttm !== undefined) {
+                    dataCache["ttm"] = ttm;
+                }
+                count += 1;
+                year = "year";
+            }
+            console.log(dataCache)
+        }
+        const fillInDataDOM = (wrapper) => {
+            for (let j = 0; j < wrapper.length; j++) {
+                let currChild = wrapper[j];
+                if (dataCache["currency-code"] && !document.querySelector(".slide-data-wrapper > .currency").innerText) {
+                    let ccy = dataCache["currency-code"];
+
+                    document.querySelector(".slide-data-wrapper > .currency").innerText = `(${ccy})`;
+                }
+                if (currChild.classList.contains("ttm")) {
+                    currChild.innerText = dataCache["ttm"];
+                }
+                if (currChild.classList.contains("year1")) {
+                    if (!dataCache["year1"]) currChild.innerText = "N/A";
+
+                    currChild.innerText = dataCache["year1"];
+                }
+                if (currChild.classList.contains("year2")) {
+                    if (!dataCache["year2"]) currChild.innerText = "N/A";
+                    currChild.innerText = dataCache["year2"];
+                }
+                if (currChild.classList.contains("year3")) {
+                    if (!dataCache["year3"]) currChild.innerText = "N/A";
+                    currChild.innerText = dataCache["year3"];
+                }
+            }
+        }
+
+        const incomeStatement = (slidedata) => {
+            //gather slide data:
+            console.log("slideData:", slidedata);
+            //statement ending years:
+            let years = slidedata.incomeStatementHistory.incomeStatementHistory;
+            //cache data;
+            fillInCache("endingYear", years, "TTM");
+            //fill in the DOM;
+            const incomeSlideYears = document.querySelector(".slide-boxes>.income-slide-years").children;
+            fillInDataDOM(incomeSlideYears);
+
+            //revenue:
+            let ttmRevenue = slidedata.timeSeries.trailingTotalRevenue[0].reportedValue.fmt;
+            let annualRev = slidedata.timeSeries.annualTotalRevenue;
+            fillInCache("annualTotalRevenue", annualRev, ttmRevenue);
+            const revenueWrapper = document.querySelector(".slide-boxes>.revenue").children;
+            fillInDataDOM(revenueWrapper);
+
+            //gross profit
+            let ttmGrossProfit = slidedata.timeSeries.trailingGrossProfit[0].reportedValue.fmt;
+            let annualGrossProfit = slidedata.timeSeries.annualGrossProfit;
+            fillInCache("annualGrossProfit", annualGrossProfit, ttmGrossProfit);
+            const grossProfitWrapper = document.querySelector(".slide-boxes > .gross-profit").children;
+            fillInDataDOM(grossProfitWrapper);
+
+            //operating expense
+            let ttmOperatingExpense = slidedata.timeSeries.trailingOperatingExpense[0].reportedValue.fmt;
+            let annualOperatingExpense = slidedata.timeSeries.annualOperatingExpense;
+            fillInCache("operatingExpense", annualOperatingExpense, ttmOperatingExpense);
+            const operatingExpenseWrapper = document.querySelector(".slide-boxes > .operating-expense").children;
+            fillInDataDOM(operatingExpenseWrapper);
+
+            //operating income
+            let ttmOperatingIncome = slidedata.timeSeries.trailingOperatingIncome[0].reportedValue.fmt;
+            let annualOperatingIncome = slidedata.timeSeries.annualOperatingIncome;
+            fillInCache("operatingIncome", annualOperatingIncome, ttmOperatingIncome);
+            const operatingIncomeWrapper = document.querySelector(".slide-boxes > .operating-income").children;
+            fillInDataDOM(operatingIncomeWrapper);
+
+            //pre-tax income
+            let ttmPreTaxIncome = slidedata.timeSeries.trailingPretaxIncome[0].reportedValue.fmt;
+            let annualPreTaxIncome = slidedata.timeSeries.annualPretaxIncome;
+            fillInCache("preTaxIncome", annualPreTaxIncome, ttmPreTaxIncome);
+            const preTaxIncomeWrapper = document.querySelector(".slide-boxes > .pre-tax-income").children;
+            fillInDataDOM(preTaxIncomeWrapper);
+
+            //other income expense
+            let ttmOtherIncomeExpense = "--";
+            if (slidedata.timeSeries.trailingOtherIncomeExpense[0]) {
+                ttmOtherIncomeExpense = slidedata.timeSeries.trailingOtherIncomeExpense[0].reportedValue.fmt;
+            }
+
+            let annualOtherIncomeExpense = slidedata.timeSeries.annualOtherIncomeExpense;
+            fillInCache("otherIncomeExpense", annualPreTaxIncome, ttmOtherIncomeExpense);
+            const otherIncomeExpenseWrapper = document.querySelector(".slide-boxes > .other-income-expense").children;
+            fillInDataDOM(otherIncomeExpenseWrapper);
+
+            //basic eps
+            let ttmBasicEPS = slidedata.timeSeries.trailingBasicEPS[0].reportedValue.fmt;
+            let annualBasicEps = slidedata.timeSeries.annualBasicEPS;
+            fillInCache("basic-eps", annualBasicEps, ttmBasicEPS);
+            const basicEpsWrapper = document.querySelector(".slide-boxes > .basic-eps").children;
+            fillInDataDOM(basicEpsWrapper);
+
+            //net income
+            let ttmNetIncome = slidedata.timeSeries.trailingNetIncome[0].reportedValue.fmt;
+            let annualNetIncome = slidedata.timeSeries.annualNetIncome;
+            fillInCache("net-income", annualNetIncome, ttmNetIncome);
+            const netIncomeWrapper = document.querySelector(".slide-boxes > .net-income").children;
+            fillInDataDOM(netIncomeWrapper);
+
+        }
+        const populateSlides = async () => {
+            const slideContainer = document.querySelector("#slide-container");
+            //populate date headings
+            let slideData = await grabSlidesData();
+            //check keys;
+            let keys = Object.keys(slideData);
+            if (keys.length === 0) {
+                slideContainer.style.display = "none";
+            } else {
+                incomeStatement(slideData);
+            }
+
+        }
+        const slidesWrapper = document.querySelector('.slides-wrapper');
+        const slides = Array.from(document.querySelectorAll(".slide"));
+        //starting variables;
+        let isDragging = false, startPosition = 0, currTranslateX = 0, prevTranslateX = 0, animationId = 0, currSlideIndex = 0;
+        slides.forEach((slide, index) => {
+            //touch events
+            slide.addEventListener('touchstart', touchStart(index))
+            slide.addEventListener('touchend', touchEnd);
+            slide.addEventListener('touchmove', touchMove)
+            //mouse events
+            slide.addEventListener('mousedown', touchStart(index))
+            slide.addEventListener('mouseup', touchEnd)
+            slide.addEventListener('mouseleave', touchEnd)
+            slide.addEventListener('mousemove', touchMove)
+        })
+
+        function touchStart(index) {
+            return function (event) {
+                currSlideIndex = index;
+                startPosition = getPositionX(event)
+                console.log(startPosition)
+                isDragging = true;
+                animationId = requestAnimationFrame(animation);
+                slidesWrapper.style.cursor = "grabbing";
+            }
+        }
+
+        function touchEnd() {
+            isDragging = false;
+            cancelAnimationFrame(animationId);
+            const movedBy = currTranslateX - prevTranslateX;
+            if (movedBy < -100 && currSlideIndex < slidesWrapper.length - 1) {
+                currSlideIndex += 1
+            }
+            if (movedBy > 100 && currSlideIndex >= 0) currSlideIndex -= 1;
+            setPostionByIndex()
+            slidesWrapper.style.cursor = "grab";
+        }
+
+        function touchMove(event) {
+            if (isDragging) {
+                const currentPosition = getPositionX(event)
+                currTranslateX = prevTranslateX + currentPosition - startPosition
+            }
+        }
+
+        function getPositionX(event) {
+            return event.type.includes("mouse") ? event.pageX : event.touches[0].clientX;
+        }
+
+        function animation() {
+            setSliderPosition()
+            if (isDragging) requestAnimationFrame(animation)
+        }
+
+        function setSliderPosition() {
+            slidesWrapper.style.transform = `translateX(${currTranslateX}%)`;
+        }
+
+        function setPostionByIndex() {
+            //-window.innerWidth
+            currTranslateX = currSlideIndex * -slidesWrapper.offsetWidth;
+            prevTranslateX = currTranslateX;
+            setSliderPosition()
+        }
 
         let currMktState, timeout = undefined, timeout2 = undefined, dataLineColor;
 
@@ -726,7 +992,6 @@
                 date = new Date(timeStamp * 1000);
             }
 
-            console.log("date:", date)
 
             formatted = new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short',
@@ -822,7 +1087,6 @@
 
                 if (commaClass && formatNum !== "N/A") {
                     let regExpComma = /,/g;
-                    console.log(formatted)
                     //how many commas are there?
                     let commas = formatted.match(regExpComma);
 
@@ -937,12 +1201,21 @@
                 regDateTime = "Current Session:";
             }
 
-            if (marketStateYahoo === "PRE" || marketStateYahoo === "PREPRE" || marketStateYahoo === "POST" || marketStateYahoo === "POSTPOST" || marketStateYahoo === "CLOSED") {
+            if (marketStateYahoo === "PRE" || marketStateYahoo === "PREPRE") {
+
+                if (postTime) {
+                    mktState = "After Hours:";
+                    dateAndTime = postTime;
+                }
 
                 if (preTime) {
                     mktState = "Pre-Market Hours:";
                     dateAndTime = preTime;
                 }
+
+            }
+
+            if (marketStateYahoo === "POST" || marketStateYahoo === "POSTPOST" || marketStateYahoo === "CLOSED") {
                 if (postTime) {
                     mktState = "After Hours:";
                     dateAndTime = postTime;
@@ -985,7 +1258,16 @@
             return result
         }
         const fillChartData = async (mktstatus, ticker, interval) => {
-            let chartData1 = {
+            //5m:1day, 1h:5days;
+            //1d:months, 1mo:years;
+            let chartData = {
+                "5m": {},
+                "1h": {},
+                "1d": {},
+                "1mo": {}
+            };
+
+            chartData[interval] = {
                 datasets: [{
                     label: "", data: [],
                     borderColor: dataLineColor,
@@ -1015,52 +1297,62 @@
                 let mboumDate = curr.date_utc;
                 mboumDate = new Date(mboumDate * 1000);
                 let mboumGetDate = mboumDate.getUTCDate();
-                let currHours = mboumDate.getHours();
-                let currMin = mboumDate.getMinutes();
+                let currHours = mboumDate.getUTCHours();
+                let currMin = mboumDate.getUTCMinutes();
+
                 let mktPrice;
 
                 let prev = responseBody[prevKey];
+                if (prev === undefined) return chartData[interval];
                 let mboumPrevDate = prev.date_utc;
                 mboumPrevDate = new Date(mboumPrevDate * 1000);
                 let mboumPrevGetDate = mboumPrevDate.getUTCDate();
 
                 mktPrice = curr.close;
 
-                //condition should be for any timezone:
-                //any time zone vs. NYC 9:30 am;
-                //based on the exhange, create function that returns exchange opening time, and timeZone;
-                if (currHours === 6 && currMin === 30) {
+                //market open
+                if (currHours === 13 && currMin === 30) {
+
                     //get opening price;
                     mktPrice = yhooOpenPrice
-                    //mktPrice = curr.open;
+                    // mktPrice = curr.open;
                 }
 
                 let utcTime = setMarketTime(curr.date_utc)
 
                 if (mktPrice) {
-                    chartData1.datasets[0].data.unshift(mktPrice);
-                    chartData1.labels.unshift(utcTime);
+                    chartData[interval].datasets[0].data.unshift(mktPrice);
+                    chartData[interval].labels.unshift(utcTime);
                 }
 
                 if (interval === "5m") {
-                    console.log(mboumGetDate, mboumPrevGetDate)
                     if (mboumGetDate !== mboumPrevGetDate) {
-                        return [chartData1]
+                        return [chartData[interval]]
                     }
                 }
+                if (interval === "1h") {
+                    let count = 5;
+                    //if date is more than 5 days prior
+                    //if final prevUtcDate is more than 5 days prior to original CurrUtcDate;
+                    //return chart
+                    //check for weekends.
+
+                }
+
+
             }
         }
-        const runHistPrices = async (mktstat, sym, int = ["5m", "1h", "1d", "1mo"]) => {
+        let chart;
+        const runHistPrices = async (mktstat, sym, int) => {
             //5m/1day, 1hr/5d, put prices at respective intervals
             //1d/months, 1month/years; put closing price for days;
-            let result = await Promise.all([fillChartData(mktstat, sym, "5m")]);
+            let result = await Promise.all([fillChartData(mktstat, sym, int)]);
 
-            //fillChartData(mktstat, sym, int[1]), fillChartData(mktstat, sym, int[2]), fillChartData(mktstat, sym, int[3])
-            const chartData5m = result[0][0];
+            let chartData = result[0][0];
 
             const options = {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: false,
@@ -1079,7 +1371,7 @@
                                 enabled: true
                             },
                             callback: (index) => {
-                                let label = chartData5m.labels[index]
+                                let label = chartData.labels[index]
                                 let whiteSpace = label.indexOf(" ");
                                 let timeLabel = label.slice(whiteSpace + 1);
 
@@ -1125,14 +1417,14 @@
 
             const config = {
                 type: "line",
-                data: chartData5m,
+                data: chartData,
                 options: options
             }
+            if (chart) chart.destroy();
+            chart = new Chart(canvas, config);
 
-            const chart = new Chart(canvas, config);
             return
         }
-
         const idlePage = () => {
             if (timeout) {
                 clearInterval(timeout);
@@ -1151,89 +1443,111 @@
             }, 180000);
         }
 
-        //document.addEventListener("click", idlePage);
-        //document.addEventListener("keypress", idlePage);
-        //document.addEventListener("mousemove", idlePage);
-        //document.addEventListener("scroll", idlePage);
+        const setEventListeners = () => {
 
-        h2Box.addEventListener("focus", () => {
-            const h2ChildNodes = h2Box.childNodes;
-            const selection = window.getSelection();
-            if (h2Box.innerText === "Enter ticker...") {
-                h2Box.innerText = "";
-            }
-            //set caret position after text node
-            if (h2ChildNodes.length > 0) {
-                selection.setPosition(h2ChildNodes[0], h2ChildNodes[0].length);
-            } else {
-                selection.setPosition(h2Box, 0);
+            //timeline links: 1d 5d ytd 1y 3yr
+
+            let timelineLinks = chartTimelineContainer.children
+            for (let i = 0; i < timelineLinks.length; i++) {
+                let curr = timelineLinks[i];
+                let interval;
+                if (curr.classList.contains("oneDay")) interval = "5m";
+                if (curr.classList.contains("fiveDay")) interval = "1h";
+                if (curr.classList.contains("oneMonth")) interval = "1d";
+                if (curr.classList.contains("ytd")) interval = "1mo";
+                if (curr.classList.contains("threeYr")) interval = "1mo";
+
+                curr.addEventListener("click", async () => {
+                    await runHistPrices(currMktState, stockTicker, interval);
+                    console.log("timeline clicked", interval)
+                });
             }
 
-            return;
-        });
-        h2Box.addEventListener("focusout", () => {
-            if (h2Box.innerText === "") h2Box.innerText = "Enter ticker...";
-            if (h2Box.style.backgroundColor === "#15192f") {
-                h2Box.style.backgroundColor === "#012c12";
-            }
-        });
-        h2Box.addEventListener("keydown", (e) => {
-            const textString = h2Box.innerText;
-            if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
-                e.preventDefault();
-                alert("Character amount exceeded");
-            }
-            //prevent navigation keys;
-            if (textString.length > 0) {
-                let navKeys = [
-                    "ArrowLeft",
-                    "ArrowRight",
-                    "ArrowDown",
-                    "ArrowUp",
-                    "Left",
-                    "Right",
-                    "Up",
-                    "Down",
-                    "Home",
-                    "End",
-                    "Del",
-                    "Delete",
-                    "PageUp",
-                    "PageDown",
-                    "Insert",
-                ];
+            //document.addEventListener("click", idlePage);
+            //document.addEventListener("keypress", idlePage);
+            //document.addEventListener("mousemove", idlePage);
+            //document.addEventListener("scroll", idlePage);
 
-                for (const ele of navKeys) {
-                    if (e.key === ele) {
+            h2Box.addEventListener("focus", () => {
+                const h2ChildNodes = h2Box.childNodes;
+                const selection = window.getSelection();
+                if (h2Box.innerText === "Enter ticker...") {
+                    h2Box.innerText = "";
+                }
+                //set caret position after text node
+                if (h2ChildNodes.length > 0) {
+                    selection.setPosition(h2ChildNodes[0], h2ChildNodes[0].length);
+                } else {
+                    selection.setPosition(h2Box, 0);
+                }
+
+                return;
+            });
+            h2Box.addEventListener("focusout", () => {
+                if (h2Box.innerText === "") h2Box.innerText = "Enter ticker...";
+                if (h2Box.style.backgroundColor === "#15192f") {
+                    h2Box.style.backgroundColor === "#012c12";
+                }
+            });
+            h2Box.addEventListener("keydown", (e) => {
+                const textString = h2Box.innerText;
+                if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
+                    e.preventDefault();
+                    alert("Character amount exceeded");
+                }
+                //prevent navigation keys;
+                if (textString.length > 0) {
+                    let navKeys = [
+                        "ArrowLeft",
+                        "ArrowRight",
+                        "ArrowDown",
+                        "ArrowUp",
+                        "Left",
+                        "Right",
+                        "Up",
+                        "Down",
+                        "Home",
+                        "End",
+                        "Del",
+                        "Delete",
+                        "PageUp",
+                        "PageDown",
+                        "Insert",
+                    ];
+
+                    for (const ele of navKeys) {
+                        if (e.key === ele) {
+                            e.preventDefault();
+                            alert("Invalid entry");
+                        }
+                    }
+
+                    if (textString === "" && e.key === "Enter") {
+                        e.preventDefault();
+                        alert("enter a valid ticker");
+                    }
+
+                    if (e.key === "Enter" && textString !== "") {
+                        //enter the ticker string into the url parameter
+                        //grab the URL;
+                        const url = `http://localhost:3000/tickrpro/${textString}`
+                        console.log(url, typeof url)
+                        //check ticker string
+                        window.location.href = url;
+                    }
+                }
+                //prevent non-letters
+                //Allow Backspace, Enter keys;
+                //Note: navigation keys are failing the regexp test;
+                if (regExp.test(e.key) === false) {
+                    if (e.key !== "Backspace" && e.key !== "Enter") {
                         e.preventDefault();
                         alert("Invalid entry");
                     }
                 }
+            });
 
-                if (textString === "" && e.key === "Enter") {
-                    e.preventDefault();
-                    alert("enter a valid ticker");
-                }
-
-                if (e.key === "Enter" && textString !== "") {
-                    //enter the ticker string into the url parameter
-                    //grab the URL;
-                    const url = `http://localhost:3000/tickrpro/${textString}`
-                    console.log(url, typeof url)
-                    //check ticker string
-                    window.location.href = url;
-                }
-            }
-            //prevent non-letters
-            //Allow Backspace, Enter keys;
-            //Note: navigation keys are failing the regexp test;
-            if (regExp.test(e.key) === false) {
-                if (e.key !== "Backspace" && e.key !== "Enter") {
-                    e.preventDefault();
-                    alert("Invalid entry");
-                }
-            }
-        });
+        }
 
         h2Box.focus();
         ratioContainer.removeAttribute("style");
@@ -1244,7 +1558,9 @@
         formatPrice(indexData);
         formatPrice(pricesAndPercents);
         changePctPointsColor(pricePctContainers, stockPriceChange);
-        // runHistPrices(currMktState, stockTicker, yhooOpenPrice);
+        runHistPrices(currMktState, stockTicker, "5m");
+        setEventListeners();
+        populateSlides();
         //idlePage()
         //activePage();
     </script>

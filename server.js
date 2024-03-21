@@ -9,6 +9,9 @@ const MBOUMQUOTES = process.env.MBQ;
 const MBQHOME = process.env.MBQHOME;
 const RAPID = process.env.RAPID;
 const MBQHIST = process.env.MBQHIST;
+const YHOOURL = process.env.YHOOSLIDEURL;
+const YHURLTAIL = process.env.YHURLTAIL;
+const YHOOHOST = process.env.YHOOHOST;
 const app = express();
 
 app.set("view engine", "ejs");
@@ -104,6 +107,9 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       MBOUMQUOTES,
       MBQHIST,
       RAPID,
+      YHOOHOST,
+      YHOOURL,
+      YHURLTAIL,
     });
   }
 });
@@ -111,3 +117,25 @@ app.get("/tickrpro/:symbol", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+/**
+   *
+  let per2 = Date.now() / 1000;
+  let per1 = new Date("03/15/2020");
+  //convert to epoch seconds;
+  per1 = per1.getTime() / 1000;
+
+  let result = await yahooFinance
+    .fundamentalsTimeSeries(symbol, {
+      period1: per1,
+      period2: per2,
+      type: "annual",
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((e) => console.log(e));
+  console.log(result);
+   *
+   */
