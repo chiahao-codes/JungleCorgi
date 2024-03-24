@@ -370,8 +370,8 @@
                         <div class="slide-data-wrapper income-slide-years">
                             <div class="slide-data slide-headers data-align-left currency"></div>
                             <div class="slide-data slide-headers ttm"></div>
-                            <div class="slide-data slide-headers year1"></div>
-                            <div class="slide-data slide-headers year2"></div>
+                            <div class="slide-data slide-headers year1 endingyr1"></div>
+                            <div class="slide-data slide-headers year2 endingyr2"></div>
                         </div>
                         <div class="slide-data-wrapper revenue">
                             <div class="slide-data data-align-left">Revenue</div>
@@ -429,53 +429,163 @@
                     <h6>Balance Sheet</h6>
                     <div class="annual-label">Annual</div>
                     <div class="slide-boxes">
-                        <div class="slide-data-wrapper slide-years">
-                            <div class="slide-data slide-headers data-align-left currency">(USD)</div>
-                            <div class="slide-data slide-headers year1">12/31/23</div>
-                            <div class="slide-data slide-headers year2">12/31/22</div>
-                            <div class="slide-data slide-headers year3">12/31/21</div>
+                        <div class="slide-data-wrapper balance-slide-years slide-years">
+                            <div class="slide-data slide-headers data-align-left currency"></div>
+
+                            <div class="slide-data slide-headers year1 endingyr1">
+
+                            </div>
+                            <div class="slide-data slide-headers year2 endingyr2">
+
+                            </div>
+                            <div class="slide-data slide-headers year3 endingyr3">
+                            </div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper total-assets">
                             <div class="slide-data data-align-left">Total assets</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">3.756B</div>
+                            <% let totalAssets={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% totalAssets[i]=curr.totalAssets %>
+                                                <% }} %>
+
+                                                    <div class="slide-data year1">
+                                                        <%=totalAssets[2] %>
+                                                    </div>
+                                                    <div class="slide-data year2">
+                                                        <%=totalAssets[1] %>
+                                                    </div>
+                                                    <div class="slide-data year3">
+                                                        <%=totalAssets[0] %>
+                                                    </div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper total-liab">
                             <div class="slide-data data-align-left">Total liabilities</div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
+                            <% let totalLiab={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% totalLiab[i]=curr.totalNonCurrentLiabilitiesNetMinorityInterest %>
+                                                <% }} %>
+                                                    <div class="slide-data year1">
+                                                        <%=totalLiab[2] %>
+                                                    </div>
+                                                    <div class="slide-data year2">
+                                                        <%=totalLiab[1] %>
+                                                    </div>
+                                                    <div class="slide-data year3">
+                                                        <%=totalLiab[0] %>
+                                                    </div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper total-equity">
                             <div class="slide-data data-align-left">Total equity</div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
+                            <% let totalEquity={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% totalEquity[i]=curr.totalEquityGrossMinorityInterest %>
+                                                <% }} %>
+                                                    <div class="slide-data year1">
+                                                        <%=totalEquity[2]%>
+                                                    </div>
+                                                    <div class="slide-data">
+                                                        <%=totalEquity[1] %>
+                                                    </div>
+                                                    <div class="slide-data">
+                                                        <%=totalEquity[0] %>
+                                                    </div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper total-capitalization">
                             <div class="slide-data data-align-left">Total capitalization</div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
+                            <% let totalCap={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% totalCap[i]=curr.totalCapitalization %>
+                                                <% }} %>
+                                                    <div class="slide-data year1">
+                                                        <%=totalCap[2] %>
+                                                    </div>
+                                                    <div class="slide-data year2">
+                                                        <%=totalCap[1] %>
+                                                    </div>
+                                                    <div class="slide-data year3">
+                                                        <%=totalCap[0] %>
+                                                    </div>
                         </div>
-                        <div class="slide-data-wrapper">
+                        <div class="slide-data-wrapper common-stock-equity">
+                            <div class="slide-data data-align-left">Common stock equity</div>
+                            <% let commonStock={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% commonStock[i]=curr.commonStockEquity %>
+                                                <% }} %>
+                                                    <div class="slide-data year1">
+                                                        <%=commonStock[2] %>
+                                                    </div>
+                                                    <div class="slide-data year2">
+                                                        <%=commonStock[1] %>
+                                                    </div>
+                                                    <div class="slide-data year3">
+                                                        <%=commonStock[0] %>
+                                                    </div>
+                        </div>
+                        <div class="slide-data-wrapper working-capital">
+                            <div class="slide-data data-align-left">Working capital</div>
+                            <% let workingCap={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% workingCap[i]=curr.workingCapital %>
+                                                <% }} %>
+                                                    <div class="slide-data year1">
+                                                        <%=workingCap[2] %>
+                                                    </div>
+                                                    <div class="slide-data year2">
+                                                        <%=workingCap[1] %>
+                                                    </div>
+                                                    <div class="slide-data year3">
+                                                        <%=workingCap[0] %>
+                                                    </div>
+                        </div>
+                        <div class="slide-data-wrapper total-debt">
                             <div class="slide-data data-align-left">Total debt</div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
+                            <% let totalDebt={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% totalDebt[i]=curr.totalDebt %>
+                                                <% }} %>
+                                                    <div class="slide-data year1">
+                                                        <%=totalDebt[2] %>
+                                                    </div>
+                                                    <div class="slide-data year2">
+                                                        <%=totalDebt[1] %>
+                                                    </div>
+                                                    <div class="slide-data year3">
+                                                        <%=totalDebt[0] %>
+                                                    </div>
                         </div>
-                        <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">Net debt</div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
-                        </div>
-                        <div class="slide-data-wrapper">
+
+                        <div class="slide-data-wrapper shares-issued">
                             <div class="slide-data data-align-left">Shares issued</div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
-                            <div class="slide-data"></div>
+                            <% let sharesIssued={0:"--", 1:"--", 2:"--"} %>
+                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
+                                    <% let curr=annualBalanceSheet[i] %>
+                                        <% if(curr){ %>
+                                            <% sharesIssued[i]=curr.shareIssued %>
+                                                <% }} %>
+                                                    <div class="slide-data year1">
+                                                        <%=sharesIssued[2] %>
+                                                    </div>
+                                                    <div class="slide-data year2">
+                                                        <%=sharesIssued[1] %>
+                                                    </div>
+                                                    <div class="slide-data year3">
+                                                        <%=sharesIssued[0] %>
+                                                    </div>
                         </div>
                     </div>
                 </div>
@@ -483,23 +593,23 @@
                     <h6>Cash Flow</h6>
                     <div class="annual-label">Annual</div>
                     <div class="slide-boxes">
-                        <div class="slide-data-wrapper slide-years">
-                            <div class="slide-data slide-headers data-align-left currency">(USD)</div>
-                            <div class="slide-data slide-headers ttm">TTM</div>
-                            <div class="slide-data slide-headers year1">12/31/23</div>
-                            <div class="slide-data slide-headers year2">12/31/22</div>
+                        <div class="slide-data-wrapper slide-years cash-flow-slide-years">
+                            <div class="slide-data slide-headers data-align-left currency"></div>
+                            <div class="slide-data slide-headers ttm"></div>
+                            <div class="slide-data slide-headers year1 endingyr1"></div>
+                            <div class="slide-data slide-headers year2 endingyr2"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Net income</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">3.756B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Operating cash flow</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">6.53B</div>
-                            <div class="slide-data">3.756B</div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
+                            <div class="slide-data"></div>
                         </div>
                         <div class="slide-data-wrapper">
                             <div class="slide-data data-align-left">Investing cash flow</div>
@@ -702,9 +812,16 @@
         const rapidURL = '<%=RAPID%>';
         const mboumQuotes = '<%=MBOUMQUOTES%>';
         const mboumHist = '<%=MBQHIST%>';
+
+        //income statement
         const yahooURL = '<%=YHOOURL%>'
         const yahooURLTail = '<%=YHURLTAIL%>'
         const yahooHost = '<%=YHOOHOST%>'
+        //balance sheet and cash flow
+        const yahooURL2 = '<%=YHOOURL2%>'
+        const yahooPeriod2 = '<%=YHOOPERIOD2%>'
+        const yahooPeriod1 = '<%=YHOOPERIOD1 %>'
+        const yahoo2Type = '<%=YHOOTYPE%>'
 
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
@@ -731,9 +848,13 @@
         //slides
         let dataCache = {
         }
-        const grabSlidesData = async () => {
-            let results;
-            const url = `${yahooURL}${stockTicker}${yahooURLTail}`;
+        let yearsForBalanceSheet = {};
+
+        const grabSlidesDataIncomeStatement = async (sheet) => {
+            let results, url, period2, period1;
+
+            url = `${yahooURL}${stockTicker}${yahooURLTail}`;
+
             const options = {
                 method: 'GET',
                 headers: {
@@ -752,78 +873,151 @@
 
             return results
         }
+        const grabSlideDataBalanceCashFlow = async (type) => {
+            let results, url, period2, period1;
+            /*
+               const options2 = {
+                            method: 'GET',
+                            headers: {
+                                'X-RapidAPI-Key': `${apiKey}`,
+                                'X-RapidAPI-Host': `${yahooHost}`
+                            }
+                        };
+            
+                           period1 = new Date('2021-12-31')
+                        period1 = period1.getTime() / 1000;
+            
+                        period2 = new Date('2023-12-31')
+                        period2 = period2.getTime() / 1000;
+            
+                          const options = {
+                            method: 'GET',
+                            headers: {
+                                'X-RapidAPI-Key': `${apiKey}`,
+                                'X-RapidAPI-Host': `${yahooHost}`
+                            }
+                        }
+            
+            
+                        try {
+                            const response = await fetch(url, options);
+                            results = await response.json();
+            
+                        } catch (error) {
+                            console.error(error);
+                        }
+            
+                        return results
+            */
+
+
+
+            url = `${yahooURL2}${stockTicker}${yahooPeriod2}${period2}${yahooPeriod1}${period1}${yahoo2Type}${type}`
+
+
+
+
+        }
         const fillInCache = (category, iterableData, ttm = "--") => {
-            let count = 1, year = "year";
+            let count = 1, year = "year", data;
+
             for (let i = 0; i < iterableData.length; i++) {
                 year = `${year}${count}`;
                 if (category === "endingYear") {
-                    let asOfDate = iterableData[i].endDate.fmt;
-                    if (asOfDate !== undefined) {
-                        //fill in formatted dates of statement;
-                        asOfDate = new Date(asOfDate);
+
+                    if (iterableData[i]) {
+                        if (iterableData[i].endDate) {
+                            let asOfDate = iterableData[i].endDate.fmt;
+                            //fill in formatted dates of statement;
+                            asOfDate = new Date(asOfDate);
+                            data = asOfDate;
+                        }
+                    }
+
+                    if (data !== undefined) {
                         dataCache[year] = new Intl.DateTimeFormat("en-US", {
                             dateStyle: 'short',
                             timeZone: 'UTC',
-                        }).format(asOfDate)
+                        }).format(data)
                     }
-
                 }
 
                 if (category === "annualTotalRevenue" || category === "annualGrossProfit" || category === "operatingExpense" || category === "operatingIncome"
-                    || category === "preTaxIncome" || category === "otherIncomeExpense" || category === "net-income" || category === "basic-eps") {
+                    || category === "preTaxIncome" || category === "otherIncomeExpense" || category === "net-income" || category === "basic-eps"
+                ) {
+
+                    let fmtData = "--";
+                    let currency = "--";
+
                     let endObj = iterableData.length - 1;
                     let endIndex = endObj - i;
 
                     if (endIndex >= 0) {
-                        let fmtData = "--";
-
                         if (iterableData[endIndex] !== null) {
                             fmtData = iterableData[endIndex].reportedValue.fmt;
 
                             if (!dataCache["currency-code"]) {
-                                let currency = iterableData[endIndex].currencyCode;
+                                currency = iterableData[endIndex].currencyCode;
                                 dataCache["currency-code"] = currency;
                             }
                         };
-
-                        dataCache[year] = fmtData;
                     }
+
+                    dataCache[year] = fmtData;
                 }
                 if (ttm !== undefined) {
                     dataCache["ttm"] = ttm;
                 }
+
                 count += 1;
                 year = "year";
+                dataCache[`${year}${count}`] = "";
             }
-            console.log(dataCache)
+
         }
-        const fillInDataDOM = (wrapper) => {
+        const fillInDataDOM = (wrapper, category) => {
             for (let j = 0; j < wrapper.length; j++) {
                 let currChild = wrapper[j];
-                if (dataCache["currency-code"] && !document.querySelector(".slide-data-wrapper > .currency").innerText) {
-                    let ccy = dataCache["currency-code"];
 
-                    document.querySelector(".slide-data-wrapper > .currency").innerText = `(${ccy})`;
+                let ccy = dataCache["currency-code"];
+                let allCcyDivs = document.querySelectorAll(".slide-data-wrapper > .currency");
+
+                for (let div of allCcyDivs) {
+                    div.innerText = `(${ccy})`
                 }
+
                 if (currChild.classList.contains("ttm")) {
                     currChild.innerText = dataCache["ttm"];
                 }
-                if (currChild.classList.contains("year1")) {
-                    if (!dataCache["year1"]) currChild.innerText = "N/A";
 
-                    currChild.innerText = dataCache["year1"];
+                if (category === "fillInYearsForAll") {
+                    let allSlideDataDivs = document.querySelectorAll(".slide-data-wrapper > .slide-data");
+                    for (let slides of allSlideDataDivs) {
+                        if (slides.classList.contains("endingyr1")) slides.innerText = dataCache["year1"]
+                        if (slides.classList.contains("endingyr2")) slides.innerText = dataCache["year2"]
+                        if (slides.classList.contains("endingyr3")) slides.innerText = dataCache["year3"]
+                    }
+                } else {
+
+                    if (currChild.classList.contains("year1")) {
+                        if (!dataCache["year1"]) currChild.innerText = "--";
+
+                        currChild.innerText = dataCache["year1"];
+                    }
+                    if (currChild.classList.contains("year2")) {
+                        if (!dataCache["year2"]) currChild.innerText = "--";
+                        currChild.innerText = dataCache["year2"];
+                    }
+                    if (currChild.classList.contains("year3")) {
+                        if (!dataCache["year3"]) currChild.innerText = "--";
+                        currChild.innerText = dataCache["year3"];
+                    }
+
                 }
-                if (currChild.classList.contains("year2")) {
-                    if (!dataCache["year2"]) currChild.innerText = "N/A";
-                    currChild.innerText = dataCache["year2"];
-                }
-                if (currChild.classList.contains("year3")) {
-                    if (!dataCache["year3"]) currChild.innerText = "N/A";
-                    currChild.innerText = dataCache["year3"];
-                }
+
+
             }
         }
-
         const incomeStatement = (slidedata) => {
             //gather slide data:
             console.log("slideData:", slidedata);
@@ -833,11 +1027,12 @@
             fillInCache("endingYear", years, "TTM");
             //fill in the DOM;
             const incomeSlideYears = document.querySelector(".slide-boxes>.income-slide-years").children;
-            fillInDataDOM(incomeSlideYears);
+            fillInDataDOM(incomeSlideYears, "fillInYearsForAll");
 
             //revenue:
             let ttmRevenue = slidedata.timeSeries.trailingTotalRevenue[0].reportedValue.fmt;
             let annualRev = slidedata.timeSeries.annualTotalRevenue;
+            console.log("annualRev:", annualRev)
             fillInCache("annualTotalRevenue", annualRev, ttmRevenue);
             const revenueWrapper = document.querySelector(".slide-boxes>.revenue").children;
             fillInDataDOM(revenueWrapper);
@@ -896,23 +1091,84 @@
             fillInDataDOM(netIncomeWrapper);
 
         }
+        const formatYhooDomData = (dataArray) => {
+            for (let i = 0; i < dataArray.length; i++) {
+                let curr = dataArray[i].innerText;
+
+                curr = new Intl.NumberFormat("en-US").format(curr);
+
+                if (curr !== "NaN") {
+
+                    //convert commas to decimals
+                    curr = curr.replaceAll(",", ".")
+
+                    //check for how many decimals
+                    let regExp = /[.]/g;
+                    let decimals = curr.match(regExp), startIndex = 0, endIndex, formattedCurr;
+
+                    //locate the 2nd decimal's index
+                    let firstSearch = ".";
+                    let firstIndexofDecimal = curr.indexOf(firstSearch);
+                    let secondIndexofDecimal = curr.indexOf(firstSearch, firstIndexofDecimal + 1);
+                    endIndex = secondIndexofDecimal; //2nd decimal
+                    //slice up to the 2nd decimal, excluding it.
+                    curr = curr.slice(startIndex, endIndex)
+
+                    //format curr
+                    curr = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 4, minimumSignificantDigits: 3 }).format(
+                        curr
+                    );
+
+                    let denomination = "";
+                    if (decimals.length === 4) {
+                        denomination = "T"
+                    } if (decimals.length === 3) {
+                        denomination = "B"
+                    }
+                    if (decimals.length === 2) {
+                        denomination = "M"
+                    }
+
+                    curr = `${curr}${denomination}`;
+                    dataArray[i].innerText = curr;
+
+                }
+            }
+        }
+        const balanceSheet = () => {
+            //format numbers
+            const balanceSlideData = document.querySelectorAll("#balance-sheet > .slide-boxes > .slide-data-wrapper");
+
+            for (let i = 0; i < balanceSlideData.length; i++) {
+                let curr = balanceSlideData[i];
+                if (!curr.classList.contains("balance-slide-years")) {
+
+                    let numbers = curr.children;
+
+                    formatYhooDomData(numbers);
+                }
+            }
+        }
         const populateSlides = async () => {
             const slideContainer = document.querySelector("#slide-container");
             //populate date headings
-            let slideData = await grabSlidesData();
+            let incomeSlideData = await grabSlidesDataIncomeStatement("income");
+
             //check keys;
-            let keys = Object.keys(slideData);
+            let keys = Object.keys(incomeSlideData);
             if (keys.length === 0) {
                 slideContainer.style.display = "none";
             } else {
-                incomeStatement(slideData);
+                incomeStatement(incomeSlideData);
+                balanceSheet();
+                //cashflow(cashSlideData)
             }
-
         }
 
         const slidesWrapper = document.querySelector('.slides-wrapper');
         const slides = Array.from(document.querySelectorAll(".slide"));
         const slideNavChevrons = Array.from(document.querySelectorAll(".chevrons"));
+
         //starting variables;
         let isDragging = false, startPosition = 0, currTranslateX = 0, prevTranslateX = 0, animationId = 0, currSlideIndex = 0;
         slides.forEach((slide, index) => {
@@ -957,7 +1213,7 @@
             return function (event) {
                 currSlideIndex = index;
                 startPosition = getPositionX(event);
-                console.log("startPosition aka getPositionX:", startPosition)
+
                 isDragging = true;
                 animationId = requestAnimationFrame(animation);
                 slidesWrapper.style.cursor = "grabbing";
@@ -968,14 +1224,12 @@
             isDragging = false;
             cancelAnimationFrame(animationId);
             const movedBy = currTranslateX - prevTranslateX;
-            console.log("movedBy:", movedBy);
 
-
-            if (movedBy < -100 && currSlideIndex < slides.length - 1) {
+            if (movedBy < -50 && currSlideIndex < slides.length - 1) {
                 currSlideIndex += 1
-                console.log("currSlideIndex:", currSlideIndex);
+
             }
-            if (movedBy > 100 && currSlideIndex > 0) currSlideIndex -= 1;
+            if (movedBy > 50 && currSlideIndex > 0) currSlideIndex -= 1;
             setPostionByIndex()
             slidesWrapper.style.cursor = "grab";
         }
@@ -984,7 +1238,7 @@
             if (isDragging) {
                 const currentPosition = getPositionX(event)
                 currTranslateX = prevTranslateX + currentPosition - startPosition;
-                console.log("currTranslateX:", currTranslateX)
+
             }
         }
 

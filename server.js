@@ -12,6 +12,11 @@ const MBQHIST = process.env.MBQHIST;
 const YHOOURL = process.env.YHOOSLIDEURL;
 const YHURLTAIL = process.env.YHURLTAIL;
 const YHOOHOST = process.env.YHOOHOST;
+
+const YHOOURL2 = process.env.YHOOTIMESERIESURL;
+const YHOOPERIOD2 = process.env.YHOOPERIOD2;
+const YHOOPERIOD1 = process.env.YHOOPERIOD1;
+const YHOOTYPE = process.env.YHOOTYPEURL;
 const app = express();
 
 app.set("view engine", "ejs");
@@ -93,6 +98,40 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       console.log(e);
     });
 
+  let queryBalanceSheet = {
+    period1: "2021-12-31",
+    type: "annual",
+    module: "balance-sheet",
+  };
+  let annualBalanceSheet = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryBalanceSheet
+  );
+
+  let queryCashFlow = {
+    period1: "2021-12-31",
+    type: "annual",
+    module: "cash-flow",
+  };
+  let annualCashFlow = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryCashFlow
+  );
+
+  let queryCashFlowTtm = {
+    period1: "2023-01-31",
+    type: "trailing",
+    module: "cash-flow",
+  };
+  let ttmCashFlow = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryCashFlowTtm
+  );
+
+  console.log("balance sheet:", annualBalanceSheet);
+  console.log("cash flow:", annualCashFlow);
+  console.log("ttm cash flow:", ttmCashFlow);
+
   if (
     !checkSymbol ||
     checkSymbol.price.quoteType === "ECNQUOTE" ||
@@ -110,6 +149,11 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       YHOOHOST,
       YHOOURL,
       YHURLTAIL,
+      YHOOURL2,
+      YHOOPERIOD2,
+      YHOOPERIOD1,
+      YHOOTYPE,
+      annualBalanceSheet,
     });
   }
 });
@@ -119,6 +163,38 @@ app.listen(PORT, () => {
 });
 
 /**
+ * 
+ *  
+ * 
+ * //get financials;
+  //income statement
+  let queryOptionsIS = {
+    period1: "2023-12-31",
+    type: "annual",
+    module: "financials",
+  };
+
+  let queryOptionsISTrailing = {
+    period1: "2023-01-01",
+    type: "trailing",
+    module: "financials",
+  };
+
+  let trailingIncomeStatement = await yahooFinance
+    .fundamentalsTimeSeries(symbol, queryOptionsISTrailing)
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
+  console.log("income statement trailing:", trailingIncomeStatement);
+
+  let incomeStatementFinancials = await yahooFinance
+    .fundamentalsTimeSeries(symbol, queryOptionsIS)
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
+  console.log("income statement annual:", incomeStatementFinancials);
    *
   let per2 = Date.now() / 1000;
   let per1 = new Date("03/15/2020");

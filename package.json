@@ -29,7 +29,7 @@
     "http-proxy-middleware": "^2.0.6",
     "nodemon": "^3.0.1",
     "swiper": "^11.0.5",
-    "yahoo-finance2": "^2.10.0"
+    "yahoo-finance2": "^2.11.0"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.10.3",
