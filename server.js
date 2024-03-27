@@ -98,6 +98,28 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       console.log(e);
     });
 
+  let queryIncomeStatement = {
+    period1: "2021-12-31",
+    type: "annual",
+    module: "financials",
+  };
+
+  let annualIncomeStatement = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryIncomeStatement
+  );
+
+  let queryIncomeStatementTTM = {
+    period1: "2021-12-31",
+    type: "trailing",
+    module: "financials",
+  };
+
+  let ttmIncomeStatement = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryIncomeStatementTTM
+  );
+
   let queryBalanceSheet = {
     period1: "2021-12-31",
     type: "annual",
@@ -128,6 +150,8 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     queryCashFlowTtm
   );
 
+  console.log("income:", annualIncomeStatement);
+  console.log("ttm income:", ttmIncomeStatement);
   console.log("balance sheet:", annualBalanceSheet);
   console.log("cash flow:", annualCashFlow);
   console.log("ttm cash flow:", ttmCashFlow);
@@ -153,7 +177,11 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       YHOOPERIOD2,
       YHOOPERIOD1,
       YHOOTYPE,
+      annualIncomeStatement,
+      ttmIncomeStatement,
       annualBalanceSheet,
+      annualCashFlow,
+      ttmCashFlow,
     });
   }
 });
