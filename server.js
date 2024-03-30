@@ -77,8 +77,16 @@ app.get("/", async (req, res, next) => {
   res.render("home", { prices, API_KEY, MBQHOME, RAPID });
 });
 
+app.get("/disclaimer", async (req, res, next) => {
+  res.render("disclaimer");
+});
+
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol;
+  console.log("symbol", symbol);
+  if (symbol === "disclaimer") {
+    res.render("disclaimer");
+  }
   let checkSymbol = await yahooFinance
     .quoteSummary(symbol, {
       modules: [
@@ -104,10 +112,12 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     module: "financials",
   };
 
-  let annualIncomeStatement = await yahooFinance.fundamentalsTimeSeries(
-    symbol,
-    queryIncomeStatement
-  );
+  let annualIncomeStatement = await yahooFinance
+    .fundamentalsTimeSeries(symbol, queryIncomeStatement)
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
 
   let queryIncomeStatementTTM = {
     period1: "2021-12-31",
@@ -125,6 +135,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     type: "annual",
     module: "balance-sheet",
   };
+
   let annualBalanceSheet = await yahooFinance.fundamentalsTimeSeries(
     symbol,
     queryBalanceSheet
@@ -135,6 +146,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     type: "annual",
     module: "cash-flow",
   };
+
   let annualCashFlow = await yahooFinance.fundamentalsTimeSeries(
     symbol,
     queryCashFlow
@@ -145,6 +157,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     type: "trailing",
     module: "cash-flow",
   };
+
   let ttmCashFlow = await yahooFinance.fundamentalsTimeSeries(
     symbol,
     queryCashFlowTtm
@@ -179,6 +192,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       YHOOTYPE,
       annualIncomeStatement,
       ttmIncomeStatement,
+      ttmIncomeStatement,
       annualBalanceSheet,
       annualCashFlow,
       ttmCashFlow,
@@ -189,57 +203,3 @@ app.get("/tickrpro/:symbol", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-/**
- * 
- *  
- * 
- * //get financials;
-  //income statement
-  let queryOptionsIS = {
-    period1: "2023-12-31",
-    type: "annual",
-    module: "financials",
-  };
-
-  let queryOptionsISTrailing = {
-    period1: "2023-01-01",
-    type: "trailing",
-    module: "financials",
-  };
-
-  let trailingIncomeStatement = await yahooFinance
-    .fundamentalsTimeSeries(symbol, queryOptionsISTrailing)
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => console.log(e));
-  console.log("income statement trailing:", trailingIncomeStatement);
-
-  let incomeStatementFinancials = await yahooFinance
-    .fundamentalsTimeSeries(symbol, queryOptionsIS)
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => console.log(e));
-  console.log("income statement annual:", incomeStatementFinancials);
-   *
-  let per2 = Date.now() / 1000;
-  let per1 = new Date("03/15/2020");
-  //convert to epoch seconds;
-  per1 = per1.getTime() / 1000;
-
-  let result = await yahooFinance
-    .fundamentalsTimeSeries(symbol, {
-      period1: per1,
-      period2: per2,
-      type: "annual",
-    })
-    .then((data) => {
-      console.log(data);
-      return data;
-    })
-    .catch((e) => console.log(e));
-  console.log(result);
-   *
-   */

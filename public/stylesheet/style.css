@@ -256,13 +256,43 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    row-gap: 15px;
+    justify-content: center;
+    align-items: center;
+
     border: 1px solid black;
     width: 100%;
     max-width: 760px;
-    height: max-content;
-    max-height: 300px;
+    height: 350px;
+  }
+
+  #progress-bar-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 5px;
+  }
+
+  progress {
+    width: 70%; /* Full width */
+    height: 30px; /* Set the height */
+    border-radius: 5px;
+    color: var(--eve); /* Color of the text */
+    background-color: var(--cold-white); /* Background color */
+  }
+  progress::-webkit-progress-value {
+    background-color: var(--bluish);
+  }
+
+  progress::-webkit-progress-bar {
+    background-color: var(--cold-white);
+  }
+
+  /* For Mozilla Firefox */
+  progress::-moz-progress-bar {
+    background-color: var(--bluish); /* Green color */
   }
 
   #chart_container > .charts {
@@ -353,6 +383,27 @@ body {
     display: flex;
     justify-content: flex-start;
     column-gap: 5px;
+  }
+
+  #technical-opinion-container {
+    border: 1px solid var(--eve);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+    width: 200px;
+    min-width: fit-content;
+    padding: 2px;
+  }
+  .tech-wrappers {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 8px;
+  }
+  #source-wrapper > a {
+    text-decoration: none;
+    font-size: 11px;
+    color: var(--eve);
   }
 
   #stock_price_container > #index_data_container {
@@ -621,6 +672,20 @@ body {
   #error_body main img {
     margin-top: 25px;
     width: 310px;
+  }
+
+  #disclaimer-body {
+    display: block;
+    position: relative;
+  }
+
+  #disclaimer-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    border: 1px solid var(--midnight);
   }
 
   #error_body main #container {
