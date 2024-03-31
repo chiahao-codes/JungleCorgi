@@ -1282,7 +1282,7 @@
             const computedStyle = getComputedStyle(progressBar);
             let width = parseFloat(computedStyle.getPropertyValue('--width'));
             progressBar.style.setProperty("--width", width + .1);
-            console.log("width:", width);
+
             if (width === 100.00) {
                 clearInterval(pIntervalId)
                 progressBar.style.setProperty("--width", 35);
@@ -1674,7 +1674,6 @@
             const preMarketTime = result.body[0].preMarketTime;
             const postMarketTime = result.body[0].postMarketTime;
 
-            console.log(result.body[0]);
 
             let regMktState = "Last Closed:", regMktPrice, regMktChange, regMktChangePercent,
                 mktStatePrice, mktStateChange, mktStateChangePct, extendedMkTime, mktState;
@@ -1819,7 +1818,7 @@
             const responseMeta = histPrices.meta;
             //Iterate over body, start from the last one, go backwards;
             const keys = Object.keys(responseBody);
-
+            console.log("keys:", keys)
             //depending on the interval, return necessary data object;
             //start from the last one and go backwards;
             let count = 5, yearCount = 4;
@@ -1849,6 +1848,9 @@
 
                 mktPrice = curr.close;
 
+                console.log("curr:", curr)
+                console.log("mktPrice", mktPrice)
+                console.log("mboumDate", mboumDate)
 
                 if (interval === "5m") {
                     if (mktPrice) {
@@ -1914,7 +1916,7 @@
                     if (currYear !== mboumPrevGetYr) {
                         yearCount -= 1;
                     }
-                    console.log("yearCount:", yearCount)
+
                     if (yearCount === 0) {
                         return [chartData[interval]]
                     }
@@ -1939,6 +1941,8 @@
             stockChart.style.display = "initial";
 
             let chartData = result[0][0], options;
+            console.log("result:", result)
+            console.log("chartData", chartData)
             if (int === "5m") {
 
                 options = {

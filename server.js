@@ -81,6 +81,26 @@ app.get("/disclaimer", async (req, res, next) => {
   res.render("disclaimer");
 });
 
+app.get("/privacy", async (req, res, next) => {
+  res.render("privacy");
+});
+
+app.get("/termsofservice", async (req, res, next) => {
+  res.render("terms");
+});
+
+app.get("/tickrpro/disclaimer", async (req, res, next) => {
+  res.render("disclaimer");
+});
+
+app.get("/tickrpro/termsofservice", async (req, res, next) => {
+  res.render("terms");
+});
+
+app.get("/tickrpro/privacy", async (req, res, next) => {
+  res.render("privacy");
+});
+
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol;
   console.log("symbol", symbol);
