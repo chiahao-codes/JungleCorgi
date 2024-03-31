@@ -89,6 +89,10 @@ app.get("/termsofservice", async (req, res, next) => {
   res.render("terms");
 });
 
+app.get("/contact", async (req, res, next) => {
+  res.render("contact");
+});
+
 app.get("/tickrpro/disclaimer", async (req, res, next) => {
   res.render("disclaimer");
 });
@@ -99,6 +103,10 @@ app.get("/tickrpro/termsofservice", async (req, res, next) => {
 
 app.get("/tickrpro/privacy", async (req, res, next) => {
   res.render("privacy");
+});
+
+app.get("/tickrpro/contact", async (req, res, next) => {
+  res.render("contact");
 });
 
 app.get("/tickrpro/:symbol", async (req, res) => {

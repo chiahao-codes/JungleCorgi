@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head.ejs') %>
+</head>
+
+<body class="legal body">
+    <section id="contact_container">
+        <h1 id="contact_header" class="section_h1">Contact</h1>
+        <form action="https://api.web3forms.com/submit" method="POST">
+
+            <input type="hidden" name="access_key" value="0e253c78-ef00-4238-8cd3-90873e67eb3c">
+
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <textarea name="message" placeholder="Leave A Message!" required></textarea>
+            <input type="hidden" name="redirect" value="https://web3forms.com/success">
+            <button id="contactButton" type="submit">
+                <div class="alt-send-button">
+                    <span class="send-text">Send</span>
+                    <img alt="paper-plane-icon" class="paper-plane" src="/paper-plane-20.png"></img>
+                </div>
+            </button>
+        </form>
+    </section>
+    <footer>
+        <%- include('./partials/footer.ejs') %>
+    </footer>
+</body>
+
+</html>

@@ -692,6 +692,136 @@
     border-radius: 5px;
   }
 
+  #contact_container {
+    position: relative;
+    width: 100%;
+    min-width: 100%;
+    height: 750px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 4.06em;
+    align-items: center;
+    background-color: inherit;
+    color: white;
+    overflow-x: hidden;
+  }
+
+  #contact_container h1 {
+    font-size: calc(28px);
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+  }
+
+  #contact_container > form {
+    width: 260px;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    row-gap: 25px;
+    align-items: center;
+    border: 2px solid white;
+    color: white;
+    padding: 3% 0;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  #contact_container > form > input,
+  #contact_container > form > textarea {
+    width: 85%;
+    max-width: 85%;
+    color: white;
+    background-color: black;
+    font-family: "Cormorant SC", sans-serif;
+  }
+
+  #contact_container > form > textarea {
+    height: 225px;
+    min-height: 225px;
+    max-height: 225px;
+  }
+
+  #contact_container > form > input::placeholder {
+    color: white;
+    font-family: "Cormorant SC", sans-serif;
+    font-size: small;
+    background-color: black;
+  }
+
+  #contact_container > form > textarea::placeholder {
+    color: white;
+    font-family: "Cormorant SC", sans-serif;
+    font-size: small;
+    background-color: black;
+  }
+
+  #contact_container > form > button {
+    width: 90px;
+    max-width: 90px;
+    height: 45px;
+    color: white;
+    background-color: #0e5227;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);
+    font-family: "Cormorant SC", sans-serif;
+    font-size: small;
+    text-align: center;
+    overflow-wrap: normal;
+    overflow: hidden;
+    opacity: 0.85;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    border-radius: 10px;
+    border-color: #0e5227;
+  }
+
+  #contact_container > form > button > .alt-send-button {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: all 0.2s ease-in-out;
+  }
+
+  #contact_container > form > button > .alt-send-button > .send-text {
+    position: relative;
+    display: block;
+    margin-top: 10%;
+    font-size: medium;
+    font-weight: 800;
+    filter: brightness(120%);
+    -webkit-filter: brightness(120%);
+  }
+
+  #contact_container > form > button > div > img {
+    width: 40%;
+    height: 40%;
+    position: relative;
+    filter: invert(100%);
+    -webkit-filter: invert(100%);
+    margin-top: 30%;
+  }
+
+  #contact_container > form > button:hover {
+    opacity: 1;
+    cursor: pointer;
+    filter: brightness(110%);
+    -webkit-filter: brightness(110%);
+  }
+
+  #contact_container > form > button > .alt-send-button:hover {
+    transform: translate3d(0px, -100%, 0px);
+    filter: brightness(110%);
+    -webkit-filter: brightness(110%);
+  }
+
+  #contact_container > form > button:active {
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.35);
+    transform: scale(0.95);
+  }
+
   #error_body main #container {
     display: flex;
     flex-direction: column;
