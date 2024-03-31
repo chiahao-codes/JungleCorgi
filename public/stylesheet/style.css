@@ -23,13 +23,13 @@
   --blackish: #090801;
 }
 
-body {
+.body {
   display: none;
 }
 
 /*mobile display*/
 @media screen and (min-width: 320px) {
-  body {
+  .body {
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -42,9 +42,11 @@ body {
     font-family: "Noto Sans", sans-serif;
     background-color: var(--vanilla);
   }
+
   #home_body {
     row-gap: 35px;
   }
+
   body header {
     width: 100%;
     height: 75px;
@@ -258,41 +260,37 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     border: 1px solid black;
     width: 100%;
     max-width: 760px;
     height: 350px;
   }
 
-  #progress-bar-wrapper {
-    width: 100%;
-    height: 100%;
+  /**/
+  #progress-bar {
+    position: relative;
+    width: 90%;
+    height: 3em;
+    background-color: var(--midnight);
+    border-radius: 1.5em;
+    color: white;
+  }
+
+  #progress-bar::before {
+    content: attr(data-label);
+    font-family: "Noto Sans" sans-serif;
+    position: absolute;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    row-gap: 5px;
-  }
-
-  progress {
-    width: 70%; /* Full width */
-    height: 30px; /* Set the height */
-    border-radius: 5px;
-    color: var(--eve); /* Color of the text */
-    background-color: var(--cold-white); /* Background color */
-  }
-  progress::-webkit-progress-value {
-    background-color: var(--bluish);
-  }
-
-  progress::-webkit-progress-bar {
-    background-color: var(--cold-white);
-  }
-
-  /* For Mozilla Firefox */
-  progress::-moz-progress-bar {
-    background-color: var(--bluish); /* Green color */
+    top: 0.5em;
+    left: 0.5em;
+    bottom: 0.5em;
+    width: calc(var(--width, 0) * 1%);
+    min-width: 2rem;
+    max-width: calc(100% - 1em);
+    background-color: var(--purp);
+    border-radius: 1em;
+    padding: 1em;
   }
 
   #chart_container > .charts {
@@ -674,18 +672,24 @@ body {
     width: 310px;
   }
 
-  #disclaimer-body {
-    display: block;
-    position: relative;
+  .disclaimer {
+    padding-top: 20px;
+    row-gap: 20px;
   }
 
   #disclaimer-wrap {
     display: flex;
-    justify-content: center;
-    width: 100%;
+    position: relative;
+    justify-content: space-between;
+    row-gap: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 80%;
+    max-width: 600px;
     height: 100%;
-    padding: 5px;
+    padding: 15px 5px;
     border: 1px solid var(--midnight);
+    border-radius: 5px;
   }
 
   #error_body main #container {

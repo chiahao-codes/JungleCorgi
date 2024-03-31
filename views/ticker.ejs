@@ -5,7 +5,7 @@
     <%- include('./partials/head.ejs') %>
 </head>
 
-<body id="ticker_body">
+<body id="ticker_body" class="body">
     <header class="headerBox">
         <h2 contenteditable></h2>
     </header>
@@ -79,20 +79,20 @@
                 </div>
 
             </div>
+
             <div id="chart_container">
-                <div id="progress-bar-wrapper">
-                    <label for="fileProgress">Loading...</label>
-                    <progress id="fileProgress" value="0" max="80"></progress>
-                </div>
+                <div id="progress-bar" style="--width:35" data-label="Loading..."></div>
                 <canvas id="chart" class="charts"></canvas>
             </div>
-            <div id="chart-timeline-container">
-                <h6 class="timeline-link oneDay">1D</h6>
-                <h6 class="timeline-link fiveDay">5D</h6>
-                <h6 class="timeline-link oneMonth">1M</h6>
-                <h6 class="timeline-link ytd">YTD</h6>
-                <h6 class="timeline-link threeYr">3Y</h6>
-            </div>
+
+        </div>
+        <div id="chart-timeline-container">
+            <h6 class="timeline-link oneDay">1D</h6>
+            <h6 class="timeline-link fiveDay">5D</h6>
+            <h6 class="timeline-link oneMonth">1M</h6>
+            <h6 class="timeline-link ytd">YTD</h6>
+            <h6 class="timeline-link threeYr">3Y</h6>
+        </div>
         </div>
         <section id="index_data_container" class="index_data_container">
             <div id="ratio-container" class="index-data-kids">
@@ -1272,22 +1272,29 @@
         const dividendData = document.querySelector("#divRateYield-container");
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
-        var progressBar = document.getElementById('fileProgress');
-        const progressWrapper = document.getElementById('progress-bar-wrapper');
+
+
         // Function to update the progress bar
-        function updateProgressBar(progressValue) {
+        const progressBar = document.getElementById('progress-bar');
+        let pIntervalId;
 
-            progressBar.value = progressValue;
-            progressBar.innerHTML = progressValue + '%';
-
-            /*  if (progressValue < 90) {
-                progressValue += 5;
-                setTimeout(updateProgressBar(progressValue), 100)
-            }  */
-
-
+        function updateProgressBar() {
+            const computedStyle = getComputedStyle(progressBar);
+            let width = parseFloat(computedStyle.getPropertyValue('--width'));
+            progressBar.style.setProperty("--width", width + .1);
+            console.log("width:", width);
+            if (width === 100.00) {
+                clearInterval(pIntervalId)
+                progressBar.style.setProperty("--width", 35);
+                pIntervalId = setInterval(updateProgressBar, 10);
+            }
         }
 
+        function stopProgressBarInterval() {
+            clearInterval(pIntervalId);
+            pIntervalId = null;
+            progressBar.style.setProperty("--width", 35);
+        }
 
         const incomeStatement = () => {
             //format years for all:
@@ -1916,16 +1923,19 @@
             }
         }
         let chart;
-        const runHistPrices = async (mktstat, sym, int) => {
-            progressWrapper.style.display = "flex";
+        const runHistPrices = async (mktstat, sym, int, reset) => {
+            progressBar.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
-            //progress bar
-            updateProgressBar(65);
+            pIntervalId = setInterval(updateProgressBar, 10);
+            // updateProgressBar();
+
             //5m/1day, 1hr/5d, put prices at respective intervals
             //1d/months, 1month/years; put closing price for days;
-            let result = await Promise.all([fillChartData(mktstat, sym, int)]);
-            progressWrapper.style.display = "none";
+            let result = await Promise.all([fillChartData(mktstat, sym, int)])
+            stopProgressBarInterval();
+            console.log('intervalid', pIntervalId)
+            progressBar.style.display = "none";
             stockChart.style.display = "initial";
 
             let chartData = result[0][0], options;
@@ -2260,6 +2270,7 @@
 
                 curr.addEventListener("click", async () => {
                     chart.destroy();
+                    stopProgressBarInterval()
                     await runHistPrices(currMktState, stockTicker, interval);
                     console.log("timeline clicked", interval)
                 });
