@@ -859,7 +859,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 6px;
-    position: relative;
+    position: absolute;
 
     bottom: 0;
     left: 0;

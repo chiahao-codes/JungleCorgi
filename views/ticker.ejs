@@ -1772,7 +1772,8 @@
             }
         }
         const mboumHistPrices = async (sym, interval, mboumhist = mboumHist, rapidurl = rapidURL, apikey = apiKey) => {
-            let result
+            let result;
+            console.log("symbol in mboumHistPrices:", sym)
             const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
             const options = {
                 method: 'GET',
@@ -1785,6 +1786,8 @@
             try {
                 const response = await fetch(url, options);
                 result = await response.json();
+                console.log("mboumprices result:", result); //bug: fetch giving an error for Russell Index, 
+                //ask for help from Cyclical;
             } catch (error) {
                 console.error(error);
             }
