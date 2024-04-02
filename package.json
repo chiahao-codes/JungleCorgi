@@ -12,16 +12,11 @@
   ],
   "scripts": {
     "start": "node ./server.js",
-    "serve": "node server.js",
-    "dev": "parcel src/*.html",
-    "watch": "parcel watch",
-    "build": "parcel build",
-    "concur": "concurrently \"npm:build\" \"npm:serve\""
+    "serve": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cnbc-market": "^3.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
@@ -35,13 +30,11 @@
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
-    "concurrently": "^8.2.2",
     "crypto-browserify": "^3.12.0",
     "esmify": "^2.1.1",
     "events": "^3.3.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
-    "parcel": "^2.10.2",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "querystring-es3": "^0.2.1",
