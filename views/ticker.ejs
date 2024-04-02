@@ -1821,7 +1821,7 @@
             console.log("keys:", keys)
             //depending on the interval, return necessary data object;
             //start from the last one and go backwards;
-            let count = 5, yearCount = 4;
+            let count = 5, yearCount = 4, monthCount = 30;
             for (let i = keys.length - 1; i >= 0; i--) {
                 let key = keys[i];
                 let prevKey = keys[i - 1];
@@ -1887,8 +1887,12 @@
                         chartData[interval].labels.unshift(mboumDate);
                     }
 
-                    if (currMonth !== mboumPrevGetMonth) {
-                        return [chartData[interval]]
+                    if (mboumGetDate !== mboumPrevGetDate) {
+                        monthCount -= 1;
+                        if (monthCount === 0) {
+                            return [chartData[interval]]
+                        }
+
 
                     }
                 }
