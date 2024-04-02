@@ -705,7 +705,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    row-gap: 4.06em;
+    row-gap: 3em;
     align-items: center;
     background-color: inherit;
     overflow-x: hidden;
