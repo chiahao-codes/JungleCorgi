@@ -687,10 +687,9 @@
     width: 80%;
     max-width: 600px;
     height: 100%;
-    padding: 15px 5px;
-    bottom: 50px;
-    border: 1px solid var(--midnight);
-    border-radius: 5px;
+    padding: 15px 5px 260px;
+    /*border: 1px solid var(--midnight);
+    border-radius: 5px;*/
   }
 
   #contact_container {
