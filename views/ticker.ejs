@@ -1286,7 +1286,9 @@
             if (width === 100.00) {
                 clearInterval(pIntervalId)
                 progressBar.style.setProperty("--width", 35);
-                pIntervalId = setInterval(updateProgressBar, 10);
+                pIntervalId = setInterval(() => {
+                    updateProgressBar();
+                }, 10);
             }
         }
 
