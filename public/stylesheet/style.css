@@ -692,6 +692,11 @@
     border-radius: 5px;*/
   }
 
+  .legal-wrap > #info-we-collect {
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
   #contact_container {
     position: relative;
     width: 100%;
