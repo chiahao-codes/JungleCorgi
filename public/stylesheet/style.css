@@ -977,6 +977,7 @@
   #ticker_body > #stock_price_container {
     align-items: center;
   }
+
   #stock_price_container > #index_data_container {
     flex-direction: row;
     column-gap: 45px;
@@ -1027,7 +1028,7 @@
   #home_body #index_section_container {
     display: grid;
     justify-content: center;
-    padding: 10px 10px 230px 10px;
+    padding: 10px 10px 250px 10px;
     grid-template-columns: repeat(5, 91px);
     grid-template-rows: repeat(3, 88px);
     row-gap: 28px;
