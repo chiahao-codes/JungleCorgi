@@ -1775,7 +1775,10 @@
         }
         const mboumHistPrices = async (sym, interval, mboumhist = mboumHist, rapidurl = rapidURL, apikey = apiKey) => {
             let result;
-            console.log("symbol in mboumHistPrices:", sym)
+
+            console.log("mboumHist:", mboumhist)
+            console.log("rapidurl:", rapidURL);
+            console.log("apikey:", apiKey);
             const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
             const options = {
                 method: 'GET',
