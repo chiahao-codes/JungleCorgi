@@ -14,7 +14,7 @@
         <div id="home-chart-container">
             <div id="home-price-container">
                 <div id="home_link_container">
-                    <a href="http://localhost:3000" target="_self">Home</a>
+                    <a href="https://tickrpro.com" target="_self">Home</a>
                     <span id="arrow">></span>
                     <span id="symbol">
                         <%=checkSymbol.price.symbol%>
@@ -1791,8 +1791,8 @@
             try {
                 const response = await fetch(url, options);
                 result = await response.json();
-                console.log("mboumprices result:", result); //bug: fetch giving an error for Russell Index, 
-                //ask for help from Cyclical;
+                console.log("mboumprices result:", result);
+
             } catch (error) {
                 console.error(error);
             }
