@@ -1823,7 +1823,7 @@
             const responseMeta = histPrices.meta;
             //Iterate over body, start from the last one, go backwards;
             const keys = Object.keys(responseBody);
-            console.log("keys:", keys)
+
             //depending on the interval, return necessary data object;
             //start from the last one and go backwards;
             let count = 5, yearCount = 4, monthCount = 30;
@@ -1852,10 +1852,6 @@
                 let mboumPrevGetYr = mboumPrevKeyDate.getUTCFullYear()
 
                 mktPrice = curr.close;
-
-                console.log("curr:", curr)
-                console.log("mktPrice", mktPrice)
-                console.log("mboumDate", mboumDate)
 
                 if (interval === "5m") {
                     if (mktPrice) {
@@ -1948,8 +1944,6 @@
             stockChart.style.display = "initial";
 
             let chartData = result[0][0], options;
-            console.log("result:", result)
-            console.log("chartData", chartData)
             if (int === "5m") {
 
                 options = {
@@ -2283,7 +2277,6 @@
                     chart.destroy();
                     stopProgressBarInterval()
                     await runHistPrices(currMktState, stockTicker, interval);
-                    console.log("timeline clicked", interval)
                 });
             }
 
@@ -2354,8 +2347,7 @@
                     if (e.key === "Enter" && textString !== "") {
                         //enter the ticker string into the url parameter
                         //grab the URL;
-                        const url = `http://localhost:3000/tickrpro/${textString}`
-                        console.log(url, typeof url)
+                        const url = `https://www.tickrpro.com/tickrpro/${textString}`
                         //check ticker string
                         window.location.href = url;
                     }
