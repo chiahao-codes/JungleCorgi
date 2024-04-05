@@ -1790,6 +1790,7 @@
 
             try {
                 const response = await fetch(url, options);
+                console.log('response:', response);
                 result = await response.json();
                 console.log("mboumprices result:", result);
 
