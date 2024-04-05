@@ -1786,8 +1786,7 @@
             try {
                 const response = await fetch(url, options);
                 console.log('response:', response);
-                result.text();
-                // result = await response.json();
+                result = await response.json();
                 console.log("mboumprices result:", result);
 
             } catch (error) {
@@ -1816,7 +1815,7 @@
                 labels: []
             };
 
-            console.log("ticker:", ticker)
+            //might just need to use npmjs yahoo-finance2 for chart info;
             const histPrices = await mboumHistPrices(ticker, interval);
             console.log("histPrices", histPrices)
 
