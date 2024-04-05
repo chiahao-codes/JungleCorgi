@@ -1233,7 +1233,7 @@
         localStorage.setItem("url", pageUrl);
         const apiKey = '<%=API_KEY%>';
         const stockTicker = '<%=checkSymbol.price.symbol%>';
-        console.log("stockTicker:", stockTicker);
+
         const dividendRate = '<%=checkSymbol.summaryDetail.dividendRate%>'
         const exDivDate = '<%=checkSymbol.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=checkSymbol.summaryDetail.open%>';
@@ -1302,15 +1302,15 @@
         const incomeStatement = () => {
             //format years for all:
             let endingYears = document.querySelectorAll(".slide-boxes > .slide-years");
-            console.log("endingYears:", endingYears)
+
             for (let i = 0; i < endingYears.length; i++) {
                 let curr = endingYears[i].children;
 
                 for (let yr of curr) {
-                    console.log(yr.classList)
+
                     if (yr.classList.contains("endingyr1") || yr.classList.contains("endingyr2") ||
                         yr.classList.contains("endingyr3")) {
-                        console.log()
+
                         if (yr.innerText !== "--") {
                             let format = new Date(yr.innerText);
                             if (format) {
@@ -1334,9 +1334,6 @@
                     formatYhooDomData(numbers);
                 }
             }
-
-
-
         }
         const formatYhooDomData = (dataArray) => {
             for (let i = 0; i < dataArray.length; i++) {
@@ -1398,7 +1395,6 @@
         }
         const cashFlow = () => {
             const cashflowDivs = document.querySelectorAll("#cash-flow > .slide-boxes > .slide-data-wrapper");
-            console.log('cashflowDivs:', cashflowDivs)
 
             for (let i = 0; i < cashflowDivs.length; i++) {
                 let curr = cashflowDivs[i];
@@ -1777,9 +1773,6 @@
         const mboumHistPrices = async (sym, interval, mboumhist = mboumHist, rapidurl = rapidURL, apikey = apiKey) => {
             let result;
 
-            console.log("mboumHist:", mboumhist)
-            console.log("rapidurl:", rapidURL);
-            console.log("apikey:", apiKey);
             const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
             const options = {
                 method: 'GET',
