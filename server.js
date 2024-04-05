@@ -3,7 +3,10 @@ import cors from "cors";
 import yahooFinance from "yahoo-finance2";
 import "dotenv/config";
 
-const PORT = process.env.PORT;
+let PORT = process.env.PORT;
+if (PORT == null || PORT == "") {
+  PORT = 3000;
+}
 const API_KEY = process.env.KEY;
 const MBOUMQUOTES = process.env.MBQ;
 const MBQHOME = process.env.MBQHOME;

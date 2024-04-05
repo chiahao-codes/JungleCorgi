@@ -14,7 +14,7 @@
         <div id="home-chart-container">
             <div id="home-price-container">
                 <div id="home_link_container">
-                    <a href="https://tickrpro.com" target="_self">Home</a>
+                    <a href="http://localhost:3000" target="_self">Home</a>
                     <span id="arrow">></span>
                     <span id="symbol">
                         <%=checkSymbol.price.symbol%>
@@ -2350,6 +2350,7 @@
                     if (e.key === "Enter" && textString !== "") {
                         //enter the ticker string into the url parameter
                         //grab the URL;
+                        //grab url param instead of string of element;
                         const url = `https://www.tickrpro.com/tickrpro/${textString}`
                         //check ticker string
                         window.location.href = url;
