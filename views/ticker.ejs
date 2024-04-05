@@ -1233,6 +1233,7 @@
         localStorage.setItem("url", pageUrl);
         const apiKey = '<%=API_KEY%>';
         const stockTicker = '<%=checkSymbol.price.symbol%>';
+        console.log("stockTicker:", stockTicker);
         const dividendRate = '<%=checkSymbol.summaryDetail.dividendRate%>'
         const exDivDate = '<%=checkSymbol.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=checkSymbol.summaryDetail.open%>';
@@ -2378,7 +2379,7 @@
         formatPrice(indexData);
         formatPrice(pricesAndPercents);
         changePctPointsColor(pricePctContainers, stockPriceChange);
-        runHistPrices(currMktState, "nflx", "5m");
+        runHistPrices(currMktState, stockTicker, "5m");
         setEventListeners();
         populateSlides();
         //idlePage()
