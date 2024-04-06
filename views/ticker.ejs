@@ -1787,10 +1787,11 @@
                 const response = await fetch(url, options);
 
                 const reader = response.body.getReader();
-                reader.releaseLock()
-                console.log('reader:', reader);
-                result = await response.json();
-                console.log("mboumprices result:", result);
+                reader.releaseLock();
+                const stream = reader.read()
+                console.log('stream:', stream);
+                //result = await response.json();
+                // console.log("mboumprices result:", result);
 
             } catch (error) {
                 console.error(error);
