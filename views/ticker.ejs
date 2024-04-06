@@ -1784,15 +1784,15 @@
             };
 
             try {
-                const response = await fetch(url, options);
-                console.log('response:', response);
-                result = await response.json();
-                console.log("mboumprices result:", result);
-
+                const response = await fetch(url, options).then((response) => {
+                    result = response.json();
+                    console.log(result);
+                    return result;
+                })
             } catch (error) {
                 console.error(error);
             }
-            return result
+            return reponse
         }
         const fillChartData = async (mktstatus, ticker, interval) => {
             //5m:1day, 1h:5days;
