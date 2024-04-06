@@ -1785,7 +1785,10 @@
 
             try {
                 const response = await fetch(url, options);
-                console.log('response:', response);
+
+                const reader = response.body.getReader();
+                reader.releaseLock()
+                console.log('reader:', reader);
                 result = await response.json();
                 console.log("mboumprices result:", result);
 
