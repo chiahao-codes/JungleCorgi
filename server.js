@@ -5,7 +5,7 @@ import "dotenv/config";
 
 let PORT = process.env.PORT || 3000;
 
-const API_KEY = process.env.KEY;
+const API_KEY = process.env.KEY2;
 const MBOUMQUOTES = process.env.MBQ;
 const MBQHOME = process.env.MBQHOME;
 const RAPID = process.env.RAPID;
@@ -110,6 +110,22 @@ app.get("/tickrpro/contact", async (req, res, next) => {
   res.render("contact");
 });
 
+/** Charts Info */
+let setPeriod1 = (int) => {
+  let period1;
+  let utcMonth, utcDate, utcYr, utcHours, utcMins, utcSecs;
+  let date = new Date();
+  utcMonth = date.getUTCMonth();
+  utcDate = date.getUTCDate();
+  utcYr = date.getUTCFullYear();
+  if (int === "5m") {
+    period1 = new Date(utcYr, utcMonth, utcDate, 0, 0, 0);
+    // let formatted = new Intl.DateTimeFormat("en-US", {})
+  }
+
+  return period1;
+};
+
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol;
   console.log("symbol", symbol);
@@ -135,6 +151,14 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       console.log(e);
     });
 
+  //5min = 1 day;
+  let p1 = setPeriod1("5m");
+  console.log("p1:", p1);
+  let query5min = { return: "object", period1: p1, interval: "5m" };
+  let chart5m = await yahooFinance.chart(symbol, query5min);
+  console.log("chart5m:", chart5m);
+
+  /**Financial History */
   let queryIncomeStatement = {
     period1: "2021-12-31",
     type: "annual",
@@ -192,12 +216,6 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     queryCashFlowTtm
   );
 
-  console.log("income:", annualIncomeStatement);
-  console.log("ttm income:", ttmIncomeStatement);
-  console.log("balance sheet:", annualBalanceSheet);
-  console.log("cash flow:", annualCashFlow);
-  console.log("ttm cash flow:", ttmCashFlow);
-
   if (
     !checkSymbol ||
     checkSymbol.price.quoteType === "ECNQUOTE" ||
@@ -232,3 +250,11 @@ app.get("/tickrpro/:symbol", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+/**
+ *  console.log("income:", annualIncomeStatement);
+  console.log("ttm income:", ttmIncomeStatement);
+  console.log("balance sheet:", annualBalanceSheet);
+  console.log("cash flow:", annualCashFlow);
+  console.log("ttm cash flow:", ttmCashFlow);
+ */
