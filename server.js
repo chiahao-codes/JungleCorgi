@@ -77,6 +77,18 @@ app.get("/", async (req, res, next) => {
   let prices = await runQuery(symbols);
   res.render("home", { prices, API_KEY, MBQHOME, RAPID });
 });
+//testing:
+app.get("/times", (req, res) => {
+  res.send(showtimes());
+});
+let showtimes = () => {
+  const times = process.env.TIMES || 5;
+  let result = "";
+  for (i = 0; i < times; i++) {
+    result += i + " ";
+  }
+  return result;
+};
 
 app.get("/disclaimer", async (req, res, next) => {
   res.render("disclaimer");
