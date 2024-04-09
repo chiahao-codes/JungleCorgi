@@ -1785,7 +1785,7 @@
 
             try {
                 const response = await fetch(url, options);
-                console.log(response)
+                console.log(response.body)
                 result = await response.json();
 
             } catch (error) {
