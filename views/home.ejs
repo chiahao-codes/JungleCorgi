@@ -313,20 +313,20 @@
             };
 
             const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
-            const result = await response.json();
+            const results = await response.text(); //used to be json for mboum;
 
             let regMktPrice, regMktChange, regMktChangePercent;
             for (let i = 0; i < indexContainers.length; i++) {
 
-                regMktPrice = formatPrice(result[i].regularMarketPrice);
-                regMktChange = formatPrice(result[i].regularMarketChange);
-                regMktChangePercent = formatPrice(result[i].regularMarketChangePercent);
+                regMktPrice = formatPrice(results.quoteResponse.result[i].regularMarketPrice);
+                regMktChange = formatPrice(results.quoteResponse.result[i].regularMarketChange);
+                regMktChangePercent = formatPrice(results.quoteResponse.result[i].regularMarketChangePercent);
 
                 indexContainers[i].children[1].innerText = regMktPrice;
                 indexContainers[i].children[2].children[0].innerText = regMktChange;
                 indexContainers[i].children[2].children[1].innerText = regMktChangePercent;
             }
-            console.log(result);
+            console.log(results);
             return;
         };
         let timeout = undefined;
