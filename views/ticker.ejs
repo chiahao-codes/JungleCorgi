@@ -1774,7 +1774,7 @@
             let result;
 
             const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
-
+            console.log("url:", url);
             const options = {
                 method: 'GET',
                 headers: {
@@ -1786,7 +1786,7 @@
             try {
                 const response = await fetch(url, options);
                 console.log(response)
-                result = await response.text();
+                result = await response.json();
                 console.log(result)
 
             } catch (error) {
