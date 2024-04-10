@@ -9,6 +9,7 @@ const API_KEY = process.env.KEY;
 
 const RAPID = process.env.RAPID;
 const YFCHARTURL = process.env.YFCHARTURL;
+const YFINDEXPRICES = process.env.YFINDEXPRICES;
 
 /**
  * const YHOOURL = process.env.YHOOSLIDEURL;
@@ -79,7 +80,7 @@ let runQuery = async (symbols) => {
 
 app.get("/", async (req, res, next) => {
   let prices = await runQuery(symbols);
-  res.render("home", { prices, API_KEY, MBQHOME, RAPID });
+  res.render("home", { prices, API_KEY, YFINDEXPRICES, RAPID });
 });
 
 app.get("/disclaimer", async (req, res, next) => {

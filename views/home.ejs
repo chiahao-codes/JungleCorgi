@@ -241,7 +241,7 @@
     </script>
     <script async="false">
         const apiKey = '<%=API_KEY%>';
-        const mboum = '<%=MBQHOME%>';
+        const yf = '<%=YFINDEXPRICES%>';
         const rapidURL = '<%=RAPID%>'
         const indexContainers = document.querySelectorAll("body > section > .index_container");
         const priceOfIndex = document.querySelectorAll("body > section > .index_container > .price");
@@ -303,7 +303,7 @@
             }
         };
         const getPrices = async (indexContainers, api) => {
-            const url = mboum;
+            const url = yf;
             const options = {
                 method: "GET",
                 headers: {
