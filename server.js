@@ -5,7 +5,7 @@ import "dotenv/config";
 
 let PORT = process.env.PORT || 80;
 
-const API_KEY = process.env.KEY2;
+const API_KEY = process.env.KEY;
 const MBOUMQUOTES = process.env.MBQ;
 const MBQHOME = process.env.MBQHOME;
 const RAPID = process.env.RAPID;
@@ -132,9 +132,7 @@ app.get("/tickrpro/contact", async (req, res, next) => {
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol;
   console.log("symbol", symbol);
-  if (symbol === "disclaimer") {
-    res.render("disclaimer");
-  }
+
   let checkSymbol = await yahooFinance
     .quoteSummary(symbol, {
       modules: [
