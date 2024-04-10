@@ -1772,9 +1772,8 @@
         }
         const mboumHistPrices = async (sym, interval, mboumhist = mboumHist, rapidurl = rapidURL, apikey = apiKey) => {
             let result;
-
             const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
-            console.log("url:", url);
+
             const options = {
                 method: 'GET',
                 headers: {
@@ -1787,14 +1786,17 @@
 
             try {
                 const response = await fetch(url, options);
-                console.log(response.url)
-                result = await response.json();
-                console.log(result)
+                console.log(response)
+                const reader = response.body.getReader();
+                const stream = await reader.read();
+                console.log("stream", stream);
+                // result = await response.json();
+                // console.log(result)
 
             } catch (error) {
                 console.error(error);
             }
-            return result
+            return
         }
         const fillChartData = async (mktstatus, ticker, interval) => {
             //5m:1day, 1h:5days;
