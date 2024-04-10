@@ -1788,8 +1788,11 @@
                 const response = await fetch(url, options);
                 console.log(response)
                 const reader = response.body.getReader();
+                const released = await reader.releaseLock()
                 const stream = await reader.read();
                 console.log("stream", stream);
+
+
                 // result = await response.json();
                 // console.log(result)
 
