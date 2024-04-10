@@ -6,11 +6,12 @@ import "dotenv/config";
 let PORT = process.env.PORT || 80;
 
 const API_KEY = process.env.KEY;
-const MBOUMQUOTES = process.env.MBQ;
-const MBQHOME = process.env.MBQHOME;
+
 const RAPID = process.env.RAPID;
-const MBQHIST = process.env.MBQHIST;
-const YHOOURL = process.env.YHOOSLIDEURL;
+const YFCHARTURL = process.env.YFCHARTURL;
+
+/**
+ * const YHOOURL = process.env.YHOOSLIDEURL;
 const YHURLTAIL = process.env.YHURLTAIL;
 const YHOOHOST = process.env.YHOOHOST;
 
@@ -18,6 +19,9 @@ const YHOOURL2 = process.env.YHOOTIMESERIESURL;
 const YHOOPERIOD2 = process.env.YHOOPERIOD2;
 const YHOOPERIOD1 = process.env.YHOOPERIOD1;
 const YHOOTYPE = process.env.YHOOTYPEURL;
+ * 
+ */
+
 const app = express();
 
 app.set("view engine", "ejs");
@@ -230,16 +234,9 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     res.render("ticker", {
       checkSymbol,
       API_KEY,
-      MBOUMQUOTES,
-      MBQHIST,
+      YFCHARTURL,
       RAPID,
-      YHOOHOST,
-      YHOOURL,
-      YHURLTAIL,
-      YHOOURL2,
-      YHOOPERIOD2,
-      YHOOPERIOD1,
-      YHOOTYPE,
+
       annualIncomeStatement,
       ttmIncomeStatement,
       ttmIncomeStatement,

@@ -1232,15 +1232,15 @@
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
         const apiKey = '<%=API_KEY%>';
+        const rapidURL = '<%=RAPID%>';
+        const yfChartURL = '<%=YFCHARTURL%>'
         const stockTicker = '<%=checkSymbol.price.symbol%>';
 
         const dividendRate = '<%=checkSymbol.summaryDetail.dividendRate%>'
         const exDivDate = '<%=checkSymbol.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=checkSymbol.summaryDetail.open%>';
         const stockPriceChange = '<%=checkSymbol.price.regularMarketChange%>';
-        const rapidURL = '<%=RAPID%>';
-        const mboumQuotes = '<%=MBOUMQUOTES%>';
-        const mboumHist = '<%=MBQHIST%>';
+
 
         //income statement
         const yahooURL = '<%=YHOOURL%>'
@@ -1770,38 +1770,34 @@
                 prevCloseContainer.style.maxWidth = "100%";
             }
         }
-        const mboumHistPrices = async (sym, interval, mboumhist = mboumHist, rapidurl = rapidURL, apikey = apiKey) => {
+        const yfGetChartApi = async (sym, interval, rapidurl = rapidURL, apikey = apiKey, range = "1d") => {
             let result;
-            const url = `${mboumhist}?symbol=${sym}&interval=${interval}&diffandsplits=false`;
+            const url = `${yfChartURL}${interval}&symbol=${sym}&range=${range}&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true';`;
 
             const options = {
                 method: 'GET',
                 headers: {
                     'X-RapidAPI-Key': `${apikey}`,
-                    'X-RapidAPI-Host': `${rapidurl}`,
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+                    'X-RapidAPI-Host': `${rapidurl}`
                 }
             };
 
             try {
                 const response = await fetch(url, options);
                 console.log(response)
-                const reader = response.body.getReader();
-                const released = await reader.releaseLock()
-                const stream = await reader.read();
-                console.log("stream", stream);
-
-
-                // result = await response.json();
-                // console.log(result)
+                //const reader = response.body.getReader();
+                //const released = await reader.releaseLock()
+                //const stream = await reader.read();
+                //console.log("stream", stream);
+                result = await response.text();
+                console.log(result)
 
             } catch (error) {
                 console.error(error);
             }
             return
         }
-        const fillChartData = async (mktstatus, ticker, interval) => {
+        const fillChartData = async (mktstatus, ticker, interval, range) => {
             //5m:1day, 1h:5days;
             //1d:months, 1mo:years;
             let chartData = {
@@ -1823,7 +1819,7 @@
             };
 
             //might just need to use npmjs yahoo-finance2 for chart info;
-            const histPrices = await mboumHistPrices(ticker, interval);
+            const histPrices = await yfGetChartApi(ticker, interval, range);
             console.log("histPrices", histPrices)
 
             const responseBody = histPrices.body;
@@ -1935,7 +1931,7 @@
             }
         }
         let chart;
-        const runHistPrices = async (mktstat, sym, int, reset) => {
+        const runHistPrices = async (mktstat, sym, int, range, reset) => {
             progressBar.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
@@ -1944,7 +1940,7 @@
 
             //5m/1day, 1hr/5d, put prices at respective intervals
             //1d/months, 1month/years; put closing price for days;
-            let result = await Promise.all([fillChartData(mktstat, sym, int)])
+            let result = await Promise.all([fillChartData(mktstat, sym, int, range)])
             stopProgressBarInterval();
             console.log('intervalid', pIntervalId)
             progressBar.style.display = "none";
