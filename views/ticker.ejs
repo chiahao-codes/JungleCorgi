@@ -1768,7 +1768,9 @@
                 headers: {
                     'X-RapidAPI-Key': `${apikey}`,
                     'X-RapidAPI-Host': `${rapidurl}`,
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-Content-Type-Options": "nosniff"
+
                 }
             };
 
