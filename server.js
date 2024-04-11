@@ -130,9 +130,10 @@ let setPeriod1 = (int) => {
   utcYr = date.getUTCFullYear();
   if (int === "5m") {
     period1 = new Date(utcYr, utcMonth, utcDate, 0, 0, 0);
+
     // let formatted = new Intl.DateTimeFormat("en-US", {})
   }
-
+  console.log("period1:", period1);
   return period1;
 };
 
