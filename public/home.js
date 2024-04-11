@@ -162,7 +162,7 @@ localStorage.setItem("url", tickrUrl);
 
 const indexContainerEvents = (symbol) => {
   for (let i = 0; i < indexContainers2.length; i++) {
-    indexContainers2[i].addEventListener("click", () => {
+    indexContainers2[i].addEventListener("mouseup", () => {
       console.log("symbol", symbol[i]);
       let stockSym = symbol[i];
       window.location.href = tickrUrl + "tickrpro/" + stockSym;
