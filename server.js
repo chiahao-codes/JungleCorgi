@@ -115,21 +115,15 @@ app.get("/tickrpro/contact", async (req, res, next) => {
   res.render("contact");
 });
 
-/** Charts Info
- *
- *
- *
- */
-
 let setPeriod1 = (int) => {
   let period1;
-  let utcMonth, utcDate, utcYr, utcHours, utcMins, utcSecs;
+  let nonUtcMonth, nonUtcDate, nonUtcYr;
   let date = new Date();
-  utcMonth = date.getUTCMonth();
-  utcDate = date.getUTCDate();
-  utcYr = date.getUTCFullYear();
+  nonUtcMonth = date.getMonth();
+  nonUtcDate = date.getDate();
+  nonUtcYr = date.getFullYear();
   if (int === "5m") {
-    period1 = new Date(utcYr, utcMonth, utcDate, 0, 0, 0);
+    period1 = new Date(nonUtcYr, nonUtcMonth, nonUtcDate, 0, 0, 0);
 
     // let formatted = new Intl.DateTimeFormat("en-US", {})
   }
@@ -162,7 +156,6 @@ app.get("/tickrpro/:symbol", async (req, res) => {
 
   //5min = 1 day;
   let p1 = setPeriod1("5m");
-  console.log("p1:", p1);
   let query5min = { return: "object", period1: p1, interval: "5m" };
   let chart5m = await yahooFinance.chart(symbol, query5min);
   console.log("chart5m:", chart5m);
