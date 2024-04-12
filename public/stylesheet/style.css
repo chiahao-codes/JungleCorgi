@@ -153,7 +153,7 @@
   #home_body #index_section_container {
     display: grid;
     justify-content: center;
-    padding: 10px 10px 280px 10px;
+    padding: 10px 10px 285px 10px;
     grid-template-columns: repeat(3, 92px);
     grid-template-rows: repeat(5, 92px);
     row-gap: 28px;
@@ -171,7 +171,7 @@
     justify-content: center;
     align-items: center;
     row-gap: 1px;
-
+    font-size: 10px;
     border: 1px solid white;
     box-shadow: 2.5px 2.5px 2.8px #03000f;
     margin: 2px 1px 2px 1px;
