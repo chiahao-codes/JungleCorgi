@@ -930,6 +930,9 @@
   body header h2 {
     width: 275px;
   }
+  #home_body #index_section_container .index_container {
+    font-size: 13px;
+  }
 }
 
 @media screen and (min-width: 600px) {
