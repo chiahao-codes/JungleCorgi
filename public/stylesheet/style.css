@@ -154,8 +154,8 @@
     display: grid;
     justify-content: center;
     padding: 10px 10px 275px 10px;
-    grid-template-columns: repeat(3, 91px);
-    grid-template-rows: repeat(5, 88px);
+    grid-template-columns: repeat(3, 92px);
+    grid-template-rows: repeat(5, 90px);
     row-gap: 28px;
     column-gap: 20px;
     width: 100%;
@@ -176,7 +176,7 @@
     margin: 2px 1px 2px 1px;
     background-color: var(--greenish);
     border-radius: 8px;
-    overflow: visible;
+    overflow: hidden;
   }
 
   #home_body #index_section_container .index_container:hover {

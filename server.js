@@ -157,7 +157,12 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   //5min = 1 day;
   let p1 = setPeriod1("5m");
   let query5min = { return: "object", period1: p1, interval: "5m" };
-  let chart5m = await yahooFinance.chart(symbol, query5min);
+  let chart5m = await yahooFinance
+    .chart(symbol, query5min)
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
   console.log("chart5m:", chart5m);
 
   /**Financial History */
@@ -231,7 +236,6 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       API_KEY,
       YFCHARTURL,
       RAPID,
-
       annualIncomeStatement,
       ttmIncomeStatement,
       ttmIncomeStatement,
