@@ -171,7 +171,7 @@
     justify-content: center;
     align-items: center;
     row-gap: 1px;
-    font-size: 10px;
+    font-size: 12px;
     padding: 1%;
     border: 1px solid white;
     box-shadow: 2.5px 2.5px 2.8px #03000f;
@@ -986,6 +986,7 @@
     align-items: flex-start;
     max-width: 760px;
   }
+
   #index_data_container > .index-data-kids {
     max-width: 400px;
     border: 1px solid var(--eve);
