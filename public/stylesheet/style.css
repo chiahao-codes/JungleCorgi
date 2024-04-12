@@ -940,18 +940,21 @@
   }
 }
 
+@media screen and (min-width: 500px) {
+  #home_body #index_section_container .index_container {
+    font-size: 13.5px;
+  }
+}
+
 @media screen and (min-width: 580px) {
   body header h2 {
     width: 275px;
-  }
-  #home_body #index_section_container .index_container {
-    font-size: 13px;
   }
 }
 
 @media screen and (min-width: 600px) {
   #home_body #index_section_container .index_container {
-    font-size: 13.3px;
+    font-size: 13.75px;
   }
   body footer > #footer-top-row {
     display: flex;
@@ -1062,6 +1065,6 @@
   }
 
   #home_body #index_section_container .index_container {
-    font-size: 13.5px;
+    font-size: 13.8px;
   }
 }
