@@ -171,7 +171,7 @@
     justify-content: center;
     align-items: center;
     row-gap: 1px;
-    font-size: 12.5px;
+    font-size: 12px;
     padding: 1%;
     border: 1px solid white;
     box-shadow: 2.5px 2.5px 2.8px #03000f;
@@ -903,19 +903,13 @@
   }
 
   body footer .container .second-child {
-    width: 100px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 9px;
-    color: var(--cold-white);
+    width: fit-content;
   }
 
   body footer .container .second-child a {
     text-decoration: none;
     cursor: pointer;
-    color: inherit;
-    font-size: inherit;
+    color: var(--cold-white);
   }
 
   body footer .container #about p {
