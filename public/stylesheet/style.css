@@ -906,12 +906,6 @@
     width: 100px;
   }
 
-  body footer .container .second-child a {
-    text-decoration: none;
-    cursor: pointer;
-    color: var(--cold-white);
-  }
-
   body footer .container #about p {
     font-size: 10px;
     color: inherit;
@@ -938,10 +932,11 @@
   }
 
   body footer #footer-bottom-row > .second-child > a {
-    font-size: 9px;
+    font-size: 10px;
     color: inherit;
     font-weight: 400;
     cursor: pointer;
+    text-decoration: none;
   }
 }
 
