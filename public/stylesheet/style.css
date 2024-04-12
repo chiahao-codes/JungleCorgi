@@ -903,13 +903,14 @@
   }
 
   body footer .container .second-child {
-    width: fit-content;
+    width: 100px;
   }
 
   body footer .container .second-child a {
     text-decoration: none;
     cursor: pointer;
-    color: var(--bluish);
+    color: var(--cold-white);
+    font-size: 9px;
   }
 
   body footer .container #about p {
