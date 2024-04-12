@@ -904,13 +904,18 @@
 
   body footer .container .second-child {
     width: 100px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 9px;
+    color: var(--cold-white);
   }
 
   body footer .container .second-child a {
     text-decoration: none;
     cursor: pointer;
-    color: var(--cold-white);
-    font-size: 9px;
+    color: inherit;
+    font-size: inherit;
   }
 
   body footer .container #about p {
