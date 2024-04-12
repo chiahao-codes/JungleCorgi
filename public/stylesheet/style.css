@@ -903,7 +903,7 @@
   }
 
   body footer .container .second-child {
-    width: fit-content;
+    width: 100px;
   }
 
   body footer .container .second-child a {
@@ -929,6 +929,12 @@
     color: var(--cold-white);
     text-decoration: none;
     font-size: 9px;
+  }
+
+  body footer #footer-bottom-row > .second-child {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 1px;
   }
 }
 
