@@ -936,6 +936,9 @@
 }
 
 @media screen and (min-width: 600px) {
+  #home_body #index_section_container .index_container {
+    font-size: 13.3px;
+  }
   body footer > #footer-top-row {
     display: flex;
     flex-direction: column;
@@ -1042,5 +1045,9 @@
     width: 100%;
     height: max-content;
     position: relative;
+  }
+
+  #home_body #index_section_container .index_container {
+    font-size: 13.5px;
   }
 }
