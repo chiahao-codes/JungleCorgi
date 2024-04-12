@@ -934,7 +934,12 @@
   body footer #footer-bottom-row > .second-child {
     display: flex;
     justify-content: flex-start;
-    column-gap: 1px;
+    column-gap: 1.5px;
+  }
+
+  body footer #footer-bottom-row > .second-child > a {
+    font-size: 9px;
+    cursor: pointer;
   }
 }
 
