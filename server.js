@@ -132,7 +132,8 @@ let setPeriod1 = (int) => {
 };
 
 app.get("/tickrpro/:symbol", async (req, res) => {
-  let symbol = req.params.symbol;
+  let symbol = req.params.symbol,
+    result;
   console.log("symbol", symbol);
 
   let checkSymbol = await yahooFinance
@@ -166,12 +167,13 @@ app.get("/tickrpro/:symbol", async (req, res) => {
 
   try {
     const response = await fetch(url, options);
-    const result = await response.text();
+    result = await response.text();
     console.log("result:", result);
   } catch (error) {
     console.error(error);
   }
 
+  let fiveMin = result;
   /**
    *  //5min = 1 day;
   let p1 = setPeriod1("5m");
@@ -256,6 +258,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       API_KEY,
       YFCHARTURL,
       RAPID,
+      fiveMin,
       annualIncomeStatement,
       ttmIncomeStatement,
       ttmIncomeStatement,
