@@ -167,7 +167,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   try {
     const response = await fetch(url, options);
     const result = await response.text();
-    console.log(result);
+    console.log("result:", result);
   } catch (error) {
     console.error(error);
   }
