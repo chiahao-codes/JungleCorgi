@@ -154,7 +154,26 @@ app.get("/tickrpro/:symbol", async (req, res) => {
       console.log(e);
     });
 
-  //5min = 1 day;
+  const url =
+    "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=goog&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit";
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": "626350d676msh4d1dc66afe62e86p1adf8ejsndc3d7f1bb723",
+      "X-RapidAPI-Host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.text();
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+
+  /**
+   *  //5min = 1 day;
   let p1 = setPeriod1("5m");
   let query5min = { return: "object", period1: p1, interval: "5m" };
   let chart5m = await yahooFinance
@@ -164,6 +183,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     })
     .catch((e) => console.log(e));
   console.log("chart5m:", chart5m);
+   */
 
   /**Financial History */
   let queryIncomeStatement = {
