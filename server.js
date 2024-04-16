@@ -71,7 +71,15 @@ let runQuery = async (symbols) => {
   let queryOptions5m = { modules: ["price"] };
   for (let i = 0; i < symbols.length; i++) {
     let curr = symbols[i];
-    let result = await yahooFinance.quoteSummary(curr, queryOptions5m);
+    let result = await yahooFinance
+      .quoteSummary(curr, queryOptions5m)
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     let indexKeys = Object.keys(indexPrices);
     indexPrices[indexKeys[i]] = result;
   }
