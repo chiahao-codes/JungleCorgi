@@ -82,3 +82,53 @@ export default updateIndexData;
     }
   }
  */
+
+/**
+ * const YHOOURL = process.env.YHOOSLIDEURL;
+const YHURLTAIL = process.env.YHURLTAIL;
+const YHOOHOST = process.env.YHOOHOST;
+
+const YHOOURL2 = process.env.YHOOTIMESERIESURL;
+const YHOOPERIOD2 = process.env.YHOOPERIOD2;
+const YHOOPERIOD1 = process.env.YHOOPERIOD1;
+const YHOOTYPE = process.env.YHOOTYPEURL;
+
+
+let runQuery = async (symbols) => {
+  let indexPrices = {
+    snp: {},
+    nasdaq: {},
+    dji: {},
+    nikkei: {},
+    hang: {},
+    ftse: {},
+    bitcoin: {},
+    vix: {},
+    gold: {},
+    crudeoil: {},
+    natgas: {},
+    ustenyr: {},
+    jpyusd: {},
+    eurusd: {},
+    russell: {},
+  };
+
+  let queryOptions5m = { modules: ["price"] };
+  for (let i = 0; i < symbols.length; i++) {
+    let curr = symbols[i];
+    let result = await yahooFinance
+      .quoteSummary(curr, queryOptions5m)
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    let indexKeys = Object.keys(indexPrices);
+    indexPrices[indexKeys[i]] = result;
+  }
+  return indexPrices;
+};
+ * 
+ */

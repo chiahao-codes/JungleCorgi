@@ -27,7 +27,6 @@
                 <%=prices.snp.price.regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
-
                 <h5 class="point_change">
                     <%=prices.snp.price.regularMarketChange.toFixed(2)%>
                 </h5>
@@ -240,9 +239,6 @@
     <script src="home.js">
     </script>
     <script async="false">
-        const apiKey = '<%=API_KEY%>';
-        const yf = '<%=YFINDEXPRICES%>';
-        const rapidURL = '<%=RAPID%>'
         const indexContainers = document.querySelectorAll("body > section > .index_container");
         const priceOfIndex = document.querySelectorAll("body > section > .index_container > .price");
         const formatPrice = (num) => {
@@ -261,10 +257,13 @@
             let regExComma = new RegExp(/[,]/);
 
             //format number to price;
-            for (let i = 0; i < priceOfIndex.length; i++) {
+            /*
+             for (let i = 0; i < priceOfIndex.length; i++) {
                 let formatted = formatPrice(priceOfIndex[i].innerText);
                 priceOfIndex[i].innerText = formatted;
             }
+            */
+
 
             for (let i = 0; i < indexContainers.length; i++) {
                 let pointsChangeNumText =
@@ -313,7 +312,7 @@
             };
 
             const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
-            const results = await response.text(); //used to be json for mboum;
+            const results = await response.text();
 
             let regMktPrice, regMktChange, regMktChangePercent;
             for (let i = 0; i < indexContainers.length; i++) {

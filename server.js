@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import yahooFinance from "yahoo-finance2";
 import "dotenv/config";
 
 let PORT = process.env.PORT || 3000;
@@ -10,18 +9,6 @@ const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
 const YFCHARTURL = process.env.YFCHARTURL;
 const YFINDEXPRICES = process.env.YFINDEXPRICES;
-
-/**
- * const YHOOURL = process.env.YHOOSLIDEURL;
-const YHURLTAIL = process.env.YHURLTAIL;
-const YHOOHOST = process.env.YHOOHOST;
-
-const YHOOURL2 = process.env.YHOOTIMESERIESURL;
-const YHOOPERIOD2 = process.env.YHOOPERIOD2;
-const YHOOPERIOD1 = process.env.YHOOPERIOD1;
-const YHOOTYPE = process.env.YHOOTYPEURL;
- * 
- */
 
 const app = express();
 
@@ -49,46 +36,38 @@ let symbols = [
   "^RUT",
 ];
 
-let runQuery = async (symbols) => {
-  let indexPrices = {
-    snp: {},
-    nasdaq: {},
-    dji: {},
-    nikkei: {},
-    hang: {},
-    ftse: {},
-    bitcoin: {},
-    vix: {},
-    gold: {},
-    crudeoil: {},
-    natgas: {},
-    ustenyr: {},
-    jpyusd: {},
-    eurusd: {},
-    russell: {},
+let runQuery = async (symbol = "") => {
+  let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
+  if (!symbol) {
+    url = YFINDEXPRICES;
+  }
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": API_KEY,
+      "X-RapidAPI-Host": RAPID,
+    },
   };
 
-  let queryOptions5m = { modules: ["price"] };
-  for (let i = 0; i < symbols.length; i++) {
-    let curr = symbols[i];
-    let result = await yahooFinance
-      .quoteSummary(curr, queryOptions5m)
-      .then((data) => {
-        console.log(data);
-        return data;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-    let indexKeys = Object.keys(indexPrices);
-    indexPrices[indexKeys[i]] = result;
+  try {
+    const response = await fetch(url, options);
+    const result = await response.text();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.error(error);
   }
-  return indexPrices;
 };
 
 app.get("/", async (req, res, next) => {
-  let prices = await runQuery(symbols);
-  res.render("home", { prices, API_KEY, YFINDEXPRICES, RAPID });
+  let prices = await runQuery()
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
+  if (prices) {
+    res.render("home", { prices });
+  }
 });
 
 app.get("/disclaimer", async (req, res, next) => {
@@ -144,24 +123,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     result;
   console.log("symbol", symbol);
 
-  let checkSymbol = await yahooFinance
-    .quoteSummary(symbol, {
-      modules: [
-        "price",
-        "summaryDetail",
-        "assetProfile",
-        "summaryProfile",
-        "defaultKeyStatistics",
-        "financialData",
-      ],
-    })
-    .then((data) => {
-      console.log(data);
-      return data;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
+  let checkSymbol;
 
   const url =
     "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=goog&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit";
@@ -181,8 +143,27 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     console.error(error);
   }
 
-  let fiveMin = result;
   /**
+   * 
+   *  = await yahooFinance
+    .quoteSummary(symbol, {
+      modules: [
+        "price",
+        "summaryDetail",
+        "assetProfile",
+        "summaryProfile",
+        "defaultKeyStatistics",
+        "financialData",
+      ],
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+   *   let fiveMin = result;
    *  //5min = 1 day;
   let p1 = setPeriod1("5m");
   let query5min = { return: "object", period1: p1, interval: "5m" };
@@ -193,9 +174,6 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     })
     .catch((e) => console.log(e));
   console.log("chart5m:", chart5m);
-   */
-
-  /**Financial History */
   let queryIncomeStatement = {
     period1: "2021-12-31",
     type: "annual",
@@ -252,6 +230,9 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     symbol,
     queryCashFlowTtm
   );
+   */
+
+  /**Financial History */
 
   if (
     !checkSymbol ||
