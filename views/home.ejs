@@ -24,14 +24,14 @@
                 S&P 500
             </h5>
             <h5 class="snp price">
-                <%=prices.snp.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[0].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.snp.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[0].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="snp percent_change">
-                    <%=(prices.snp.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[0].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
