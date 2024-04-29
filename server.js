@@ -39,6 +39,7 @@ let runQuery = async (symbol = "") => {
   if (!symbol) {
     url = YFINDEXPRICES;
   }
+  console.log(url);
   const options = {
     method: "GET",
     headers: {
