@@ -39,12 +39,12 @@ let runQuery = async (symbol = "") => {
   if (!symbol) {
     url = YFINDEXPRICES;
   }
-  console.log(url);
+
   const options = {
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": API_KEY,
-      "X-RapidAPI-Host": RAPID,
+      "X-RapidAPI-Key": "626350d676msh4d1dc66afe62e86p1adf8ejsndc3d7f1bb723",
+      "X-RapidAPI-Host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
     },
   };
 
