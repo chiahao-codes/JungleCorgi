@@ -3,9 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 
 let PORT = process.env.PORT || 3000;
-
 const API_KEY = process.env.KEY;
-
 const RAPID = process.env.RAPID;
 const YFCHARTURL = process.env.YFCHARTURL;
 const YFINDEXPRICES = process.env.YFINDEXPRICES;
