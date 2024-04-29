@@ -66,8 +66,6 @@ app.get("/", async (req, res, next) => {
 
   if (prices) {
     res.render("home", { prices });
-  } else {
-    res.render("404");
   }
 });
 
