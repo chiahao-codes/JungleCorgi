@@ -25,7 +25,7 @@
             </h5>
             <h5 class="snp price">
                 <% console.log(prices.quoteResponse.result[0])%>
-                    <%=prices.quoteResponse.result[0].regularMarketPrice%>
+                    <%=prices.quoteResponse.result[0].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -39,7 +39,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Nasdaq</h5>
             <h5 id="nasdaq" class="nasdaq price">
-                <%=prices.quoteResponse.result[1].regularMarketPrice%>
+                <%=prices.quoteResponse.result[1].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -53,7 +53,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Dow Jones</h5>
             <h5 id="dowjones" class="dowjones price">
-                <%=prices.quoteResponse.result[2].regularMarketPrice%>
+                <%=prices.quoteResponse.result[2].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -67,7 +67,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Nikkei 225</h5>
             <h5 id="nikkei" class="nikkei price">
-                <%=prices.quoteResponse.result[3].regularMarketPrice%>
+                <%=prices.quoteResponse.result[3].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -81,7 +81,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Hang Seng</h5>
             <h5 id="hang" class="hang price">
-                <%=prices.quoteResponse.result[4].regularMarketPrice%>
+                <%=prices.quoteResponse.result[4].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -95,7 +95,7 @@
         <div class="index_container">
             <h5 class="mkt_name">FTSE 100</h5>
             <h5 id="ftse" class="ftse price">
-                <%=prices.quoteResponse.result[5].regularMarketPrice%>
+                <%=prices.quoteResponse.result[5].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -109,7 +109,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Bitcoin USD</h5>
             <h5 id="bitcoin" class="bitcoin price">
-                <%=prices.quoteResponse.result[6].regularMarketPrice%>
+                <%=prices.quoteResponse.result[6].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -123,7 +123,7 @@
         <div class="index_container">
             <h5 class="mkt_name">VIX</h5>
             <h5 id="vix" class="vix price">
-                <%=prices.quoteResponse.result[7].regularMarketPrice%>
+                <%=prices.quoteResponse.result[7].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -137,7 +137,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Gold</h5>
             <h5 id="gold" class="gold price">
-                <%=prices.quoteResponse.result[8].regularMarketPrice%>
+                <%=prices.quoteResponse.result[8].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -151,7 +151,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Crude Oil</h5>
             <h5 id="crudeoil" class="crudeoil price">
-                <%=prices.quoteResponse.result[9].regularMarketPrice%>
+                <%=prices.quoteResponse.result[9].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -165,7 +165,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Natural Gas</h5>
             <h5 id="natgas" class="natgas price">
-                <%=prices.quoteResponse.result[10].regularMarketPrice%>
+                <%=prices.quoteResponse.result[10].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -179,7 +179,7 @@
         <div class="index_container">
             <h5 class="mkt_name">U.S. 10-Yr</h5>
             <h5 id="ustenyr" class="ustenyr price">
-                <%=prices.quoteResponse.result[11].regularMarketPrice%>
+                <%=prices.quoteResponse.result[11].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -193,7 +193,7 @@
         <div class="index_container">
             <h5 class="mkt_name">JPY/USD</h5>
             <h5 id="jpyusd" class="jpyusd price">
-                <%=prices.quoteResponse.result[12].regularMarketPrice%>
+                <%=prices.quoteResponse.result[12].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -207,7 +207,7 @@
         <div class="index_container">
             <h5 class="mkt_name">EUR/USD</h5>
             <h5 id="eurusd" class="eurusd price">
-                <%=prices.quoteResponse.result[13].regularMarketPrice%>
+                <%=prices.quoteResponse.result[13].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -221,7 +221,7 @@
         <div class="index_container">
             <h5 class="mkt_name">Russell 2000</h5>
             <h5 id="russell" class="russell price">
-                <%=prices.quoteResponse.result[14].regularMarketPrice%>
+                <%=prices.quoteResponse.result[14].regularMarketPrice.toFixed(2)%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
