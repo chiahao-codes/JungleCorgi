@@ -24,7 +24,8 @@
                 S&P 500
             </h5>
             <h5 class="snp price">
-                <%=prices.quoteResponse.result[0].regularMarketPrice%>
+                <% console.log(prices.quoteResponse.result[0])%>
+                    <%=prices.quoteResponse.result[0].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
@@ -38,197 +39,196 @@
         <div class="index_container">
             <h5 class="mkt_name">Nasdaq</h5>
             <h5 id="nasdaq" class="nasdaq price">
-                <%=prices.nasdaq.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[1].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
-
                 <h5 class="point_change">
-                    <%=prices.nasdaq.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[1].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="nasdaq percent_change">
-                    <%=(prices.nasdaq.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[1].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Dow Jones</h5>
             <h5 id="dowjones" class="dowjones price">
-                <%=prices.dji.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[2].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.dji.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[2].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="dowjones percent_change">
-                    <%=(prices.dji.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[2].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Nikkei 225</h5>
             <h5 id="nikkei" class="nikkei price">
-                <%=prices.nikkei.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[3].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.nikkei.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[3].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="nikkei percent_change">
-                    <%=(prices.nikkei.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[3].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Hang Seng</h5>
             <h5 id="hang" class="hang price">
-                <%=prices.hang.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[4].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.hang.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[4].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="hang percent_change">
-                    <%=(prices.hang.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[4].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">FTSE 100</h5>
             <h5 id="ftse" class="ftse price">
-                <%=prices.ftse.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[5].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.ftse.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[5].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="ftse percent_change">
-                    <%=(prices.ftse.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[5].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Bitcoin USD</h5>
             <h5 id="bitcoin" class="bitcoin price">
-                <%=prices.bitcoin.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[6].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.bitcoin.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[6].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="bitcoin percent_change">
-                    <%=(prices.bitcoin.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[6].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">VIX</h5>
             <h5 id="vix" class="vix price">
-                <%=prices.vix.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[7].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.vix.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[7].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="vix percent_change">
-                    <%=(prices.vix.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[7].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Gold</h5>
             <h5 id="gold" class="gold price">
-                <%=prices.gold.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[8].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.gold.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[8].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="gold percent_change">
-                    <%=(prices.gold.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[8].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Crude Oil</h5>
             <h5 id="crudeoil" class="crudeoil price">
-                <%=prices.crudeoil.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[9].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.crudeoil.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[9].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="crudeoil percent_change">
-                    <%=(prices.crudeoil.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[9].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Natural Gas</h5>
             <h5 id="natgas" class="natgas price">
-                <%=prices.natgas.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[10].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.natgas.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[10].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="natgas percent_change">
-                    <%=(prices.natgas.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[10].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">U.S. 10-Yr</h5>
             <h5 id="ustenyr" class="ustenyr price">
-                <%=prices.ustenyr.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[11].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.ustenyr.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[11].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="ustenyr percent_change">
-                    <%=(prices.ustenyr.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[11].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">JPY/USD</h5>
             <h5 id="jpyusd" class="jpyusd price">
-                <%=prices.jpyusd.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[12].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.jpyusd.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[12].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="jpyusd percent_change">
-                    <%=(prices.jpyusd.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[12].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">EUR/USD</h5>
             <h5 id="eurusd" class="eurusd price">
-                <%=prices.eurusd.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[13].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.eurusd.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[13].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="eurusd percent_change">
-                    <%=(prices.eurusd.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[13].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>
         <div class="index_container">
             <h5 class="mkt_name">Russell 2000</h5>
             <h5 id="russell" class="russell price">
-                <%=prices.russell.price.regularMarketPrice.toFixed(2)%>
+                <%=prices.quoteResponse.result[14].regularMarketPrice%>
             </h5>
             <div class="ppc_container">
                 <h5 class="point_change">
-                    <%=prices.russell.price.regularMarketChange.toFixed(2)%>
+                    <%=prices.quoteResponse.result[14].regularMarketChange.toFixed(2)%>
                 </h5>
                 <h5 class="russell percent_change">
-                    <%=(prices.russell.price.regularMarketChangePercent*100).toFixed(2)%>%
+                    <%=(prices.quoteResponse.result[14].regularMarketChangePercent.toFixed(2))%>%
                 </h5>
             </div>
         </div>

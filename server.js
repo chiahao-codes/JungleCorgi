@@ -51,8 +51,8 @@ let runQuery = async (symbol = "") => {
 
   try {
     const response = await fetch(url, options);
-    const result = await response.text();
-    console.log(result);
+    let result = await response.json();
+    console.log("result:", result);
     return result;
   } catch (error) {
     console.error(error);
@@ -65,6 +65,7 @@ app.get("/", async (req, res, next) => {
       return data;
     })
     .catch((e) => console.log(e));
+
   if (prices) {
     res.render("home", { prices });
   }
