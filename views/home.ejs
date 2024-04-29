@@ -241,13 +241,16 @@
     <script async="false">
         const indexContainers = document.querySelectorAll("body > section > .index_container");
         const priceOfIndex = document.querySelectorAll("body > section > .index_container > .price");
-        const formatPrice = (num) => {
-            const formatted = new Intl.NumberFormat("en-US", {
-                style: "decimal",
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            }).format(num);
-            return formatted;
+        const formatPrice = (container) => {
+            for (let i = 0; i < container.length; i++) {
+                let curr = container[i].innerText;
+                let formatted = new Intl.NumberFormat("en-US", {
+                    style: "decimal",
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                }).format(curr);
+                container[i].innerText = formatted;
+            }
         };
         const changePctPointsColor = (indexContainers, priceOfIndex) => {
 
@@ -350,7 +353,7 @@
         // document.addEventListener("click", idlePage);
         // document.addEventListener("keypress", idlePage);
         // document.addEventListener("mousemove", idlePage);
-
+        formatPrice(priceOfIndex)
         changePctPointsColor(indexContainers, priceOfIndex);
         // idlePage();
         //activePage();
