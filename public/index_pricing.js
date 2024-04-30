@@ -131,4 +131,91 @@ let runQuery = async (symbols) => {
   return indexPrices;
 };
  * 
- */
+ /**
+   * 
+   *  = await yahooFinance
+    .quoteSummary(symbol, {
+      modules: [
+        "price",
+        "summaryDetail",
+        "assetProfile",
+        "summaryProfile",
+        "defaultKeyStatistics",
+        "financialData",
+      ],
+    })
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+   *   let fiveMin = result;
+   *  //5min = 1 day;
+  let p1 = setPeriod1("5m");
+  let query5min = { return: "object", period1: p1, interval: "5m" };
+  let chart5m = await yahooFinance
+    .chart(symbol, query5min)
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
+  console.log("chart5m:", chart5m);
+  let queryIncomeStatement = {
+    period1: "2021-12-31",
+    type: "annual",
+    module: "financials",
+  };
+
+  let annualIncomeStatement = await yahooFinance
+    .fundamentalsTimeSeries(symbol, queryIncomeStatement)
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
+
+  let queryIncomeStatementTTM = {
+    period1: "2021-12-31",
+    type: "trailing",
+    module: "financials",
+  };
+
+  let ttmIncomeStatement = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryIncomeStatementTTM
+  );
+
+  let queryBalanceSheet = {
+    period1: "2021-12-31",
+    type: "annual",
+    module: "balance-sheet",
+  };
+
+  let annualBalanceSheet = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryBalanceSheet
+  );
+
+  let queryCashFlow = {
+    period1: "2021-12-31",
+    type: "annual",
+    module: "cash-flow",
+  };
+
+  let annualCashFlow = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryCashFlow
+  );
+
+  let queryCashFlowTtm = {
+    period1: "2023-01-31",
+    type: "trailing",
+    module: "cash-flow",
+  };
+
+  let ttmCashFlow = await yahooFinance.fundamentalsTimeSeries(
+    symbol,
+    queryCashFlowTtm
+  );
+   */

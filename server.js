@@ -121,14 +121,10 @@ let setPeriod1 = (int) => {
 
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
-    result;
-  console.log("symbol", symbol);
+    checkSymbol,
+    chartsResult;
 
-  let checkSymbol;
-
-  const url =
-    "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=goog&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit";
-  const options = {
+  let options = {
     method: "GET",
     headers: {
       "X-RapidAPI-Key": "626350d676msh4d1dc66afe62e86p1adf8ejsndc3d7f1bb723",
@@ -136,104 +132,33 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     },
   };
 
+  //get stock price data:
+  let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
+
   try {
     const response = await fetch(url, options);
-    result = await response.text();
-    console.log("result:", result);
+    const result = await response.json();
+    checkSymbol = result;
   } catch (error) {
     console.error(error);
   }
 
-  /**
-   * 
-   *  = await yahooFinance
-    .quoteSummary(symbol, {
-      modules: [
-        "price",
-        "summaryDetail",
-        "assetProfile",
-        "summaryProfile",
-        "defaultKeyStatistics",
-        "financialData",
-      ],
-    })
-    .then((data) => {
-      console.log(data);
-      return data;
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-   *   let fiveMin = result;
-   *  //5min = 1 day;
-  let p1 = setPeriod1("5m");
-  let query5min = { return: "object", period1: p1, interval: "5m" };
-  let chart5m = await yahooFinance
-    .chart(symbol, query5min)
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => console.log(e));
-  console.log("chart5m:", chart5m);
-  let queryIncomeStatement = {
-    period1: "2021-12-31",
-    type: "annual",
-    module: "financials",
-  };
+  //charts data;
+  url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit`;
 
-  let annualIncomeStatement = await yahooFinance
-    .fundamentalsTimeSeries(symbol, queryIncomeStatement)
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => console.log(e));
+  try {
+    const chartData = await fetch(url, options);
+    let chartJSON = await chartData.json();
+    chartsResult = chartJSON;
+  } catch (error) {
+    console.error(error);
+  }
 
-  let queryIncomeStatementTTM = {
-    period1: "2021-12-31",
-    type: "trailing",
-    module: "financials",
-  };
-
-  let ttmIncomeStatement = await yahooFinance.fundamentalsTimeSeries(
-    symbol,
-    queryIncomeStatementTTM
-  );
-
-  let queryBalanceSheet = {
-    period1: "2021-12-31",
-    type: "annual",
-    module: "balance-sheet",
-  };
-
-  let annualBalanceSheet = await yahooFinance.fundamentalsTimeSeries(
-    symbol,
-    queryBalanceSheet
-  );
-
-  let queryCashFlow = {
-    period1: "2021-12-31",
-    type: "annual",
-    module: "cash-flow",
-  };
-
-  let annualCashFlow = await yahooFinance.fundamentalsTimeSeries(
-    symbol,
-    queryCashFlow
-  );
-
-  let queryCashFlowTtm = {
-    period1: "2023-01-31",
-    type: "trailing",
-    module: "cash-flow",
-  };
-
-  let ttmCashFlow = await yahooFinance.fundamentalsTimeSeries(
-    symbol,
-    queryCashFlowTtm
-  );
-   */
-
-  /**Financial History */
+  //Income, Balance, Cash Flow data;
+  //use rapidapi endpoints:
+  //Income: getFinancials;
+  //Balance: getBalanceSheet;
+  //CashFlow: getCashFlow
 
   if (
     !checkSymbol ||
@@ -243,30 +168,10 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     res.render("404");
   }
   if (checkSymbol) {
-    res.render("ticker", {
-      checkSymbol,
-      API_KEY,
-      YFCHARTURL,
-      RAPID,
-      fiveMin,
-      annualIncomeStatement,
-      ttmIncomeStatement,
-      ttmIncomeStatement,
-      annualBalanceSheet,
-      annualCashFlow,
-      ttmCashFlow,
-    });
+    res.render("ticker", {});
   }
 });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-/**
- *  console.log("income:", annualIncomeStatement);
-  console.log("ttm income:", ttmIncomeStatement);
-  console.log("balance sheet:", annualBalanceSheet);
-  console.log("cash flow:", annualCashFlow);
-  console.log("ttm cash flow:", ttmCashFlow);
- */
