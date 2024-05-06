@@ -103,28 +103,20 @@ app.get("/tickrpro/contact", async (req, res, next) => {
   res.render("contact");
 });
 
-let setPeriod1 = (int) => {
-  let period1;
-  let nonUtcMonth, nonUtcDate, nonUtcYr;
-  let date = new Date();
-  nonUtcMonth = date.getMonth();
-  nonUtcDate = date.getDate();
-  nonUtcYr = date.getFullYear();
-  if (int === "5m") {
-    period1 = new Date(nonUtcYr, nonUtcMonth, nonUtcDate, 0, 0, 0);
-
-    // let formatted = new Intl.DateTimeFormat("en-US", {})
-  }
-  console.log("period1:", period1);
-  return period1;
-};
-
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
-    checkSymbol,
-    chartsResult;
+    quoteCheck,
+    defaultStats,
+    chartResult5m,
+    chartResult5d,
+    chartResult1mo,
+    chartResultYTD,
+    chartResult2y,
+    incomeResult,
+    balanceResult,
+    cashFlowResult;
 
-  let options = {
+  const options = {
     method: "GET",
     headers: {
       "X-RapidAPI-Key": "626350d676msh4d1dc66afe62e86p1adf8ejsndc3d7f1bb723",
@@ -133,43 +125,118 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   };
 
   //get stock price data:
-  let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
-
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    checkSymbol = result;
-  } catch (error) {
-    console.error(error);
-  }
+  const quoteUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
 
   //charts data;
-  url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit`;
+  //Same day chart;
+  //int:5m, range:1d
+  //int:60m, range:5d
+  const fiveMinUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit`;
+  const fiveDaysUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&symbol=${symbol}&range=5d&region=US&includePrePost=false&useYfid=false&includeAdjustedClose=true`;
+  const oneMonthUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=1mo&region=US`;
+  const ytdUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=ytd&region=US`;
+  const twoYearUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=2y&region=US`;
 
-  try {
-    const chartData = await fetch(url, options);
-    let chartJSON = await chartData.json();
-    chartsResult = chartJSON;
-  } catch (error) {
-    console.error(error);
-  }
+  const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US'`;
+  const cashFlowURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
+  const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
+  const defaultKeyStatsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-statistics?symbol=${symbol}&region=US`;
+
+  const quoteResponse = fetch(quoteUrl, options).then((resp) => {
+    return resp.json();
+  });
+
+  const defaultKeyStatResponse = fetch(defaultKeyStatsURL, options).then(
+    (resp) => {
+      return resp.json();
+    }
+  );
+
+  const chartDataFiveMin = fetch(fiveMinUrl, options).then((resp) => {
+    return resp.json();
+  });
+
+  const chartDataFiveDays = fetch(fiveDaysUrl, options).then((resp) => {
+    return resp.json();
+  });
+
+  const chartDataOneMonth = fetch(oneMonthUrl, options).then((resp) => {
+    return resp.json();
+  });
+
+  const chartDataYTD = fetch(ytdUrl, options).then((resp) => {
+    return resp.json();
+  });
+
+  const chartDataTwoYear = fetch(twoYearUrl, options).then((resp) => {
+    return resp.json();
+  });
 
   //Income, Balance, Cash Flow data;
   //use rapidapi endpoints:
   //Income: getFinancials;
-  //Balance: getBalanceSheet;
-  //CashFlow: getCashFlow
+  const getIncomeStmt = fetch(incomeStmtURL, options).then((resp) => {
+    return resp.json();
+  });
 
-  if (
-    !checkSymbol ||
-    checkSymbol.price.quoteType === "ECNQUOTE" ||
-    checkSymbol.price.quoteType === "MUTUALFUND"
+  //Balance: getBalanceSheet;
+  const getBalanceSht = fetch(balanceShtURL, options).then((resp) => {
+    return resp.json();
+  });
+
+  //CashFlow: getCashFlow
+  const getCashFlow = fetch(cashFlowURL, options).then((resp) => {
+    return resp.json();
+  });
+
+  let results = await Promise.all([
+    quoteResponse,
+    chartDataFiveMin,
+    chartDataFiveDays,
+    chartDataOneMonth,
+    chartDataYTD,
+    chartDataTwoYear,
+    getIncomeStmt,
+    getBalanceSht,
+    getCashFlow,
+    defaultKeyStatResponse,
+  ]).catch((e) => console.log(e));
+
+  //assign respective ejs variables;
+  quoteCheck = results[0];
+  chartResult5m = results[1];
+  chartResult5d = results[2];
+  chartResult1mo = results[3];
+  chartResultYTD = results[4];
+  chartResult2y = results[5];
+  incomeResult = results[6];
+  balanceResult = results[7];
+  cashFlowResult = results[8];
+  defaultStats = results[9];
+
+  console.log(quoteCheck);
+  /**
+   * if (
+    !quoteCheck ||
+    quoteCheck.quoteResponse.result[0].quoteType === "ECNQUOTE" ||
+    quoteCheck.quoteResponse.result[0].quoteType === "MUTUALFUND"
   ) {
     res.render("404");
   }
-  if (checkSymbol) {
-    res.render("ticker", {});
-  }
+   */
+
+  res.render("ticker", {
+    quoteCheck,
+    defaultStats,
+    cashFlowResult,
+    balanceResult,
+    incomeResult,
+    chartResult5m,
+    chartResult5d,
+    chartResultYTD,
+    chartResult1mo,
+    chartResult2y,
+  });
 });
 
 app.listen(PORT, () => {

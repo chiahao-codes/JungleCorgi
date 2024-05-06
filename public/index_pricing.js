@@ -112,6 +112,21 @@ let runQuery = async (symbols) => {
     eurusd: {},
     russell: {},
   };
+let setPeriod1 = (int) => {
+  let period1;
+  let nonUtcMonth, nonUtcDate, nonUtcYr;
+  let date = new Date();
+  nonUtcMonth = date.getMonth();
+  nonUtcDate = date.getDate();
+  nonUtcYr = date.getFullYear();
+  if (int === "5m") {
+    period1 = new Date(nonUtcYr, nonUtcMonth, nonUtcDate, 0, 0, 0);
+
+    // let formatted = new Intl.DateTimeFormat("en-US", {})
+  }
+  console.log("period1:", period1);
+  return period1;
+};
 
   let queryOptions5m = { modules: ["price"] };
   for (let i = 0; i < symbols.length; i++) {

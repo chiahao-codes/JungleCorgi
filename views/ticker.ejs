@@ -17,13 +17,13 @@
                     <a href="https://www.tickrpro.com" target="_self">Home</a>
                     <span id="arrow">></span>
                     <span id="symbol">
-                        <%=checkSymbol.price.symbol%>
+                        <%=quoteCheck.quoteResponse.result[0].symbol%>
                     </span>
                 </div>
                 <div id="price_hours_container">
                     <h5 id="company_name">
-                        <% const longName=checkSymbol.price.longName %>
-                            <% const shortName=checkSymbol.price.shortName %>
+                        <% const longName=quoteCheck.quoteResponse.result[0].longName %>
+                            <% const shortName=quoteCheck.quoteResponse.result[0].shortName %>
                                 <% let name=longName ? longName:shortName%>
                                     <%= name %>
                     </h5>
@@ -31,17 +31,18 @@
                         <div id="reg_container" class="reg_after_container">
                             <div id="reg_hours_container" class="reg_after_hours_container">
                                 <h3 id="reg_hours_price" class="price">
-                                    <% let regMkPr=checkSymbol.price.regularMarketPrice%>
+                                    <% let regMkPr=quoteCheck.quoteResponse.result[0].regularMarketPrice%>
                                         <%=regMkPr%>
                                 </h3>
                                 <div class="hours_pct_container">
                                     <h5 id="reg_hours_change" class="price">
-                                        <% let regMktChange=checkSymbol.price.regularMarketChange%>
+                                        <% let regMktChange=quoteCheck.quoteResponse.result[0].regularMarketChange%>
                                             <%=regMktChange%>
                                     </h5>
                                     <h5 id="reg_hours_pct" class="price">
-                                        <%let regMktChgPct=checkSymbol.price.regularMarketChangePercent%>
-                                            <%=regMktChgPct%>
+                                        <%let regMktChgPct%>
+                                            <%regMktChgPct=quoteCheck.quoteResponse.result[0].regularMarketChangePercent%>
+                                                <%=regMktChgPct%>
                                     </h5>
                                 </div>
                             </div>
@@ -53,20 +54,21 @@
                         <div id="after_container" class="reg_after_container">
                             <div id="after_hours_pp_container" class="reg_after_hours_container">
                                 <h5 id="after_hours_price" class="price">
-                                    <% let postMktPrc=checkSymbol.price.postMarketPrice%>
-                                        <% let preMktPrc=checkSymbol.price.preMarketPrice%>
+                                    <% let postMktPrc=quoteCheck.quoteResponse.result[0].postMarketPrice%>
+                                        <% let preMktPrc=quoteCheck.quoteResponse.result[0].preMarketPrice%>
                                             <%if(postMktPrc===undefined && preMktPrc !==undefined){ %>
                                                 <% postMktPrc=preMktPrc} %>
                                                     <%=postMktPrc%>
                                 </h5>
                                 <div class="hours_pct_container">
                                     <h6 id="after_hours_change" class="price">
-                                        <% let postMktChange=checkSymbol.price.postMarketChange %>
+                                        <% let postMktChange=quoteCheck.quoteResponse.result[0].postMarketChange %>
                                             <%=postMktChange%>
                                     </h6>
                                     <h6 id="after_hours_pct" class="price">
-                                        <% let postMktChangePct=checkSymbol.price.postMarketChangePercent%>
-                                            <%= postMktChangePct%>
+                                        <% let postMktChangePct%>
+                                            <%postMktChangePct=quoteCheck.quoteResponse.result[0].postMarketChangePercent%>
+                                                <%= postMktChangePct%>
                                     </h6>
                                 </div>
                             </div>
@@ -91,7 +93,7 @@
             <h6 class="timeline-link fiveDay">5D</h6>
             <h6 class="timeline-link oneMonth">1M</h6>
             <h6 class="timeline-link ytd">YTD</h6>
-            <h6 class="timeline-link threeYr">3Y</h6>
+            <h6 class="timeline-link twoYr">2Y</h6>
         </div>
         </div>
         <section id="index_data_container" class="index_data_container">
@@ -99,9 +101,9 @@
                 <div class="border-line">
                     <div id="fwdPeRatio">Forward P/E</div>
                     <% let fwdPeRatio="N/A" %>
-                        <% if(checkSymbol.defaultKeyStatistics){ %>
-                            <% if(checkSymbol.defaultKeyStatistics.forwardPE){ %>
-                                <% fwdPeRatio=checkSymbol.defaultKeyStatistics.forwardPE}} %>
+                        <% if(defaultStats.defaultKeyStatistics){ %>
+                            <% if(defaultStats.defaultKeyStatistics.forwardPE){ %>
+                                <% fwdPeRatio=defaultStats.defaultKeyStatistics.forwardPE.raw}} %>
                                     <div id="fwdPeRatioData" class="indexData">
                                         <%=fwdPeRatio %>
                                     </div>
@@ -109,9 +111,9 @@
                 <div class="border-line">
                     <div id="ttmPeRatio">P/E (TTM)</div>
                     <% let ttmPeRatio="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.trailingPE){ %>
-                                <% ttmPeRatio=checkSymbol.summaryDetail.trailingPE}} %>
+                        <% if(quoteCheck.quoteResponse.result[0]){ %>
+                            <% if(quoteCheck.quoteResponse.result[0].trailingPE){ %>
+                                <% ttmPeRatio=quoteCheck.summaryDetail.trailingPE}} %>
                                     <div id="ttmPeRatioData" class="indexData">
                                         <%=ttmPeRatio %>
                                     </div>
@@ -119,9 +121,9 @@
                 <div class="border-line">
                     <div id="eps">EPS (TTM)</div>
                     <% let eps="N/A" %>
-                        <% if(checkSymbol.defaultKeyStatistics){ %>
-                            <% if(checkSymbol.defaultKeyStatistics.trailingEps){ %>
-                                <% eps=checkSymbol.defaultKeyStatistics.trailingEps}} %>
+                        <% if(quoteCheck.quoteResponse.result[0]){ %>
+                            <% if(quoteCheck.quoteResponse.result[0].epsTrailingTwelveMonths){ %>
+                                <% eps=quoteCheck.quoteResponse.result[0].epsTrailingTwelveMonths}} %>
                                     <div id="epsData" class="indexData">
                                         <%=eps%>
                                     </div>
@@ -130,9 +132,9 @@
                     <div id="peg-ratio">Peg Ratio</div>
                     <% let pegRatio="N/A" %>
 
-                        <% if(checkSymbol.defaultKeyStatistics){ %>
-                            <% if(checkSymbol.defaultKeyStatistics.pegRatio){ %>
-                                <% pegRatio=checkSymbol.defaultKeyStatistics.pegRatio}} %>
+                        <% if(quoteCheck.quoteResponse.result[0]){ %>
+                            <% if(quoteCheck.quoteResponse.result[0].pegRatio){ %>
+                                <% pegRatio=quoteCheck.quoteResponse.result[0].pegRatio}} %>
                                     <div id="pegRatio" class="indexData">
                                         <%=pegRatio%>
                                     </div>
@@ -141,9 +143,9 @@
                     <div id="curr-ratio">Current Ratio</div>
                     <% let currRatio="N/A" %>
 
-                        <% if(checkSymbol.financialData){ %>
-                            <% if(checkSymbol.financialData.currentRatio){ %>
-                                <% currRatio=checkSymbol.financialData.currentRatio}} %>
+                        <% if(defaultStats.financialData){ %>
+                            <% if(defaultStats.financialData.currentRatio){ %>
+                                <% currRatio=defaultStats.financialData.currentRatio.raw}} %>
                                     <div id="curr-ratio" class="indexData">
                                         <%=currRatio%>
                                     </div>
@@ -152,9 +154,9 @@
                     <div id="quick-ratio">Quick Ratio</div>
                     <% let quickRatio="N/A" %>
 
-                        <% if(checkSymbol.financialData){ %>
-                            <% if(checkSymbol.financialData.quickRatio){ %>
-                                <% quickRatio=checkSymbol.financialData.quickRatio}} %>
+                        <% if(defaultStats.financialData){ %>
+                            <% if(defaultStats.financialData.quickRatio){ %>
+                                <% quickRatio=defaultStats.financialData.quickRatio.raw}} %>
                                     <div id="quick-ratio" class="indexData">
                                         <%=quickRatio%>
                                     </div>
@@ -162,9 +164,9 @@
                 <div class="border-line">
                     <div id="debt-ratio">Debt-to-Equity Ratio</div>
                     <% let debtRatio="N/A" %>
-                        <% if(checkSymbol.financialData){ %>
-                            <% if(checkSymbol.financialData.debtToEquity){ %>
-                                <% debtRatio=checkSymbol.financialData.debtToEquity}}%>
+                        <% if(defaultStats.financialData){ %>
+                            <% if(defaultStats.financialData.debtToEquity){ %>
+                                <% debtRatio=defaultStats.financialData.debtToEquity.raw}}%>
                                     <div id="debt-ratio" class="indexData">
                                         <%=debtRatio%>
                                     </div>
@@ -172,9 +174,9 @@
                 <div class="border-line">
                     <div id="pb-ratio">Price-to-Book Ratio</div>
                     <% let pb="N/A" %>
-                        <% if(checkSymbol.defaultKeyStatistics){ %>
-                            <% if(checkSymbol.defaultKeyStatistics.priceToBook){ %>
-                                <% pb=checkSymbol.defaultKeyStatistics.priceToBook}} %>
+                        <% if(defaultStats.defaultKeyStatistics){ %>
+                            <% if(defaultStats.defaultKeyStatistics.priceToBook){ %>
+                                <% pb=defaultStats.defaultKeyStatistics.priceToBook.raw}} %>
                                     <div id="pb-ratio" class="indexData">
                                         <%=pb%>
                                     </div>
@@ -182,9 +184,9 @@
                 <div class="border-line">
                     <div id="op-Margin">Operating Margin</div>
                     <% let opMargin="N/A" %>
-                        <% if(checkSymbol.financialData){ %>
-                            <% if(checkSymbol.financialData.operatingMargins){ %>
-                                <% opMargin=checkSymbol.financialData.operatingMargins}} %>
+                        <% if(defaultStats.financialData){ %>
+                            <% if(defaultStats.financialData.operatingMargins){ %>
+                                <% opMargin=defaultStats.financialData.operatingMargins.raw}} %>
                                     <div id="op-Margin" class="indexData">
                                         <%=opMargin%>
                                     </div>
@@ -192,9 +194,9 @@
                 <div class="border-line">
                     <div id="prof-Margin">Profit Margin</div>
                     <% let profMargin="N/A" %>
-                        <% if(checkSymbol.financialData){ %>
-                            <% if(checkSymbol.financialData.profitMargins){ %>
-                                <% profMargin=checkSymbol.financialData.profitMargins}} %>
+                        <% if(defaultStats.financialData){ %>
+                            <% if(defaultStats.financialData.profitMargins){ %>
+                                <% profMargin=defaultStats.financialData.profitMargins.raw}} %>
                                     <div id="prof-Margin" class="indexData">
                                         <%=profMargin%>
                                     </div>
@@ -202,9 +204,9 @@
                 <div class="border-line">
                     <div id="grossMargin">Gross Margin</div>
                     <% let grossMargin="N/A" %>
-                        <% if(checkSymbol.financialData){ %>
-                            <% if(checkSymbol.financialData.grossMargins){ %>
-                                <% grossMargin=checkSymbol.financialData.grossMargins}} %>
+                        <% if(defaultStats.financialData){ %>
+                            <% if(defaultStats.financialData.grossMargins){ %>
+                                <% grossMargin=defaultStats.financialData.grossMargins.raw}} %>
                                     <div id="grossMarginPct" class="indexData">
                                         <%=grossMargin %>
                                     </div>
@@ -216,9 +218,7 @@
                 </div>
                 <div class="border-line no-border-bottom">
                     <div id="exDividend">Ex-Dividend Date</div>
-
                     <div id="exDivDate" class="indexData exDivDate">
-
                     </div>
                 </div>
             </div>
@@ -226,9 +226,9 @@
                 <div class="border-line">
                     <div id="prevClose">Previous Close</div>
                     <% let prvClose="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.previousClose){ %>
-                                <% prvClose=checkSymbol.summaryDetail.previousClose}} %>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.previousClose){ %>
+                                <% prvClose=quoteCheck.summaryDetail.previousClose}} %>
                                     <div id="prevClosData" class="indexData">
                                         <%=prvClose %>
                                     </div>
@@ -236,9 +236,9 @@
                 <div class="border-line">
                     <div id="open">Market Open</div>
                     <% let open="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.open){ %>
-                                <% open=checkSymbol.summaryDetail.open}} %>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.open){ %>
+                                <% open=quoteCheck.summaryDetail.open}} %>
                                     <div id="openData" class="indexData">
                                         <%=open %>
                                     </div>
@@ -246,9 +246,9 @@
                 <div class="border-line">
                     <div id="dayLow">Day's Low</div>
                     <% let dayLow="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.dayLow){ %>
-                                <% dayLow=checkSymbol.summaryDetail.dayLow}} %>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.dayLow){ %>
+                                <% dayLow=quoteCheck.summaryDetail.dayLow}} %>
                                     <div id="dayLowData" class="indexData">
                                         <%=dayLow %>
                                     </div>
@@ -256,9 +256,9 @@
                 <div class="border-line">
                     <div id="dayHigh">Day's High</div>
                     <% let dayHigh="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.dayHigh){ %>
-                                <% dayHigh=checkSymbol.summaryDetail.dayHigh}} %>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.dayHigh){ %>
+                                <% dayHigh=quoteCheck.summaryDetail.dayHigh}} %>
                                     <div id="dayHighData" class="indexData">
                                         <%=dayHigh %>
                                     </div>
@@ -266,9 +266,9 @@
                 <div class="border-line">
                     <div id="fifty2WkLow">52 Week Low</div>
                     <% let fifty2WkLo="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.fiftyTwoWeekLow){ %>
-                                <% fifty2WkLo=checkSymbol.summaryDetail.fiftyTwoWeekLow} }%>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.fiftyTwoWeekLow){ %>
+                                <% fifty2WkLo=quoteCheck.summaryDetail.fiftyTwoWeekLow} }%>
                                     <div id="fifty2WkLowData" class="indexData">
                                         <%=fifty2WkLo %>
                                     </div>
@@ -276,9 +276,9 @@
                 <div class="border-line">
                     <div id="fifty2WkHigh">52 Week High</div>
                     <% let fifty2WkHi="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.fiftyTwoWeekHigh){ %>
-                                <% fifty2WkHi=checkSymbol.summaryDetail.fiftyTwoWeekHigh}} %>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.fiftyTwoWeekHigh){ %>
+                                <% fifty2WkHi=quoteCheck.summaryDetail.fiftyTwoWeekHigh}} %>
                                     <div id="fifty2WkHighData" class="indexData">
                                         <%=fifty2WkHi %>
                                     </div>
@@ -286,9 +286,9 @@
                 <div class="border-line">
                     <div id="twoHundDayAvg">200 Day Avg</div>
                     <% let twoHDAvg="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.twoHundredDayAverage){ %>
-                                <% twoHDAvg=checkSymbol.summaryDetail.twoHundredDayAverage}} %>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.twoHundredDayAverage){ %>
+                                <% twoHDAvg=quoteCheck.summaryDetail.twoHundredDayAverage}} %>
                                     <div id="twoHundDayAvgData" class="indexData">
                                         <%=twoHDAvg %>
                                     </div>
@@ -296,8 +296,8 @@
                 <div class="border-line">
                     <div id='bid'>Bid</div>
                     <% let bid="N/A" %>
-                        <% if(checkSymbol.summaryDetail.bid !==undefined){ %>
-                            <% bid=checkSymbol.summaryDetail.bid} %>
+                        <% if(quoteCheck.summaryDetail.bid !==undefined){ %>
+                            <% bid=quoteCheck.summaryDetail.bid} %>
                                 <div id='bidData' class="indexData">
                                     <%=bid %>
                                 </div>
@@ -305,8 +305,8 @@
                 <div class="border-line">
                     <div id="ask">Ask</div>
                     <%let ask="N/A" %>
-                        <% if(checkSymbol.summaryDetail.ask !==undefined){ %>
-                            <% ask=checkSymbol.summaryDetail.ask} %>
+                        <% if(quoteCheck.summaryDetail.ask !==undefined){ %>
+                            <% ask=quoteCheck.summaryDetail.ask} %>
                                 <div id="askData" class="indexData">
                                     <%=ask %>
                                 </div>
@@ -314,9 +314,9 @@
                 <div class="border-line">
                     <div id="beta">Beta</div>
                     <%let beta="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.beta){ %>
-                                <% beta=checkSymbol.summaryDetail.beta}} %>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.beta){ %>
+                                <% beta=quoteCheck.summaryDetail.beta}} %>
                                     <div id="beta" class="indexData">
                                         <%=beta %>
                                     </div>
@@ -324,9 +324,9 @@
                 <div class="border-line">
                     <div id="mktCap">Market Cap</div>
                     <%let mktCap="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.marketCap){ %>
-                                <% mktCap=checkSymbol.summaryDetail.marketCap}}%>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.marketCap){ %>
+                                <% mktCap=quoteCheck.summaryDetail.marketCap}}%>
                                     <div id="mktCap" class="indexData commas">
 
                                         <%=mktCap %>
@@ -335,9 +335,9 @@
                 <div class="border-line">
                     <div id="volume">Volume</div>
                     <%let volume="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.volume){ %>
-                                <% volume=checkSymbol.summaryDetail.volume}}%>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.volume){ %>
+                                <% volume=quoteCheck.summaryDetail.volume}}%>
                                     <div id="mktVol" class="indexData commas">
 
                                         <%=volume %>
@@ -346,9 +346,9 @@
                 <div class="border-line no-border-bottom">
                     <div id="avgVolume">Avg. Volume</div>
                     <%let avgVol="N/A" %>
-                        <% if(checkSymbol.summaryDetail){ %>
-                            <% if(checkSymbol.summaryDetail.averageVolume){ %>
-                                <% avgVol=checkSymbol.summaryDetail.averageVolume}}%>
+                        <% if(quoteCheck.summaryDetail){ %>
+                            <% if(quoteCheck.summaryDetail.averageVolume){ %>
+                                <% avgVol=quoteCheck.summaryDetail.averageVolume}}%>
                                     <div id="avgVol" class="indexData commas">
                                         <%=avgVol %>
                                     </div>
@@ -381,10 +381,10 @@
                                                 <% }} %>
                                                     <div class="slide-data slide-headers data-align-left currency">
                                                         <% let ccy="--" %>
-                                                            <% if(checkSymbol){%>
-                                                                <%if(checkSymbol.financialData){%>
-                                                                    <%if(checkSymbol.financialData.financialCurrency){%>
-                                                                        <%ccy=checkSymbol.financialData.financialCurrency%>
+                                                            <% if(quoteCheck){%>
+                                                                <%if(quoteCheck.financialData){%>
+                                                                    <%if(quoteCheck.financialData.financialCurrency){%>
+                                                                        <%ccy=quoteCheck.financialData.financialCurrency%>
                                                                             <% }}} %>
                                                                                 (<%=ccy %>)
                                                     </div>
@@ -1080,15 +1080,15 @@
                 <h6>Summary</h6>
                 <p id="company_desc">
                     <%let resultLB="" %>
-                        <%if(checkSymbol.assetProfile){ %>
-                            <%resultLB=checkSymbol.assetProfile.longBusinessSummary}%>
+                        <%if(quoteCheck.assetProfile){ %>
+                            <%resultLB=quoteCheck.assetProfile.longBusinessSummary}%>
                                 <%=resultLB%>
                 </p>
             </div>
             <div id="profile_container">
                 <% let h="" %>
-                    <%if(checkSymbol.assetProfile){ %>
-                        <%if(checkSymbol.assetProfile.address1){ %>
+                    <%if(quoteCheck.assetProfile){ %>
+                        <%if(quoteCheck.assetProfile.address1){ %>
                             <% h="Profile" }}%>
                                 <h6>
                                     <%=h %>
@@ -1097,48 +1097,48 @@
                                     <div id="address_container">
                                         <p id="address">
                                             <%let resultAd="" %>
-                                                <%if(checkSymbol.assetProfile){ %>
-                                                    <%resultAd=checkSymbol.assetProfile.address1}%>
+                                                <%if(quoteCheck.assetProfile){ %>
+                                                    <%resultAd=quoteCheck.assetProfile.address1}%>
                                                         <%=resultAd%>
                                         </p>
                                         <div id="city_state_container">
                                             <p id="city">
                                                 <%let resultCi="" %>
-                                                    <%if(checkSymbol.assetProfile){ %>
-                                                        <%resultCi=checkSymbol.assetProfile.city}%>
+                                                    <%if(quoteCheck.assetProfile){ %>
+                                                        <%resultCi=quoteCheck.assetProfile.city}%>
                                                             <%=resultCi%>
                                             </p>
                                             <p id="state">
                                                 <%let resultSt="" %>
-                                                    <%if(checkSymbol.assetProfile){ %>
-                                                        <%resultSt=checkSymbol.assetProfile.state}%>
+                                                    <%if(quoteCheck.assetProfile){ %>
+                                                        <%resultSt=quoteCheck.assetProfile.state}%>
                                                             <%=resultSt%>
                                             </p>
                                             <p id="zip">
                                                 <%let resultZ="" %>
-                                                    <%if(checkSymbol.assetProfile){ %>
-                                                        <%resultZ=checkSymbol.assetProfile.zip}%>
+                                                    <%if(quoteCheck.assetProfile){ %>
+                                                        <%resultZ=quoteCheck.assetProfile.zip}%>
                                                             <%=resultZ%>
                                             </p>
                                         </div>
 
                                         <p id="country">
                                             <%let resultCoun="" %>
-                                                <%if(checkSymbol.assetProfile){ %>
-                                                    <%resultCoun=checkSymbol.assetProfile.country}%>
+                                                <%if(quoteCheck.assetProfile){ %>
+                                                    <%resultCoun=quoteCheck.assetProfile.country}%>
                                                         <%=resultCoun%>
                                         </p>
                                         <p id="phone">
                                             <%let resultPh="" %>
-                                                <%if(checkSymbol.assetProfile){ %>
-                                                    <%resultPh=checkSymbol.assetProfile.phone}%>
+                                                <%if(quoteCheck.assetProfile){ %>
+                                                    <%resultPh=quoteCheck.assetProfile.phone}%>
                                                         <%=resultPh%>
                                         </p>
                                         <p id="website">
                                             <%let resultWeb="" %>
-                                                <%if(checkSymbol.assetProfile){ %>
-                                                    <% if(checkSymbol.assetProfile.website){ %>
-                                                        <%resultWeb=checkSymbol.assetProfile.website}}%>
+                                                <%if(quoteCheck.assetProfile){ %>
+                                                    <% if(quoteCheck.assetProfile.website){ %>
+                                                        <%resultWeb=quoteCheck.assetProfile.website}}%>
                                                             <a href="<%=resultWeb%>" target="_blank">
                                                                 <%=resultWeb%>
                                                             </a>
@@ -1147,17 +1147,17 @@
                                         </p>
                                         <p id="industry">
                                             <%let rInd="" %>
-                                                <%if(checkSymbol.assetProfile){ %>
-                                                    <% if(checkSymbol.assetProfile.industry){%>
-                                                        <%rInd=checkSymbol.assetProfile.industry%>
+                                                <%if(quoteCheck.assetProfile){ %>
+                                                    <% if(quoteCheck.assetProfile.industry){%>
+                                                        <%rInd=quoteCheck.assetProfile.industry%>
                                                             <% rInd=`Industry: ${rInd}` }}%>
                                                                 <%=rInd %>
                                         </p>
                                         <p id="sector">
                                             <%let rSec="" %>
-                                                <%if(checkSymbol.assetProfile){ %>
-                                                    <% if(checkSymbol.assetProfile.sector){%>
-                                                        <%rSec=checkSymbol.assetProfile.sector%>
+                                                <%if(quoteCheck.assetProfile){ %>
+                                                    <% if(quoteCheck.assetProfile.sector){%>
+                                                        <%rSec=quoteCheck.assetProfile.sector%>
                                                             <% rSec=`Sector: ${rSec}`}} %>
                                                                 <%=rSec%>
                                         </p>
@@ -1166,16 +1166,16 @@
                                         <ul id="title_name1">
                                             <li>
                                                 <% let tit="" %>
-                                                    <%if(checkSymbol.assetProfile){ %>
-                                                        <% if(checkSymbol.assetProfile.companyOfficers[0]){ %>
-                                                            <%tit=`${checkSymbol.assetProfile.companyOfficers[0].title}:`}}%>
+                                                    <%if(quoteCheck.assetProfile){ %>
+                                                        <% if(quoteCheck.assetProfile.companyOfficers[0]){ %>
+                                                            <%tit=`${quoteCheck.assetProfile.companyOfficers[0].title}:`}}%>
                                                                 <%=tit%>
                                             </li>
                                             <li>
                                                 <% let nam="" %>
-                                                    <% if(checkSymbol.assetProfile){ %>
-                                                        <% if(checkSymbol.assetProfile.companyOfficers[0]){%>
-                                                            <%nam=checkSymbol.assetProfile.companyOfficers[0].name}} %>
+                                                    <% if(quoteCheck.assetProfile){ %>
+                                                        <% if(quoteCheck.assetProfile.companyOfficers[0]){%>
+                                                            <%nam=quoteCheck.assetProfile.companyOfficers[0].name}} %>
                                                                 <%= nam %>
 
                                             </li>
@@ -1184,17 +1184,17 @@
                                         <ul id="title_name2">
                                             <li>
                                                 <% let tit2="" %>
-                                                    <%if(checkSymbol.assetProfile){ %>
-                                                        <% if(checkSymbol.assetProfile.companyOfficers[1]){ %>
-                                                            <%tit2=`${checkSymbol.assetProfile.companyOfficers[1].title}:`}}%>
+                                                    <%if(quoteCheck.assetProfile){ %>
+                                                        <% if(quoteCheck.assetProfile.companyOfficers[1]){ %>
+                                                            <%tit2=`${quoteCheck.assetProfile.companyOfficers[1].title}:`}}%>
                                                                 <%=tit2%>
                                             </li>
                                             <li>
                                                 <% let nam2="" %>
 
-                                                    <% if(checkSymbol.assetProfile){ %>
-                                                        <% if(checkSymbol.assetProfile.companyOfficers[1]){%>
-                                                            <%nam2=checkSymbol.assetProfile.companyOfficers[1].name}} %>
+                                                    <% if(quoteCheck.assetProfile){ %>
+                                                        <% if(quoteCheck.assetProfile.companyOfficers[1]){%>
+                                                            <%nam2=quoteCheck.assetProfile.companyOfficers[1].name}} %>
                                                                 <%= nam2 %>
                                             </li>
                                             <li></li>
@@ -1203,17 +1203,17 @@
                                     <div id="employee_container">
                                         <p>
                                             <% let emH="" %>
-                                                <% if(checkSymbol.assetProfile){ %>
-                                                    <% if(checkSymbol.assetProfile.fullTimeEmployees){%>
+                                                <% if(quoteCheck.assetProfile){ %>
+                                                    <% if(quoteCheck.assetProfile.fullTimeEmployees){%>
                                                         <%emH="Full Time Employees:"%>
                                                             <% }} %>
                                                                 <%=emH%>
                                         </p>
                                         <p>
                                             <% let em="" %>
-                                                <% if(checkSymbol.assetProfile){ %>
-                                                    <% if(checkSymbol.assetProfile.fullTimeEmployees){%>
-                                                        <% em=checkSymbol.assetProfile.fullTimeEmployees}} %>
+                                                <% if(quoteCheck.assetProfile){ %>
+                                                    <% if(quoteCheck.assetProfile.fullTimeEmployees){%>
+                                                        <% em=quoteCheck.assetProfile.fullTimeEmployees}} %>
                                                             <%= em %>
                                         </p>
                                     </div>
@@ -1234,11 +1234,11 @@
         const apiKey = '<%=API_KEY%>';
         const rapidURL = '<%=RAPID%>';
         const yfChartURL = '<%=YFCHARTURL%>'
-        const stockTicker = '<%=checkSymbol.price.symbol%>';
-        const dividendRate = '<%=checkSymbol.summaryDetail.dividendRate%>'
-        const exDivDate = '<%=checkSymbol.summaryDetail.exDividendDate%>'
-        let yhooOpenPrice = '<%=checkSymbol.summaryDetail.open%>';
-        const stockPriceChange = '<%=checkSymbol.price.regularMarketChange%>';
+        const stockTicker = '<%=quoteCheck.quoteResponse.result[0].symbol%>';
+        const dividendRate = '<%=quoteCheck.summaryDetail.dividendRate%>'
+        const exDivDate = '<%=quoteCheck.summaryDetail.exDividendDate%>'
+        let yhooOpenPrice = '<%=quoteCheck.summaryDetail.open%>';
+        const stockPriceChange = '<%=quoteCheck.price.regularMarketChange%>';
         const fiveMinIntervalChart = '<%=fiveMin%>';
 
         const regExp = /[a-zA-Z.^]/;
@@ -1706,13 +1706,13 @@
             return;
         };
         const yahooSetMktTime = () => {
-            const yf2PrePrice = '<%=checkSymbol.price.preMarketPrice%>'
-            let preTime = '<%=checkSymbol.price.preMarketTime%>'
-            const yf2PostPrice = '<%=checkSymbol.price.postMarketPrice%>'
-            let postTime = '<%=checkSymbol.price.postMarketTime%>'
-            const regMktPrice = '<%=checkSymbol.price.regularMarketPrice%>'
-            const regTime = '<%=checkSymbol.price.regularMarketTime%>';
-            const marketStateYahoo = '<%=checkSymbol.price.marketState%>';
+            const yf2PrePrice = '<%=quoteCheck.price.preMarketPrice%>'
+            let preTime = '<%=quoteCheck.price.preMarketTime%>'
+            const yf2PostPrice = '<%=quoteCheck.price.postMarketPrice%>'
+            let postTime = '<%=quoteCheck.price.postMarketTime%>'
+            const regMktPrice = '<%=quoteCheck.price.regularMarketPrice%>'
+            const regTime = '<%=quoteCheck.price.regularMarketTime%>';
+            const marketStateYahoo = '<%=quoteCheck.price.marketState%>';
             let mktState, regDateTime = "Last Closed:", dateAndTime;
 
             currMktState = marketStateYahoo; //updates global variable for chartsjs
@@ -2252,7 +2252,7 @@
 
         const setEventListeners = () => {
 
-            //timeline links: 1d 5d ytd 1y 3yr
+            //timeline links: 1d 5d ytd 1y 2yr
             let timelineLinks = chartTimelineContainer.children
             for (let i = 0; i < timelineLinks.length; i++) {
                 let curr = timelineLinks[i];
@@ -2261,7 +2261,7 @@
                 if (curr.classList.contains("fiveDay")) interval = "1h";
                 if (curr.classList.contains("oneMonth")) interval = "1d";
                 if (curr.classList.contains("ytd")) interval = "1mo";
-                if (curr.classList.contains("threeYr")) interval = "3mo";
+                if (curr.classList.contains("twoYr")) interval = "3mo";
 
                 curr.addEventListener("click", async () => {
                     chart.destroy();
