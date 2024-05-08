@@ -113,7 +113,7 @@
                     <% let ttmPeRatio="N/A" %>
                         <% if(quoteCheck.quoteResponse.result[0]){ %>
                             <% if(quoteCheck.quoteResponse.result[0].trailingPE){ %>
-                                <% ttmPeRatio=quoteCheck.summaryDetail.trailingPE}} %>
+                                <% ttmPeRatio=quoteCheck.quoteResponse.result[0].trailingPE}} %>
                                     <div id="ttmPeRatioData" class="indexData">
                                         <%=ttmPeRatio %>
                                     </div>
@@ -131,7 +131,6 @@
                 <div class="border-line">
                     <div id="peg-ratio">Peg Ratio</div>
                     <% let pegRatio="N/A" %>
-
                         <% if(quoteCheck.quoteResponse.result[0]){ %>
                             <% if(quoteCheck.quoteResponse.result[0].pegRatio){ %>
                                 <% pegRatio=quoteCheck.quoteResponse.result[0].pegRatio}} %>
@@ -142,7 +141,6 @@
                 <div class="border-line">
                     <div id="curr-ratio">Current Ratio</div>
                     <% let currRatio="N/A" %>
-
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.currentRatio){ %>
                                 <% currRatio=defaultStats.financialData.currentRatio.raw}} %>
@@ -153,7 +151,6 @@
                 <div class="border-line">
                     <div id="quick-ratio">Quick Ratio</div>
                     <% let quickRatio="N/A" %>
-
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.quickRatio){ %>
                                 <% quickRatio=defaultStats.financialData.quickRatio.raw}} %>
