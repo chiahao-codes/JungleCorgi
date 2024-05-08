@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "start": "node ./server.js",
-    "serve": "node server.js"
+    "serve": "nodemon ./server.js"
   },
   "author": "",
   "license": "ISC",
