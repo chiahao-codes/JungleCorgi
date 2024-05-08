@@ -17,7 +17,12 @@
                     <a href="https://www.tickrpro.com" target="_self">Home</a>
                     <span id="arrow">></span>
                     <span id="symbol">
-                        <%=quoteCheck.quoteResponse.result[0].symbol%>
+                        <% let symb="" %>
+                            <% if(quoteCheck){ %>
+                                <% if(quoteCheck.quoteResponse.result[0]){%>
+                                    <% symb=quoteCheck.quoteResponse.result[0].symbol%>
+                                        <% }}%>
+                                            <%=symb%>
                     </span>
                 </div>
                 <div id="price_hours_container">
@@ -293,8 +298,8 @@
                 <div class="border-line">
                     <div id='bid'>Bid</div>
                     <% let bid="N/A" %>
-                        <% if(quoteCheck.summaryDetail.bid !==undefined){ %>
-                            <% bid=quoteCheck.summaryDetail.bid} %>
+                        <% if(quoteCheck.quoteResponse.result[0]){ %>
+                            <% bid=quoteCheck.quoteResponse.result[0].bid} %>
                                 <div id='bidData' class="indexData">
                                     <%=bid %>
                                 </div>
@@ -302,8 +307,8 @@
                 <div class="border-line">
                     <div id="ask">Ask</div>
                     <%let ask="N/A" %>
-                        <% if(quoteCheck.summaryDetail.ask !==undefined){ %>
-                            <% ask=quoteCheck.summaryDetail.ask} %>
+                        <% if(quoteCheck.quoteResponse.result[0]){ %>
+                            <% ask=quoteCheck.quoteResponse.result[0].ask} %>
                                 <div id="askData" class="indexData">
                                     <%=ask %>
                                 </div>
@@ -311,9 +316,9 @@
                 <div class="border-line">
                     <div id="beta">Beta</div>
                     <%let beta="N/A" %>
-                        <% if(quoteCheck.summaryDetail){ %>
-                            <% if(quoteCheck.summaryDetail.beta){ %>
-                                <% beta=quoteCheck.summaryDetail.beta}} %>
+                        <% if(defaultStats){ %>
+                            <% if(defaultStats.summaryDetail.beta){ %>
+                                <% beta=defaultStats.summaryDetail.beta.fmt}} %>
                                     <div id="beta" class="indexData">
                                         <%=beta %>
                                     </div>
@@ -321,9 +326,9 @@
                 <div class="border-line">
                     <div id="mktCap">Market Cap</div>
                     <%let mktCap="N/A" %>
-                        <% if(quoteCheck.summaryDetail){ %>
-                            <% if(quoteCheck.summaryDetail.marketCap){ %>
-                                <% mktCap=quoteCheck.summaryDetail.marketCap}}%>
+                        <% if(defaultStats){ %>
+                            <% if(defaultStats.defaultKeyStatistics.price){ %>
+                                <% mktCap=defaultStats.defaultKeyStatistics.price.marketCap.fmt}}%>
                                     <div id="mktCap" class="indexData commas">
 
                                         <%=mktCap %>
@@ -332,11 +337,10 @@
                 <div class="border-line">
                     <div id="volume">Volume</div>
                     <%let volume="N/A" %>
-                        <% if(quoteCheck.summaryDetail){ %>
-                            <% if(quoteCheck.summaryDetail.volume){ %>
-                                <% volume=quoteCheck.summaryDetail.volume}}%>
+                        <% if(defaultStats.summaryDetail){ %>
+                            <% if(defaultStats.summaryDetail.volume){ %>
+                                <% volume=defaultStats.summaryDetail.volume.fmt}}%>
                                     <div id="mktVol" class="indexData commas">
-
                                         <%=volume %>
                                     </div>
                 </div>
