@@ -233,4 +233,9 @@ let setPeriod1 = (int) => {
     symbol,
     queryCashFlowTtm
   );
+
+
+  const quoteResponse = fetch(quoteUrl, options).then((resp) => {
+  return resp.json();
+});
    */

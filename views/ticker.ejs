@@ -18,17 +18,17 @@
                     <span id="arrow">></span>
                     <span id="symbol">
                         <% let symb="" %>
-                            <% if(quoteCheck){ %>
-                                <% if(quoteCheck.quoteResponse.result[0]){%>
-                                    <% symb=quoteCheck.quoteResponse.result[0].symbol%>
+                            <% if(defaultStats){ %>
+                                <% if(defaultStats.symbol){%>
+                                    <% symb=defaultStats.symbol%>
                                         <% }}%>
                                             <%=symb%>
                     </span>
                 </div>
                 <div id="price_hours_container">
                     <h5 id="company_name">
-                        <% const longName=quoteCheck.quoteResponse.result[0].longName %>
-                            <% const shortName=quoteCheck.quoteResponse.result[0].shortName %>
+                        <% const longName=defaultStats.price.longName %>
+                            <% const shortName=defaultStats.price.shortName %>
                                 <% let name=longName ? longName:shortName%>
                                     <%= name %>
                     </h5>
@@ -36,17 +36,17 @@
                         <div id="reg_container" class="reg_after_container">
                             <div id="reg_hours_container" class="reg_after_hours_container">
                                 <h3 id="reg_hours_price" class="price">
-                                    <% let regMkPr=quoteCheck.quoteResponse.result[0].regularMarketPrice%>
+                                    <% let regMkPr=defaultStats.price.regularMarketPrice.fmt%>
                                         <%=regMkPr%>
                                 </h3>
                                 <div class="hours_pct_container">
                                     <h5 id="reg_hours_change" class="price">
-                                        <% let regMktChange=quoteCheck.quoteResponse.result[0].regularMarketChange%>
+                                        <% let regMktChange=defaultStats.price.regularMarketChange.fmt%>
                                             <%=regMktChange%>
                                     </h5>
                                     <h5 id="reg_hours_pct" class="price">
                                         <%let regMktChgPct%>
-                                            <%regMktChgPct=quoteCheck.quoteResponse.result[0].regularMarketChangePercent%>
+                                            <%regMktChgPct=defaultStats.price.regularMarketChangePercent.fmt%>
                                                 <%=regMktChgPct%>
                                     </h5>
                                 </div>
@@ -59,21 +59,13 @@
                         <div id="after_container" class="reg_after_container">
                             <div id="after_hours_pp_container" class="reg_after_hours_container">
                                 <h5 id="after_hours_price" class="price">
-                                    <% let postMktPrc=quoteCheck.quoteResponse.result[0].postMarketPrice%>
-                                        <% let preMktPrc=quoteCheck.quoteResponse.result[0].preMarketPrice%>
-                                            <%if(postMktPrc===undefined && preMktPrc !==undefined){ %>
-                                                <% postMktPrc=preMktPrc} %>
-                                                    <%=postMktPrc%>
+
                                 </h5>
                                 <div class="hours_pct_container">
                                     <h6 id="after_hours_change" class="price">
-                                        <% let postMktChange=quoteCheck.quoteResponse.result[0].postMarketChange %>
-                                            <%=postMktChange%>
+
                                     </h6>
                                     <h6 id="after_hours_pct" class="price">
-                                        <% let postMktChangePct%>
-                                            <%postMktChangePct=quoteCheck.quoteResponse.result[0].postMarketChangePercent%>
-                                                <%= postMktChangePct%>
                                     </h6>
                                 </div>
                             </div>
@@ -84,14 +76,11 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <div id="chart_container">
                 <div id="progress-bar" style="--width:35" data-label="Loading..."></div>
                 <canvas id="chart" class="charts"></canvas>
             </div>
-
         </div>
         <div id="chart-timeline-container">
             <h6 class="timeline-link oneDay">1D</h6>
@@ -108,7 +97,7 @@
                     <% let fwdPeRatio="N/A" %>
                         <% if(defaultStats.defaultKeyStatistics){ %>
                             <% if(defaultStats.defaultKeyStatistics.forwardPE){ %>
-                                <% fwdPeRatio=defaultStats.defaultKeyStatistics.forwardPE.raw}} %>
+                                <% fwdPeRatio=defaultStats.defaultKeyStatistics.forwardPE.fmt}} %>
                                     <div id="fwdPeRatioData" class="indexData">
                                         <%=fwdPeRatio %>
                                     </div>
@@ -116,9 +105,9 @@
                 <div class="border-line">
                     <div id="ttmPeRatio">P/E (TTM)</div>
                     <% let ttmPeRatio="N/A" %>
-                        <% if(quoteCheck.quoteResponse.result[0]){ %>
-                            <% if(quoteCheck.quoteResponse.result[0].trailingPE){ %>
-                                <% ttmPeRatio=quoteCheck.quoteResponse.result[0].trailingPE}} %>
+                        <% if(defaultStats.summaryDetail){ %>
+                            <% if(defaultStats.summaryDetail.trailingPE){ %>
+                                <% ttmPeRatio=defaultStats.summaryDetail.trailingPE.fmt}} %>
                                     <div id="ttmPeRatioData" class="indexData">
                                         <%=ttmPeRatio %>
                                     </div>
@@ -126,9 +115,9 @@
                 <div class="border-line">
                     <div id="eps">EPS (TTM)</div>
                     <% let eps="N/A" %>
-                        <% if(quoteCheck.quoteResponse.result[0]){ %>
-                            <% if(quoteCheck.quoteResponse.result[0].epsTrailingTwelveMonths){ %>
-                                <% eps=quoteCheck.quoteResponse.result[0].epsTrailingTwelveMonths}} %>
+                        <% if(defaultStats.defaultKeyStatistics){ %>
+                            <% if(defaultStats.defaultKeyStatistics.trailingEps){ %>
+                                <% eps=defaultStats.defaultKeyStatistics.trailingEps.fmt}} %>
                                     <div id="epsData" class="indexData">
                                         <%=eps%>
                                     </div>
@@ -136,9 +125,9 @@
                 <div class="border-line">
                     <div id="peg-ratio">Peg Ratio</div>
                     <% let pegRatio="N/A" %>
-                        <% if(quoteCheck.quoteResponse.result[0]){ %>
-                            <% if(quoteCheck.quoteResponse.result[0].pegRatio){ %>
-                                <% pegRatio=quoteCheck.quoteResponse.result[0].pegRatio}} %>
+                        <% if(defaultStats.defaultKeyStatistics){ %>
+                            <% if(defaultStats.defaultKeyStatistics.pegRatio){ %>
+                                <% pegRatio=defaultStats.defaultKeyStatistics.pegRatio.fmt}} %>
                                     <div id="pegRatio" class="indexData">
                                         <%=pegRatio%>
                                     </div>
@@ -148,7 +137,7 @@
                     <% let currRatio="N/A" %>
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.currentRatio){ %>
-                                <% currRatio=defaultStats.financialData.currentRatio.raw}} %>
+                                <% currRatio=defaultStats.financialData.currentRatio.fmt}} %>
                                     <div id="curr-ratio" class="indexData">
                                         <%=currRatio%>
                                     </div>
@@ -158,7 +147,7 @@
                     <% let quickRatio="N/A" %>
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.quickRatio){ %>
-                                <% quickRatio=defaultStats.financialData.quickRatio.raw}} %>
+                                <% quickRatio=defaultStats.financialData.quickRatio.fmt}} %>
                                     <div id="quick-ratio" class="indexData">
                                         <%=quickRatio%>
                                     </div>
@@ -168,7 +157,7 @@
                     <% let debtRatio="N/A" %>
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.debtToEquity){ %>
-                                <% debtRatio=defaultStats.financialData.debtToEquity.raw}}%>
+                                <% debtRatio=defaultStats.financialData.debtToEquity.fmt}}%>
                                     <div id="debt-ratio" class="indexData">
                                         <%=debtRatio%>
                                     </div>
@@ -178,7 +167,7 @@
                     <% let pb="N/A" %>
                         <% if(defaultStats.defaultKeyStatistics){ %>
                             <% if(defaultStats.defaultKeyStatistics.priceToBook){ %>
-                                <% pb=defaultStats.defaultKeyStatistics.priceToBook.raw}} %>
+                                <% pb=defaultStats.defaultKeyStatistics.priceToBook.fmt}} %>
                                     <div id="pb-ratio" class="indexData">
                                         <%=pb%>
                                     </div>
@@ -188,7 +177,7 @@
                     <% let opMargin="N/A" %>
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.operatingMargins){ %>
-                                <% opMargin=defaultStats.financialData.operatingMargins.raw}} %>
+                                <% opMargin=defaultStats.financialData.operatingMargins.fmt}} %>
                                     <div id="op-Margin" class="indexData">
                                         <%=opMargin%>
                                     </div>
@@ -198,7 +187,7 @@
                     <% let profMargin="N/A" %>
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.profitMargins){ %>
-                                <% profMargin=defaultStats.financialData.profitMargins.raw}} %>
+                                <% profMargin=defaultStats.financialData.profitMargins.fmt}} %>
                                     <div id="prof-Margin" class="indexData">
                                         <%=profMargin%>
                                     </div>
@@ -208,7 +197,7 @@
                     <% let grossMargin="N/A" %>
                         <% if(defaultStats.financialData){ %>
                             <% if(defaultStats.financialData.grossMargins){ %>
-                                <% grossMargin=defaultStats.financialData.grossMargins.raw}} %>
+                                <% grossMargin=defaultStats.financialData.grossMargins.fmt}} %>
                                     <div id="grossMarginPct" class="indexData">
                                         <%=grossMargin %>
                                     </div>
@@ -1235,7 +1224,7 @@
         const apiKey = '<%=API_KEY%>';
         const rapidURL = '<%=RAPID%>';
         const yfChartURL = '<%=YFCHARTURL%>'
-        const stockTicker = '<%=quoteCheck.quoteResponse.result[0].symbol%>';
+        const stockTicker = '<%=defaultStats.symbol%>';
         const dividendRate = '<%=quoteCheck.summaryDetail.dividendRate%>'
         const exDivDate = '<%=quoteCheck.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=quoteCheck.summaryDetail.open%>';
@@ -1267,6 +1256,31 @@
         // Function to update the progress bar
         const progressBar = document.getElementById('progress-bar');
         let pIntervalId;
+
+        //access on frontend due to api max quota capacity;
+        /**
+         * 
+        const fiveDaysUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&symbol=${symbol}&range=5d&region=US&includePrePost=false&useYfid=false&includeAdjustedClose=true`;
+        const oneMonthUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=1mo&region=US`;
+        const ytdUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=ytd&region=US`;
+        const twoYearUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=2y&region=US`;
+        let chartResult5d, chartResult1mo, chartResultYTD, chartResult2y;
+        const chartDataFiveDays = fetch(fiveDaysUrl, options).then((resp) => {
+          return resp.json();
+        });
+        
+        const chartDataOneMonth = fetch(oneMonthUrl, options).then((resp) => {
+          return resp.json();
+        });
+        
+        const chartDataYTD = fetch(ytdUrl, options).then((resp) => {
+          return resp.json();
+        });
+        
+        const chartDataTwoYear = fetch(twoYearUrl, options).then((resp) => {
+          return resp.json();
+        });
+         */
 
         function updateProgressBar() {
             const computedStyle = getComputedStyle(progressBar);
