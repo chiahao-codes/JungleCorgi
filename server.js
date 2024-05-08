@@ -214,7 +214,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   cashFlowResult = results[8];
   defaultStats = results[9];
 
-  console.log(quoteCheck.quoteResponse.result[0]);
+  console.log(incomeResult);
 
   /**
    * if (
