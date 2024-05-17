@@ -238,4 +238,8 @@ let setPeriod1 = (int) => {
   const quoteResponse = fetch(quoteUrl, options).then((resp) => {
   return resp.json();
 });
+
+ //const getStatsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-statistics?symbol=${symbol}&region=US`;
+  //const getQuotesURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
+
    */

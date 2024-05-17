@@ -18,36 +18,51 @@
                     <span id="arrow">></span>
                     <span id="symbol">
                         <% let symb="" %>
-                            <% if(defaultStats){ %>
-                                <% if(defaultStats.symbol){%>
-                                    <% symb=defaultStats.symbol%>
+                            <% if(getSumm){ %>
+                                <% if(getSumm.symbol){%>
+                                    <% symb=getSumm.symbol%>
                                         <% }}%>
                                             <%=symb%>
                     </span>
                 </div>
                 <div id="price_hours_container">
                     <h5 id="company_name">
-                        <% const longName=defaultStats.price.longName %>
-                            <% const shortName=defaultStats.price.shortName %>
-                                <% let name=longName ? longName:shortName%>
-                                    <%= name %>
+                        <% let name="" %>
+                            <% if(getSumm){%>
+                                <% if(getSumm.quoteType.shortName){ %>
+                                    <% name=getSumm.quoteType.shortName %>
+                                        <% if(getSumm.quoteType.longName){ %>
+                                            <% name=getSumm.quoteType.longName %>
+                                                <% }}} %>
+                                                    <%= name %>
                     </h5>
                     <div id="price_time_container">
                         <div id="reg_container" class="reg_after_container">
                             <div id="reg_hours_container" class="reg_after_hours_container">
                                 <h3 id="reg_hours_price" class="price">
-                                    <% let regMkPr=defaultStats.price.regularMarketPrice.fmt%>
-                                        <%=regMkPr%>
+                                    <% let regMkPr="" %>
+                                        <% if(getSumm){ %>
+                                            <%if(getSumm.price.regularMarketPrice){%>
+                                                <%regMkPr= getSumm.price.regularMarketPrice.fmt%>
+                                                    <% }} %>
+                                                        <%=regMkPr%>
                                 </h3>
                                 <div class="hours_pct_container">
                                     <h5 id="reg_hours_change" class="price">
-                                        <% let regMktChange=defaultStats.price.regularMarketChange.fmt%>
-                                            <%=regMktChange%>
+                                        <% let regMktChange="" %>
+                                            <% if(getSumm){ %>
+                                                <%if(getSumm.price.regularMarketChange){%>
+                                                    <%regMktChange= getSumm.price.regularMarketChange.fmt%>
+                                                        <% }} %>
+                                                            <%=regMktChange%>
                                     </h5>
                                     <h5 id="reg_hours_pct" class="price">
-                                        <%let regMktChgPct%>
-                                            <%regMktChgPct=defaultStats.price.regularMarketChangePercent.fmt%>
-                                                <%=regMktChgPct%>
+                                        <%let regMktChgPct="" %>
+                                            <% if(getSumm){ %>
+                                                <%if(getSumm.price.regularMarketChangePercent){%>
+                                                    <%regMktChgPct= getSumm.price.regularMarketChangePercent.fmt%>
+                                                        <% }} %>
+                                                            <%=regMktChgPct%>
                                     </h5>
                                 </div>
                             </div>
@@ -95,9 +110,9 @@
                 <div class="border-line">
                     <div id="fwdPeRatio">Forward P/E</div>
                     <% let fwdPeRatio="N/A" %>
-                        <% if(defaultStats.defaultKeyStatistics){ %>
-                            <% if(defaultStats.defaultKeyStatistics.forwardPE){ %>
-                                <% fwdPeRatio=defaultStats.defaultKeyStatistics.forwardPE.fmt}} %>
+                        <% if(getSumm.defaultKeyStatistics){ %>
+                            <% if(getSumm.defaultKeyStatistics.forwardPE){ %>
+                                <% fwdPeRatio=getSumm.defaultKeyStatistics.forwardPE.fmt}} %>
                                     <div id="fwdPeRatioData" class="indexData">
                                         <%=fwdPeRatio %>
                                     </div>
@@ -105,9 +120,9 @@
                 <div class="border-line">
                     <div id="ttmPeRatio">P/E (TTM)</div>
                     <% let ttmPeRatio="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.trailingPE){ %>
-                                <% ttmPeRatio=defaultStats.summaryDetail.trailingPE.fmt}} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.trailingPE){ %>
+                                <% ttmPeRatio=getSumm.summaryDetail.trailingPE.fmt}} %>
                                     <div id="ttmPeRatioData" class="indexData">
                                         <%=ttmPeRatio %>
                                     </div>
@@ -115,9 +130,9 @@
                 <div class="border-line">
                     <div id="eps">EPS (TTM)</div>
                     <% let eps="N/A" %>
-                        <% if(defaultStats.defaultKeyStatistics){ %>
-                            <% if(defaultStats.defaultKeyStatistics.trailingEps){ %>
-                                <% eps=defaultStats.defaultKeyStatistics.trailingEps.fmt}} %>
+                        <% if(getSumm.defaultKeyStatistics){ %>
+                            <% if(getSumm.defaultKeyStatistics.trailingEps){ %>
+                                <% eps=getSumm.defaultKeyStatistics.trailingEps.fmt}} %>
                                     <div id="epsData" class="indexData">
                                         <%=eps%>
                                     </div>
@@ -125,9 +140,9 @@
                 <div class="border-line">
                     <div id="peg-ratio">Peg Ratio</div>
                     <% let pegRatio="N/A" %>
-                        <% if(defaultStats.defaultKeyStatistics){ %>
-                            <% if(defaultStats.defaultKeyStatistics.pegRatio){ %>
-                                <% pegRatio=defaultStats.defaultKeyStatistics.pegRatio.fmt}} %>
+                        <% if(getSumm.defaultKeyStatistics){ %>
+                            <% if(getSumm.defaultKeyStatistics.pegRatio){ %>
+                                <% pegRatio=getSumm.defaultKeyStatistics.pegRatio.fmt}} %>
                                     <div id="pegRatio" class="indexData">
                                         <%=pegRatio%>
                                     </div>
@@ -135,9 +150,9 @@
                 <div class="border-line">
                     <div id="curr-ratio">Current Ratio</div>
                     <% let currRatio="N/A" %>
-                        <% if(defaultStats.financialData){ %>
-                            <% if(defaultStats.financialData.currentRatio){ %>
-                                <% currRatio=defaultStats.financialData.currentRatio.fmt}} %>
+                        <% if(getSumm.financialData){ %>
+                            <% if(getSumm.financialData.currentRatio){ %>
+                                <% currRatio=getSumm.financialData.currentRatio.fmt}} %>
                                     <div id="curr-ratio" class="indexData">
                                         <%=currRatio%>
                                     </div>
@@ -145,9 +160,9 @@
                 <div class="border-line">
                     <div id="quick-ratio">Quick Ratio</div>
                     <% let quickRatio="N/A" %>
-                        <% if(defaultStats.financialData){ %>
-                            <% if(defaultStats.financialData.quickRatio){ %>
-                                <% quickRatio=defaultStats.financialData.quickRatio.fmt}} %>
+                        <% if(getSumm.financialData){ %>
+                            <% if(getSumm.financialData.quickRatio){ %>
+                                <% quickRatio=getSumm.financialData.quickRatio.fmt}} %>
                                     <div id="quick-ratio" class="indexData">
                                         <%=quickRatio%>
                                     </div>
@@ -155,9 +170,9 @@
                 <div class="border-line">
                     <div id="debt-ratio">Debt-to-Equity Ratio</div>
                     <% let debtRatio="N/A" %>
-                        <% if(defaultStats.financialData){ %>
-                            <% if(defaultStats.financialData.debtToEquity){ %>
-                                <% debtRatio=defaultStats.financialData.debtToEquity.fmt}}%>
+                        <% if(getSumm.financialData){ %>
+                            <% if(getSumm.financialData.debtToEquity){ %>
+                                <% debtRatio=getSumm.financialData.debtToEquity.fmt}}%>
                                     <div id="debt-ratio" class="indexData">
                                         <%=debtRatio%>
                                     </div>
@@ -165,9 +180,9 @@
                 <div class="border-line">
                     <div id="pb-ratio">Price-to-Book Ratio</div>
                     <% let pb="N/A" %>
-                        <% if(defaultStats.defaultKeyStatistics){ %>
-                            <% if(defaultStats.defaultKeyStatistics.priceToBook){ %>
-                                <% pb=defaultStats.defaultKeyStatistics.priceToBook.fmt}} %>
+                        <% if(getSumm.defaultKeyStatistics){ %>
+                            <% if(getSumm.defaultKeyStatistics.priceToBook){ %>
+                                <% pb=getSumm.defaultKeyStatistics.priceToBook.fmt}} %>
                                     <div id="pb-ratio" class="indexData">
                                         <%=pb%>
                                     </div>
@@ -175,9 +190,9 @@
                 <div class="border-line">
                     <div id="op-Margin">Operating Margin</div>
                     <% let opMargin="N/A" %>
-                        <% if(defaultStats.financialData){ %>
-                            <% if(defaultStats.financialData.operatingMargins){ %>
-                                <% opMargin=defaultStats.financialData.operatingMargins.fmt}} %>
+                        <% if(getSumm.financialData){ %>
+                            <% if(getSumm.financialData.operatingMargins){ %>
+                                <% opMargin=getSumm.financialData.operatingMargins.fmt}} %>
                                     <div id="op-Margin" class="indexData">
                                         <%=opMargin%>
                                     </div>
@@ -185,9 +200,9 @@
                 <div class="border-line">
                     <div id="prof-Margin">Profit Margin</div>
                     <% let profMargin="N/A" %>
-                        <% if(defaultStats.financialData){ %>
-                            <% if(defaultStats.financialData.profitMargins){ %>
-                                <% profMargin=defaultStats.financialData.profitMargins.fmt}} %>
+                        <% if(getSumm.financialData){ %>
+                            <% if(getSumm.financialData.profitMargins){ %>
+                                <% profMargin=getSumm.financialData.profitMargins.fmt}} %>
                                     <div id="prof-Margin" class="indexData">
                                         <%=profMargin%>
                                     </div>
@@ -195,9 +210,9 @@
                 <div class="border-line">
                     <div id="grossMargin">Gross Margin</div>
                     <% let grossMargin="N/A" %>
-                        <% if(defaultStats.financialData){ %>
-                            <% if(defaultStats.financialData.grossMargins){ %>
-                                <% grossMargin=defaultStats.financialData.grossMargins.fmt}} %>
+                        <% if(getSumm.financialData){ %>
+                            <% if(getSumm.financialData.grossMargins){ %>
+                                <% grossMargin=getSumm.financialData.grossMargins.fmt}} %>
                                     <div id="grossMarginPct" class="indexData">
                                         <%=grossMargin %>
                                     </div>
@@ -217,9 +232,9 @@
                 <div class="border-line">
                     <div id="prevClose">Previous Close</div>
                     <% let prvClose="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.previousClose){ %>
-                                <% prvClose=defaultStats.summaryDetail.previousClose.fmt}} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.previousClose){ %>
+                                <% prvClose=getSumm.summaryDetail.previousClose.fmt}} %>
                                     <div id="prevClosData" class="indexData">
                                         <%=prvClose %>
                                     </div>
@@ -227,9 +242,9 @@
                 <div class="border-line">
                     <div id="open">Market Open</div>
                     <% let open="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.open){ %>
-                                <% open=defaultStats.summaryDetail.open.fmt}} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.open){ %>
+                                <% open=getSumm.summaryDetail.open.fmt}} %>
                                     <div id="openData" class="indexData">
                                         <%=open %>
                                     </div>
@@ -237,9 +252,9 @@
                 <div class="border-line">
                     <div id="dayLow">Day's Low</div>
                     <% let dayLow="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.dayLow){ %>
-                                <% dayLow=defaultStats.summaryDetail.dayLow.fmt}} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.dayLow){ %>
+                                <% dayLow=getSumm.summaryDetail.dayLow.fmt}} %>
                                     <div id="dayLowData" class="indexData">
                                         <%=dayLow %>
                                     </div>
@@ -247,9 +262,9 @@
                 <div class="border-line">
                     <div id="dayHigh">Day's High</div>
                     <% let dayHigh="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.dayHigh){ %>
-                                <% dayHigh=defaultStats.summaryDetail.dayHigh}} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.dayHigh){ %>
+                                <% dayHigh=getSumm.summaryDetail.dayHigh.fmt}} %>
                                     <div id="dayHighData" class="indexData">
                                         <%=dayHigh %>
                                     </div>
@@ -257,9 +272,9 @@
                 <div class="border-line">
                     <div id="fifty2WkLow">52 Week Low</div>
                     <% let fifty2WkLo="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.fiftyTwoWeekLow){ %>
-                                <% fifty2WkLo=defaultStats.summaryDetail.fiftyTwoWeekLow} }%>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.fiftyTwoWeekLow){ %>
+                                <% fifty2WkLo=getSumm.summaryDetail.fiftyTwoWeekLow.fmt} }%>
                                     <div id="fifty2WkLowData" class="indexData">
                                         <%=fifty2WkLo %>
                                     </div>
@@ -267,9 +282,9 @@
                 <div class="border-line">
                     <div id="fifty2WkHigh">52 Week High</div>
                     <% let fifty2WkHi="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.fiftyTwoWeekHigh){ %>
-                                <% fifty2WkHi=defaultStats.summaryDetail.fiftyTwoWeekHigh}} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.fiftyTwoWeekHigh){ %>
+                                <% fifty2WkHi=getSumm.summaryDetail.fiftyTwoWeekHigh.fmt}} %>
                                     <div id="fifty2WkHighData" class="indexData">
                                         <%=fifty2WkHi %>
                                     </div>
@@ -277,9 +292,9 @@
                 <div class="border-line">
                     <div id="twoHundDayAvg">200 Day Avg</div>
                     <% let twoHDAvg="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.twoHundredDayAverage){ %>
-                                <% twoHDAvg=defaultStats.summaryDetail.twoHundredDayAverage}} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.twoHundredDayAverage){ %>
+                                <% twoHDAvg=getSumm.summaryDetail.twoHundredDayAverage.fmt}} %>
                                     <div id="twoHundDayAvgData" class="indexData">
                                         <%=twoHDAvg %>
                                     </div>
@@ -287,8 +302,8 @@
                 <div class="border-line">
                     <div id='bid'>Bid</div>
                     <% let bid="N/A" %>
-                        <% if(defaultStats.quoteResponse.result[0]){ %>
-                            <% bid=defaultStats.quoteResponse.result[0].bid} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% bid=getSumm.summaryDetail.bid.fmt} %>
                                 <div id='bidData' class="indexData">
                                     <%=bid %>
                                 </div>
@@ -296,8 +311,8 @@
                 <div class="border-line">
                     <div id="ask">Ask</div>
                     <%let ask="N/A" %>
-                        <% if(defaultStats.quoteResponse.result[0]){ %>
-                            <% ask=defaultStats.quoteResponse.result[0].ask} %>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% ask=getSumm.summaryDetail.ask.fmt} %>
                                 <div id="askData" class="indexData">
                                     <%=ask %>
                                 </div>
@@ -305,9 +320,9 @@
                 <div class="border-line">
                     <div id="beta">Beta</div>
                     <%let beta="N/A" %>
-                        <% if(defaultStats){ %>
-                            <% if(defaultStats.summaryDetail.beta){ %>
-                                <% beta=defaultStats.summaryDetail.beta.fmt}} %>
+                        <% if(getSumm){ %>
+                            <% if(getSumm.summaryDetail.beta){ %>
+                                <% beta=getSumm.summaryDetail.beta.fmt}} %>
                                     <div id="beta" class="indexData">
                                         <%=beta %>
                                     </div>
@@ -315,20 +330,19 @@
                 <div class="border-line">
                     <div id="mktCap">Market Cap</div>
                     <%let mktCap="N/A" %>
-                        <% if(defaultStats){ %>
-                            <% if(defaultStats.defaultKeyStatistics.price){ %>
-                                <% mktCap=defaultStats.defaultKeyStatistics.price.marketCap.fmt}}%>
+                        <% if(getSumm){ %>
+                            <% if(getSumm.defaultKeyStatistics.price){ %>
+                                <% mktCap=getSumm.defaultKeyStatistics.price.marketCap.fmt}}%>
                                     <div id="mktCap" class="indexData commas">
-
                                         <%=mktCap %>
                                     </div>
                 </div>
                 <div class="border-line">
                     <div id="volume">Volume</div>
                     <%let volume="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.volume){ %>
-                                <% volume=defaultStats.summaryDetail.volume.fmt}}%>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.volume){ %>
+                                <% volume=getSumm.summaryDetail.volume.fmt}}%>
                                     <div id="mktVol" class="indexData commas">
                                         <%=volume %>
                                     </div>
@@ -336,9 +350,9 @@
                 <div class="border-line no-border-bottom">
                     <div id="avgVolume">Avg. Volume</div>
                     <%let avgVol="N/A" %>
-                        <% if(defaultStats.summaryDetail){ %>
-                            <% if(defaultStats.summaryDetail.averageVolume){ %>
-                                <% avgVol=defaultStats.summaryDetail.averageVolume.fmt}}%>
+                        <% if(getSumm.summaryDetail){ %>
+                            <% if(getSumm.summaryDetail.averageVolume){ %>
+                                <% avgVol=getSumm.summaryDetail.averageVolume.fmt}}%>
                                     <div id="avgVol" class="indexData commas">
                                         <%=avgVol %>
                                     </div>
@@ -358,710 +372,661 @@
             </div>
             <!-- Slides -->
             <div class="slides-wrapper">
-                <div id="income-statement" class="slide">
-                    <h6>Income Statement</h6>
-                    <div class="annual-label">Annual</div>
-                    <div class="slide-boxes">
-                        <div class="slide-data-wrapper income-slide-years slide-years">
-                            <% let annualYear={1:"--", 2:"--"} %>
-                                <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                    <% let curr=annualIncomeStatement[i] %>
-                                        <% if(curr){ %>
-                                            <% annualYear[i]=curr.date %>
-                                                <% }} %>
-                                                    <div class="slide-data slide-headers data-align-left currency">
-                                                        <% let ccy="--" %>
-                                                            <% if(defaultStats){%>
-                                                                <%if(defaultStats.financialData){%>
-                                                                    <%if(defaultStats.financialData.financialCurrency){%>
-                                                                        <%ccy=defaultStats.financialData.financialCurrency%>
-                                                                            <% }}} %>
-                                                                                (<%=ccy %>)
-                                                    </div>
-                                                    <div class="slide-data slide-headers ttm">TTM
-                                                    </div>
-                                                    <div class="slide-data slide-headers year1 endingyr1">
-                                                        <%=annualYear[2] %>
-                                                    </div>
-                                                    <div class="slide-data slide-headers year2 endingyr2">
-                                                        <%=annualYear[1] %>
-                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper total-revenue">
-                            <% let ttmRevenue="--" %>
-                                <% let annualRevenue={1:"--", 2:"--"} %>
+                <% let arrLastEle %>
+                    <% let ccy="--" %>
+                        <div id="income-statement" class="slide">
+                            <h6>Income Statement</h6>
+                            <div class="annual-label">Annual</div>
+                            <div class="slide-boxes">
+                                <div class="slide-data-wrapper income-slide-years slide-years">
+                                    <div class="slide-data slide-headers data-align-left currency">
 
-                                    <% if(ttmIncomeStatement){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].totalRevenue){ %>
-                                                    <% ttmRevenue=ttmIncomeStatement[end].totalRevenue %>
+                                        <% if(incomeResult){%>
+                                            <%if(incomeResult.summaryDetail){%>
+                                                <%if(incomeResult.summaryDetail.currency){%>
+                                                    <%ccy=incomeResult.summaryDetail.currency%>
                                                         <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.totalRevenue ){ %>
-                                                                            <% annualRevenue[i]=curr.totalRevenue %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        Revenue</div>
-                                                                                    <div class="slide-data  ttm">
-                                                                                        <%=ttmRevenue %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=annualRevenue[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=annualRevenue[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper gross-profit">
-                            <div class="slide-data data-align-left">Gross profit</div>
-                            <% let ttmGrossProfit="--" %>
-                                <% let grossProfit={1:"--", 2:"--"} %>
-
-                                    <% if(ttmGrossProfit){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].grossProfit){ %>
-                                                    <% ttmGrossProfit=ttmIncomeStatement[end].grossProfit %>
-                                                        <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.grossProfit ){ %>
-                                                                            <% grossProfit[i]=curr.grossProfit %>
-                                                                                <% }}} %>
-                                                                                    <div class="slide-data  ttm">
-                                                                                        <%=ttmGrossProfit %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=grossProfit[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=grossProfit[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper operating-expense">
-                            <div class="slide-data data-align-left">Operating expense</div>
-                            <% let ttmOpExp="--" %>
-                                <% let opExp={1:"--", 2:"--"} %>
-
-                                    <% if(ttmIncomeStatement){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].operatingExpense){ %>
-                                                    <% ttmOpExp=ttmIncomeStatement[end].operatingExpense %>
-                                                        <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <%if(curr.operatingExpense){ %>
-                                                                            <% opExp[i]=curr.operatingExpense%>
-                                                                                <% }}} %>
-                                                                                    <div class="slide-data  ttm">
-                                                                                        <%=ttmOpExp %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=opExp[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=opExp[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper operating-income">
-                            <% let ttmOpInc="--" %>
-                                <% let opInc={1:"--", 2:"--"} %>
-
-                                    <% if(ttmIncomeStatement){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].operatingIncome){ %>
-                                                    <% ttmOpInc=ttmIncomeStatement[end].operatingIncome %>
-                                                        <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.operatingIncome){ %>
-                                                                            <% opInc[i]=curr.operatingIncome %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        Operating income</div>
-                                                                                    <div class="slide-data  ttm">
-                                                                                        <%=ttmOpInc %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=opInc[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=opInc[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper pre-tax-income">
-                            <div class="slide-data data-align-left">Pre tax income</div>
-                            <% let ttmPreTaxInc="--" %>
-                                <% let preTaxInc={1:"--", 2:"--"} %>
-
-                                    <% if(ttmIncomeStatement){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].pretaxIncome){ %>
-                                                    <% ttmPreTaxInc=ttmIncomeStatement[end].pretaxIncome %>
-                                                        <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.pretaxIncome){ %>
-                                                                            <% preTaxInc[i]=curr.pretaxIncome %>
-                                                                                <% }}} %>
-                                                                                    <div class="slide-data  ttm">
-                                                                                        <%=ttmPreTaxInc %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=preTaxInc[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=preTaxInc[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper other-income-expense">
-                            <div class="slide-data data-align-left">Other income exp</div>
-                            <% let ttmOthIncExp="--" %>
-                                <% let othIncExp={1:"--", 2:"--"} %>
-
-                                    <% if(ttmIncomeStatement){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].otherIncomeExpense){ %>
-                                                    <% ttmOthIncExp=ttmIncomeStatement[end].otherIncomeExpense %>
-                                                        <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.otherIncomeExpense){ %>
-                                                                            <% othIncExp[i]=curr.otherIncomeExpense %>
-                                                                                <% }}} %>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%=ttmOthIncExp %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=othIncExp[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=othIncExp[1] %>
-                                                                                    </div>
-                        </div>
-
-                        <div class="slide-data-wrapper basic-eps">
-                            <div class="slide-data data-align-left">Basic eps</div>
-                            <% let ttmBasicEps="--" %>
-                                <% let basicEps={1:"--", 2:"--"} %>
-
-                                    <% if(ttmIncomeStatement){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].basicEPS){ %>
-                                                    <% ttmBasicEps=ttmIncomeStatement[end].basicEPS %>
-                                                        <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.basicEPS){ %>
-                                                                            <% basicEps[i]=curr.basicEPS %>
-                                                                                <% }}} %>
-                                                                                    <div class="slide-data  ttm">
-                                                                                        <%=ttmBasicEps %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=basicEps[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=basicEps[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper ebitda">
-                            <div class="slide-data data-align-left">EBITDA</div>
-                            <% let ebitda={1:"--", 2:"--"} %>
-                                <% let ttmEbitda="--" %>
-
-                                    <% if(ttmIncomeStatement){ %>
-                                        <% let end=ttmIncomeStatement.length - 1 %>
-                                            <% if(ttmIncomeStatement[end]){ %>
-                                                <% if(ttmIncomeStatement[end].EBITDA){ %>
-                                                    <% ttmEbitda=ttmIncomeStatement[end].EBITDA %>
-                                                        <% }}} %>
-
-                                                            <% for(let i=1; i<annualIncomeStatement.length; i++){ %>
-                                                                <% let curr=annualIncomeStatement[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.EBITDA){ %>
-                                                                            <% ebitda[i]=curr.EBITDA %>
-                                                                                <% }}} %>
-
-                                                                                    <div class="slide-data  ttmEbitda">
-                                                                                        <%=ttmEbitda %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%= ebitda[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%= ebitda[1] %>
-                                                                                    </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div id="balance-sheet" class="slide">
-                    <h6>Balance Sheet</h6>
-                    <div class="annual-label">Annual</div>
-                    <div class="slide-boxes">
-                        <div class="slide-data-wrapper balance-slide-years slide-years">
-                            <% let balanceYear={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% if(curr.date){ %>
-                                                <% balanceYear[i]=curr.date %>
-                                                    <% }}} %>
-                                                        <div class="slide-data slide-headers data-align-left currency">
                                                             (<%=ccy%>)
-                                                        </div>
-                                                        <div class="slide-data slide-headers year1 endingyr1">
-                                                            <%=balanceYear[2] %>
-                                                        </div>
-                                                        <div class="slide-data slide-headers year2 endingyr2">
-                                                            <%=balanceYear[1] %>
-                                                        </div>
-                                                        <div class="slide-data slide-headers year3 endingyr3">
-                                                            <%=balanceYear[0] %>
-                                                        </div>
-                        </div>
-                        <div class="slide-data-wrapper total-assets">
-                            <div class="slide-data data-align-left">Total assets</div>
-                            <% let totalAssets={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% if(curr.totalAssets){ %>
-                                                <% totalAssets[i]=curr.totalAssets %>
-                                                    <% }}} %>
+                                    </div>
+                                    <div class="slide-data slide-headers ttm">TTM
+                                    </div>
+                                    <div class="slide-data slide-headers year1 endingyr1">
+                                        <% let annYr={"one":"--", "two" :"--"}%>
+                                            <% if(incomeResult.timeSeries){%>
+                                                <% if(incomeResult.timeSeries.timestamp){ %>
+                                                    <% let arrTimeStp=incomeResult.timeSeries.timestamp %>
+                                                        <% let arrLastEle=arrTimeStp.length-1 %>
+                                                            <% annYr["one"]=arrTimeStp[arrLastEle] %>
+                                                                <% annYr["two"]=arrTimeStp[arrLastEle - 1] %>
+                                                                    <% }} %>
+                                                                        <%=annYr["one"] %>
+                                    </div>
+                                    <div class="slide-data slide-headers year2 endingyr2">
+                                        <%=annYr["two"] %>
+                                    </div>
+                                </div>
+                                <div class="slide-data-wrapper total-revenue">
+                                    <div class="slide-data data-align-left">
+                                        Revenue</div>
+                                    <div class="slide-data  ttm">
+                                        <%let ttmRev%>
+                                            <% let ttmValue="--" %>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingTotalRevenue){ %>
+                                                        <% ttmRev=incomeResult.timeSeries.trailingTotalRevenue %>
+                                                            <% if(ttmRev.length>0){ %>
+                                                                <% arrLastEle=ttmRev.length-1 %>
+                                                                    <% ttmValue=ttmRev[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }} %>
+                                                                                <%=ttmValue %>
+                                    </div>
+                                    <div class="slide-data year1">
 
-                                                        <div class="slide-data year1">
-                                                            <%=totalAssets[2] %>
-                                                        </div>
-                                                        <div class="slide-data year2">
-                                                            <%=totalAssets[1] %>
-                                                        </div>
-                                                        <div class="slide-data year3">
-                                                            <%=totalAssets[0] %>
-                                                        </div>
-                        </div>
-                        <div class="slide-data-wrapper total-liab">
-                            <div class="slide-data data-align-left">Total liabilities</div>
-                            <% let totalLiab={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% if(curr.totalNonCurrentLiabilitiesNetMinorityInterest){ %>
-                                                <% totalLiab[i]=curr.totalNonCurrentLiabilitiesNetMinorityInterest %>
-                                                    <% }}} %>
-                                                        <div class="slide-data year1">
-                                                            <%=totalLiab[2] %>
-                                                        </div>
-                                                        <div class="slide-data year2">
-                                                            <%=totalLiab[1] %>
-                                                        </div>
-                                                        <div class="slide-data year3">
-                                                            <%=totalLiab[0] %>
-                                                        </div>
-                        </div>
-                        <div class="slide-data-wrapper total-equity">
-                            <div class="slide-data data-align-left">Total equity</div>
-                            <% let totalEquity={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% if(curr.totalEquityGrossMinorityInterest){ %>
-                                                <% totalEquity[i]=curr.totalEquityGrossMinorityInterest %>
-                                                    <% }}} %>
-                                                        <div class="slide-data year1">
-                                                            <%=totalEquity[2]%>
-                                                        </div>
-                                                        <div class="slide-data">
-                                                            <%=totalEquity[1] %>
-                                                        </div>
-                                                        <div class="slide-data">
-                                                            <%=totalEquity[0] %>
-                                                        </div>
-                        </div>
-                        <div class="slide-data-wrapper total-capitalization">
-                            <div class="slide-data data-align-left">Total capitalization</div>
-                            <% let totalCap={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% totalCap[i]=curr.totalCapitalization %>
-                                                <% }} %>
-                                                    <div class="slide-data year1">
-                                                        <%=totalCap[2] %>
-                                                    </div>
-                                                    <div class="slide-data year2">
-                                                        <%=totalCap[1] %>
-                                                    </div>
-                                                    <div class="slide-data year3">
-                                                        <%=totalCap[0] %>
-                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper common-stock-equity">
-                            <div class="slide-data data-align-left">Common stock equity</div>
-                            <% let commonStock={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% commonStock[i]=curr.commonStockEquity %>
-                                                <% }} %>
-                                                    <div class="slide-data year1">
-                                                        <%=commonStock[2] %>
-                                                    </div>
-                                                    <div class="slide-data year2">
-                                                        <%=commonStock[1] %>
-                                                    </div>
-                                                    <div class="slide-data year3">
-                                                        <%=commonStock[0] %>
-                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper working-capital">
-                            <div class="slide-data data-align-left">Working capital</div>
-                            <% let workingCap={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% if(curr.workingCapital){ %>
-                                                <% workingCap[i]=curr.workingCapital %>
-                                                    <% }}} %>
-                                                        <div class="slide-data year1">
-                                                            <%=workingCap[2] %>
-                                                        </div>
-                                                        <div class="slide-data year2">
-                                                            <%=workingCap[1] %>
-                                                        </div>
-                                                        <div class="slide-data year3">
-                                                            <%=workingCap[0] %>
-                                                        </div>
-                        </div>
-                        <div class="slide-data-wrapper total-debt">
-                            <div class="slide-data data-align-left">Total debt</div>
-                            <% let totalDebt={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% if(curr.totalDebt){ %>
-                                                <% totalDebt[i]=curr.totalDebt %>
-                                                    <% }}} %>
-                                                        <div class="slide-data year1">
-                                                            <%=totalDebt[2] %>
-                                                        </div>
-                                                        <div class="slide-data year2">
-                                                            <%=totalDebt[1] %>
-                                                        </div>
-                                                        <div class="slide-data year3">
-                                                            <%=totalDebt[0] %>
-                                                        </div>
-                        </div>
+                                    </div>
+                                    <div class="slide-data year2">
 
-                        <div class="slide-data-wrapper shares-issued">
-                            <div class="slide-data data-align-left">Shares issued</div>
-                            <% let sharesIssued={0:"--", 1:"--", 2:"--"} %>
-                                <% for(let i=0; i<annualBalanceSheet.length; i++){ %>
-                                    <% let curr=annualBalanceSheet[i] %>
-                                        <% if(curr){ %>
-                                            <% if(curr.shareIssued){ %>
-                                                <% sharesIssued[i]=curr.shareIssued %>
-                                                    <% }}} %>
-                                                        <div class="slide-data year1">
-                                                            <%=sharesIssued[2] %>
-                                                        </div>
-                                                        <div class="slide-data year2">
-                                                            <%=sharesIssued[1] %>
-                                                        </div>
-                                                        <div class="slide-data year3">
-                                                            <%=sharesIssued[0] %>
-                                                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="cash-flow" class="slide">
-                    <h6>Cash Flow</h6>
-                    <div class="annual-label">Annual</div>
-                    <div class="slide-boxes">
-                        <div class="slide-data-wrapper slide-years cash-flow-slide-years">
+                                    </div>
+                                </div>
+                                <div class="slide-data-wrapper gross-profit">
+                                    <div class="slide-data data-align-left">Gross profit</div>
+                                    <% let ttmGP%>
+                                        <% let grossProfitVal="--" %>
+                                            <div class="slide-data ttm">
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
+                                                        <% ttmGP=incomeResult.timeSeries.trailingGrossProfit %>
+                                                            <% if(ttmGP.length>0){ %>
+                                                                <% arrLastEle=ttmGP.length-1 %>
+                                                                    <%
+                                                                        grossProfitVal=ttmGP[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }} %>
+                                                                                <%=grossProfitVal%>
+                                            </div>
+                                            <div class="slide-data year1">
 
-                            <div class="slide-data slide-headers data-align-left currency">(<%=ccy %>)</div>
-                            <div class="slide-data slide-headers ttm">TTM</div>
-                            <div class="slide-data slide-headers year1 endingyr1">
-                                <%=annualYear[2] %>
+                                            </div>
+                                            <div class="slide-data year2">
+
+                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper operating-expense">
+                                    <div class="slide-data data-align-left">Operating expense</div>
+                                    <% let ttmOpExp="--" %>
+                                        <% let opExpArr %>
+                                            <% if(incomeResult.timeSeries){ %>
+                                                <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
+                                                    <% opExpArr=incomeResult.timeSeries.trailingGrossProfit%>
+                                                        <% if(opExpArr.length>0){ %>
+                                                            <% arrLastEle=opExpArr.length-1%>
+                                                                <% ttmOpExp=opExpArr[arrLastEle].reportedValue.fmt%>
+                                                                    <% }%>
+                                                                        <% }} %>
+                                                                            <div class="slide-data  ttm">
+                                                                                <%=ttmOpExp %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper operating-income">
+                                    <% let ttmOpInc="--" %>
+                                        <% let opIncArr %>
+                                            <% if(incomeResult.timeSeries){ %>
+                                                <% if(incomeResult.timeSeries.trailingOperatingIncome){ %>
+                                                    <% opIncArr=incomeResult.timeSeries.trailingOperatingIncome%>
+                                                        <% if(opIncArr.length>0){ %>
+                                                            <% arrLastEle=opIncArr.length-1%>
+                                                                <% ttmOpInc=opIncArr[arrLastEle].reportedValue.fmt%>
+                                                                    <% }%>
+                                                                        <% }} %>
+
+                                                                            <div class="slide-data data-align-left">
+                                                                                Operating income</div>
+                                                                            <div class="slide-data  ttm">
+                                                                                <%=ttmOpInc %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper pre-tax-income">
+                                    <div class="slide-data data-align-left">Pre tax income</div>
+                                    <% let ttmPreTaxInc="--" %>
+                                        <% let preTaxArr %>
+                                            <% if(incomeResult.timeSeries){ %>
+                                                <% if(incomeResult.timeSeries.trailingPretaxIncome){ %>
+                                                    <% preTaxArr=incomeResult.timeSeries.trailingPretaxIncome%>
+                                                        <% if(preTaxArr.length>0){ %>
+                                                            <% arrLastEle=preTaxArr.length-1 %>
+                                                                <%
+                                                                    ttmPreTaxInc=preTaxArr[arrLastEle].reportedValue.fmt%>
+                                                                    <% }%>
+                                                                        <% }} %>
+                                                                            <div class="slide-data  ttm">
+                                                                                <%=ttmPreTaxInc %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper other-income-expense">
+                                    <div class="slide-data data-align-left">Other income exp</div>
+                                    <% let ttmOthIncExp="--" %>
+                                        <% let otInArr %>
+                                            <% if(incomeResult.timeSeries){ %>
+                                                <% if(incomeResult.timeSeries.trailingOtherIncomeExpense){ %>
+                                                    <% otInArr=incomeResult.timeSeries.trailingOtherIncomeExpense%>
+                                                        <% if(otInArr.length>0){ %>
+                                                            <% arrLastEle=otInArr.length-1 %>
+                                                                <% ttmOthIncExp=otInArr[arrLastEle].reportedValue.fmt%>
+                                                                    <% }%>
+                                                                        <% }} %>
+                                                                            <div class="slide-data ttm">
+                                                                                <%=ttmOthIncExp %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+
+                                <div class="slide-data-wrapper basic-eps">
+                                    <div class="slide-data data-align-left">Basic eps</div>
+                                    <% let ttmBasicEps="--" %>
+                                        <% let basicEpArr %>
+                                            <% if(incomeResult.timeSeries){ %>
+                                                <% if(incomeResult.timeSeries.trailingBasicEPS){ %>
+                                                    <% basicEpArr=incomeResult.timeSeries.trailingBasicEPS%>
+                                                        <% if(opExpArr.length>0){ %>
+                                                            <% arrLastEle=opExpArr.length-1%>
+                                                                <%
+                                                                    ttmBasicEps=basicEpArr[arrLastEle].reportedValue.fmt%>
+                                                                    <% }%>
+                                                                        <% }} %>
+                                                                            <div class="slide-data  ttm">
+                                                                                <%=ttmBasicEps %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper net-income">
+                                    <div class="slide-data data-align-left">Net income</div>
+                                    <% let netIncArr %>
+                                        <% let ttmNetInc="--" %>
+                                            <% if(incomeResult.timeSeries){ %>
+                                                <% if(incomeResult.timeSeries.trailingNetIncome){ %>
+                                                    <% netIncArr=incomeResult.timeSeries.trailingNetIncome%>
+                                                        <% if(netIncArr.length>0){ %>
+                                                            <% arrLastEle=netIncArr.length-1%>
+                                                                <% ttmNetInc=netIncArr[arrLastEle].reportedValue.fmt%>
+                                                                    <% }%>
+                                                                        <% }} %>
+                                                                            <div class="slide-data  ttmNetIncome">
+                                                                                <%=ttmNetInc%>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+
                             </div>
-                            <div class="slide-data slide-headers year2 endingyr2">
-                                <%=annualYear[1] %>
+                        </div>
+                        <div id="balance-sheet" class="slide">
+                            <h6>Balance Sheet</h6>
+                            <div class="annual-label">Annual</div>
+                            <div class="slide-boxes">
+                                <div class="slide-data-wrapper balance-slide-years slide-years">
+                                    <% let balanceYear={"zero":"--","one":"--", "two" :"--"}%>
+                                        <% if(balanceResult){%>
+                                            <%if(balanceResult.summaryDetail){%>
+                                                <%if(balanceResult.summaryDetail.currency){%>
+                                                    <%ccy=balanceResult.summaryDetail.currency%>
+                                                        <% }%>
+                                                            <% if(balanceResult.timeSeries.timestamp){ %>
+                                                                <% let balanceTimestamp%>
+                                                                    <%balanceTimestamp=balanceResult.timeSeries.timestamp%>
+                                                                        <%balanceYear["zero"]=balanceTimestamp[0]%>
+                                                                            <%balanceYear["one"]=balanceTimestamp[1]%>
+                                                                                <%balanceYear["two"]=balanceTimestamp[2]%>
+                                                                                    <% }}} %>
+                                                                                        <div
+                                                                                            class="slide-data slide-headers data-align-left currency">
+                                                                                            (<%=ccy%>)
+                                                                                        </div>
+
+                                                                                        <div
+                                                                                            class="slide-data slide-headers year1 endingyr1">
+                                                                                            <%=balanceYear["two"] %>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="slide-data slide-headers year2 endingyr2">
+                                                                                            <%=balanceYear["one"] %>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="slide-data slide-headers year3 endingyr3">
+                                                                                            <%=balanceYear["zero"] %>
+                                                                                        </div>
+                                </div>
+                                <div class="slide-data-wrapper total-assets">
+                                    <div class="slide-data data-align-left">Total assets</div>
+                                    <% let totalAssets={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annTotalAss %>
+                                                    <%annTotalAss=balanceResult.timeSeries.annualTotalAssets%>
+
+                                                        <% for(let i=0; i<annTotalAss.length; i++){ %>
+                                                            <% let curr=annTotalAss[i] %>
+                                                                <% if(curr){ %>
+                                                                    <% if(curr.reportedValue){ %>
+                                                                        <% if(totalAssets[i]){ %>
+                                                                            <% totalAssets[i]=curr.reportedValue.fmt %>
+                                                                                <% }}}} %>
+                                                                                    <% }} %>
+                                                                                        <div class="slide-data year1">
+                                                                                            <%=totalAssets[2] %>
+                                                                                        </div>
+                                                                                        <div class="slide-data year2">
+                                                                                            <%=totalAssets[1] %>
+                                                                                        </div>
+                                                                                        <div class="slide-data year3">
+                                                                                            <%=totalAssets[0] %>
+                                                                                        </div>
+                                </div>
+                                <div class="slide-data-wrapper total-liab">
+                                    <div class="slide-data data-align-left">Total liabilities</div>
+                                    <% let totalLiab={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annTotLiab %>
+                                                    <% annTotLiab=balanceResult.timeSeries.annualTotalLiabilitiesNetMinorityInterest
+                                                        %>
+                                                        <% for(let i=0; i<annTotLiab.length; i++){ %>
+                                                            <% let curr=annTotLiab[i] %>
+                                                                <% if(curr){ %>
+                                                                    <% if(totalLiab[i]){ %>
+                                                                        <% totalLiab[i]=curr.reportedValue.fmt %>
+                                                                            <% }}}}} %>
+                                                                                <div class="slide-data year1">
+                                                                                    <%=totalLiab[2] %>
+                                                                                </div>
+                                                                                <div class="slide-data year2">
+                                                                                    <%=totalLiab[1] %>
+                                                                                </div>
+                                                                                <div class="slide-data year3">
+                                                                                    <%=totalLiab[0] %>
+                                                                                </div>
+                                </div>
+                                <div class="slide-data-wrapper total-equity">
+                                    <div class="slide-data data-align-left">Total equity</div>
+                                    <% let totalEquity={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annTotEq %>
+                                                    <% annTotEq=balanceResult.timeSeries.annualStockholdersEquity %>
+                                                        <% for(let i=0; i<annTotEq.length; i++){ %>
+                                                            <% let curr=annTotEq[i] %>
+                                                                <% if(curr && totalEquity[i]){ %>
+                                                                    <% totalEquity[i]=curr.reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data year1">
+                                                                                <%=totalEquity[2]%>
+                                                                            </div>
+                                                                            <div class="slide-data">
+                                                                                <%=totalEquity[1] %>
+                                                                            </div>
+                                                                            <div class="slide-data">
+                                                                                <%=totalEquity[0] %>
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper total-capitalization">
+                                    <div class="slide-data data-align-left">Total capitalization</div>
+                                    <% let totalCap={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annTotalCap %>
+                                                    <% annTotalCap=balanceResult.timeSeries.annualCapitalStock %>
+                                                        <% for(let i=0; i<annTotalCap.length; i++){ %>
+                                                            <% let curr=annTotalCap[i] %>
+                                                                <% if(curr && totalCap[i]){ %>
+                                                                    <% totalCap[i]=curr.reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data year1">
+                                                                                <%=totalCap[2] %>
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+                                                                                <%=totalCap[1] %>
+                                                                            </div>
+                                                                            <div class="slide-data year3">
+                                                                                <%=totalCap[0] %>
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper long-term-debt">
+                                    <div class="slide-data data-align-left">Long term debt</div>
+                                    <% let longTermDebt={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annLngDebt %>
+                                                    <% annLngDebt=balanceResult.timeSeries.annualLongTermDebt %>
+                                                        <% for(let i=0; i<annLngDebt.length; i++){ %>
+                                                            <% let curr=annLngDebt[i] %>
+                                                                <% if(curr){ %>
+                                                                    <% longTermDebt[i]=curr.reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data year1">
+                                                                                <%=longTermDebt[2] %>
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+                                                                                <%=longTermDebt[1] %>
+                                                                            </div>
+                                                                            <div class="slide-data year3">
+                                                                                <%=longTermDebt[0] %>
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper working-capital">
+                                    <div class="slide-data data-align-left">Accounts receivable</div>
+                                    <% let accRec={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annAccRec %>
+                                                    <% annAccRec=balanceResult.timeSeries.annualAccountsReceivable%>
+                                                        <% for(let i=0; i<annAccRec.length; i++){ %>
+                                                            <% let curr=annAccRec[i] %>
+                                                                <% if(curr){ %>
+                                                                    <% accRec[i]=curr.reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data year1">
+                                                                                <%=accRec[2] %>
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+                                                                                <%=accRec[1] %>
+                                                                            </div>
+                                                                            <div class="slide-data year3">
+                                                                                <%=accRec[0] %>
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper total-debt">
+                                    <div class="slide-data data-align-left">Accounts payable</div>
+                                    <% let accPay={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annAccPay %>
+                                                    <% annAccPay=balanceResult.timeSeries.annualAccountsPayable%>
+                                                        <% for(let i=0; i<annAccPay.length; i++){ %>
+                                                            <% let curr=annAccPay[i] %>
+                                                                <% if(curr && accPay[i]){ %>
+                                                                    <% accPay[i]=curr.reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data year1">
+                                                                                <%=accPay[2] %>
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+                                                                                <%=accPay[1] %>
+                                                                            </div>
+                                                                            <div class="slide-data year3">
+                                                                                <%=accPay[0] %>
+                                                                            </div>
+                                </div>
+
+                                <div class="slide-data-wrapper shares-issued">
+                                    <div class="slide-data data-align-left">Retained Earnings</div>
+                                    <% let retEarn={0:"--", 1:"--", 2:"--"} %>
+                                        <% if(balanceResult){ %>
+                                            <% if(balanceResult.timeSeries){ %>
+                                                <% let annRetEarn %>
+                                                    <% annRetEarn=balanceResult.timeSeries.annualRetainedEarnings%>
+                                                        <% for(let i=0; i<annRetEarn.length; i++){ %>
+                                                            <% let curr=annRetEarn[i] %>
+                                                                <% if(curr && retEarn[i]){ %>
+                                                                    <% retEarn[i]=curr.reportedValue.fmt%>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data year1">
+                                                                                <%=retEarn[2] %>
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+                                                                                <%=retEarn[1] %>
+                                                                            </div>
+                                                                            <div class="slide-data year3">
+                                                                                <%=retEarn[0] %>
+                                                                            </div>
+                                </div>
                             </div>
                         </div>
+                        <div id="cash-flow" class="slide">
+                            <h6>Cash Flow</h6>
+                            <div class="annual-label">Annual</div>
+                            <div class="slide-boxes">
+                                <div class="slide-data-wrapper slide-years cash-flow-slide-years">
+                                    <div class="slide-data slide-headers data-align-left currency">(<%=ccy %>)</div>
+                                    <div class="slide-data slide-headers ttm">TTM</div>
+                                    <% let annualYear={"one":"--", "two" :"--"} %>
+                                        <% if(cashFlowRes) {%>
+                                            <% if(cashFlowRes.timestamp){ %>
+                                                <% let cashTmestmpArr=cashFlowRes.timestamp %>
+                                                    <% arrLastEle=cashTmestmpArr.length-1 %>
+                                                        <% annualYear["one"]=cashTmestmpArr[arrLastEle] %>
+                                                            <% annualYear["two"]=cashTmestmpArr[arrLastEle-1]%>
+                                                                <% }} %>
+                                                                    <div
+                                                                        class="slide-data slide-headers year1 endingyr1">
+                                                                        <%=annualYear["one"] %>
+                                                                    </div>
+                                                                    <div
+                                                                        class="slide-data slide-headers year2 endingyr2">
+                                                                        <%=annualYear["two"] %>
+                                                                    </div>
+                                </div>
 
-                        <div class="slide-data-wrapper operating-cash-flow">
-                            <div class="slide-data data-align-left">Operating cash flow</div>
-                            <% let opCashFlow={1:"--", 2:"--"} %>
-                                <% let ttmOpCF="--" %>
+                                <div class="slide-data-wrapper operating-cash-flow">
+                                    <div class="slide-data data-align-left">Operating cash flow</div>
+                                    <% let ttmOpCF="--" %>
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingOperatingCashFlow){ %>
+                                                    <% let cfOpArr=cashFlowRes.timeSeries.trailingOperatingCashFlow %>
+                                                        <% if(cfOpArr.length> 0) {%>
+                                                            <% arrLastEle=cfOpArr.length-1 %>
+                                                                <% ttmOpCF=cfOpArr[arrLastEle].reportedValue.fmt %>
+                                                                    <% }}}} %>
+                                                                        <div class="slide-data ttm">
+                                                                            <%=ttmOpCF %>
+                                                                        </div>
+                                                                        <div class="slide-data year1">
 
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].operatingCashFlow){ %>
-                                                    <% ttmOpCF=ttmCashFlow[index].operatingCashFlow %>
-                                                        <% }}} %>
+                                                                        </div>
+                                                                        <div class="slide-data year2">
 
+                                                                        </div>
+                                </div>
+                                <div class="slide-data-wrapper investing-cash-flow">
+                                    <div class="slide-data data-align-left">Investing cash flow</div>
+                                    <% let ttmInvCF="--" %>
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingInvestingCashFlow){ %>
+                                                    <% let cfIvArr=cashFlowRes.timeSeries.trailingInvestingCashFlow %>
+                                                        <% if(cfIvArr.length> 0) {%>
+                                                            <% arrLastEle=cfIvArr.length-1 %>
+                                                                <% ttmOpCF=cfIvArr[arrLastEle].reportedValue.fmt %>
+                                                                    <% }}}} %>
+                                                                        <div class="slide-data ttm">
+                                                                            <%=ttmInvCF %>
+                                                                        </div>
+                                                                        <div class="slide-data year1">
 
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.operatingCashFlow){%>
-                                                                            <% opCashFlow[i]=curr.operatingCashFlow %>
-                                                                                <% }}} %>
+                                                                        </div>
+                                                                        <div class="slide-data year2">
 
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%=ttmOpCF %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=opCashFlow[2]%>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=opCashFlow[1]%>
-                                                                                    </div>
+                                                                        </div>
+                                </div>
+                                <div class="slide-data-wrapper cash-dividends-paid">
+                                    <% let tmDvPd="--" %>
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingCashDividendsPaid){ %>
+                                                    <% let cshDivAr%>
+                                                        <% cshDivAr=cashFlowRes.timeSeries.trailingCashDividendsPaid %>
+                                                            <% if(cshDivAr.length> 0) {%>
+                                                                <% arrLastEle=cshDivAr.length-1 %>
+                                                                    <% tmDvPd=cshDivAr[arrLastEle].reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data data-align-left">
+                                                                                Cash dividends paid
+                                                                            </div>
+                                                                            <div class="slide-data ttm">
+                                                                                <%= tmDvPd %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper end-cash-position">
+                                    <% let ttmEdCshP="--" %>
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingEndCashPosition){ %>
+                                                    <% let edCsAr%>
+                                                        <%edCsAr=cashFlowRes.timeSeries.trailingEndCashPosition %>
+                                                            <% if(edCsAr.length> 0) {%>
+                                                                <% arrLastEle=edCsAr.length-1 %>
+                                                                    <% ttmEdCshP=edCsAr[arrLastEle].reportedValue.fmt %>
+                                                                        <% }}}} %>
+
+                                                                            <div class="slide-data data-align-left">
+                                                                                End cash position</div>
+                                                                            <div class="slide-data ttm">
+                                                                                <%= ttmEdCshP %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper capital-expenditure">
+
+                                    <% let ttmCapEx="--" %>
+
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingCapitalExpenditure){ %>
+                                                    <% let cpExAr%>
+                                                        <%cpExAr=cashFlowRes.timeSeries.trailingCapitalExpenditure %>
+                                                            <% if(cpExAr.length> 0) {%>
+                                                                <% arrLastEle=cpExAr.length-1 %>
+                                                                    <% ttmCapEx=cpExAr[arrLastEle].reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data data-align-left">
+                                                                                Capital expenditure
+                                                                            </div>
+                                                                            <div class="slide-data ttm">
+                                                                                <%=ttmCapEx %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper common-stock-iss">
+                                    <% let ttmStkIs="--" %>
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingCommonStockIssuance){ %>
+                                                    <% let skIsA %>
+                                                        <%skIsA=cashFlowRes.timeSeries.trailingCommonStockIssuance %>
+
+                                                            <% if(skIsA.length> 0) {%>
+                                                                <% arrLastEle=skIsA.length-1 %>
+                                                                    <% ttmStkIs=skIsA[arrLastEle].reportedValue.fmt%>
+
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data data-align-left">
+                                                                                Common stock Issuance</div>
+                                                                            <div class="slide-data ttm">
+                                                                                <%=ttmStkIs %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper repayment-of-debt">
+                                    <% let ttmRpDb="--" %>
+
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingRepaymentOfDebt){ %>
+                                                    <% let rpDbAr %>
+                                                        <%rpDbAr=cashFlowRes.timeSeries.trailingRepaymentOfDebt %>
+
+                                                            <% if(rpDbAr.length> 0) {%>
+                                                                <% arrLastEle=rpDbAr.length-1 %>
+                                                                    <% ttmRpDb=rpDbAr[arrLastEle].reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data data-align-left">
+                                                                                Repayment of debt</div>
+                                                                            <div class="slide-data ttm">
+                                                                                <%= ttmRpDb %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                                <div class="slide-data-wrapper free-cash-flow">
+                                    <% let ttmFCF="--" %>
+                                        <% if(cashFlowRes){%>
+                                            <% if(cashFlowRes.timeSeries){ %>
+                                                <% if(cashFlowRes.timeSeries.trailingFreeCashFlow){ %>
+                                                    <% let ttmFCFA%>
+                                                        <% ttmFCFA=cashFlowRes.timeSeries.trailingFreeCashFlow %>
+
+                                                            <% if(ttmFCFA.length> 0) {%>
+                                                                <% arrLastEle=ttmFCFA.length-1 %>
+                                                                    <% ttmFCF=ttmFCFA[arrLastEle].reportedValue.fmt %>
+                                                                        <% }}}} %>
+                                                                            <div class="slide-data data-align-left">
+                                                                                Free cash flow</div>
+                                                                            <div class="slide-data ttm">
+                                                                                <%=ttmFCF %>
+                                                                            </div>
+                                                                            <div class="slide-data year1">
+
+                                                                            </div>
+                                                                            <div class="slide-data year2">
+
+                                                                            </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="slide-data-wrapper">
-                            <div class="slide-data data-align-left">Investing cash flow</div>
-                            <% let invCashFlow={1:"--", 2:"--"} %>
-                                <% let ttmInvCF="--" %>
-
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].investingCashFlow){ %>
-                                                    <% ttmInvCF=ttmCashFlow[index].investingCashFlow %>
-                                                        <% }}} %>
-
-
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.investingCashFlow ){ %>
-                                                                            <% invCashFlow[i]=curr.investingCashFlow %>
-                                                                                <% }}} %>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%=ttmInvCF %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=invCashFlow[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=invCashFlow[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper financing-cash-flow">
-                            <% let finCashFlow={1:"--", 2:"--"} %>
-                                <% let ttmFinCF="--" %>
-
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].financingCashFlow){ %>
-                                                    <% ttmFinCF=ttmCashFlow[index].financingCashFlow %>
-                                                        <% }}} %>
-
-
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.financingCashFlow){ %>
-                                                                            <% finCashFlow[i]=curr.financingCashFlow %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        Financing cash flow</div>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%= ttmFinCF %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=finCashFlow[2]%>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=finCashFlow[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper end-cash-position">
-                            <% let endCashPos={1:"--", 2:"--"} %>
-                                <% let ttmEndCashPos="--" %>
-
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].endCashPosition){ %>
-                                                    <% ttmEndCashPos=ttmCashFlow[index].endCashPosition %>
-                                                        <% }}} %>
-
-
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.endCashPosition ){ %>
-                                                                            <% endCashPos[i]=curr.endCashPosition %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        End cash position</div>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%= ttmEndCashPos %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%= endCashPos[2]%>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%= endCashPos[1]%>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper capital-expenditure">
-                            <% let capitalExp={1:"--", 2:"--"} %>
-                                <% let ttmCapitalExp="--" %>
-
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].capitalExpenditure){ %>
-                                                    <% ttmCapitalExp=ttmCashFlow[index].capitalExpenditure %>
-                                                        <% }}} %>
-
-
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.capitalExpenditure){ %>
-                                                                            <% capitalExp[i]=curr.capitalExpenditure %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        Capital expenditure</div>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%=ttmCapitalExp %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=capitalExp[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=capitalExp[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper issuance-of-debt">
-                            <% let issueOfDebt={1:"--", 2:"--"} %>
-                                <% let ttmIssueDebt="--" %>
-
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].issuanceOfDebt){ %>
-                                                    <% ttmIssueDebt=ttmCashFlow[index].issuanceOfDebt %>
-                                                        <% }}} %>
-
-
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.issuanceOfDebt){ %>
-                                                                            <% issueOfDebt[i]=curr.issuanceOfDebt %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        Issuance of debt</div>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%=ttmIssueDebt %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=issueOfDebt[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=issueOfDebt[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper repayment-of-debt">
-                            <% let repayOfDebt={1:"--", 2:"--"} %>
-                                <% let ttmRepaymentOfDebt="--" %>
-
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].repaymentOfDebt){ %>
-                                                    <% ttmRepaymentOfDebt=ttmCashFlow[index].repaymentOfDebt %>
-                                                        <% }}} %>
-
-
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.repaymentOfDebt){ %>
-                                                                            <% issueOfDebt[i]=curr.repaymentOfDebt %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        Repayment of debt</div>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%= ttmRepaymentOfDebt %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=repayOfDebt[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=repayOfDebt[1] %>
-                                                                                    </div>
-                        </div>
-                        <div class="slide-data-wrapper free-cash-flow">
-                            <% let freeCashFlow={1:"--", 2:"--"} %>
-                                <% let ttmFreeCashFlow="--" %>
-
-                                    <% if(ttmCashFlow){ %>
-                                        <% let index=ttmCashFlow.length - 1 %>
-                                            <% if(ttmCashFlow[index]) {%>
-                                                <% if(ttmCashFlow[index].freeCashFlow){ %>
-                                                    <% ttmFreeCashFlow=ttmCashFlow[index].freeCashFlow %>
-                                                        <% }}} %>
-
-
-                                                            <% for(let i=1; i<annualCashFlow.length; i++){ %>
-                                                                <% let curr=annualCashFlow[i] %>
-                                                                    <% if(curr){ %>
-                                                                        <% if(curr.freeCashFlow){ %>
-                                                                            <% freeCashFlow[i]=curr.freeCashFlow %>
-                                                                                <% }}} %>
-                                                                                    <div
-                                                                                        class="slide-data data-align-left">
-                                                                                        Free cash flow</div>
-                                                                                    <div class="slide-data ttm">
-                                                                                        <%=ttmFreeCashFlow %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year1">
-                                                                                        <%=freeCashFlow[2] %>
-                                                                                    </div>
-                                                                                    <div class="slide-data year2">
-                                                                                        <%=freeCashFlow[1] %>
-                                                                                    </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             </div>
         </section>
@@ -1070,15 +1035,15 @@
                 <h6>Summary</h6>
                 <p id="company_desc">
                     <%let resultLB="" %>
-                        <%if(defaultStats.assetProfile){ %>
-                            <%resultLB=defaultStats.assetProfile.longBusinessSummary}%>
+                        <%if(getSumm.assetProfile){ %>
+                            <%resultLB=getSumm.assetProfile.longBusinessSummary}%>
                                 <%=resultLB%>
                 </p>
             </div>
             <div id="profile_container">
                 <% let h="" %>
-                    <%if(defaultStats.assetProfile){ %>
-                        <%if(defaultStats.assetProfile.address1){ %>
+                    <%if(getSumm.assetProfile){ %>
+                        <%if(getSumm.assetProfile.address1){ %>
                             <% h="Profile" }}%>
                                 <h6>
                                     <%=h %>
@@ -1087,48 +1052,48 @@
                                     <div id="address_container">
                                         <p id="address">
                                             <%let resultAd="" %>
-                                                <%if(defaultStats.assetProfile){ %>
-                                                    <%resultAd=defaultStats.assetProfile.address1}%>
+                                                <%if(getSumm.assetProfile){ %>
+                                                    <%resultAd=getSumm.assetProfile.address1}%>
                                                         <%=resultAd%>
                                         </p>
                                         <div id="city_state_container">
                                             <p id="city">
                                                 <%let resultCi="" %>
-                                                    <%if(defaultStats.assetProfile){ %>
-                                                        <%resultCi=defaultStats.assetProfile.city}%>
+                                                    <%if(getSumm.assetProfile){ %>
+                                                        <%resultCi=getSumm.assetProfile.city}%>
                                                             <%=resultCi%>
                                             </p>
                                             <p id="state">
                                                 <%let resultSt="" %>
-                                                    <%if(defaultStats.assetProfile){ %>
-                                                        <%resultSt=defaultStats.assetProfile.state}%>
+                                                    <%if(getSumm.assetProfile){ %>
+                                                        <%resultSt=getSumm.assetProfile.state}%>
                                                             <%=resultSt%>
                                             </p>
                                             <p id="zip">
                                                 <%let resultZ="" %>
-                                                    <%if(defaultStats.assetProfile){ %>
-                                                        <%resultZ=defaultStats.assetProfile.zip}%>
+                                                    <%if(getSumm.assetProfile){ %>
+                                                        <%resultZ=getSumm.assetProfile.zip}%>
                                                             <%=resultZ%>
                                             </p>
                                         </div>
 
                                         <p id="country">
                                             <%let resultCoun="" %>
-                                                <%if(defaultStats.assetProfile){ %>
-                                                    <%resultCoun=defaultStats.assetProfile.country}%>
+                                                <%if(getSumm.assetProfile){ %>
+                                                    <%resultCoun=getSumm.assetProfile.country}%>
                                                         <%=resultCoun%>
                                         </p>
                                         <p id="phone">
                                             <%let resultPh="" %>
-                                                <%if(defaultStats.assetProfile){ %>
-                                                    <%resultPh=defaultStats.assetProfile.phone}%>
+                                                <%if(getSumm.assetProfile){ %>
+                                                    <%resultPh=getSumm.assetProfile.phone}%>
                                                         <%=resultPh%>
                                         </p>
                                         <p id="website">
                                             <%let resultWeb="" %>
-                                                <%if(defaultStats.assetProfile){ %>
-                                                    <% if(defaultStats.assetProfile.website){ %>
-                                                        <%resultWeb=defaultStats.assetProfile.website}}%>
+                                                <%if(getSumm.assetProfile){ %>
+                                                    <% if(getSumm.assetProfile.website){ %>
+                                                        <%resultWeb=getSumm.assetProfile.website}}%>
                                                             <a href="<%=resultWeb%>" target="_blank">
                                                                 <%=resultWeb%>
                                                             </a>
@@ -1137,17 +1102,17 @@
                                         </p>
                                         <p id="industry">
                                             <%let rInd="" %>
-                                                <%if(defaultStats.assetProfile){ %>
-                                                    <% if(defaultStats.assetProfile.industry){%>
-                                                        <%rInd=defaultStats.assetProfile.industry%>
+                                                <%if(getSumm.assetProfile){ %>
+                                                    <% if(getSumm.assetProfile.industry){%>
+                                                        <%rInd=getSumm.assetProfile.industry%>
                                                             <% rInd=`Industry: ${rInd}` }}%>
                                                                 <%=rInd %>
                                         </p>
                                         <p id="sector">
                                             <%let rSec="" %>
-                                                <%if(defaultStats.assetProfile){ %>
-                                                    <% if(defaultStats.assetProfile.sector){%>
-                                                        <%rSec=defaultStats.assetProfile.sector%>
+                                                <%if(getSumm.assetProfile){ %>
+                                                    <% if(getSumm.assetProfile.sector){%>
+                                                        <%rSec=getSumm.assetProfile.sector%>
                                                             <% rSec=`Sector: ${rSec}`}} %>
                                                                 <%=rSec%>
                                         </p>
@@ -1156,16 +1121,16 @@
                                         <ul id="title_name1">
                                             <li>
                                                 <% let tit="" %>
-                                                    <%if(defaultStats.assetProfile){ %>
-                                                        <% if(defaultStats.assetProfile.companyOfficers[0]){ %>
-                                                            <%tit=`${defaultStats.assetProfile.companyOfficers[0].title}:`}}%>
+                                                    <%if(getSumm.assetProfile){ %>
+                                                        <% if(getSumm.assetProfile.companyOfficers[0]){ %>
+                                                            <%tit=`${getSumm.assetProfile.companyOfficers[0].title}:`}}%>
                                                                 <%=tit%>
                                             </li>
                                             <li>
                                                 <% let nam="" %>
-                                                    <% if(defaultStats.assetProfile){ %>
-                                                        <% if(defaultStats.assetProfile.companyOfficers[0]){%>
-                                                            <%nam=defaultStats.assetProfile.companyOfficers[0].name}} %>
+                                                    <% if(getSumm.assetProfile){ %>
+                                                        <% if(getSumm.assetProfile.companyOfficers[0]){%>
+                                                            <%nam=getSumm.assetProfile.companyOfficers[0].name}} %>
                                                                 <%= nam %>
 
                                             </li>
@@ -1174,18 +1139,17 @@
                                         <ul id="title_name2">
                                             <li>
                                                 <% let tit2="" %>
-                                                    <%if(defaultStats.assetProfile){ %>
-                                                        <% if(defaultStats.assetProfile.companyOfficers[1]){ %>
-                                                            <%tit2=`${defaultStats.assetProfile.companyOfficers[1].title}:`}}%>
+                                                    <%if(getSumm.assetProfile){ %>
+                                                        <% if(getSumm.assetProfile.companyOfficers[1]){ %>
+                                                            <%tit2=`${getSumm.assetProfile.companyOfficers[1].title}:`}}%>
                                                                 <%=tit2%>
                                             </li>
                                             <li>
                                                 <% let nam2="" %>
 
-                                                    <% if(defaultStats.assetProfile){ %>
-                                                        <% if(defaultStats.assetProfile.companyOfficers[1]){%>
-                                                            <%nam2=defaultStats.assetProfile.companyOfficers[1].name}}
-                                                                %>
+                                                    <% if(getSumm.assetProfile){ %>
+                                                        <% if(getSumm.assetProfile.companyOfficers[1]){%>
+                                                            <%nam2=getSumm.assetProfile.companyOfficers[1].name}} %>
                                                                 <%= nam2 %>
                                             </li>
                                             <li></li>
@@ -1194,17 +1158,17 @@
                                     <div id="employee_container">
                                         <p>
                                             <% let emH="" %>
-                                                <% if(defaultStats.assetProfile){ %>
-                                                    <% if(defaultStats.assetProfile.fullTimeEmployees){%>
+                                                <% if(getSumm.assetProfile){ %>
+                                                    <% if(getSumm.assetProfile.fullTimeEmployees){%>
                                                         <%emH="Full Time Employees:"%>
                                                             <% }} %>
                                                                 <%=emH%>
                                         </p>
                                         <p>
                                             <% let em="" %>
-                                                <% if(defaultStats.assetProfile){ %>
-                                                    <% if(defaultStats.assetProfile.fullTimeEmployees){%>
-                                                        <% em=defaultStats.assetProfile.fullTimeEmployees}} %>
+                                                <% if(getSumm.assetProfile){ %>
+                                                    <% if(getSumm.assetProfile.fullTimeEmployees){%>
+                                                        <% em=getSumm.assetProfile.fullTimeEmployees}} %>
                                                             <%= em %>
                                         </p>
                                     </div>
@@ -1225,11 +1189,11 @@
         const apiKey = '<%=API_KEY%>';
         const rapidURL = '<%=RAPID%>';
         const yfChartURL = '<%=YFCHARTURL%>'
-        const stockTicker = '<%=defaultStats.symbol%>';
-        const dividendRate = '<%=defaultStats.summaryDetail.dividendRate%>'
-        const exDivDate = '<%=defaultStats.summaryDetail.exDividendDate%>'
-        let yhooOpenPrice = '<%=defaultStats.summaryDetail.open%>';
-        const stockPriceChange = '<%=defaultStats.price.regularMarketChange%>';
+        const stockTicker = '<%=getSumm.symbol%>';
+        const dividendRate = '<%=getSumm.summaryDetail.dividendRate%>'
+        const exDivDate = '<%=getSumm.summaryDetail.exDividendDate%>'
+        let yhooOpenPrice = '<%=getSumm.summaryDetail.open%>';
+        const stockPriceChange = '<%=getSumm.price.regularMarketChange%>';
         const fiveMinIntervalChart = '<%=fiveMin%>';
 
         const regExp = /[a-zA-Z.^]/;
@@ -1722,13 +1686,13 @@
             return;
         };
         const yahooSetMktTime = () => {
-            const yf2PrePrice = '<%=defaultStats.price.preMarketPrice%>'
-            let preTime = '<%=defaultStats.price.preMarketTime%>'
-            const yf2PostPrice = '<%=defaultStats.price.postMarketPrice%>'
-            let postTime = '<%=defaultStats.price.postMarketTime%>'
-            const regMktPrice = '<%=defaultStats.price.regularMarketPrice%>'
-            const regTime = '<%=defaultStats.price.regularMarketTime%>';
-            const marketStateYahoo = '<%=defaultStats.price.marketState%>';
+            const yf2PrePrice = '<%=getSumm.price.preMarketPrice%>'
+            let preTime = '<%=getSumm.price.preMarketTime%>'
+            const yf2PostPrice = '<%=getSumm.price.postMarketPrice%>'
+            let postTime = '<%=getSumm.price.postMarketTime%>'
+            const regMktPrice = '<%=getSumm.price.regularMarketPrice%>'
+            const regTime = '<%=getSumm.price.regularMarketTime%>';
+            const marketStateYahoo = '<%=getSumm.price.marketState%>';
             let mktState, regDateTime = "Last Closed:", dateAndTime;
 
             currMktState = marketStateYahoo; //updates global variable for chartsjs

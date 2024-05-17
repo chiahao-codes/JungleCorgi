@@ -105,11 +105,13 @@ app.get("/tickrpro/contact", async (req, res, next) => {
 
 app.get("/tickrpro/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
-    defaultStats,
+    getSumm,
+    chartDataFiveMin,
+    results,
     chartResult5m,
     incomeResult,
     balanceResult,
-    cashFlowResult;
+    cashFlowRes;
 
   const options = {
     method: "GET",
@@ -127,69 +129,66 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US'`;
   const cashFlowURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
   const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
-  const defaultKeyStatsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-statistics?symbol=${symbol}&region=US`;
+  const getSummURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary?symbol=${symbol}&region=US`;
 
-  const defaultKeyStatResponse = fetch(defaultKeyStatsURL, options).then(
-    (resp) => {
-      return resp.json();
-    }
-  );
+  //check quote type:
+  getSumm = await fetch(getSummURL, options)
+    .then((data) => {
+      return data;
+    })
+    .catch((e) => console.log(e));
 
-  const chartDataFiveMin = fetch(fiveMinUrl, options).then((resp) => {
-    return resp.json();
-  });
-
-  //Income, Balance, Cash Flow data;
-  //use rapidapi endpoints:
-  //Income: getFinancials;
-  const getIncomeStmt = fetch(incomeStmtURL, options).then((resp) => {
-    return resp.json();
-  });
-
-  //Balance: getBalanceSheet;
-  const getBalanceSht = fetch(balanceShtURL, options).then((resp) => {
-    return resp.json();
-  });
-
-  //CashFlow: getCashFlow
-  const getCashFlow = fetch(cashFlowURL, options).then((resp) => {
-    return resp.json();
-  });
-
-  let results = await Promise.all([
-    defaultKeyStatResponse,
-    chartDataFiveMin,
-    getIncomeStmt,
-    getBalanceSht,
-    getCashFlow,
-  ]).catch((e) => console.log(e));
-
-  //assign respective ejs variables;
-  defaultStats = results[0];
-  chartResult5m = results[1];
-  incomeResult = results[2];
-  balanceResult = results[3];
-  cashFlowResult = results[4];
-
-  /**
-   * if (
-    !quoteCheck ||
-    quoteCheck.quoteResponse.result[0].quoteType === "ECNQUOTE" ||
-    quoteCheck.quoteResponse.result[0].quoteType === "MUTUALFUND"
-  ) {
+  if (getSumm.quoteType === "ECNQUOTE" || getSumm.quoteType === "MUTUALFUND") {
     res.render("404");
   }
-   */
 
-  res.render("ticker", {
-    API_KEY,
-    RAPID,
-    defaultStats,
-    cashFlowResult,
-    balanceResult,
-    incomeResult,
-    chartResult5m,
-  });
+  let typesQ = {
+    INDEX: true,
+    FUTURE: true,
+    CURRENCY: true,
+    CRYPTOCURRENCY: true,
+    EQUITY: true,
+  };
+
+  if (typesQ[getSumm.quoteType]) {
+    chartDataFiveMin = await fetch(fiveMinUrl, options).then((resp) => {
+      return resp.json();
+    });
+
+    const getIncomeStmt = fetch(incomeStmtURL, options).then((resp) => {
+      return resp.json();
+    });
+
+    const getBalanceSht = fetch(balanceShtURL, options).then((resp) => {
+      return resp.json();
+    });
+
+    const getCashFlow = fetch(cashFlowURL, options).then((resp) => {
+      return resp.json();
+    });
+
+    results = await Promise.all([
+      chartDataFiveMin,
+      getIncomeStmt,
+      getBalanceSht,
+      getCashFlow,
+    ]).catch((e) => console.log(e));
+
+    chartResult5m = results[0];
+    incomeResult = results[1];
+    balanceResult = results[2];
+    cashFlowRes = results[3];
+
+    res.render("ticker", {
+      API_KEY,
+      RAPID,
+      getSumm,
+      cashFlowRes,
+      balanceResult,
+      incomeResult,
+      chartResult5m,
+    });
+  }
 });
 
 app.listen(PORT, () => {
