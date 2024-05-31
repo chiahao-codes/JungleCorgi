@@ -91,13 +91,13 @@ const startCountDown = (mkt) => {
     if (currMonth === 11 && nextDay === 32) nextDay = nextDay + 1; //nye
     if (currMonth === 0 && nextDay === 15) nextDay = nextDay + 1; //mlk
     if (currMonth === 1 && nextDay === 19) nextDay = nextDay + 1; //president's day
+    if (currMonth === 4 && nextDay === 27) nextDay = nextDay + 1; //memorial day
 
-    //set next morning: 6:30am PST
     let openingBell = new Date(
       currYear,
       currMonth,
       nextDay,
-      6,
+      9,
       30,
       0,
       0
@@ -124,7 +124,7 @@ const startCountDown = (mkt) => {
       currYear,
       currMonth,
       currDate,
-      13,
+      16,
       0,
       0
     ).getTime();

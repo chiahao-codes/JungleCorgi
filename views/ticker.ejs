@@ -331,11 +331,12 @@
                     <div id="mktCap">Market Cap</div>
                     <%let mktCap="N/A" %>
                         <% if(getSumm){ %>
-                            <% if(getSumm.defaultKeyStatistics.price){ %>
-                                <% mktCap=getSumm.defaultKeyStatistics.price.marketCap.fmt}}%>
-                                    <div id="mktCap" class="indexData commas">
-                                        <%=mktCap %>
-                                    </div>
+                            <% if(getSumm.defaultKeyStatistics){ %>
+                                <% if(getSumm.defaultKeyStatistics.price){ %>
+                                    <% mktCap=getSumm.defaultKeyStatistics.price.marketCap.fmt}}}%>
+                                        <div id="mktCap" class="indexData commas">
+                                            <%=mktCap %>
+                                        </div>
                 </div>
                 <div class="border-line">
                     <div id="volume">Volume</div>
@@ -1186,15 +1187,14 @@
     <script>
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
-        const apiKey = '<%=API_KEY%>';
-        const rapidURL = '<%=RAPID%>';
-        const yfChartURL = '<%=YFCHARTURL%>'
+
+        const chartRes5m = `<%=chartResult5m%>`;
+        const quoteSumm = `<%=getSumm%>`;
         const stockTicker = '<%=getSumm.symbol%>';
         const dividendRate = '<%=getSumm.summaryDetail.dividendRate%>'
         const exDivDate = '<%=getSumm.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=getSumm.summaryDetail.open%>';
         const stockPriceChange = '<%=getSumm.price.regularMarketChange%>';
-        const fiveMinIntervalChart = '<%=fiveMin%>';
 
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
@@ -1223,29 +1223,6 @@
         let pIntervalId;
 
         //access on frontend due to api max quota capacity;
-        /**
-         * 
-        const fiveDaysUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&symbol=${symbol}&range=5d&region=US&includePrePost=false&useYfid=false&includeAdjustedClose=true`;
-        const oneMonthUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=1mo&region=US`;
-        const ytdUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=ytd&region=US`;
-        const twoYearUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=${symbol}&range=2y&region=US`;
-        let chartResult5d, chartResult1mo, chartResultYTD, chartResult2y;
-        const chartDataFiveDays = fetch(fiveDaysUrl, options).then((resp) => {
-          return resp.json();
-        });
-        
-        const chartDataOneMonth = fetch(oneMonthUrl, options).then((resp) => {
-          return resp.json();
-        });
-        
-        const chartDataYTD = fetch(ytdUrl, options).then((resp) => {
-          return resp.json();
-        });
-        
-        const chartDataTwoYear = fetch(twoYearUrl, options).then((resp) => {
-          return resp.json();
-        });
-         */
 
         function updateProgressBar() {
             const computedStyle = getComputedStyle(progressBar);
@@ -1482,16 +1459,10 @@
         let currMktState, timeout = undefined, timeout2 = undefined, dataLineColor;
 
         const setMarketTime = (timeStamp, int) => {
-            let date, sessionTime, formatted;
-            const timeStampCheck = Number(timeStamp);
+            let date, formatted;
 
-            //yahoo time
-            if (!timeStampCheck) {
-                date = new Date(`${timeStamp}`);
-            }
-
-            //epoch time given by rapidapi,
-            if (timeStampCheck) {
+            //timestamp is a number
+            if (timeStamp) {
                 date = new Date(timeStamp * 1000);
             }
 
@@ -1624,67 +1595,110 @@
             }
             return
         };
-        const getRapidPrices = async (api, symbol) => {
-            const url = `${mboumQuotes}${symbol}`;
-            const options = {
-                method: "GET",
-                headers: {
-                    "X-RapidAPI-Key": api,
-                    "X-RapidAPI-Host": rapidURL,
-                },
-            };
+        const fillChartData = async (range, chart5m = "") => {
+            let chartResp, chartTimes, closeQuote, openQuote, chartResults, interval;
+            switch (range) {
+                case "1d":
+                    interval = "5m";
+                    break;
 
-            const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
-            const result = await response.json();
-            const marketState = result.body[0].marketState;
-            const regMarketTime = result.body[0].regularMarketTime;
-            const preMarketTime = result.body[0].preMarketTime;
-            const postMarketTime = result.body[0].postMarketTime;
+                case "5d":
+                    interval = "1h";
+                    break;
 
+                case "1mo":
+                    interval = "1d";
+                    break;
 
-            let regMktState = "Last Closed:", regMktPrice, regMktChange, regMktChangePercent,
-                mktStatePrice, mktStateChange, mktStateChangePct, extendedMkTime, mktState;
+                case "ytd":
+                    interval = "1wk";
+                    break;
 
-            regMktPrice = result.body[0].regularMarketPrice;
-            regMktChange = result.body[0].regularMarketChange;
-            regMktChangePercent = result.body[0].regularMarketChangePercent;
-            currMktState = marketState // update global variable for chartjs
+                case "2y":
+                    interval = "1mo";
+                    break;
 
-            if (marketState === "REGULAR") regMktState = "Current Session:";
-            //reg hours
-            priceTimeContainer.children[0].children[0].children[0].innerText = regMktPrice;
-            priceTimeContainer.children[0].children[0].children[1].children[0].innerText = regMktChange;
-            priceTimeContainer.children[0].children[0].children[1].children[1].innerText = regMktChangePercent;
-            if (regMarketTime) {
-                atCloseContainer.children[0].innerText = regMktState;
-                atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
+                default:
+                    console.log("invalid range");
+                    break;
             }
 
-            if (result.body[0].postMarketPrice) {
-                mktState = "After Hours:";
-                mktStatePrice = result.body[0].postMarketPrice;
-                mktStateChange = result.body[0].postMarketChange;
-                mktStateChangePct = result.body[0].postMarketChangePercent;
-                extendedMkTime = postMarketTime;
+            //5m:1day, 1h:5days;
+            //1d:months, 1mo:years;
+            let chartData = {
+                datasets: [{
+                    label: "",
+                    data: [],
+                    borderColor: dataLineColor,
+                    backgroundColor: dataLineColor,
+                    color: dataLineColor,
+                    tension: 0.1,
+                    pointBorderWidth: .5,
+                }],
+                labels: []
             }
 
-            if (result.body[0].preMarketPrice) {
-                mktState = "Pre-Market Hours:";
-                mktStatePrice = result.body[0].preMarketPrice;
-                mktStateChange = result.body[0].preMarketChange;
-                mktStateChangePct = result.body[0].preMarketChangePercent;
-                extendedMkTime = preMarketTime;
+            if (chart5m) {
+                chartResults = chart5m;
+            } else {
+                const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=${interval}&region=US&symbol=${stockTicker}&range=${range}&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit`;
+                const options = {
+                    method: 'GET',
+                    headers: {
+                        'x-rapidapi-key': `${apiKey}`,
+                        'x-rapidapi-host': `${rapidURL}`
+                    }
+                };
+                let response = await fetch(url).then((res) => { return res.json() }).catch((e) => console.log(e));
+                chartResults = response;
             }
 
-            //extended hours
-            priceTimeContainer.children[1].children[0].children[0].innerText = mktStatePrice;
-            priceTimeContainer.children[1].children[0].children[1].children[0].innerText = mktStateChange;
-            priceTimeContainer.children[1].children[0].children[1].children[1].innerText = mktStateChangePct;
-            afterHoursTimeContainer.children[0].innerText = mktState;
-            afterHoursTimeContainer.children[1].innerText = setMarketTime(extendedMkTime);
+            chartResp = chartResults.chart.result[0];
+            chartTimes = chartResults.chart.result[0].timestamp;
+            openQuote = chartResults.chart.result[0].indicators.quote[0].open;
+            closeQuote = chartResults.chart.result[0].indicators.quote[0].close;
+            //Iterate over timestamp array, start from the last one, go backwards;
+            let timestampEnd = chartTimes.length - 1;
 
-            return;
-        };
+            //return chartdata object;
+            //start from the last one and go backwards;
+            let count = 5, yearCount = 4, monthCount = 30;
+            for (let i = timestampEnd; i >= 0; i--) {
+                let currTimestamp = chartTimes[i];
+                let promise = () => {
+                    return new Promise((resolve, reject) => {
+                        let res = setMarketTime(currTimestamp);
+                        resolve(res);
+                    });
+                }
+                //convert date format for labels
+                let labelDate = await promise();
+
+                let mktPrice = closeQuote[i]; //closing price;
+
+                //get UTC Date to determine mkt price Open vs. Closed
+                currTimestamp *= 1000;
+                let dateCreate = new Date(currTimestamp);
+
+                //find curr utc timestamp vs. market open of stock symbol
+                let utcHours = dateCreate.getUTCHours();
+                let utcMin = dateCreate.getUTCMinutes();
+
+                let marketOpen = chartResp.meta.currentTradingPeriod.regular.start;
+                let mktOpenDate = new Date(marketOpen * 1000);
+                let utcHourOpen = mktOpenDate.getUTCHours();
+                let utcMinsOpen = mktOpenDate.getUTCMinutes();
+
+                if (utcHourOpen === utcHours && utcMinsOpen === utcMin) {
+                    mktPrice = openQuote[i]
+                }
+
+                chartData.datasets[0].data.unshift(mktPrice);
+                chartData.labels.unshift(labelDate);
+            }
+
+            return chartData
+        }
         const yahooSetMktTime = () => {
             const yf2PrePrice = '<%=getSumm.price.preMarketPrice%>'
             let preTime = '<%=getSumm.price.preMarketTime%>'
@@ -1738,472 +1752,146 @@
                 prevCloseContainer.style.maxWidth = "100%";
             }
         }
-        const yfGetChartApi = async (sym, interval, rapidurl = rapidURL, apikey = apiKey, range = "1d") => {
-            console.log(fiveMinIntervalChart);
-            let result;
-            const url = `${yfChartURL}${interval}&symbol=${sym}&range=${range}&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true';`;
-
-            const options = {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': `${apikey}`,
-                    'X-RapidAPI-Host': `${rapidurl}`,
-                    "Content-Type": "application/json",
-                    "X-Content-Type-Options": "nosniff"
-                }
-            };
-
-            try {
-                //  const response = await fetch(url, options);
-                // console.log(response)
-                // result = await response.json();
-                // console.log(result)
-
-            } catch (error) {
-                console.error(error);
-            }
-            return
-        }
-        const fillChartData = async (mktstatus, ticker, interval, range) => {
-            //5m:1day, 1h:5days;
-            //1d:months, 1mo:years;
-            let chartData = {
-                "5m": {},
-                "1h": {},
-                "1d": {},
-                "1mo": {}
-            }
-            chartData[interval] = {
-                datasets: [{
-                    label: "", data: [],
-                    borderColor: dataLineColor,
-                    backgroundColor: dataLineColor,
-                    color: dataLineColor,
-                    tension: 0.1,
-                    pointBorderWidth: .5
-                }],
-                labels: []
-            };
-
-            //might just need to use npmjs yahoo-finance2 for chart info;
-            const histPrices = await yfGetChartApi(ticker, interval, range);
-            console.log("histPrices", histPrices)
-
-            const responseBody = histPrices.body;
-            const responseMeta = histPrices.meta;
-            //Iterate over body, start from the last one, go backwards;
-            const keys = Object.keys(responseBody);
-
-            //depending on the interval, return necessary data object;
-            //start from the last one and go backwards;
-            let count = 5, yearCount = 4, monthCount = 30;
-            for (let i = keys.length - 1; i >= 0; i--) {
-                let key = keys[i];
-                let prevKey = keys[i - 1];
-
-                let curr = responseBody[key];
-                let mboumDate = curr.date_utc;
-                mboumDate = new Date(mboumDate * 1000); //milliseconds;
-
-                let mboumGetDate = mboumDate.getUTCDate();
-                let currHours = mboumDate.getUTCHours();
-                let currMin = mboumDate.getUTCMinutes();
-                let currMonth = mboumDate.getUTCMonth();
-                let currYear = mboumDate.getUTCFullYear()
-
-                let mktPrice;
-
-                let prev = responseBody[prevKey];
-                if (prev === undefined) return chartData[interval];
-                let mboumPrevKeyDate = prev.date_utc;
-                mboumPrevKeyDate = new Date(mboumPrevKeyDate * 1000);
-                let mboumPrevGetDate = mboumPrevKeyDate.getUTCDate();
-                let mboumPrevGetMonth = mboumPrevKeyDate.getUTCMonth();
-                let mboumPrevGetYr = mboumPrevKeyDate.getUTCFullYear()
-
-                mktPrice = curr.close;
-
-                if (interval === "5m") {
-                    if (mktPrice) {
-
-                        chartData[interval].datasets[0].data.unshift(mktPrice);
-                        chartData[interval].labels.unshift(mboumDate);
-                    }
-
-                    if (mboumGetDate !== mboumPrevGetDate) {
-                        return [chartData[interval]]
-                    }
-                }
-
-                if (interval === "1h") {
-
-                    if (mktPrice) {
-
-                        chartData[interval].datasets[0].data.unshift(mktPrice);
-                        chartData[interval].labels.unshift(mboumDate);
-                    }
-
-                    if (mboumGetDate !== mboumPrevGetDate) {
-                        count -= 1;
-                        if (count === 0) {
-                            return [chartData[interval]]
-                        }
-                    }
-                }
-
-                if (interval === "1d") {
-
-                    if (mktPrice) {
-                        chartData[interval].datasets[0].data.unshift(mktPrice);
-                        chartData[interval].labels.unshift(mboumDate);
-                    }
-
-                    if (mboumGetDate !== mboumPrevGetDate) {
-                        monthCount -= 1;
-                        if (monthCount === 0) {
-                            return [chartData[interval]]
-                        }
-                    }
-                }
-
-                if (interval === "1mo") {
-
-                    if (mktPrice) {
-                        chartData[interval].datasets[0].data.unshift(mktPrice);
-                        chartData[interval].labels.unshift(mboumDate);
-                    }
-
-                    //stop if prev Month is December;
-                    if (mboumPrevGetMonth === 11 && currMonth === 0) {
-                        return [chartData[interval]]
-                    }
-                }
-
-
-                if (interval === "3mo") {
-                    if (mktPrice) {
-                        chartData[interval].datasets[0].data.unshift(mktPrice);
-                        chartData[interval].labels.unshift(mboumDate);
-                    }
-
-                    if (currYear !== mboumPrevGetYr) {
-                        yearCount -= 1;
-                    }
-
-                    if (yearCount === 0) {
-                        return [chartData[interval]]
-                    }
-
-                }
-            }
-        }
+        /*
+         const getRapidPrices = async (api, symbol) => {
+              const url = `${mboumQuotes}${symbol}`;
+              const options = {
+                  method: "GET",
+                  headers: {
+                      "X-RapidAPI-Key": api,
+                      "X-RapidAPI-Host": rapidURL,
+                  },
+              };
+  
+              const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
+              const result = await response.json();
+              const marketState = result.body[0].marketState;
+              const regMarketTime = result.body[0].regularMarketTime;
+              const preMarketTime = result.body[0].preMarketTime;
+              const postMarketTime = result.body[0].postMarketTime;
+  
+  
+              let regMktState = "Last Closed:", regMktPrice, regMktChange, regMktChangePercent,
+                  mktStatePrice, mktStateChange, mktStateChangePct, extendedMkTime, mktState;
+  
+              regMktPrice = result.body[0].regularMarketPrice;
+              regMktChange = result.body[0].regularMarketChange;
+              regMktChangePercent = result.body[0].regularMarketChangePercent;
+              currMktState = marketState // update global variable for chartjs
+  
+              if (marketState === "REGULAR") regMktState = "Current Session:";
+              //reg hours
+              priceTimeContainer.children[0].children[0].children[0].innerText = regMktPrice;
+              priceTimeContainer.children[0].children[0].children[1].children[0].innerText = regMktChange;
+              priceTimeContainer.children[0].children[0].children[1].children[1].innerText = regMktChangePercent;
+              if (regMarketTime) {
+                  atCloseContainer.children[0].innerText = regMktState;
+                  atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
+              }
+  
+              if (result.body[0].postMarketPrice) {
+                  mktState = "After Hours:";
+                  mktStatePrice = result.body[0].postMarketPrice;
+                  mktStateChange = result.body[0].postMarketChange;
+                  mktStateChangePct = result.body[0].postMarketChangePercent;
+                  extendedMkTime = postMarketTime;
+              }
+  
+              if (result.body[0].preMarketPrice) {
+                  mktState = "Pre-Market Hours:";
+                  mktStatePrice = result.body[0].preMarketPrice;
+                  mktStateChange = result.body[0].preMarketChange;
+                  mktStateChangePct = result.body[0].preMarketChangePercent;
+                  extendedMkTime = preMarketTime;
+              }
+  
+              //extended hours
+              priceTimeContainer.children[1].children[0].children[0].innerText = mktStatePrice;
+              priceTimeContainer.children[1].children[0].children[1].children[0].innerText = mktStateChange;
+              priceTimeContainer.children[1].children[0].children[1].children[1].innerText = mktStateChangePct;
+              afterHoursTimeContainer.children[0].innerText = mktState;
+              afterHoursTimeContainer.children[1].innerText = setMarketTime(extendedMkTime);
+  
+              return;
+          };
+        */
         let chart;
-        const runHistPrices = async (mktstat, sym, int, range, reset) => {
+        const runHistPrices = async (range) => {
             progressBar.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
             pIntervalId = setInterval(updateProgressBar, 10);
             // updateProgressBar();
 
-            //5m/1day, 1hr/5d, put prices at respective intervals
-            //1d/months, 1month/years; put closing price for days;
-            let result = await Promise.all([fillChartData(mktstat, sym, int, range)])
+            let result = await fillChartData(range).then((res) => { return res }).catch((e) => console.log(e));
             stopProgressBarInterval();
             console.log('intervalid', pIntervalId)
             progressBar.style.display = "none";
             stockChart.style.display = "initial";
 
-            let chartData = result[0][0], options;
-            if (int === "5m") {
+            let chartResult = result, options;
+            options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: {
+                            display: true,
+                            color: "black"
+                        }
+                    },
+                    x: {
+                        display: true,
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            major: {
+                                enabled: true
+                            },
+                            callback: (index) => {
+                                let label = chartResult.labels[index], labelStr, str1, str2;
 
-                options = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: {
-                                display: true,
-                                color: "black"
+                                if (label === "3:00:00 AM UTC" || label === "6:00:00 AM UTC" || label === "9:00:00 AM UTC" || label === "3:00:00 PM UTC" || label === "6:00:00 PM UTC" || label === "9:00:00 PM UTC") {
+                                    str1 = label.slice(0, 1);
+                                }
+
+                                if (label === "12:00:00 PM UTC" || label === "12:00:00 AM UTC") {
+                                    str1 = label.slice(0, 2);
+                                }
+                                str2 = label.slice(-6);
+                                labelStr = `${str1} ${str2}`;
+                                return labelStr
                             }
                         },
-                        x: {
-                            display: true,
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                major: {
-                                    enabled: true
-                                },
-                                callback: (index) => {
-                                    let label = chartData.labels[index], labelStr;
-
-                                    label = new Intl.DateTimeFormat("en-US", { timeStyle: "long", timeZone: "UTC" }).format(label);
-
-                                    if (label === "12:00:00 AM UTC" || label === "3:00:00 AM UTC" || label === "6:00:00 AM UTC" || label === "9:00:00 AM UTC" || label === "12:00:00 PM UTC" || label === "3:00:00 PM UTC" || label === "6:00:00 PM UTC" || label === "9:00:00 PM UTC") {
-                                        let str1, str2;
-                                        str1 = label.slice(0, 1);
-                                        if (label === "12:00:00 PM UTC" || label === "12:00:00 AM UTC") {
-                                            str1 = label.slice(0, 2);
-                                        }
-                                        str2 = label.slice(-6);
-                                        labelStr = `${str1} ${str2}`;
-                                    }
-                                    return labelStr
-                                }
-                            },
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    animations: {
-                        radius: {
-                            duration: 600,
-                            easing: 'linear',
-                            loop: true,
-                            radius: 1,
-                            backgroundColor: dataLineColor
-                        }
-                    },
-
-                    interaction: {
-                        mode: 'nearest',
-                        intersect: false,
-                        axis: 'x'
                     }
-                }
-
-            }
-
-            if (int === "1h") {
-                options = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: {
-                                display: true,
-                                color: "black"
-                            }
-                        },
-                        x: {
-                            display: true,
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                major: {
-                                    enabled: true
-                                },
-                                callback: (index) => {
-                                    let labelDate = chartData.labels[index];
-                                    labelDate = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(labelDate);
-
-
-                                    return labelDate
-
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    animations: {
-                        radius: {
-                            duration: 600,
-                            easing: 'linear',
-                            loop: true,
-                            radius: 1,
-                            backgroundColor: dataLineColor
-                        }
-                    },
-
-                    interaction: {
-                        mode: 'nearest',
-                        intersect: false,
-                        axis: 'x'
+                },
+                plugins: {
+                    legend: {
+                        display: false
                     }
-                }
-            }
-
-            if (int === "1d") {
-                options = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: {
-                                display: true,
-                                color: "black"
-                            }
-                        },
-                        x: {
-                            display: true,
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                major: {
-                                    enabled: true
-                                },
-                                callback: (index) => {
-                                    let labelDate = chartData.labels[index];
-                                    labelDate = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(labelDate);
-
-
-                                    return labelDate
-
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    animations: {
-                        radius: {
-                            duration: 600,
-                            easing: 'linear',
-                            loop: true,
-                            radius: 1,
-                            backgroundColor: dataLineColor
-                        }
-                    },
-
-                    interaction: {
-                        mode: 'nearest',
-                        intersect: false,
-                        axis: 'x'
+                },
+                animations: {
+                    radius: {
+                        duration: 600,
+                        easing: 'linear',
+                        loop: true,
+                        radius: 1,
+                        backgroundColor: dataLineColor
                     }
-                }
-            }
+                },
 
-            if (int === "1mo") {
-                options = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: {
-                                display: true,
-                                color: "black"
-                            }
-                        },
-                        x: {
-                            display: true,
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                major: {
-                                    enabled: true
-                                },
-                                callback: (index) => {
-                                    let labelDate = chartData.labels[index];
-
-                                    let getMonth = labelDate.getUTCMonth();
-                                    let getDate = labelDate.getUTCDate();
-                                    console.log(getMonth, getDate)
-                                    labelDate = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(labelDate);
-                                    return labelDate
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    animations: {
-                        radius: {
-                            duration: 600,
-                            easing: 'linear',
-                            loop: true,
-                            radius: 1,
-                            backgroundColor: dataLineColor
-                        }
-                    },
-
-                    interaction: {
-                        mode: 'nearest',
-                        intersect: false,
-                        axis: 'x'
-                    }
-                }
-            }
-
-            if (int === "3mo") {
-                options = {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            grid: {
-                                display: true,
-                                color: "black"
-                            }
-                        },
-                        x: {
-                            display: true,
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                major: {
-                                    enabled: true
-                                },
-                                callback: (index) => {
-                                    let labelDate = chartData.labels[index];
-
-                                    let getMonth = labelDate.getUTCMonth();
-                                    let getDate = labelDate.getUTCDate();
-                                    console.log("3mo:", getMonth, getDate)
-                                    labelDate = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(labelDate);
-                                    return labelDate
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    animations: {
-                        radius: {
-                            duration: 600,
-                            easing: 'linear',
-                            loop: true,
-                            radius: 1,
-                            backgroundColor: dataLineColor
-                        }
-                    },
-
-                    interaction: {
-                        mode: 'nearest',
-                        intersect: false,
-                        axis: 'x'
-                    }
+                interaction: {
+                    mode: 'nearest',
+                    intersect: false,
+                    axis: 'x'
                 }
             }
 
             const config = {
                 type: "line",
-                data: chartData,
+                data: chartResult,
                 options: options
             }
 
@@ -2246,7 +1934,7 @@
                 curr.addEventListener("click", async () => {
                     chart.destroy();
                     stopProgressBarInterval()
-                    await runHistPrices(currMktState, stockTicker, interval);
+                    //await runHistPrices(currMktState, stockTicker, interval);
                 });
             }
 
@@ -2341,14 +2029,9 @@
         summaryProfileContainer.removeAttribute("style");
 
         yahooSetMktTime();
-        formatPrice(indexData);
-        formatPrice(pricesAndPercents);
         changePctPointsColor(pricePctContainers, stockPriceChange);
-        runHistPrices(currMktState, stockTicker, "5m");
         setEventListeners();
         populateSlides();
-        //idlePage()
-        //activePage();
     </script>
 
 </body>
