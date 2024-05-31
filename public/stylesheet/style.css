@@ -269,8 +269,9 @@
   }
 
   /**/
-  #progress-bar {
-    position: relative;
+  #progress-bar-container {
+    position: absolute;
+    margin: auto;
     width: 90%;
     height: 3em;
     background-color: var(--midnight);
@@ -278,8 +279,7 @@
     color: white;
   }
 
-  #progress-bar::before {
-    content: attr(data-label);
+  #progress-bar {
     font-family: "Noto Sans" sans-serif;
     position: absolute;
     display: flex;
@@ -287,12 +287,22 @@
     top: 0.5em;
     left: 0.5em;
     bottom: 0.5em;
-    width: calc(var(--width, 0) * 1%);
-    min-width: 2rem;
-    max-width: calc(100% - 1em);
     background-color: var(--purp);
     border-radius: 1em;
     padding: 1em;
+  }
+
+  @keyframes progress-animation {
+    0% {
+      width: 30%;
+    }
+    100% {
+      width: 95%;
+    }
+  }
+
+  .run-progress-animation {
+    animation: progress-animation 2.5s ease-in forwards;
   }
 
   #chart_container > .charts {

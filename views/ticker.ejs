@@ -93,7 +93,9 @@
                 </div>
             </div>
             <div id="chart_container">
-                <div id="progress-bar" style="--width:35" data-label="Loading..."></div>
+                <div id="progress-bar-container">
+                    <div id="progress-bar" style="--width:35">Loading...</div>
+                </div>
                 <canvas id="chart" class="charts"></canvas>
             </div>
         </div>
@@ -1217,25 +1219,19 @@
         const dividendData = document.querySelector("#divRateYield-container");
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
+        let chart, timeoutId;
 
         // Function to update the progress bar
+        const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
-        let pIntervalId;
-
-        //access on frontend due to api max quota capacity;
-
-        function updateProgressBar() {
-            const computedStyle = getComputedStyle(progressBar);
-            let width = parseFloat(computedStyle.getPropertyValue('--width'));
-            progressBar.style.setProperty("--width", width + .1);
-
-            if (width === 100.00) {
-                clearInterval(pIntervalId)
-                progressBar.style.setProperty("--width", 35);
-                pIntervalId = setInterval(() => {
-                    updateProgressBar();
-                }, 10);
+        const runProgressBar = () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
             }
+            progressBar.setAttribute("class", "run-progress-animation")
+            timeoutId = setTimeout(() => {
+                runChart("", chartRes5m)
+            }, 2000)
         }
 
         function stopProgressBarInterval() {
@@ -1619,7 +1615,7 @@
                     break;
 
                 default:
-                    console.log("invalid range");
+                    console.log("range not listed");
                     break;
             }
 
@@ -1671,7 +1667,8 @@
                         resolve(res);
                     });
                 }
-                //convert date format for labels
+
+                //convert date format for chart labels
                 let labelDate = await promise();
 
                 let mktPrice = closeQuote[i]; //closing price;
@@ -1815,18 +1812,15 @@
               return;
           };
         */
-        let chart;
-        const runHistPrices = async (range) => {
-            progressBar.style.display = "initial"
+
+        const runChart = async (range, chart5m = "") => {
+            progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
-            pIntervalId = setInterval(updateProgressBar, 10);
-            // updateProgressBar();
 
-            let result = await fillChartData(range).then((res) => { return res }).catch((e) => console.log(e));
-            stopProgressBarInterval();
-            console.log('intervalid', pIntervalId)
-            progressBar.style.display = "none";
+            let result = await fillChartData(range, chart5m).then((res) => { return res }).catch((e) => console.log(e));
+            console.log("chartData:", result);
+            progressBarContainer.style.display = "none"
             stockChart.style.display = "initial";
 
             let chartResult = result, options;
@@ -1919,7 +1913,6 @@
         }
 
         const setEventListeners = () => {
-
             //timeline links: 1d 5d ytd 1y 2yr
             let timelineLinks = chartTimelineContainer.children
             for (let i = 0; i < timelineLinks.length; i++) {
@@ -1934,7 +1927,7 @@
                 curr.addEventListener("click", async () => {
                     chart.destroy();
                     stopProgressBarInterval()
-                    //await runHistPrices(currMktState, stockTicker, interval);
+                    //await runChart(currMktState, stockTicker, interval);
                 });
             }
 
@@ -2030,6 +2023,8 @@
 
         yahooSetMktTime();
         changePctPointsColor(pricePctContainers, stockPriceChange);
+        runProgressBar();
+        //
         setEventListeners();
         populateSlides();
     </script>
