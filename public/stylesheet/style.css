@@ -302,7 +302,7 @@
   }
 
   .run-progress-animation {
-    animation: progress-animation 2.5s ease-in forwards;
+    animation: progress-animation 2s ease-in forwards;
   }
 
   #chart_container > .charts {
