@@ -1183,20 +1183,20 @@
     <footer id="ticker_footer">
         <%- include('./partials/footer.ejs') %>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script
         src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script>
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
-
-        const chartRes5m = `<%=chartResult5m%>`;
         const quoteSumm = `<%=getSumm%>`;
         const stockTicker = '<%=getSumm.symbol%>';
         const dividendRate = '<%=getSumm.summaryDetail.dividendRate%>'
         const exDivDate = '<%=getSumm.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=getSumm.summaryDetail.open%>';
         const stockPriceChange = '<%=getSumm.price.regularMarketChange%>';
+        const chartRes1d = `<%=chartRes1d%>`
 
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
@@ -1219,8 +1219,8 @@
         const dividendData = document.querySelector("#divRateYield-container");
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
-        let chart, timeoutId;
 
+        let chart, timeoutId;
         // Function to update the progress bar
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
@@ -1230,130 +1230,8 @@
             }
             progressBar.setAttribute("class", "run-progress-animation")
             timeoutId = setTimeout(() => {
-                runChart("", chartRes5m)
+                runChart("", chartRes1d)
             }, 1500)
-        }
-
-        function stopProgressBarInterval() {
-            clearInterval(pIntervalId);
-            pIntervalId = null;
-            progressBar.style.setProperty("--width", 35);
-        }
-
-        const incomeStatement = () => {
-            //format years for all:
-            let endingYears = document.querySelectorAll(".slide-boxes > .slide-years");
-
-            for (let i = 0; i < endingYears.length; i++) {
-                let curr = endingYears[i].children;
-
-                for (let yr of curr) {
-
-                    if (yr.classList.contains("endingyr1") || yr.classList.contains("endingyr2") ||
-                        yr.classList.contains("endingyr3")) {
-
-                        if (yr.innerText !== "--") {
-                            let format = new Date(yr.innerText);
-                            if (format) {
-                                format = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(format);
-                                yr.innerText = format;
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            const incomeSlideData = document.querySelectorAll("#income-statement > .slide-boxes > .slide-data-wrapper");
-
-            for (let i = 0; i < incomeSlideData.length; i++) {
-                let curr = incomeSlideData[i];
-                if (!curr.classList.contains("income-slide-years") && !curr.classList.contains("basic-eps")) {
-
-                    let numbers = curr.children;
-
-                    formatYhooDomData(numbers);
-                }
-            }
-        }
-        const formatYhooDomData = (dataArray) => {
-            for (let i = 0; i < dataArray.length; i++) {
-                let curr = dataArray[i].innerText;
-
-                curr = new Intl.NumberFormat("en-US").format(curr);
-
-                if (curr !== "NaN") {
-
-                    //convert commas to decimals
-                    curr = curr.replaceAll(",", ".")
-
-                    //check for how many decimals
-                    let regExp = /[.]/g;
-                    let decimals = curr.match(regExp), startIndex = 0, endIndex, formattedCurr;
-
-                    //locate the 2nd decimal's index
-                    let firstSearch = ".";
-                    let firstIndexofDecimal = curr.indexOf(firstSearch);
-                    let secondIndexofDecimal = curr.indexOf(firstSearch, firstIndexofDecimal + 1);
-                    endIndex = secondIndexofDecimal; //2nd decimal
-                    //slice up to the 2nd decimal, excluding it.
-                    curr = curr.slice(startIndex, endIndex)
-
-                    //format curr
-                    curr = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 4, minimumSignificantDigits: 3 }).format(
-                        curr
-                    );
-
-                    let denomination = "";
-                    if (decimals.length === 4) {
-                        denomination = "T"
-                    } if (decimals.length === 3) {
-                        denomination = "B"
-                    }
-                    if (decimals.length === 2) {
-                        denomination = "M"
-                    }
-
-                    curr = `${curr}${denomination}`;
-                    dataArray[i].innerText = curr;
-
-                }
-            }
-        }
-        const balanceSheet = () => {
-            //format numbers
-            const balanceSlideData = document.querySelectorAll("#balance-sheet > .slide-boxes > .slide-data-wrapper");
-
-            for (let i = 0; i < balanceSlideData.length; i++) {
-                let curr = balanceSlideData[i];
-                if (!curr.classList.contains("balance-slide-years")) {
-
-                    let numbers = curr.children;
-
-                    formatYhooDomData(numbers);
-                }
-            }
-        }
-        const cashFlow = () => {
-            const cashflowDivs = document.querySelectorAll("#cash-flow > .slide-boxes > .slide-data-wrapper");
-
-            for (let i = 0; i < cashflowDivs.length; i++) {
-                let curr = cashflowDivs[i];
-                if (!curr.classList.contains("cash-flow-slide-years")) {
-
-                    let numbers = curr.children;
-
-                    formatYhooDomData(numbers);
-                }
-            }
-
-
-        }
-        const populateSlides = () => {
-            //const slideContainer = document.querySelector("#slide-container");
-            incomeStatement();
-            balanceSheet();
-            cashFlow()
         }
 
         const slidesWrapper = document.querySelector('.slides-wrapper');
@@ -1591,111 +1469,7 @@
             }
             return
         };
-        const fillChartData = async (range, chart5m = "") => {
-            let chartResp, chartTimes, closeQuote, openQuote, chartResults, interval;
-            switch (range) {
-                case "1d":
-                    interval = "5m";
-                    break;
 
-                case "5d":
-                    interval = "1h";
-                    break;
-
-                case "1mo":
-                    interval = "1d";
-                    break;
-
-                case "ytd":
-                    interval = "1wk";
-                    break;
-
-                case "2y":
-                    interval = "1mo";
-                    break;
-
-                default:
-                    console.log("range not listed");
-                    break;
-            }
-
-            //5m:1day, 1h:5days;
-            //1d:months, 1mo:years;
-            let chartData = {
-                datasets: [{
-                    label: "",
-                    data: [],
-                    borderColor: dataLineColor,
-                    backgroundColor: dataLineColor,
-                    color: dataLineColor,
-                    tension: 0.1,
-                    pointBorderWidth: .5,
-                }],
-                labels: []
-            }
-
-            if (chart5m) {
-                chartResults = chart5m;
-            } else {
-                const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=${interval}&region=US&symbol=${stockTicker}&range=${range}&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit`;
-                const options = {
-                    method: 'GET',
-                    headers: {
-                        'x-rapidapi-key': `${apiKey}`,
-                        'x-rapidapi-host': `${rapidURL}`
-                    }
-                };
-                let response = await fetch(url).then((res) => { return res.json() }).catch((e) => console.log(e));
-                chartResults = response;
-            }
-
-            chartResp = chartResults.chart.result[0];
-            chartTimes = chartResults.chart.result[0].timestamp;
-            openQuote = chartResults.chart.result[0].indicators.quote[0].open;
-            closeQuote = chartResults.chart.result[0].indicators.quote[0].close;
-            //Iterate over timestamp array, start from the last one, go backwards;
-            let timestampEnd = chartTimes.length - 1;
-
-            //return chartdata object;
-            //start from the last one and go backwards;
-            let count = 5, yearCount = 4, monthCount = 30;
-            for (let i = timestampEnd; i >= 0; i--) {
-                let currTimestamp = chartTimes[i];
-                let promise = () => {
-                    return new Promise((resolve, reject) => {
-                        let res = setMarketTime(currTimestamp);
-                        resolve(res);
-                    });
-                }
-
-                //convert date format for chart labels
-                let labelDate = await promise();
-
-                let mktPrice = closeQuote[i]; //closing price;
-
-                //get UTC Date to determine mkt price Open vs. Closed
-                currTimestamp *= 1000;
-                let dateCreate = new Date(currTimestamp);
-
-                //find curr utc timestamp vs. market open of stock symbol
-                let utcHours = dateCreate.getUTCHours();
-                let utcMin = dateCreate.getUTCMinutes();
-
-                let marketOpen = chartResp.meta.currentTradingPeriod.regular.start;
-                let mktOpenDate = new Date(marketOpen * 1000);
-                let utcHourOpen = mktOpenDate.getUTCHours();
-                let utcMinsOpen = mktOpenDate.getUTCMinutes();
-
-                if (utcHourOpen === utcHours && utcMinsOpen === utcMin) {
-                    mktPrice = openQuote[i]
-                }
-
-                chartData.datasets[0].data.unshift(mktPrice);
-                chartData.labels.unshift(labelDate);
-            }
-
-            return chartData
-        }
         const yahooSetMktTime = () => {
             const yf2PrePrice = '<%=getSumm.price.preMarketPrice%>'
             let preTime = '<%=getSumm.price.preMarketTime%>'
@@ -1811,6 +1585,124 @@
   
               return;
           };
+
+
+             const incomeStatement = () => {
+            //format years for all:
+            let endingYears = document.querySelectorAll(".slide-boxes > .slide-years");
+
+            for (let i = 0; i < endingYears.length; i++) {
+                let curr = endingYears[i].children;
+
+                for (let yr of curr) {
+
+                    if (yr.classList.contains("endingyr1") || yr.classList.contains("endingyr2") ||
+                        yr.classList.contains("endingyr3")) {
+
+                        if (yr.innerText !== "--") {
+                            let format = new Date(yr.innerText);
+                            if (format) {
+                                format = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(format);
+                                yr.innerText = format;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            const incomeSlideData = document.querySelectorAll("#income-statement > .slide-boxes > .slide-data-wrapper");
+
+            for (let i = 0; i < incomeSlideData.length; i++) {
+                let curr = incomeSlideData[i];
+                if (!curr.classList.contains("income-slide-years") && !curr.classList.contains("basic-eps")) {
+
+                    let numbers = curr.children;
+
+                    formatYhooDomData(numbers);
+                }
+            }
+        }
+        const formatYhooDomData = (dataArray) => {
+            for (let i = 0; i < dataArray.length; i++) {
+                let curr = dataArray[i].innerText;
+
+                curr = new Intl.NumberFormat("en-US").format(curr);
+
+                if (curr !== "NaN") {
+
+                    //convert commas to decimals
+                    curr = curr.replaceAll(",", ".")
+
+                    //check for how many decimals
+                    let regExp = /[.]/g;
+                    let decimals = curr.match(regExp), startIndex = 0, endIndex, formattedCurr;
+
+                    //locate the 2nd decimal's index
+                    let firstSearch = ".";
+                    let firstIndexofDecimal = curr.indexOf(firstSearch);
+                    let secondIndexofDecimal = curr.indexOf(firstSearch, firstIndexofDecimal + 1);
+                    endIndex = secondIndexofDecimal; //2nd decimal
+                    //slice up to the 2nd decimal, excluding it.
+                    curr = curr.slice(startIndex, endIndex)
+
+                    //format curr
+                    curr = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 4, minimumSignificantDigits: 3 }).format(
+                        curr
+                    );
+
+                    let denomination = "";
+                    if (decimals.length === 4) {
+                        denomination = "T"
+                    } if (decimals.length === 3) {
+                        denomination = "B"
+                    }
+                    if (decimals.length === 2) {
+                        denomination = "M"
+                    }
+
+                    curr = `${curr}${denomination}`;
+                    dataArray[i].innerText = curr;
+
+                }
+            }
+        }
+        const balanceSheet = () => {
+            //format numbers
+            const balanceSlideData = document.querySelectorAll("#balance-sheet > .slide-boxes > .slide-data-wrapper");
+
+            for (let i = 0; i < balanceSlideData.length; i++) {
+                let curr = balanceSlideData[i];
+                if (!curr.classList.contains("balance-slide-years")) {
+
+                    let numbers = curr.children;
+
+                    formatYhooDomData(numbers);
+                }
+            }
+        }
+        const cashFlow = () => {
+            const cashflowDivs = document.querySelectorAll("#cash-flow > .slide-boxes > .slide-data-wrapper");
+
+            for (let i = 0; i < cashflowDivs.length; i++) {
+                let curr = cashflowDivs[i];
+                if (!curr.classList.contains("cash-flow-slide-years")) {
+
+                    let numbers = curr.children;
+
+                    formatYhooDomData(numbers);
+                }
+            }
+
+
+        }
+        const populateSlides = () => {
+            //const slideContainer = document.querySelector("#slide-container");
+            incomeStatement();
+            balanceSheet();
+            cashFlow()
+        }
+
         */
 
         const runChart = async (range, chart5m = "") => {
@@ -1818,8 +1710,9 @@
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
 
-            let result = await fillChartData(range, chart5m).then((res) => { return res }).catch((e) => console.log(e));
-            console.log("chartData:", result);
+            let result, grabchart, fillchart;
+            grabchart = `<%grabChartData(stockTicker, range)%>`
+            console.log("result:", result)
             progressBarContainer.style.display = "none"
             stockChart.style.display = "initial";
 
@@ -2024,9 +1917,9 @@
         yahooSetMktTime();
         changePctPointsColor(pricePctContainers, stockPriceChange);
         runProgressBar();
-        //
+
         setEventListeners();
-        populateSlides();
+        //populateSlides();
     </script>
 
 </body>
