@@ -1183,8 +1183,7 @@
     <footer id="ticker_footer">
         <%- include('./partials/footer.ejs') %>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <script
         src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script>
@@ -1196,6 +1195,8 @@
         const exDivDate = '<%=getSumm.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=getSumm.summaryDetail.open%>';
         const stockPriceChange = '<%=getSumm.price.regularMarketChange%>';
+        const KEY = '<%=API_KEY%>';
+        const HOST = '<%=RAPID%>';
         const chartRes1d = `<%=chartRes1d%>`
 
         const regExp = /[a-zA-Z.^]/;
@@ -1219,20 +1220,12 @@
         const dividendData = document.querySelector("#divRateYield-container");
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
+        console.log(canvas);
 
         let chart, timeoutId;
         // Function to update the progress bar
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
-        const runProgressBar = () => {
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-            progressBar.setAttribute("class", "run-progress-animation")
-            timeoutId = setTimeout(() => {
-                runChart("", chartRes1d)
-            }, 1500)
-        }
 
         const slidesWrapper = document.querySelector('.slides-wrapper');
         const slides = Array.from(document.querySelectorAll(".slide"));
@@ -1705,18 +1698,139 @@
 
         */
 
-        const runChart = async (range, chart5m = "") => {
+        const grabChartData = async (symbol, range) => {
+            let url;
+            switch (range) {
+                case "5d":
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    break;
+                case "1mo":
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    break;
+                case "YTD":
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1wk&region=US&symbol=${symbol}&range=ytd&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    break;
+                case "2y":
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1mo&region=US&symbol=${symbol}&range=2y&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    break;
+                default:
+                    console.log("Range not found");
+            }
+            /**
+             *  const fiveDayUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+            const oneMoUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+            const ytdUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1wk&region=US&symbol=${symbol}&range=ytd&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+            const twoYrUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1mo&region=US&symbol=${symbol}&range=2y&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+             */
+
+            const apiOptions = {
+                method: "GET",
+                headers: {
+                    "X-RapidAPI-Key": KEY,
+                    "X-RapidAPI-Host": HOST,
+                },
+            };
+
+            let response = await fetch(url, apiOptions)
+                .then((resp) => resp.json())
+                .catch((e) => console.log(e));
+
+            console.log("response:", response, typeof response);
+
+            return response;
+        };
+
+        const fillChartData = async (responseData) => {
+            let chartResp, chartTimes, closeQuote, openQuote;
+
+            //5m:1day, 1h:5days;
+            //1d:months, 1mo:years;
+            let chartData = {
+                datasets: [
+                    {
+                        label: "",
+                        data: [],
+                        borderColor: dataLineColor,
+                        backgroundColor: dataLineColor,
+                        color: dataLineColor,
+                        tension: 0.1,
+                        pointBorderWidth: 0.5,
+                    },
+                ],
+                labels: [],
+            };
+
+
+            chartResp = responseData.chart.result[0];
+            chartTimes = responseData.chart.result[0].timestamp;
+            openQuote = responseData.chart.result[0].indicators.quote[0].open;
+            closeQuote = responseData.chart.result[0].indicators.quote[0].close;
+            //Iterate over timestamp array, start from the last one, go backwards;
+            let timestampEnd = chartTimes.length - 1;
+
+            //return chartdata object;
+            //start from the last one and go backwards;
+            for (let i = timestampEnd; i >= 0; i--) {
+                let currTimestamp = chartTimes[i];
+                //setMarketTime(currTimestamp);
+                let date, formatted;
+                date = new Date(currTimestamp * 1000);
+                formatted = new Intl.DateTimeFormat("en-US", {
+                    //dateStyle: "short",
+                    timeStyle: "long",
+                    timeZone: "UTC",
+                }).format(date);
+
+                let labelDate = formatted;
+                console.log("labelDate:", labelDate)
+                let mktPrice = closeQuote[i]; //closing price;
+
+                //get UTC Date to determine mkt price Open vs. Closed
+                currTimestamp *= 1000;
+                let dateCreate = new Date(currTimestamp);
+
+                //find curr utc timestamp vs. market open of stock symbol
+                let utcHours = dateCreate.getUTCHours();
+                let utcMin = dateCreate.getUTCMinutes();
+
+                let marketOpen = chartResp.meta.currentTradingPeriod.regular.start;
+                let mktOpenDate = new Date(marketOpen * 1000);
+                let utcHourOpen = mktOpenDate.getUTCHours();
+                let utcMinsOpen = mktOpenDate.getUTCMinutes();
+
+                if (utcHourOpen === utcHours && utcMinsOpen === utcMin) {
+                    mktPrice = openQuote[i];
+                }
+
+                chartData.datasets[0].data.unshift(mktPrice);
+                console.log("labels array:", chartData.labels);
+                chartData.labels.unshift(labelDate);
+            }
+
+            return chartData;
+        };
+
+        const runChart = async (range, chart5m) => {
             progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
 
             let result, grabchart, fillchart;
-            grabchart = `<%grabChartData(stockTicker, range)%>`
-            console.log("result:", result)
+
+            if (chart5m) {
+                result = chart5m;
+            } else {
+                grabchart = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
+
+                fillchart = await fillChartData(grabchart).then((res) => { return res }).catch((e) => console.log(e));
+                result = fillchart;
+            }
+
             progressBarContainer.style.display = "none"
             stockChart.style.display = "initial";
 
             let chartResult = result, options;
+            console.log("chartResult:", chartResult)
             options = {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -1739,16 +1853,14 @@
                             },
                             callback: (index) => {
                                 let label = chartResult.labels[index], labelStr, str1, str2;
+                                let regExpr = /[:]/
+                                let colonIndex = label.search(regExpr);
 
-                                if (label === "3:00:00 AM UTC" || label === "6:00:00 AM UTC" || label === "9:00:00 AM UTC" || label === "3:00:00 PM UTC" || label === "6:00:00 PM UTC" || label === "9:00:00 PM UTC") {
-                                    str1 = label.slice(0, 1);
-                                }
 
-                                if (label === "12:00:00 PM UTC" || label === "12:00:00 AM UTC") {
-                                    str1 = label.slice(0, 2);
-                                }
+                                str1 = label.slice(0, colonIndex)
                                 str2 = label.slice(-6);
                                 labelStr = `${str1} ${str2}`;
+
                                 return labelStr
                             }
                         },
@@ -1785,6 +1897,16 @@
             chart = new Chart(canvas, config);
 
             return chart
+        }
+
+        const runProgressBar = () => {
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+            progressBar.setAttribute("class", "run-progress-animation")
+            timeoutId = setTimeout(() => {
+                runChart("5d", "")
+            }, 500)
         }
 
         const idlePage = () => {

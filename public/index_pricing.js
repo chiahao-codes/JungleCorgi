@@ -246,7 +246,23 @@ let setPeriod1 = (int) => {
     
 
          
-         
+let symbols = [
+  "^GSPC",
+  "^IXIC",
+  "^DJI",
+  "^N225",
+  "^HSI",
+  "^FTSE",
+  "BTC-USD",
+  "^VIX",
+  "GC=F",
+  "CL=F",
+  "NG=F",
+  "^TNX",
+  "JPY=X",
+  "EURUSD=X",
+  "^RUT",
+];
       
        
    */
