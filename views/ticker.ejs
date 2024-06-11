@@ -395,14 +395,15 @@
                                     </div>
                                     <div class="slide-data slide-headers year1 endingyr1">
                                         <% let annYr={"one":"--", "two" :"--"}%>
-                                            <% if(incomeResult.timeSeries){%>
-                                                <% if(incomeResult.timeSeries.timestamp){ %>
-                                                    <% let arrTimeStp=incomeResult.timeSeries.timestamp %>
-                                                        <% let arrLastEle=arrTimeStp.length-1 %>
-                                                            <% annYr["one"]=arrTimeStp[arrLastEle] %>
-                                                                <% annYr["two"]=arrTimeStp[arrLastEle - 1] %>
-                                                                    <% }} %>
-                                                                        <%=annYr["one"] %>
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){%>
+                                                    <% if(incomeResult.timeSeries.timestamp){ %>
+                                                        <% let arrTimeStp=incomeResult.timeSeries.timestamp %>
+                                                            <% let arrLastEle=arrTimeStp.length-1 %>
+                                                                <% annYr["one"]=arrTimeStp[arrLastEle] %>
+                                                                    <% annYr["two"]=arrTimeStp[arrLastEle - 1] %>
+                                                                        <% }}} %>
+                                                                            <%=annYr["one"] %>
                                     </div>
                                     <div class="slide-data slide-headers year2 endingyr2">
                                         <%=annYr["two"] %>
@@ -414,15 +415,17 @@
                                     <div class="slide-data  ttm">
                                         <%let ttmRev%>
                                             <% let ttmValue="--" %>
-                                                <% if(incomeResult.timeSeries){ %>
-                                                    <% if(incomeResult.timeSeries.trailingTotalRevenue){ %>
-                                                        <% ttmRev=incomeResult.timeSeries.trailingTotalRevenue %>
-                                                            <% if(ttmRev.length>0){ %>
-                                                                <% arrLastEle=ttmRev.length-1 %>
-                                                                    <% ttmValue=ttmRev[arrLastEle].reportedValue.fmt%>
-                                                                        <% }%>
-                                                                            <% }} %>
-                                                                                <%=ttmValue %>
+                                                <% if(incomeResult){%>
+                                                    <% if(incomeResult.timeSeries){ %>
+                                                        <% if(incomeResult.timeSeries.trailingTotalRevenue){ %>
+                                                            <% ttmRev=incomeResult.timeSeries.trailingTotalRevenue %>
+                                                                <% if(ttmRev.length>0){ %>
+                                                                    <% arrLastEle=ttmRev.length-1 %>
+                                                                        <%
+                                                                            ttmValue=ttmRev[arrLastEle].reportedValue.fmt%>
+                                                                            <% }%>
+                                                                                <% }}} %>
+                                                                                    <%=ttmValue %>
                                     </div>
                                     <div class="slide-data year1">
 
@@ -436,16 +439,17 @@
                                     <% let ttmGP%>
                                         <% let grossProfitVal="--" %>
                                             <div class="slide-data ttm">
-                                                <% if(incomeResult.timeSeries){ %>
-                                                    <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
-                                                        <% ttmGP=incomeResult.timeSeries.trailingGrossProfit %>
-                                                            <% if(ttmGP.length>0){ %>
-                                                                <% arrLastEle=ttmGP.length-1 %>
-                                                                    <%
-                                                                        grossProfitVal=ttmGP[arrLastEle].reportedValue.fmt%>
-                                                                        <% }%>
-                                                                            <% }} %>
-                                                                                <%=grossProfitVal%>
+                                                <% if(incomeResult){%>
+                                                    <% if(incomeResult.timeSeries){ %>
+                                                        <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
+                                                            <% ttmGP=incomeResult.timeSeries.trailingGrossProfit %>
+                                                                <% if(ttmGP.length>0){ %>
+                                                                    <% arrLastEle=ttmGP.length-1 %>
+                                                                        <%
+                                                                            grossProfitVal=ttmGP[arrLastEle].reportedValue.fmt%>
+                                                                            <% }%>
+                                                                                <% }}}%>
+                                                                                    <%=grossProfitVal%>
                                             </div>
                                             <div class="slide-data year1">
 
@@ -458,136 +462,144 @@
                                     <div class="slide-data data-align-left">Operating expense</div>
                                     <% let ttmOpExp="--" %>
                                         <% let opExpArr %>
-                                            <% if(incomeResult.timeSeries){ %>
-                                                <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
-                                                    <% opExpArr=incomeResult.timeSeries.trailingGrossProfit%>
-                                                        <% if(opExpArr.length>0){ %>
-                                                            <% arrLastEle=opExpArr.length-1%>
-                                                                <% ttmOpExp=opExpArr[arrLastEle].reportedValue.fmt%>
-                                                                    <% }%>
-                                                                        <% }} %>
-                                                                            <div class="slide-data  ttm">
-                                                                                <%=ttmOpExp %>
-                                                                            </div>
-                                                                            <div class="slide-data year1">
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
+                                                        <% opExpArr=incomeResult.timeSeries.trailingGrossProfit%>
+                                                            <% if(opExpArr.length>0){ %>
+                                                                <% arrLastEle=opExpArr.length-1%>
+                                                                    <% ttmOpExp=opExpArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
+                                                                                <div class="slide-data  ttm">
+                                                                                    <%=ttmOpExp %>
+                                                                                </div>
+                                                                                <div class="slide-data year1">
 
-                                                                            </div>
-                                                                            <div class="slide-data year2">
+                                                                                </div>
+                                                                                <div class="slide-data year2">
 
-                                                                            </div>
+                                                                                </div>
                                 </div>
                                 <div class="slide-data-wrapper operating-income">
                                     <% let ttmOpInc="--" %>
                                         <% let opIncArr %>
-                                            <% if(incomeResult.timeSeries){ %>
-                                                <% if(incomeResult.timeSeries.trailingOperatingIncome){ %>
-                                                    <% opIncArr=incomeResult.timeSeries.trailingOperatingIncome%>
-                                                        <% if(opIncArr.length>0){ %>
-                                                            <% arrLastEle=opIncArr.length-1%>
-                                                                <% ttmOpInc=opIncArr[arrLastEle].reportedValue.fmt%>
-                                                                    <% }%>
-                                                                        <% }} %>
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingOperatingIncome){ %>
+                                                        <% opIncArr=incomeResult.timeSeries.trailingOperatingIncome%>
+                                                            <% if(opIncArr.length>0){ %>
+                                                                <% arrLastEle=opIncArr.length-1%>
+                                                                    <% ttmOpInc=opIncArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
 
-                                                                            <div class="slide-data data-align-left">
-                                                                                Operating income</div>
-                                                                            <div class="slide-data  ttm">
-                                                                                <%=ttmOpInc %>
-                                                                            </div>
-                                                                            <div class="slide-data year1">
+                                                                                <div class="slide-data data-align-left">
+                                                                                    Operating income</div>
+                                                                                <div class="slide-data  ttm">
+                                                                                    <%=ttmOpInc %>
+                                                                                </div>
+                                                                                <div class="slide-data year1">
 
-                                                                            </div>
-                                                                            <div class="slide-data year2">
+                                                                                </div>
+                                                                                <div class="slide-data year2">
 
-                                                                            </div>
+                                                                                </div>
                                 </div>
                                 <div class="slide-data-wrapper pre-tax-income">
                                     <div class="slide-data data-align-left">Pre tax income</div>
                                     <% let ttmPreTaxInc="--" %>
                                         <% let preTaxArr %>
-                                            <% if(incomeResult.timeSeries){ %>
-                                                <% if(incomeResult.timeSeries.trailingPretaxIncome){ %>
-                                                    <% preTaxArr=incomeResult.timeSeries.trailingPretaxIncome%>
-                                                        <% if(preTaxArr.length>0){ %>
-                                                            <% arrLastEle=preTaxArr.length-1 %>
-                                                                <%
-                                                                    ttmPreTaxInc=preTaxArr[arrLastEle].reportedValue.fmt%>
-                                                                    <% }%>
-                                                                        <% }} %>
-                                                                            <div class="slide-data  ttm">
-                                                                                <%=ttmPreTaxInc %>
-                                                                            </div>
-                                                                            <div class="slide-data year1">
-                                                                            </div>
-                                                                            <div class="slide-data year2">
-                                                                            </div>
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingPretaxIncome){ %>
+                                                        <% preTaxArr=incomeResult.timeSeries.trailingPretaxIncome%>
+                                                            <% if(preTaxArr.length>0){ %>
+                                                                <% arrLastEle=preTaxArr.length-1 %>
+                                                                    <%
+                                                                        ttmPreTaxInc=preTaxArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
+                                                                                <div class="slide-data  ttm">
+                                                                                    <%=ttmPreTaxInc %>
+                                                                                </div>
+                                                                                <div class="slide-data year1">
+                                                                                </div>
+                                                                                <div class="slide-data year2">
+                                                                                </div>
                                 </div>
                                 <div class="slide-data-wrapper other-income-expense">
                                     <div class="slide-data data-align-left">Other income exp</div>
                                     <% let ttmOthIncExp="--" %>
                                         <% let otInArr %>
-                                            <% if(incomeResult.timeSeries){ %>
-                                                <% if(incomeResult.timeSeries.trailingOtherIncomeExpense){ %>
-                                                    <% otInArr=incomeResult.timeSeries.trailingOtherIncomeExpense%>
-                                                        <% if(otInArr.length>0){ %>
-                                                            <% arrLastEle=otInArr.length-1 %>
-                                                                <% ttmOthIncExp=otInArr[arrLastEle].reportedValue.fmt%>
-                                                                    <% }%>
-                                                                        <% }} %>
-                                                                            <div class="slide-data ttm">
-                                                                                <%=ttmOthIncExp %>
-                                                                            </div>
-                                                                            <div class="slide-data year1">
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingOtherIncomeExpense){ %>
+                                                        <% otInArr=incomeResult.timeSeries.trailingOtherIncomeExpense%>
+                                                            <% if(otInArr.length>0){ %>
+                                                                <% arrLastEle=otInArr.length-1 %>
+                                                                    <%
+                                                                        ttmOthIncExp=otInArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
+                                                                                <div class="slide-data ttm">
+                                                                                    <%=ttmOthIncExp %>
+                                                                                </div>
+                                                                                <div class="slide-data year1">
 
-                                                                            </div>
-                                                                            <div class="slide-data year2">
+                                                                                </div>
+                                                                                <div class="slide-data year2">
 
-                                                                            </div>
+                                                                                </div>
                                 </div>
 
                                 <div class="slide-data-wrapper basic-eps">
                                     <div class="slide-data data-align-left">Basic eps</div>
                                     <% let ttmBasicEps="--" %>
                                         <% let basicEpArr %>
-                                            <% if(incomeResult.timeSeries){ %>
-                                                <% if(incomeResult.timeSeries.trailingBasicEPS){ %>
-                                                    <% basicEpArr=incomeResult.timeSeries.trailingBasicEPS%>
-                                                        <% if(opExpArr.length>0){ %>
-                                                            <% arrLastEle=opExpArr.length-1%>
-                                                                <%
-                                                                    ttmBasicEps=basicEpArr[arrLastEle].reportedValue.fmt%>
-                                                                    <% }%>
-                                                                        <% }} %>
-                                                                            <div class="slide-data  ttm">
-                                                                                <%=ttmBasicEps %>
-                                                                            </div>
-                                                                            <div class="slide-data year1">
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingBasicEPS){ %>
+                                                        <% basicEpArr=incomeResult.timeSeries.trailingBasicEPS%>
+                                                            <% if(opExpArr.length>0){ %>
+                                                                <% arrLastEle=opExpArr.length-1%>
+                                                                    <%
+                                                                        ttmBasicEps=basicEpArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
+                                                                                <div class="slide-data  ttm">
+                                                                                    <%=ttmBasicEps %>
+                                                                                </div>
+                                                                                <div class="slide-data year1">
 
-                                                                            </div>
-                                                                            <div class="slide-data year2">
+                                                                                </div>
+                                                                                <div class="slide-data year2">
 
-                                                                            </div>
+                                                                                </div>
                                 </div>
                                 <div class="slide-data-wrapper net-income">
                                     <div class="slide-data data-align-left">Net income</div>
                                     <% let netIncArr %>
                                         <% let ttmNetInc="--" %>
-                                            <% if(incomeResult.timeSeries){ %>
-                                                <% if(incomeResult.timeSeries.trailingNetIncome){ %>
-                                                    <% netIncArr=incomeResult.timeSeries.trailingNetIncome%>
-                                                        <% if(netIncArr.length>0){ %>
-                                                            <% arrLastEle=netIncArr.length-1%>
-                                                                <% ttmNetInc=netIncArr[arrLastEle].reportedValue.fmt%>
-                                                                    <% }%>
-                                                                        <% }} %>
-                                                                            <div class="slide-data  ttmNetIncome">
-                                                                                <%=ttmNetInc%>
-                                                                            </div>
-                                                                            <div class="slide-data year1">
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingNetIncome){ %>
+                                                        <% netIncArr=incomeResult.timeSeries.trailingNetIncome%>
+                                                            <% if(netIncArr.length>0){ %>
+                                                                <% arrLastEle=netIncArr.length-1%>
+                                                                    <%
+                                                                        ttmNetInc=netIncArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
+                                                                                <div class="slide-data  ttmNetIncome">
+                                                                                    <%=ttmNetInc%>
+                                                                                </div>
+                                                                                <div class="slide-data year1">
 
-                                                                            </div>
-                                                                            <div class="slide-data year2">
+                                                                                </div>
+                                                                                <div class="slide-data year2">
 
-                                                                            </div>
+                                                                                </div>
                                 </div>
 
                             </div>
@@ -1816,7 +1828,7 @@
             stockChart.style.display = "none";
 
             let result, grabchart, fillchart;
-
+            console.log("stockTicker:", stockTicker)
             if (chart5m) {
                 result = chart5m;
             } else {
