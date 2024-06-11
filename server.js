@@ -22,8 +22,6 @@ const apiOptions = {
     "x-rapidapi-host": RAPID,
   },
 };
-//"https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
-// <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 
 let runQuery = async (symbol = "") => {
   let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
@@ -114,7 +112,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     .then((res) => res.json())
     .catch((e) => console.log(e));
 
-  //console.log("getSumm:", getSumm.quoteType.quoteType);
+  console.log("getSumm:", getSumm.quoteType.quoteType);
 
   if (
     getSumm.quoteType.quoteType === "ECNQUOTE" ||
