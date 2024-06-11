@@ -112,7 +112,7 @@ app.get("/tickrpro/:symbol", async (req, res) => {
     .then((res) => res.json())
     .catch((e) => console.log(e));
 
-  console.log("getSumm:", getSumm.quoteType.quoteType);
+  console.log("getSumm:", getSumm);
 
   if (
     getSumm.quoteType.quoteType === "ECNQUOTE" ||
