@@ -165,8 +165,8 @@ const indexContainerEvents = (symbol) => {
     indexContainers2[i].addEventListener("mouseup", () => {
       console.log("symbol", symbol[i]);
       let stockSym = symbol[i];
-      window.location.href = tickrUrl + "tickrpro/" + stockSym;
-      // `${tickrUrl}tickrpro/${symbol[i]}`;
+      window.location.href = tickrUrl + stockSym;
+      // `${tickrUrl}${symbol[i]}`;
     });
   }
 };
@@ -263,7 +263,7 @@ h2Box.addEventListener("keydown", (e) => {
       //enter the ticker string into the url parameter
       //grab the URL;
       const url = window.location.href;
-      const tickerPage = `${url}tickrpro/${textString}`;
+      const tickerPage = `${url}${textString}`;
       //check ticker string
       window.location.href = tickerPage;
     }

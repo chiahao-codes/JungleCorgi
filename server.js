@@ -6,6 +6,8 @@ import { Chart } from "chart.js";
 let PORT = process.env.PORT || 3000;
 const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
+const CURR_DOMAIN = process.env.DOMAIN;
+
 const chartJS = Chart;
 const app = express();
 
@@ -92,7 +94,7 @@ app.get("/tickrpro/contact", async (req, res, next) => {
   res.render("contact");
 });
 
-app.get("/tickrpro/:symbol", async (req, res) => {
+app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
     getSumm,
     chartData1d,
@@ -120,13 +122,12 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   ) {
     return res.render("404");
   }
-
+  /*
   chartData1d = await fetch(oneDayUrl, apiOptions)
     .then((res) => res.json())
     .catch((e) => console.log(e));
-
-  chartRes1d = chartData1d.chart.result[0];
   console.log("chartRes1d", chartRes1d);
+*/
 
   if (getSumm.quoteType.quoteType === "EQUITY") {
     let getIncomeStmt = await fetch(incomeStmtURL, apiOptions)
@@ -153,12 +154,12 @@ app.get("/tickrpro/:symbol", async (req, res) => {
   res.render("ticker", {
     chartJS,
     getSumm,
-    chartRes1d,
     incomeResult,
     balanceResult,
     cashFlowRes,
     API_KEY,
     RAPID,
+    CURR_DOMAIN,
   });
 });
 

@@ -14,7 +14,7 @@
         <div id="home-chart-container">
             <div id="home-price-container">
                 <div id="home_link_container">
-                    <a href="https://www.tickrpro.com" target="_self">Home</a>
+                    <a href="<%=CURR_DOMAIN%>" target="_self">Home</a>
                     <span id="arrow">></span>
                     <span id="symbol">
                         <% let symb="" %>
@@ -1050,15 +1050,15 @@
                 <h6>Summary</h6>
                 <p id="company_desc">
                     <%let resultLB="" %>
-                        <%if(getSumm.assetProfile){ %>
-                            <%resultLB=getSumm.assetProfile.longBusinessSummary}%>
+                        <%if(getSumm.summaryProfile){ %>
+                            <%resultLB=getSumm.summaryProfile.longBusinessSummary}%>
                                 <%=resultLB%>
                 </p>
             </div>
             <div id="profile_container">
                 <% let h="" %>
-                    <%if(getSumm.assetProfile){ %>
-                        <%if(getSumm.assetProfile.address1){ %>
+                    <%if(getSumm.summaryProfile){ %>
+                        <%if(getSumm.summaryProfile.address1){ %>
                             <% h="Profile" }}%>
                                 <h6>
                                     <%=h %>
@@ -1067,48 +1067,48 @@
                                     <div id="address_container">
                                         <p id="address">
                                             <%let resultAd="" %>
-                                                <%if(getSumm.assetProfile){ %>
-                                                    <%resultAd=getSumm.assetProfile.address1}%>
+                                                <%if(getSumm.summaryProfile){ %>
+                                                    <%resultAd=getSumm.summaryProfile.address1}%>
                                                         <%=resultAd%>
                                         </p>
                                         <div id="city_state_container">
                                             <p id="city">
                                                 <%let resultCi="" %>
-                                                    <%if(getSumm.assetProfile){ %>
-                                                        <%resultCi=getSumm.assetProfile.city}%>
+                                                    <%if(getSumm.summaryProfile){ %>
+                                                        <%resultCi=getSumm.summaryProfile.city}%>
                                                             <%=resultCi%>
                                             </p>
                                             <p id="state">
                                                 <%let resultSt="" %>
-                                                    <%if(getSumm.assetProfile){ %>
-                                                        <%resultSt=getSumm.assetProfile.state}%>
+                                                    <%if(getSumm.summaryProfile){ %>
+                                                        <%resultSt=getSumm.summaryProfile.state}%>
                                                             <%=resultSt%>
                                             </p>
                                             <p id="zip">
                                                 <%let resultZ="" %>
-                                                    <%if(getSumm.assetProfile){ %>
-                                                        <%resultZ=getSumm.assetProfile.zip}%>
+                                                    <%if(getSumm.summaryProfile){ %>
+                                                        <%resultZ=getSumm.summaryProfile.zip}%>
                                                             <%=resultZ%>
                                             </p>
                                         </div>
 
                                         <p id="country">
                                             <%let resultCoun="" %>
-                                                <%if(getSumm.assetProfile){ %>
-                                                    <%resultCoun=getSumm.assetProfile.country}%>
+                                                <%if(getSumm.summaryProfile){ %>
+                                                    <%resultCoun=getSumm.summaryProfile.country}%>
                                                         <%=resultCoun%>
                                         </p>
                                         <p id="phone">
                                             <%let resultPh="" %>
-                                                <%if(getSumm.assetProfile){ %>
-                                                    <%resultPh=getSumm.assetProfile.phone}%>
+                                                <%if(getSumm.summaryProfile){ %>
+                                                    <%resultPh=getSumm.summaryProfile.phone}%>
                                                         <%=resultPh%>
                                         </p>
                                         <p id="website">
                                             <%let resultWeb="" %>
-                                                <%if(getSumm.assetProfile){ %>
-                                                    <% if(getSumm.assetProfile.website){ %>
-                                                        <%resultWeb=getSumm.assetProfile.website}}%>
+                                                <%if(getSumm.summaryProfile){ %>
+                                                    <% if(getSumm.summaryProfile.website){ %>
+                                                        <%resultWeb=getSumm.summaryProfile.website}}%>
                                                             <a href="<%=resultWeb%>" target="_blank">
                                                                 <%=resultWeb%>
                                                             </a>
@@ -1117,17 +1117,17 @@
                                         </p>
                                         <p id="industry">
                                             <%let rInd="" %>
-                                                <%if(getSumm.assetProfile){ %>
-                                                    <% if(getSumm.assetProfile.industry){%>
-                                                        <%rInd=getSumm.assetProfile.industry%>
+                                                <%if(getSumm.summaryProfile){ %>
+                                                    <% if(getSumm.summaryProfile.industry){%>
+                                                        <%rInd=getSumm.summaryProfile.industry%>
                                                             <% rInd=`Industry: ${rInd}` }}%>
                                                                 <%=rInd %>
                                         </p>
                                         <p id="sector">
                                             <%let rSec="" %>
-                                                <%if(getSumm.assetProfile){ %>
-                                                    <% if(getSumm.assetProfile.sector){%>
-                                                        <%rSec=getSumm.assetProfile.sector%>
+                                                <%if(getSumm.summaryProfile){ %>
+                                                    <% if(getSumm.summaryProfile.sector){%>
+                                                        <%rSec=getSumm.summaryProfile.sector%>
                                                             <% rSec=`Sector: ${rSec}`}} %>
                                                                 <%=rSec%>
                                         </p>
@@ -1136,16 +1136,16 @@
                                         <ul id="title_name1">
                                             <li>
                                                 <% let tit="" %>
-                                                    <%if(getSumm.assetProfile){ %>
-                                                        <% if(getSumm.assetProfile.companyOfficers[0]){ %>
-                                                            <%tit=`${getSumm.assetProfile.companyOfficers[0].title}:`}}%>
+                                                    <%if(getSumm.summaryProfile){ %>
+                                                        <% if(getSumm.summaryProfile.companyOfficers[0]){ %>
+                                                            <%tit=`${getSumm.summaryProfile.companyOfficers[0].title}:`}}%>
                                                                 <%=tit%>
                                             </li>
                                             <li>
                                                 <% let nam="" %>
-                                                    <% if(getSumm.assetProfile){ %>
-                                                        <% if(getSumm.assetProfile.companyOfficers[0]){%>
-                                                            <%nam=getSumm.assetProfile.companyOfficers[0].name}} %>
+                                                    <% if(getSumm.summaryProfile){ %>
+                                                        <% if(getSumm.summaryProfile.companyOfficers[0]){%>
+                                                            <%nam=getSumm.summaryProfile.companyOfficers[0].name}} %>
                                                                 <%= nam %>
 
                                             </li>
@@ -1154,17 +1154,17 @@
                                         <ul id="title_name2">
                                             <li>
                                                 <% let tit2="" %>
-                                                    <%if(getSumm.assetProfile){ %>
-                                                        <% if(getSumm.assetProfile.companyOfficers[1]){ %>
-                                                            <%tit2=`${getSumm.assetProfile.companyOfficers[1].title}:`}}%>
+                                                    <%if(getSumm.summaryProfile){ %>
+                                                        <% if(getSumm.summaryProfile.companyOfficers[1]){ %>
+                                                            <%tit2=`${getSumm.summaryProfile.companyOfficers[1].title}:`}}%>
                                                                 <%=tit2%>
                                             </li>
                                             <li>
                                                 <% let nam2="" %>
 
-                                                    <% if(getSumm.assetProfile){ %>
-                                                        <% if(getSumm.assetProfile.companyOfficers[1]){%>
-                                                            <%nam2=getSumm.assetProfile.companyOfficers[1].name}} %>
+                                                    <% if(getSumm.summaryProfile){ %>
+                                                        <% if(getSumm.summaryProfile.companyOfficers[1]){%>
+                                                            <%nam2=getSumm.summaryProfile.companyOfficers[1].name}} %>
                                                                 <%= nam2 %>
                                             </li>
                                             <li></li>
@@ -1173,17 +1173,17 @@
                                     <div id="employee_container">
                                         <p>
                                             <% let emH="" %>
-                                                <% if(getSumm.assetProfile){ %>
-                                                    <% if(getSumm.assetProfile.fullTimeEmployees){%>
+                                                <% if(getSumm.summaryProfile){ %>
+                                                    <% if(getSumm.summaryProfile.fullTimeEmployees){%>
                                                         <%emH="Full Time Employees:"%>
                                                             <% }} %>
                                                                 <%=emH%>
                                         </p>
                                         <p>
                                             <% let em="" %>
-                                                <% if(getSumm.assetProfile){ %>
-                                                    <% if(getSumm.assetProfile.fullTimeEmployees){%>
-                                                        <% em=getSumm.assetProfile.fullTimeEmployees}} %>
+                                                <% if(getSumm.summaryProfile){ %>
+                                                    <% if(getSumm.summaryProfile.fullTimeEmployees){%>
+                                                        <% em=getSumm.summaryProfile.fullTimeEmployees}} %>
                                                             <%= em %>
                                         </p>
                                     </div>
@@ -1209,7 +1209,6 @@
         const stockPriceChange = '<%=getSumm.price.regularMarketChange%>';
         const KEY = '<%=API_KEY%>';
         const HOST = '<%=RAPID%>';
-        const chartRes1d = `<%=chartRes1d%>`
 
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
@@ -1232,7 +1231,6 @@
         const dividendData = document.querySelector("#divRateYield-container");
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
-        console.log(canvas);
 
         let chart, timeoutId;
         // Function to update the progress bar
@@ -1386,7 +1384,8 @@
                     }
                 }
             }
-            dataLineColor = pricePctContainers[0].children[1].children[0].style.color
+            dataLineColor = pricePctContainers[0].children[1].children[0].style.color;
+
         };
         const formatPrice = (container) => {
 
@@ -1713,6 +1712,8 @@
         const grabChartData = async (symbol, range) => {
             let url;
             switch (range) {
+                case "1d":
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true`
                 case "5d":
                     url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
@@ -1747,14 +1748,12 @@
                 .then((resp) => resp.json())
                 .catch((e) => console.log(e));
 
-            console.log("response:", response, typeof response);
-
             return response;
         };
 
         const fillChartData = async (responseData) => {
             let chartResp, chartTimes, closeQuote, openQuote;
-
+            console.log("responseData:", responseData)
             //5m:1day, 1h:5days;
             //1d:months, 1mo:years;
             let chartData = {
@@ -1782,19 +1781,19 @@
 
             //return chartdata object;
             //start from the last one and go backwards;
+            let firstChartPrice, finalChartPrice;
             for (let i = timestampEnd; i >= 0; i--) {
                 let currTimestamp = chartTimes[i];
                 //setMarketTime(currTimestamp);
                 let date, formatted;
                 date = new Date(currTimestamp * 1000);
                 formatted = new Intl.DateTimeFormat("en-US", {
-                    //dateStyle: "short",
+                    dateStyle: "short",
                     timeStyle: "long",
                     timeZone: "UTC",
                 }).format(date);
 
                 let labelDate = formatted;
-                console.log("labelDate:", labelDate)
                 let mktPrice = closeQuote[i]; //closing price;
 
                 //get UTC Date to determine mkt price Open vs. Closed
@@ -1819,29 +1818,26 @@
                 chartData.labels.unshift(labelDate);
             }
 
+            //set color of line chart here;
+            //chartData.datasets[0].border, background, color;
+
             return chartData;
         };
 
-        const runChart = async (range, chart5m) => {
+        const runChart = async (range) => {
             progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
 
-            let result, grabchart, fillchart;
-            console.log("stockTicker:", stockTicker)
-            if (chart5m) {
-                result = chart5m;
-            } else {
-                grabchart = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
+            let grabchart, fillchart, response;
 
-                fillchart = await fillChartData(grabchart).then((res) => { return res }).catch((e) => console.log(e));
-                result = fillchart;
-            }
+            response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
+            fillchart = await fillChartData(response).then((res) => { return res }).catch((e) => console.log(e));
 
             progressBarContainer.style.display = "none"
             stockChart.style.display = "initial";
 
-            let chartResult = result, options;
+            let chartResult = fillchart, options;
             console.log("chartResult:", chartResult)
             options = {
                 responsive: true,
@@ -1864,13 +1860,21 @@
                                 enabled: true
                             },
                             callback: (index) => {
-                                let label = chartResult.labels[index], labelStr, str1, str2;
-                                let regExpr = /[:]/
-                                let colonIndex = label.search(regExpr);
+                                let label = chartResult.labels[index], labelStr, str1, str2, regExprColon = /[:]/, regExpComma = /[,]/, startIndex = 0, endIndex;
+                                let colonIndex = label.search(regExprColon), commaIndex = label.search(regExpComma);
 
+                                if (range === "1d") {
+                                    startIndex = commaIndex + 2;
+                                    endIndex = colonIndex + 3;
+                                    str2 = label.slice(-6);
+                                } else {
+                                    startIndex = 0;
+                                    endIndex = commaIndex;
+                                    str2 = ""
+                                }
 
-                                str1 = label.slice(0, colonIndex)
-                                str2 = label.slice(-6);
+                                str1 = label.slice(startIndex, endIndex);
+
                                 labelStr = `${str1} ${str2}`;
 
                                 return labelStr
@@ -1881,6 +1885,11 @@
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    labels: {
+                        font: {
+                            size: 10
+                        }
                     }
                 },
                 animations: {
@@ -1911,14 +1920,14 @@
             return chart
         }
 
-        const runProgressBar = () => {
+        const runProgressBar = (range) => {
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
             progressBar.setAttribute("class", "run-progress-animation")
             timeoutId = setTimeout(() => {
-                runChart("5d", "")
-            }, 500)
+                runChart(range)
+            }, 10)
         }
 
         const idlePage = () => {
@@ -1944,17 +1953,17 @@
             let timelineLinks = chartTimelineContainer.children
             for (let i = 0; i < timelineLinks.length; i++) {
                 let curr = timelineLinks[i];
-                let interval, year;
-                if (curr.classList.contains("oneDay")) interval = "5m";
-                if (curr.classList.contains("fiveDay")) interval = "1h";
-                if (curr.classList.contains("oneMonth")) interval = "1d";
-                if (curr.classList.contains("ytd")) interval = "1mo";
-                if (curr.classList.contains("twoYr")) interval = "3mo";
+                let range, year;
+                if (curr.classList.contains("oneDay")) range = "1d";
+                if (curr.classList.contains("fiveDay")) range = "5d";
+                if (curr.classList.contains("oneMonth")) range = "1mo";
+                if (curr.classList.contains("ytd")) range = "YTD";
+                if (curr.classList.contains("twoYr")) range = "2y";
 
                 curr.addEventListener("click", async () => {
                     chart.destroy();
                     stopProgressBarInterval()
-                    //await runChart(currMktState, stockTicker, interval);
+                    runProgressBar(range)
                 });
             }
 
@@ -2026,7 +2035,11 @@
                         //enter the ticker string into the url parameter
                         //grab the URL;
                         //grab url param instead of string of element;
-                        const url = `https://www.tickrpro.com/tickrpro/${textString}`
+                        //window.location.href
+                        let url = '<%=CURR_DOMAIN%>'
+                        //'http://localhost:3000/'
+                        url = `${url}${textString}`
+                        console.log(url);
                         //check ticker string
                         window.location.href = url;
                     }
@@ -2050,7 +2063,7 @@
 
         yahooSetMktTime();
         changePctPointsColor(pricePctContainers, stockPriceChange);
-        runProgressBar();
+        runProgressBar("1d");
 
         setEventListeners();
         //populateSlides();
