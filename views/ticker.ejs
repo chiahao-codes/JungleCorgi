@@ -1825,12 +1825,12 @@
         };
 
         const runChart = async (range) => {
+            console.log("range:", range)
             progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
 
             let grabchart, fillchart, response;
-
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
             fillchart = await fillChartData(response).then((res) => { return res }).catch((e) => console.log(e));
 
@@ -1888,7 +1888,7 @@
                     },
                     labels: {
                         font: {
-                            size: 10
+                            size: 9
                         }
                     }
                 },
@@ -1950,19 +1950,17 @@
 
         const setEventListeners = () => {
             //timeline links: 1d 5d ytd 1y 2yr
-            let timelineLinks = chartTimelineContainer.children
+            let timelineLinks = chartTimelineContainer.children, range, curr;
             for (let i = 0; i < timelineLinks.length; i++) {
-                let curr = timelineLinks[i];
-                let range, year;
+                curr = timelineLinks[i];
                 if (curr.classList.contains("oneDay")) range = "1d";
                 if (curr.classList.contains("fiveDay")) range = "5d";
                 if (curr.classList.contains("oneMonth")) range = "1mo";
                 if (curr.classList.contains("ytd")) range = "YTD";
                 if (curr.classList.contains("twoYr")) range = "2y";
 
-                curr.addEventListener("click", async () => {
+                curr.addEventListener("click", () => {
                     chart.destroy();
-                    stopProgressBarInterval()
                     runProgressBar(range)
                 });
             }
