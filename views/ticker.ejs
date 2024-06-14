@@ -1459,7 +1459,8 @@
             return
         };
 
-        const setSession = () => {
+        const setSession = async () => {
+            //grab chart info for session from backend;
 
             const yf2PrePrice = '<%=getSumm.price.preMarketPrice%>'
             let preTime = '<%=getSumm.price.preMarketTime%>'

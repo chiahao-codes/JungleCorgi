@@ -98,7 +98,8 @@ app.get("/:symbol", async (req, res) => {
     getSumm,
     incomeResult,
     balanceResult,
-    cashFlowRes;
+    cashFlowRes,
+    sessionResult;
 
   const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US'`;
   const cashFlowURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
@@ -112,8 +113,6 @@ app.get("/:symbol", async (req, res) => {
 
   console.log("getSumm:", getSumm);
 
-  //if (!getSumm) res.render("404");
-
   if (
     !getSumm ||
     getSumm.quoteType.quoteType === "ECNQUOTE" ||
@@ -123,6 +122,10 @@ app.get("/:symbol", async (req, res) => {
   }
 
   if (getSumm.quoteType.quoteType === "EQUITY") {
+    //grab chart data for market-session
+    let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&region=US&symbol=${symbol}&range=1d`;
+    let chartSession = fetch(url, apiOptions);
+
     let getIncomeStmt = fetch(incomeStmtURL, apiOptions);
 
     let getBalanceSht = fetch(balanceShtURL, apiOptions);
@@ -130,16 +133,18 @@ app.get("/:symbol", async (req, res) => {
     let getCashFlow = fetch(cashFlowURL, apiOptions);
 
     let fetchResultsArr = await Promise.all([
+      chartSession,
       getIncomeStmt,
       getBalanceSht,
       getCashFlow,
     ])
       .then((results) => Promise.all(results.map((r) => r.json())))
       .then((jsonDataArray) => {
-        let jsonIncome = jsonDataArray[0];
-        let jsonBalance = jsonDataArray[1];
-        let jsonCashflow = jsonDataArray[2];
-        return [jsonIncome, jsonBalance, jsonCashflow];
+        let sessionPricing = jsonDataArray[0];
+        let jsonIncome = jsonDataArray[1];
+        let jsonBalance = jsonDataArray[2];
+        let jsonCashflow = jsonDataArray[3];
+        return [sessionPricing, jsonIncome, jsonBalance, jsonCashflow];
       })
       .catch((e) => console.log(e));
 
@@ -147,19 +152,23 @@ app.get("/:symbol", async (req, res) => {
       //res.render a server error 500 page;
     }
 
-    incomeResult = fetchResultsArr[0];
+    sessionResult = fetchResultsArr[0];
+    console.log("sessionResult:", sessionResult);
+
+    incomeResult = fetchResultsArr[1];
     // console.log("incomeRes:", incomeResult);
 
-    balanceResult = fetchResultsArr[1];
+    balanceResult = fetchResultsArr[2];
     //console.log("balanceRes:", balanceResult);
 
-    cashFlowRes = fetchResultsArr[2];
+    cashFlowRes = fetchResultsArr[3];
     //console.log("cashflowRes:", cashFlowRes);
   }
 
   res.render("ticker", {
     chartJS,
     getSumm,
+    sessionResult,
     incomeResult,
     balanceResult,
     cashFlowRes,
