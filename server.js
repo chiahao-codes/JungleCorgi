@@ -153,7 +153,7 @@ app.get("/:symbol", async (req, res) => {
     }
 
     sessionResult = fetchResultsArr[0];
-    console.log("sessionResult:", sessionResult);
+    console.log("sessionResult:", sessionResult.chart.result[0]);
 
     incomeResult = fetchResultsArr[1];
     // console.log("incomeRes:", incomeResult);
