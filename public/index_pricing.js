@@ -264,5 +264,184 @@ let symbols = [
   "^RUT",
 ];
       
-       
-   */
+          /*
+         const getRapidPrices = async (api, symbol) => {
+              const url = `${mboumQuotes}${symbol}`;
+              const options = {
+                  method: "GET",
+                  headers: {
+                      "X-RapidAPI-Key": api,
+                      "X-RapidAPI-Host": rapidURL,
+                  },
+              };
+  
+              const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
+              const result = await response.json();
+              const marketState = result.body[0].marketState;
+              const regMarketTime = result.body[0].regularMarketTime;
+              const preMarketTime = result.body[0].preMarketTime;
+              const postMarketTime = result.body[0].postMarketTime;
+  
+  
+              let regMktState = "Last Closed:", regMktPrice, regMktChange, regMktChangePercent,
+                  mktStatePrice, mktStateChange, mktStateChangePct, extendedMkTime, mktState;
+  
+              regMktPrice = result.body[0].regularMarketPrice;
+              regMktChange = result.body[0].regularMarketChange;
+              regMktChangePercent = result.body[0].regularMarketChangePercent;
+              currMktState = marketState // update global variable for chartjs
+  
+              if (marketState === "REGULAR") regMktState = "Current Session:";
+              //reg hours
+              priceTimeContainer.children[0].children[0].children[0].innerText = regMktPrice;
+              priceTimeContainer.children[0].children[0].children[1].children[0].innerText = regMktChange;
+              priceTimeContainer.children[0].children[0].children[1].children[1].innerText = regMktChangePercent;
+              if (regMarketTime) {
+                  atCloseContainer.children[0].innerText = regMktState;
+                  atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
+              }
+  
+              if (result.body[0].postMarketPrice) {
+                  mktState = "After Hours:";
+                  mktStatePrice = result.body[0].postMarketPrice;
+                  mktStateChange = result.body[0].postMarketChange;
+                  mktStateChangePct = result.body[0].postMarketChangePercent;
+                  extendedMkTime = postMarketTime;
+              }
+  
+              if (result.body[0].preMarketPrice) {
+                  mktState = "Pre-Market Hours:";
+                  mktStatePrice = result.body[0].preMarketPrice;
+                  mktStateChange = result.body[0].preMarketChange;
+                  mktStateChangePct = result.body[0].preMarketChangePercent;
+                  extendedMkTime = preMarketTime;
+              }
+  
+              //extended hours
+              priceTimeContainer.children[1].children[0].children[0].innerText = mktStatePrice;
+              priceTimeContainer.children[1].children[0].children[1].children[0].innerText = mktStateChange;
+              priceTimeContainer.children[1].children[0].children[1].children[1].innerText = mktStateChangePct;
+              afterHoursTimeContainer.children[0].innerText = mktState;
+              afterHoursTimeContainer.children[1].innerText = setMarketTime(extendedMkTime);
+  
+              return;
+          };
+
+
+             const incomeStatement = () => {
+            //format years for all:
+            let endingYears = document.querySelectorAll(".slide-boxes > .slide-years");
+
+            for (let i = 0; i < endingYears.length; i++) {
+                let curr = endingYears[i].children;
+
+                for (let yr of curr) {
+
+                    if (yr.classList.contains("endingyr1") || yr.classList.contains("endingyr2") ||
+                        yr.classList.contains("endingyr3")) {
+
+                        if (yr.innerText !== "--") {
+                            let format = new Date(yr.innerText);
+                            if (format) {
+                                format = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(format);
+                                yr.innerText = format;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            const incomeSlideData = document.querySelectorAll("#income-statement > .slide-boxes > .slide-data-wrapper");
+
+            for (let i = 0; i < incomeSlideData.length; i++) {
+                let curr = incomeSlideData[i];
+                if (!curr.classList.contains("income-slide-years") && !curr.classList.contains("basic-eps")) {
+
+                    let numbers = curr.children;
+
+                    formatYhooDomData(numbers);
+                }
+            }
+        }
+        const formatYhooDomData = (dataArray) => {
+            for (let i = 0; i < dataArray.length; i++) {
+                let curr = dataArray[i].innerText;
+
+                curr = new Intl.NumberFormat("en-US").format(curr);
+
+                if (curr !== "NaN") {
+
+                    //convert commas to decimals
+                    curr = curr.replaceAll(",", ".")
+
+                    //check for how many decimals
+                    let regExp = /[.]/g;
+                    let decimals = curr.match(regExp), startIndex = 0, endIndex, formattedCurr;
+
+                    //locate the 2nd decimal's index
+                    let firstSearch = ".";
+                    let firstIndexofDecimal = curr.indexOf(firstSearch);
+                    let secondIndexofDecimal = curr.indexOf(firstSearch, firstIndexofDecimal + 1);
+                    endIndex = secondIndexofDecimal; //2nd decimal
+                    //slice up to the 2nd decimal, excluding it.
+                    curr = curr.slice(startIndex, endIndex)
+
+                    //format curr
+                    curr = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 4, minimumSignificantDigits: 3 }).format(
+                        curr
+                    );
+
+                    let denomination = "";
+                    if (decimals.length === 4) {
+                        denomination = "T"
+                    } if (decimals.length === 3) {
+                        denomination = "B"
+                    }
+                    if (decimals.length === 2) {
+                        denomination = "M"
+                    }
+
+                    curr = `${curr}${denomination}`;
+                    dataArray[i].innerText = curr;
+
+                }
+            }
+        }
+        const balanceSheet = () => {
+            //format numbers
+            const balanceSlideData = document.querySelectorAll("#balance-sheet > .slide-boxes > .slide-data-wrapper");
+
+            for (let i = 0; i < balanceSlideData.length; i++) {
+                let curr = balanceSlideData[i];
+                if (!curr.classList.contains("balance-slide-years")) {
+
+                    let numbers = curr.children;
+
+                    formatYhooDomData(numbers);
+                }
+            }
+        }
+        const cashFlow = () => {
+            const cashflowDivs = document.querySelectorAll("#cash-flow > .slide-boxes > .slide-data-wrapper");
+
+            for (let i = 0; i < cashflowDivs.length; i++) {
+                let curr = cashflowDivs[i];
+                if (!curr.classList.contains("cash-flow-slide-years")) {
+
+                    let numbers = curr.children;
+
+                    formatYhooDomData(numbers);
+                }
+            }
+
+
+        }
+        const populateSlides = () => {
+            //const slideContainer = document.querySelector("#slide-container");
+            incomeStatement();
+            balanceSheet();
+            cashFlow()
+        }
+
+        */

@@ -43,7 +43,6 @@ let runQuery = async (symbol = "") => {
   try {
     const response = await fetch(url, apiOptions);
     let result = await response.json();
-    console.log("result:", result);
     return result;
   } catch (error) {
     console.error(error);
@@ -97,13 +96,10 @@ app.get("/tickrpro/contact", async (req, res, next) => {
 app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
     getSumm,
-    chartData1d,
-    chartRes1d,
     incomeResult,
     balanceResult,
     cashFlowRes;
 
-  const oneDayUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
   const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US'`;
   const cashFlowURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
   const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
@@ -116,39 +112,49 @@ app.get("/:symbol", async (req, res) => {
 
   console.log("getSumm:", getSumm);
 
+  //if (!getSumm) res.render("404");
+
   if (
+    !getSumm ||
     getSumm.quoteType.quoteType === "ECNQUOTE" ||
     getSumm.quoteType.quoteType === "MUTUALFUND"
   ) {
     return res.render("404");
   }
-  /*
-  chartData1d = await fetch(oneDayUrl, apiOptions)
-    .then((res) => res.json())
-    .catch((e) => console.log(e));
-  console.log("chartRes1d", chartRes1d);
-*/
 
   if (getSumm.quoteType.quoteType === "EQUITY") {
-    let getIncomeStmt = await fetch(incomeStmtURL, apiOptions)
-      .then((resp) => resp.json())
+    let getIncomeStmt = fetch(incomeStmtURL, apiOptions);
+
+    let getBalanceSht = fetch(balanceShtURL, apiOptions);
+
+    let getCashFlow = fetch(cashFlowURL, apiOptions);
+
+    let fetchResultsArr = await Promise.all([
+      getIncomeStmt,
+      getBalanceSht,
+      getCashFlow,
+    ])
+      .then((results) => Promise.all(results.map((r) => r.json())))
+      .then((jsonDataArray) => {
+        let jsonIncome = jsonDataArray[0];
+        let jsonBalance = jsonDataArray[1];
+        let jsonCashflow = jsonDataArray[2];
+        return [jsonIncome, jsonBalance, jsonCashflow];
+      })
       .catch((e) => console.log(e));
 
-    incomeResult = getIncomeStmt;
-    //console.log("income timeSeries:", incomeResult.timeSeries);
-    let getBalanceSht = await fetch(balanceShtURL, apiOptions)
-      .then((resp) => resp.json())
-      .catch((e) => console.log(e));
+    if (!fetchResultsArr) {
+      //res.render a server error 500 page;
+    }
 
-    balanceResult = getBalanceSht;
-    //console.log("balance sheet:", balanceResult);
+    incomeResult = fetchResultsArr[0];
+    // console.log("incomeRes:", incomeResult);
 
-    let getCashFlow = await fetch(cashFlowURL, apiOptions)
-      .then((resp) => resp.json())
-      .catch((e) => console.log(e));
+    balanceResult = fetchResultsArr[1];
+    //console.log("balanceRes:", balanceResult);
 
-    cashFlowRes = getCashFlow;
-    //console.log("cash flow:", cashFlowRes);
+    cashFlowRes = fetchResultsArr[2];
+    //console.log("cashflowRes:", cashFlowRes);
   }
 
   res.render("ticker", {

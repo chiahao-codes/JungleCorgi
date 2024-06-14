@@ -41,28 +41,14 @@
                             <div id="reg_hours_container" class="reg_after_hours_container">
                                 <h3 id="reg_hours_price" class="price">
                                     <% let regMkPr="" %>
-                                        <% if(getSumm){ %>
-                                            <%if(getSumm.price.regularMarketPrice){%>
-                                                <%regMkPr= getSumm.price.regularMarketPrice.fmt%>
-                                                    <% }} %>
-                                                        <%=regMkPr%>
+
                                 </h3>
                                 <div class="hours_pct_container">
                                     <h5 id="reg_hours_change" class="price">
-                                        <% let regMktChange="" %>
-                                            <% if(getSumm){ %>
-                                                <%if(getSumm.price.regularMarketChange){%>
-                                                    <%regMktChange= getSumm.price.regularMarketChange.fmt%>
-                                                        <% }} %>
-                                                            <%=regMktChange%>
+
                                     </h5>
                                     <h5 id="reg_hours_pct" class="price">
-                                        <%let regMktChgPct="" %>
-                                            <% if(getSumm){ %>
-                                                <%if(getSumm.price.regularMarketChangePercent){%>
-                                                    <%regMktChgPct= getSumm.price.regularMarketChangePercent.fmt%>
-                                                        <% }} %>
-                                                            <%=regMktChgPct%>
+
                                     </h5>
                                 </div>
                             </div>
@@ -100,11 +86,11 @@
             </div>
         </div>
         <div id="chart-timeline-container">
-            <h6 class="timeline-link oneDay">1D</h6>
-            <h6 class="timeline-link fiveDay">5D</h6>
-            <h6 class="timeline-link oneMonth">1M</h6>
-            <h6 class="timeline-link ytd">YTD</h6>
-            <h6 class="timeline-link twoYr">2Y</h6>
+            <h6 id="1d" class="timeline-link ">1D</h6>
+            <h6 id="5d" class="timeline-link ">5D</h6>
+            <h6 id="1mo" class="timeline-link">1M</h6>
+            <h6 id="YTD" class="timeline-link">YTD</h6>
+            <h6 id="2y" class="timeline-link">2Y</h6>
         </div>
         </div>
         <section id="index_data_container" class="index_data_container">
@@ -1231,8 +1217,8 @@
         const dividendData = document.querySelector("#divRateYield-container");
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
+        let chart, timeoutId, currMktState, timeout = undefined, timeout2 = undefined, red = "#b11e31", green = "#148a61";
 
-        let chart, timeoutId;
         // Function to update the progress bar
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
@@ -1333,7 +1319,6 @@
             setSliderPosition()
         }
 
-        let currMktState, timeout = undefined, timeout2 = undefined, dataLineColor;
 
         const setMarketTime = (timeStamp, int) => {
             let date, formatted;
@@ -1352,6 +1337,7 @@
             return formatted
 
         }
+
         const changePctPointsColor = (pricePctContainers, pricechange) => {
 
             let regExMinus = new RegExp(/[-]/);
@@ -1363,17 +1349,17 @@
                 let percentText = pricePctContainers[i].children[1].children[1].innerText
 
                 if (regExMinus.test(pointsText)) {
-                    pricePctContainers[i].children[0].style.color = "#b11e31";
-                    pricePctContainers[i].children[1].children[0].style.color = "#b11e31";
-                    pricePctContainers[i].children[1].children[1].style.color = "#b11e31";
+                    pricePctContainers[i].children[0].style.color = red;
+                    pricePctContainers[i].children[1].children[0].style.color = red;
+                    pricePctContainers[i].children[1].children[1].style.color = red;
 
                     if (regExParens.test(percentText) !== true) {
                         pricePctContainers[i].children[1].children[1].innerText = `(${percentText}%)`
                     }
                 } else {
-                    pricePctContainers[i].children[0].style.color = "#148a61";
-                    pricePctContainers[i].children[1].children[0].style.color = "#148a61";
-                    pricePctContainers[i].children[1].children[1].style.color = "#148a61";
+                    pricePctContainers[i].children[0].style.color = green;
+                    pricePctContainers[i].children[1].children[0].style.color = green;
+                    pricePctContainers[i].children[1].children[1].style.color = green;
 
                     if (regExPlus.test(pointsText) !== true) {
                         pricePctContainers[i].children[1].children[0].innerText = `+${pointsText}`
@@ -1384,7 +1370,6 @@
                     }
                 }
             }
-            dataLineColor = pricePctContainers[0].children[1].children[0].style.color;
 
         };
         const formatPrice = (container) => {
@@ -1474,7 +1459,8 @@
             return
         };
 
-        const yahooSetMktTime = () => {
+        const setSession = () => {
+
             const yf2PrePrice = '<%=getSumm.price.preMarketPrice%>'
             let preTime = '<%=getSumm.price.preMarketTime%>'
             const yf2PostPrice = '<%=getSumm.price.postMarketPrice%>'
@@ -1527,214 +1513,32 @@
                 prevCloseContainer.style.maxWidth = "100%";
             }
         }
-        /*
-         const getRapidPrices = async (api, symbol) => {
-              const url = `${mboumQuotes}${symbol}`;
-              const options = {
-                  method: "GET",
-                  headers: {
-                      "X-RapidAPI-Key": api,
-                      "X-RapidAPI-Host": rapidURL,
-                  },
-              };
-  
-              const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
-              const result = await response.json();
-              const marketState = result.body[0].marketState;
-              const regMarketTime = result.body[0].regularMarketTime;
-              const preMarketTime = result.body[0].preMarketTime;
-              const postMarketTime = result.body[0].postMarketTime;
-  
-  
-              let regMktState = "Last Closed:", regMktPrice, regMktChange, regMktChangePercent,
-                  mktStatePrice, mktStateChange, mktStateChangePct, extendedMkTime, mktState;
-  
-              regMktPrice = result.body[0].regularMarketPrice;
-              regMktChange = result.body[0].regularMarketChange;
-              regMktChangePercent = result.body[0].regularMarketChangePercent;
-              currMktState = marketState // update global variable for chartjs
-  
-              if (marketState === "REGULAR") regMktState = "Current Session:";
-              //reg hours
-              priceTimeContainer.children[0].children[0].children[0].innerText = regMktPrice;
-              priceTimeContainer.children[0].children[0].children[1].children[0].innerText = regMktChange;
-              priceTimeContainer.children[0].children[0].children[1].children[1].innerText = regMktChangePercent;
-              if (regMarketTime) {
-                  atCloseContainer.children[0].innerText = regMktState;
-                  atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
-              }
-  
-              if (result.body[0].postMarketPrice) {
-                  mktState = "After Hours:";
-                  mktStatePrice = result.body[0].postMarketPrice;
-                  mktStateChange = result.body[0].postMarketChange;
-                  mktStateChangePct = result.body[0].postMarketChangePercent;
-                  extendedMkTime = postMarketTime;
-              }
-  
-              if (result.body[0].preMarketPrice) {
-                  mktState = "Pre-Market Hours:";
-                  mktStatePrice = result.body[0].preMarketPrice;
-                  mktStateChange = result.body[0].preMarketChange;
-                  mktStateChangePct = result.body[0].preMarketChangePercent;
-                  extendedMkTime = preMarketTime;
-              }
-  
-              //extended hours
-              priceTimeContainer.children[1].children[0].children[0].innerText = mktStatePrice;
-              priceTimeContainer.children[1].children[0].children[1].children[0].innerText = mktStateChange;
-              priceTimeContainer.children[1].children[0].children[1].children[1].innerText = mktStateChangePct;
-              afterHoursTimeContainer.children[0].innerText = mktState;
-              afterHoursTimeContainer.children[1].innerText = setMarketTime(extendedMkTime);
-  
-              return;
-          };
-
-
-             const incomeStatement = () => {
-            //format years for all:
-            let endingYears = document.querySelectorAll(".slide-boxes > .slide-years");
-
-            for (let i = 0; i < endingYears.length; i++) {
-                let curr = endingYears[i].children;
-
-                for (let yr of curr) {
-
-                    if (yr.classList.contains("endingyr1") || yr.classList.contains("endingyr2") ||
-                        yr.classList.contains("endingyr3")) {
-
-                        if (yr.innerText !== "--") {
-                            let format = new Date(yr.innerText);
-                            if (format) {
-                                format = new Intl.DateTimeFormat("en-US", { dateStyle: "short", timeZone: "UTC" }).format(format);
-                                yr.innerText = format;
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            const incomeSlideData = document.querySelectorAll("#income-statement > .slide-boxes > .slide-data-wrapper");
-
-            for (let i = 0; i < incomeSlideData.length; i++) {
-                let curr = incomeSlideData[i];
-                if (!curr.classList.contains("income-slide-years") && !curr.classList.contains("basic-eps")) {
-
-                    let numbers = curr.children;
-
-                    formatYhooDomData(numbers);
-                }
-            }
-        }
-        const formatYhooDomData = (dataArray) => {
-            for (let i = 0; i < dataArray.length; i++) {
-                let curr = dataArray[i].innerText;
-
-                curr = new Intl.NumberFormat("en-US").format(curr);
-
-                if (curr !== "NaN") {
-
-                    //convert commas to decimals
-                    curr = curr.replaceAll(",", ".")
-
-                    //check for how many decimals
-                    let regExp = /[.]/g;
-                    let decimals = curr.match(regExp), startIndex = 0, endIndex, formattedCurr;
-
-                    //locate the 2nd decimal's index
-                    let firstSearch = ".";
-                    let firstIndexofDecimal = curr.indexOf(firstSearch);
-                    let secondIndexofDecimal = curr.indexOf(firstSearch, firstIndexofDecimal + 1);
-                    endIndex = secondIndexofDecimal; //2nd decimal
-                    //slice up to the 2nd decimal, excluding it.
-                    curr = curr.slice(startIndex, endIndex)
-
-                    //format curr
-                    curr = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 4, minimumSignificantDigits: 3 }).format(
-                        curr
-                    );
-
-                    let denomination = "";
-                    if (decimals.length === 4) {
-                        denomination = "T"
-                    } if (decimals.length === 3) {
-                        denomination = "B"
-                    }
-                    if (decimals.length === 2) {
-                        denomination = "M"
-                    }
-
-                    curr = `${curr}${denomination}`;
-                    dataArray[i].innerText = curr;
-
-                }
-            }
-        }
-        const balanceSheet = () => {
-            //format numbers
-            const balanceSlideData = document.querySelectorAll("#balance-sheet > .slide-boxes > .slide-data-wrapper");
-
-            for (let i = 0; i < balanceSlideData.length; i++) {
-                let curr = balanceSlideData[i];
-                if (!curr.classList.contains("balance-slide-years")) {
-
-                    let numbers = curr.children;
-
-                    formatYhooDomData(numbers);
-                }
-            }
-        }
-        const cashFlow = () => {
-            const cashflowDivs = document.querySelectorAll("#cash-flow > .slide-boxes > .slide-data-wrapper");
-
-            for (let i = 0; i < cashflowDivs.length; i++) {
-                let curr = cashflowDivs[i];
-                if (!curr.classList.contains("cash-flow-slide-years")) {
-
-                    let numbers = curr.children;
-
-                    formatYhooDomData(numbers);
-                }
-            }
-
-
-        }
-        const populateSlides = () => {
-            //const slideContainer = document.querySelector("#slide-container");
-            incomeStatement();
-            balanceSheet();
-            cashFlow()
-        }
-
-        */
 
         const grabChartData = async (symbol, range) => {
             let url;
             switch (range) {
                 case "1d":
-                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true`
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&region=US&symbol=${symbol}&range=1d`
+                //url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true`
                 case "5d":
-                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d`
+                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 case "1mo":
-                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo`
+                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 case "YTD":
-                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1wk&region=US&symbol=${symbol}&range=ytd&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&region=US&symbol=${symbol}&range=ytd`
+                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1wk&region=US&symbol=${symbol}&range=ytd&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 case "2y":
-                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1mo&region=US&symbol=${symbol}&range=2y&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
+                    url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&region=US&symbol=${symbol}&range=2y`
+                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1mo&region=US&symbol=${symbol}&range=2y&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 default:
                     console.log("Range not found");
             }
-            /**
-             *  const fiveDayUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
-            const oneMoUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
-            const ytdUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1wk&region=US&symbol=${symbol}&range=ytd&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
-            const twoYrUrl = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1mo&region=US&symbol=${symbol}&range=2y&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
-             */
 
             const apiOptions = {
                 method: "GET",
@@ -1751,21 +1555,20 @@
             return response;
         };
 
-        const fillChartData = async (responseData) => {
+        const fillChartData = async (responseData, range) => {
             let chartResp, chartTimes, closeQuote, openQuote;
+
             console.log("responseData:", responseData)
-            //5m:1day, 1h:5days;
-            //1d:months, 1mo:years;
+
             let chartData = {
                 datasets: [
                     {
                         label: "",
                         data: [],
-                        borderColor: dataLineColor,
-                        backgroundColor: dataLineColor,
-                        color: dataLineColor,
+                        borderColor: "",
+                        backgroundColor: "",
                         tension: 0.1,
-                        pointBorderWidth: 0.5,
+                        pointRadius: 0,
                     },
                 ],
                 labels: [],
@@ -1781,46 +1584,72 @@
 
             //return chartdata object;
             //start from the last one and go backwards;
-            let firstChartPrice, finalChartPrice;
+            let firstChartPrice, finalChartPrice, nextTimestamp, currTimestamp, date, formatted;
             for (let i = timestampEnd; i >= 0; i--) {
-                let currTimestamp = chartTimes[i];
-                //setMarketTime(currTimestamp);
-                let date, formatted;
+                currTimestamp = chartTimes[i];
+
                 date = new Date(currTimestamp * 1000);
+
                 formatted = new Intl.DateTimeFormat("en-US", {
                     dateStyle: "short",
                     timeStyle: "long",
-                    timeZone: "UTC",
+                    timeZone: "America/New_York",
                 }).format(date);
 
                 let labelDate = formatted;
                 let mktPrice = closeQuote[i]; //closing price;
 
-                //get UTC Date to determine mkt price Open vs. Closed
-                currTimestamp *= 1000;
-                let dateCreate = new Date(currTimestamp);
+                //get next element date info;
+                let nextDateCreate, nextDate, nextFormattedTime;
+                if (chartTimes[i - 1] !== undefined) {
+                    nextTimestamp = chartTimes[i - 1];
+                    nextTimestamp *= 1000;
+                    nextDateCreate = new Date(nextTimestamp);
+                    nextDate = nextDateCreate.getDate();
+                }
 
-                //find curr utc timestamp vs. market open of stock symbol
-                let utcHours = dateCreate.getUTCHours();
-                let utcMin = dateCreate.getUTCMinutes();
-
+                //curr timestamp
+                let currHours = date.getHours();
+                let currMin = date.getMinutes();
+                let currDate = date.getDate();
+                //curr mkt open timestamp;
                 let marketOpen = chartResp.meta.currentTradingPeriod.regular.start;
                 let mktOpenDate = new Date(marketOpen * 1000);
-                let utcHourOpen = mktOpenDate.getUTCHours();
-                let utcMinsOpen = mktOpenDate.getUTCMinutes();
 
-                if (utcHourOpen === utcHours && utcMinsOpen === utcMin) {
+                //mkt open;
+                let mktHourOpen = mktOpenDate.getHours();
+                let mktMinsOpen = mktOpenDate.getMinutes();
+
+                //check if curr timestamp is market open;
+                if (mktHourOpen === currHours && mktMinsOpen === currMin) {
                     mktPrice = openQuote[i];
                 }
 
                 chartData.datasets[0].data.unshift(mktPrice);
-                console.log("labels array:", chartData.labels);
                 chartData.labels.unshift(labelDate);
+
+                //set color of line chart here;
+                //chartData.datasets[0].border, background, color;
+
+                let latestPrice = chartData.datasets[0].data.length - 1;
+                latestPrice = chartData.datasets[0].data[latestPrice];
+                let earliestPrice = chartData.datasets[0].data[0];
+
+                if (latestPrice >= earliestPrice) {
+                    chartData.datasets[0].backgroundColor = green;
+                    chartData.datasets[0].borderColor = green;
+                } else {
+                    chartData.datasets[0].backgroundColor = red;
+                    chartData.datasets[0].borderColor = red;
+                }
+
+                if (range === "1d") {
+                    if (currDate !== nextDate) {
+                        return chartData
+                    }
+                }
+
             }
-
-            //set color of line chart here;
-            //chartData.datasets[0].border, background, color;
-
             return chartData;
         };
 
@@ -1832,7 +1661,7 @@
 
             let grabchart, fillchart, response;
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
-            fillchart = await fillChartData(response).then((res) => { return res }).catch((e) => console.log(e));
+            fillchart = await fillChartData(response, range).then((res) => { return res }).catch((e) => console.log(e));
 
             progressBarContainer.style.display = "none"
             stockChart.style.display = "initial";
@@ -1862,7 +1691,7 @@
                             callback: (index) => {
                                 let label = chartResult.labels[index], labelStr, str1, str2, regExprColon = /[:]/, regExpComma = /[,]/, startIndex = 0, endIndex;
                                 let colonIndex = label.search(regExprColon), commaIndex = label.search(regExpComma);
-
+                                console.log(label)
                                 if (range === "1d") {
                                     startIndex = commaIndex + 2;
                                     endIndex = colonIndex + 3;
@@ -1898,7 +1727,6 @@
                         easing: 'linear',
                         loop: true,
                         radius: 1,
-                        backgroundColor: dataLineColor
                     }
                 },
 
@@ -1927,7 +1755,7 @@
             progressBar.setAttribute("class", "run-progress-animation")
             timeoutId = setTimeout(() => {
                 runChart(range)
-            }, 10)
+            }, 0)
         }
 
         const idlePage = () => {
@@ -1950,20 +1778,32 @@
 
         const setEventListeners = () => {
             //timeline links: 1d 5d ytd 1y 2yr
-            let timelineLinks = chartTimelineContainer.children, range, curr;
-            for (let i = 0; i < timelineLinks.length; i++) {
-                curr = timelineLinks[i];
-                if (curr.classList.contains("oneDay")) range = "1d";
-                if (curr.classList.contains("fiveDay")) range = "5d";
-                if (curr.classList.contains("oneMonth")) range = "1mo";
-                if (curr.classList.contains("ytd")) range = "YTD";
-                if (curr.classList.contains("twoYr")) range = "2y";
+            let timelineLinks = chartTimelineContainer.children;
 
-                curr.addEventListener("click", () => {
-                    chart.destroy();
-                    runProgressBar(range)
-                });
-            }
+            timelineLinks[0].addEventListener("click", () => {
+                chart.destroy();
+                runProgressBar("1d");
+            });
+
+            timelineLinks[1].addEventListener("click", () => {
+                chart.destroy();
+                runProgressBar("5d");
+            });
+
+            timelineLinks[2].addEventListener("click", () => {
+                chart.destroy();
+                runProgressBar("1mo");
+            });
+
+            timelineLinks[3].addEventListener("click", () => {
+                chart.destroy();
+                runProgressBar("YTD");
+            });
+
+            timelineLinks[4].addEventListener("click", () => {
+                chart.destroy();
+                runProgressBar("2y");
+            });
 
             // document.addEventListener("click", idlePage);
             // document.addEventListener("keypress", idlePage);
@@ -2059,12 +1899,10 @@
         afterHoursContainer.removeAttribute("style");
         summaryProfileContainer.removeAttribute("style");
 
-        yahooSetMktTime();
+        // setSession();
         changePctPointsColor(pricePctContainers, stockPriceChange);
         runProgressBar("1d");
-
         setEventListeners();
-        //populateSlides();
     </script>
 
 </body>
