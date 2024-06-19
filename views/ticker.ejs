@@ -38,11 +38,11 @@
                     </h5>
                     <div id="price_time_container">
                         <div id="reg_container" class="reg_after_container">
-                            <div id="reg_hours_container" class="reg_after_hours_container">
+                            <div id="reg_hours_container" class="reg_hours_container">
                                 <h3 id="reg_hours_price" class="price">
 
                                 </h3>
-                                <div id="reg_hours_pct_container">
+                                <div id="reg_hours_pct_container" class="hours_pct_container">
                                     <h5 id="reg_hours_change" class="price">
 
                                     </h5>
@@ -57,11 +57,11 @@
                             </div>
                         </div>
                         <div id="after_container" class="reg_after_container">
-                            <div id="after_hours_pp_container" class="reg_after_hours_container">
+                            <div id="after_hours_pp_container" class="reg_hours_container">
                                 <h5 id="after_hours_price" class="price">
 
                                 </h5>
-                                <div class="hours_pct_container">
+                                <div id="after_hours_pct_container" class="hours_pct_container">
                                     <h6 id="after_hours_change" class="price">
 
                                     </h6>
@@ -1163,27 +1163,24 @@
         const h2Box = document.querySelector("header>h2");
         const h2ChildNodes = h2Box.childNodes;
         const selection = window.getSelection();
-        const pricePctContainers = document.querySelectorAll(".reg_after_hours_container");
+        const pricePctContainers = document.querySelectorAll(".reg_hours_container");
         const regularPrice = document.getElementById("reg_hours_price");
         const regPointsPctContainer = document.querySelector("#reg_hours_pct_container");
         const afterHrsPrice = document.getElementById("after_hours_price");
-
         const afterHrsChange = document.getElementById("after_hours_change");
         const afterHrsPct = document.getElementById("after_hours_pct");
-
-        //***
         const afterHoursContainer = document.querySelector("#after_container");
         const atCloseContainer = document.querySelector("#at_close_container");
         const afterHoursTimeContainer = document.querySelector("#after_hours_time_container");
+
         const pricesAndPercents = document.querySelectorAll(".price");
-        let postMktChangePct = document.querySelector("#after_hours_pct").innerText;
 
         const summaryProfileContainer = document.querySelector("#summary_profile_container");
         const companyDesc = document.querySelector("#company_desc");
         const ratioContainer = document.querySelector("#ratio-container");
         const prevCloseContainer = document.querySelector("#prev-close-container");
         const indexData = document.querySelectorAll("#index_data_container > div > .border-line > .indexData");
-        const dividendData = document.querySelector("#divRateYield-container");
+
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
         let chart, timeoutId, currMktState, timeout = undefined, timeout2 = undefined, red = "#b11e31", green = "#148a61";
@@ -1302,36 +1299,34 @@
 
         }
 
-        const changePctPointsColor = (pricePctContainers, pricechange) => {
+        const changePctPointsColor = (prevClosePrice) => {
+            let green = "#096344", red = "#c4283c";
 
-            let regExMinus = new RegExp(/[-]/);
-            let regExParens = new RegExp(/[()]/);
-            let regExPlus = new RegExp(/[+]/);
-            for (let i = 0; i < pricePctContainers.length; i++) {
-                let priceString = pricePctContainers[i].children[0].innerText;
-                let pointsText = pricePctContainers[i].children[1].children[0].innerText;
-                let percentText = pricePctContainers[i].children[1].children[1].innerText
+            let currentPrice = regularPrice.innerText;
+            currentPrice = parseFloat(currentPrice);
 
-                if (regExMinus.test(pointsText)) {
-                    pricePctContainers[i].children[0].style.color = red;
-                    pricePctContainers[i].children[1].children[0].style.color = red;
-                    pricePctContainers[i].children[1].children[1].style.color = red;
+            let afterPrice = afterHrsPrice.innerText;
 
-                    if (regExParens.test(percentText) !== true) {
-                        pricePctContainers[i].children[1].children[1].innerText = `(${percentText}%)`
-                    }
-                } else {
-                    pricePctContainers[i].children[0].style.color = green;
-                    pricePctContainers[i].children[1].children[0].style.color = green;
-                    pricePctContainers[i].children[1].children[1].style.color = green;
+            regularPrice.style.color = green;
+            regPointsPctContainer.children[0].style.color = green;
+            regPointsPctContainer.children[1].style.color = green;
 
-                    if (regExPlus.test(pointsText) !== true) {
-                        pricePctContainers[i].children[1].children[0].innerText = `+${pointsText}`
-                    }
+            if (currentPrice < prevClosePrice) {
+                regularPrice.style.color = red;
+                regPointsPctContainer.children[0].style.color = red;
+                regPointsPctContainer.children[1].style.color = red;
+            }
 
-                    if (regExParens.test(percentText) !== true) {
-                        pricePctContainers[i].children[1].children[1].innerText = `(+${percentText}%)`
-                    }
+            if (afterPrice) {
+                afterHrsPrice.style.color = green;
+                afterHrsChange.style.color = green;
+                afterHrsPct.style.color = green;
+
+                afterPrice = parseFloat(afterPrice);
+                if (afterPrice < currentPrice) {
+                    afterHrsPrice.style.color = red;
+                    afterHrsChange.style.color = red;
+                    afterHrsPct.style.color = red;
                 }
             }
 
@@ -1546,6 +1541,8 @@
                 ratioContainer.style.display = "none";
                 prevCloseContainer.style.maxWidth = "100%";
             }
+
+            changePctPointsColor(previousClose);
 
         }
 

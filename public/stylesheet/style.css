@@ -388,7 +388,7 @@
   #price_hours_container
     > #price_time_container
     > .reg_after_container
-    > .reg_after_hours_container
+    > .reg_hours_container
     > .hours_pct_container {
     position: relative;
     display: flex;

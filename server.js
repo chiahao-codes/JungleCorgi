@@ -98,8 +98,7 @@ app.get("/:symbol", async (req, res) => {
     getSumm,
     incomeResult,
     balanceResult,
-    cashFlowRes,
-    sessionResult;
+    cashFlowRes;
 
   const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US'`;
   const cashFlowURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
@@ -159,7 +158,6 @@ app.get("/:symbol", async (req, res) => {
   res.render("ticker", {
     chartJS,
     getSumm,
-    //sessionResult,
     incomeResult,
     balanceResult,
     cashFlowRes,
