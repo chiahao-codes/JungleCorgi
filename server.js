@@ -122,10 +122,6 @@ app.get("/:symbol", async (req, res) => {
   }
 
   if (getSumm.quoteType.quoteType === "EQUITY") {
-    //grab chart data for market-session
-    // let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&region=US&symbol=${symbol}&range=1d`;
-    // let chartSession = fetch(url, apiOptions);
-
     let getIncomeStmt = fetch(incomeStmtURL, apiOptions);
 
     let getBalanceSht = fetch(balanceShtURL, apiOptions);
@@ -133,14 +129,12 @@ app.get("/:symbol", async (req, res) => {
     let getCashFlow = fetch(cashFlowURL, apiOptions);
 
     let fetchResultsArr = await Promise.all([
-      // chartSession,
       getIncomeStmt,
       getBalanceSht,
       getCashFlow,
     ])
       .then((results) => Promise.all(results.map((r) => r.json())))
       .then((jsonDataArray) => {
-        //let sessionPricing = jsonDataArray[0];
         let jsonIncome = jsonDataArray[0];
         let jsonBalance = jsonDataArray[1];
         let jsonCashflow = jsonDataArray[2];
@@ -151,10 +145,6 @@ app.get("/:symbol", async (req, res) => {
     if (!fetchResultsArr) {
       //res.render a server error 500 page;
     }
-
-    //sessionResult = fetchResultsArr[0];
-    //sessionResult = sessionResult.chart.result[0];
-    //console.log("sessionResult:", sessionResult);
 
     incomeResult = fetchResultsArr[0];
     // console.log("incomeRes:", incomeResult);

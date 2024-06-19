@@ -1149,11 +1149,9 @@
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
         const quoteSumm = `<%=getSumm%>`;
-        console.log("getSumm:", quoteSumm)
         const stockTicker = '<%=getSumm.symbol%>';
-
-        const dividendRate = '<%=getSumm.summaryDetail.dividendRate%>'
-        const exDivDate = '<%=getSumm.summaryDetail.exDividendDate%>'
+        const dividendRate = '<%=getSumm.summaryDetail.dividendRate.fmt%>'
+        const exDivDate = '<%=getSumm.summaryDetail.exDividendDate.fmt%>'
         let yhooOpenPrice = '<%=getSumm.summaryDetail.open%>';
         const stockPriceChange = '<%=getSumm.price.regularMarketChange%>';
         const KEY = '<%=API_KEY%>';
