@@ -40,10 +40,9 @@
                         <div id="reg_container" class="reg_after_container">
                             <div id="reg_hours_container" class="reg_after_hours_container">
                                 <h3 id="reg_hours_price" class="price">
-                                    <% let regMkPr="" %>
 
                                 </h3>
-                                <div class="hours_pct_container">
+                                <div id="reg_hours_pct_container">
                                     <h5 id="reg_hours_change" class="price">
 
                                     </h5>
@@ -1118,44 +1117,6 @@
                                                                 <%=rSec%>
                                         </p>
                                     </div>
-                                    <div id="key_execs_container">
-                                        <ul id="title_name1">
-                                            <li>
-                                                <% let tit="" %>
-                                                    <%if(getSumm.summaryProfile){ %>
-                                                        <% if(getSumm.summaryProfile.companyOfficers[0]){ %>
-                                                            <%tit=`${getSumm.summaryProfile.companyOfficers[0].title}:`}}%>
-                                                                <%=tit%>
-                                            </li>
-                                            <li>
-                                                <% let nam="" %>
-                                                    <% if(getSumm.summaryProfile){ %>
-                                                        <% if(getSumm.summaryProfile.companyOfficers[0]){%>
-                                                            <%nam=getSumm.summaryProfile.companyOfficers[0].name}} %>
-                                                                <%= nam %>
-
-                                            </li>
-                                            <li></li>
-                                        </ul>
-                                        <ul id="title_name2">
-                                            <li>
-                                                <% let tit2="" %>
-                                                    <%if(getSumm.summaryProfile){ %>
-                                                        <% if(getSumm.summaryProfile.companyOfficers[1]){ %>
-                                                            <%tit2=`${getSumm.summaryProfile.companyOfficers[1].title}:`}}%>
-                                                                <%=tit2%>
-                                            </li>
-                                            <li>
-                                                <% let nam2="" %>
-
-                                                    <% if(getSumm.summaryProfile){ %>
-                                                        <% if(getSumm.summaryProfile.companyOfficers[1]){%>
-                                                            <%nam2=getSumm.summaryProfile.companyOfficers[1].name}} %>
-                                                                <%= nam2 %>
-                                            </li>
-                                            <li></li>
-                                        </ul>
-                                    </div>
                                     <div id="employee_container">
                                         <p>
                                             <% let emH="" %>
@@ -1188,7 +1149,9 @@
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
         const quoteSumm = `<%=getSumm%>`;
+        console.log("getSumm:", quoteSumm)
         const stockTicker = '<%=getSumm.symbol%>';
+
         const dividendRate = '<%=getSumm.summaryDetail.dividendRate%>'
         const exDivDate = '<%=getSumm.summaryDetail.exDividendDate%>'
         let yhooOpenPrice = '<%=getSumm.summaryDetail.open%>';
@@ -1203,12 +1166,20 @@
         const h2ChildNodes = h2Box.childNodes;
         const selection = window.getSelection();
         const pricePctContainers = document.querySelectorAll(".reg_after_hours_container");
-        const priceTimeContainer = document.querySelector("#price_time_container");
+        const regularPrice = document.getElementById("reg_hours_price");
+        const regPointsPctContainer = document.querySelector("#reg_hours_pct_container");
+        const afterHrsPrice = document.getElementById("after_hours_price");
+
+        const afterHrsChange = document.getElementById("after_hours_change");
+        const afterHrsPct = document.getElementById("after_hours_pct");
+
+        //***
         const afterHoursContainer = document.querySelector("#after_container");
         const atCloseContainer = document.querySelector("#at_close_container");
         const afterHoursTimeContainer = document.querySelector("#after_hours_time_container");
         const pricesAndPercents = document.querySelectorAll(".price");
         let postMktChangePct = document.querySelector("#after_hours_pct").innerText;
+
         const summaryProfileContainer = document.querySelector("#summary_profile_container");
         const companyDesc = document.querySelector("#company_desc");
         const ratioContainer = document.querySelector("#ratio-container");
@@ -1319,19 +1290,14 @@
             setSliderPosition()
         }
 
-
-        const setMarketTime = (timeStamp, int) => {
+        const setMarketTime = (timeStamp) => {
             let date, formatted;
 
-            //timestamp is a number
-            if (timeStamp) {
-                date = new Date(timeStamp * 1000);
-            }
-
+            date = new Date(timeStamp * 1000);
             formatted = new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short',
                 timeStyle: 'long',
-                timeZone: 'UTC',
+                timeZone: 'America/New_York',
             }).format(date)
 
             return formatted
@@ -1459,53 +1425,122 @@
             return
         };
 
-        const setSession = async () => {
-            //grab chart info for session from backend;
+        const setSession = (res) => {
+            const sessionObj = res.chart.result[0];
 
-            const yf2PrePrice = '<%=getSumm.price.preMarketPrice%>'
-            let preTime = '<%=getSumm.price.preMarketTime%>'
-            const yf2PostPrice = '<%=getSumm.price.postMarketPrice%>'
-            let postTime = '<%=getSumm.price.postMarketTime%>'
-            const regMktPrice = '<%=getSumm.price.regularMarketPrice%>'
-            const regTime = '<%=getSumm.price.regularMarketTime%>';
-            const marketStateYahoo = '<%=getSumm.price.marketState%>';
-            let mktState, regDateTime = "Last Closed:", dateAndTime;
+            //current market session period;
+            const currTradingPeriod = sessionObj.meta.currentTradingPeriod;
+            const preTime = currTradingPeriod.pre;
+            const regTime = currTradingPeriod.regular;
+            const postTime = currTradingPeriod.post;
 
-            currMktState = marketStateYahoo; //updates global variable for chartsjs
+            //previous closing price;
+            let previousClose = sessionObj.meta.previousClose;
+            previousClose = parseFloat(previousClose);
 
-            if (marketStateYahoo === "REGULAR") {
+            //pre/reg/post prices cache;
+            let prices = {
+                pre: "",
+                reg: "",
+                post: ""
+            };
+
+            const timeStampsArr = sessionObj.timestamp;
+            const quotesArr = sessionObj.indicators.quote[0];
+            const openPriceArr = quotesArr.open;
+            const closePriceArr = quotesArr.close;
+
+            //update prices object:
+            for (let i = 0; i <= timeStampsArr.length; i++) {
+                let currTimeStamp = timeStampsArr[i];
+
+                if (currTimeStamp < preTime.end) {
+                    prices["pre"] = closePriceArr[i];
+                }
+
+                if (currTimeStamp === preTime.end) {
+                    prices["pre"] = openPriceArr[i];
+                }
+
+                if (currTimeStamp > regTime.start && currTimeStamp < regTime.end) {
+                    prices["reg"] = closePriceArr[i];
+                }
+
+                if (currTimeStamp === regTime.end) {
+                    prices["reg"] = closePriceArr[i];
+                }
+
+                if (currTimeStamp > postTime.start) {
+                    console.log("post")
+
+                    prices["post"] = closePriceArr[i];
+                }
+            }
+            console.log("prices obj:", prices)
+            //pre/post mkt price;
+            let preMktPrice = parseFloat(prices["pre"]).toFixed(2), postMktPrice = parseFloat(prices["post"]).toFixed(2), regMktPrice = parseFloat(prices["reg"]).toFixed(2), regDateTime, currPrice, afterHoursPrice;
+            let afterHoursPointsChng, afterHoursPctChng, regPointsChg, regPctChng, marketState;
+            //Set session in HTML;
+            //what time is it?
+            const currTimeInSeconds = Date.now() / 1000;
+            //set html elements with respective price values;
+            //pre-Mkt:
+            if (currTimeInSeconds < preTime.end) {
+                regDateTime = "Last Closed:";
+                currPrice = previousClose;
+                afterHoursPrice = preMktPrice;
+                marketState = "Pre-Market:"
+            }
+
+            if (currTimeInSeconds >= regTime.start && currTimeInSeconds < regTime.end) {
                 regDateTime = "Current Session:";
+                currPrice = regMktPrice;
             }
 
-            if (marketStateYahoo === "PRE" || marketStateYahoo === "PREPRE") {
-
-                if (postTime) {
-                    mktState = "After Hours:";
-                    dateAndTime = postTime;
-                }
-
-                if (preTime) {
-                    mktState = "Pre-Market Hours:";
-                    dateAndTime = preTime;
-                }
-
+            if (currTimeInSeconds >= postTime.start) {
+                regDateTime = "Last Closed:";
+                currPrice = regMktPrice;
+                afterHoursPrice = postMktPrice;
+                marketState = "After Hours:"
             }
 
-            if (marketStateYahoo === "POST" || marketStateYahoo === "POSTPOST" || marketStateYahoo === "CLOSED") {
-                if (postTime) {
-                    mktState = "After Hours:";
-                    dateAndTime = postTime;
-                }
-            }
+            //update reg-mkt points and percentage changes;
+            regPointsChg = currPrice - previousClose;
+            regPointsChg = regPointsChg.toFixed(2);
+
+            regPctChng = (regPointsChg / previousClose) * 100;
+            regPctChng = regPctChng.toFixed(2);
+
+            regularPrice.innerText = currPrice;
+            regPointsPctContainer.children[0].innerText = regPointsChg;
+            regPointsPctContainer.children[1].innerText = regPctChng;
 
             atCloseContainer.children[0].innerText = regDateTime;
-            atCloseContainer.children[1].innerText = setMarketTime(regTime);
+            atCloseContainer.children[1].innerText = setMarketTime(currTimeInSeconds);
+            if (currTimeInSeconds >= regTime.end) {
+                atCloseContainer.children[1].innerText = setMarketTime(regTime.end);
+            }
 
-            if (!dateAndTime) {
+            if (currTimeInSeconds < preTime.start) {
+                let prevCloseDate = regTime.end - 86400;
+                atCloseContainer.children[1].innerText = setMarketTime(prevCloseDate);
+            }
+
+            //****Pre/Post Mkt:
+            //html
+            afterHoursPointsChng = afterHoursPrice - currPrice;
+            afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
+
+            afterHrsPrice.innerText = afterHoursPrice;
+            afterHrsChange.innerText = afterHoursPointsChng.toFixed(2);
+            afterHrsPct.innerText = afterHoursPctChng.toFixed(2);
+
+            //set after-hours time container;
+            if (regDateTime === "Current Session") {
                 afterHoursContainer.style.display = "none";
             } else {
-                afterHoursTimeContainer.children[0].innerText = mktState;
-                afterHoursTimeContainer.children[1].innerText = setMarketTime(dateAndTime);
+                afterHoursTimeContainer.children[0].innerText = marketState;
+                afterHoursTimeContainer.children[1].innerText = setMarketTime(currTimeInSeconds);
             }
 
             if (companyDesc.innerText === "") {
@@ -1513,6 +1548,7 @@
                 ratioContainer.style.display = "none";
                 prevCloseContainer.style.maxWidth = "100%";
             }
+
         }
 
         const grabChartData = async (symbol, range) => {
@@ -1661,7 +1697,13 @@
             stockChart.style.display = "none";
 
             let grabchart, fillchart, response;
+
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
+            //set session
+            if (range === "1d") {
+                setSession(response);
+            }
+
             fillchart = await fillChartData(response, range).then((res) => { return res }).catch((e) => console.log(e));
 
             progressBarContainer.style.display = "none"
@@ -1755,7 +1797,7 @@
             }
             progressBar.setAttribute("class", "run-progress-animation")
             timeoutId = setTimeout(() => {
-                runChart(range)
+                runChart(range);
             }, 0)
         }
 
@@ -1899,10 +1941,9 @@
         ratioContainer.removeAttribute("style");
         afterHoursContainer.removeAttribute("style");
         summaryProfileContainer.removeAttribute("style");
-
-        // setSession();
-        changePctPointsColor(pricePctContainers, stockPriceChange);
         runProgressBar("1d");
+        changePctPointsColor(pricePctContainers, stockPriceChange);
+
         setEventListeners();
     </script>
 

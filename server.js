@@ -77,19 +77,19 @@ app.get("/contact", async (req, res, next) => {
   res.render("contact");
 });
 
-app.get("/tickrpro/disclaimer", async (req, res, next) => {
+app.get("/disclaimer", async (req, res, next) => {
   res.render("disclaimer");
 });
 
-app.get("/tickrpro/termsofservice", async (req, res, next) => {
+app.get("/termsofservice", async (req, res, next) => {
   res.render("terms");
 });
 
-app.get("/tickrpro/privacy", async (req, res, next) => {
+app.get("/privacy", async (req, res, next) => {
   res.render("privacy");
 });
 
-app.get("/tickrpro/contact", async (req, res, next) => {
+app.get("/contact", async (req, res, next) => {
   res.render("contact");
 });
 
@@ -123,8 +123,8 @@ app.get("/:symbol", async (req, res) => {
 
   if (getSumm.quoteType.quoteType === "EQUITY") {
     //grab chart data for market-session
-    let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&region=US&symbol=${symbol}&range=1d`;
-    let chartSession = fetch(url, apiOptions);
+    // let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&region=US&symbol=${symbol}&range=1d`;
+    // let chartSession = fetch(url, apiOptions);
 
     let getIncomeStmt = fetch(incomeStmtURL, apiOptions);
 
@@ -133,18 +133,18 @@ app.get("/:symbol", async (req, res) => {
     let getCashFlow = fetch(cashFlowURL, apiOptions);
 
     let fetchResultsArr = await Promise.all([
-      chartSession,
+      // chartSession,
       getIncomeStmt,
       getBalanceSht,
       getCashFlow,
     ])
       .then((results) => Promise.all(results.map((r) => r.json())))
       .then((jsonDataArray) => {
-        let sessionPricing = jsonDataArray[0];
-        let jsonIncome = jsonDataArray[1];
-        let jsonBalance = jsonDataArray[2];
-        let jsonCashflow = jsonDataArray[3];
-        return [sessionPricing, jsonIncome, jsonBalance, jsonCashflow];
+        //let sessionPricing = jsonDataArray[0];
+        let jsonIncome = jsonDataArray[0];
+        let jsonBalance = jsonDataArray[1];
+        let jsonCashflow = jsonDataArray[2];
+        return [jsonIncome, jsonBalance, jsonCashflow];
       })
       .catch((e) => console.log(e));
 
@@ -152,23 +152,24 @@ app.get("/:symbol", async (req, res) => {
       //res.render a server error 500 page;
     }
 
-    sessionResult = fetchResultsArr[0];
-    console.log("sessionResult:", sessionResult.chart.result[0]);
+    //sessionResult = fetchResultsArr[0];
+    //sessionResult = sessionResult.chart.result[0];
+    //console.log("sessionResult:", sessionResult);
 
-    incomeResult = fetchResultsArr[1];
+    incomeResult = fetchResultsArr[0];
     // console.log("incomeRes:", incomeResult);
 
-    balanceResult = fetchResultsArr[2];
+    balanceResult = fetchResultsArr[1];
     //console.log("balanceRes:", balanceResult);
 
-    cashFlowRes = fetchResultsArr[3];
+    cashFlowRes = fetchResultsArr[2];
     //console.log("cashflowRes:", cashFlowRes);
   }
 
   res.render("ticker", {
     chartJS,
     getSumm,
-    sessionResult,
+    //sessionResult,
     incomeResult,
     balanceResult,
     cashFlowRes,
