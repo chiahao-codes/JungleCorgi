@@ -1300,7 +1300,7 @@
         }
 
         const changePctPointsColor = (prevClosePrice) => {
-            let green = "#096344", red = "#c4283c";
+            // let green = "#096344", red = "#b11e31";
 
             let currentPrice = regularPrice.innerText;
             currentPrice = parseFloat(currentPrice);
@@ -1333,91 +1333,28 @@
         };
         const formatPrice = (container) => {
 
-            for (let ele of container) {
-                let formatted;
-                let formatNum = ele.innerText;
+            let price = container.children[0].innerText;
+            let points = container.children[1].children[0].innerText;
+            let pct = container.children[1].children[1].innerText;
 
-                //check for ex-dividend element;
-                const exDivCheck = ele.classList.contains("exDivDate");
-                const divRate = ele.classList.contains("div-rate");
-                const commaClass = ele.classList.contains("commas");
-                if (formatNum !== "N/A" && !exDivCheck && !divRate) {
+            price = parseFloat(price);
+            points = parseFloat(points);
+            pct = parseFloat(pct);
 
-                    formatted = new Intl.NumberFormat("en-US", {
-                        style: "decimal",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    }).format(formatNum);
-
-                }
-
-                if (divRate) {
-                    formatted = "N/A";
-                    if (dividendRate) {
-                        formatNum = dividendRate;
-                        formatted = new Intl.NumberFormat("en-US", {
-                            style: "decimal",
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        }).format(formatNum);
-                    }
-                }
-
-                if (exDivCheck) {
-                    formatted = "N/A";
-                    if (dividendRate) {
-                        formatNum = dividendRate;
-                        formatted = new Intl.NumberFormat("en-US", {
-                            style: "decimal",
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        }).format(formatNum);
-                    }
-                    if (exDivDate) {
-                        let date = new Date(exDivDate);
-                        formatted = new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeZone: "UTC" }).format(date);
-                    }
-                }
-
-                if (commaClass && formatNum !== "N/A") {
-                    let regExpComma = /,/g;
-                    //how many commas are there?
-                    let commas = formatted.match(regExpComma);
-
-                    //get the index of the first comma;
-                    let commaIndex = formatted.search(regExpComma);
-                    //turn the comma into a decimal if needed;
-                    // let firstCommaChar = formatted.charAt(commaIndex);
-
-                    //get index of next comma;
-                    //make it the endIndex;
-
-                    let str;
-                    let startIndex = 0;
-
-                    if (commas.length === 4) {
-                        str = formatted.slice(startIndex, commaIndex);
-                        formatted = `${str}T`
-                    }
-
-                    if (commas.length === 3) {
-                        str = formatted.slice(startIndex, commaIndex);
-                        formatted = `${str}B`
-                    }
-
-                    if (commas.length === 2) {
-                        str = formatted.slice(startIndex, commaIndex);
-                        formatted = `${str}M`
-                    }
-
-                }
-
-                if (!formatted) formatted = "N/A";
-                ele.innerText = formatted;
+            let pArr = [price, points, pct], format;
+            for (let i = 0; i < pArr.length; i++) {
+                let curr = pArr[i];
+                format = new Intl.NumberFormat("en-US").format(curr);
             }
+
+            container.children[0].innerText = format[0];
+
+            let change = format[1], percent = format[2];
+            container.children[1].children[0].innerText = ``;
+            container.children[1].children[0].innerText = `(${percent})`;
+
             return
         };
-
         const setSession = (res) => {
             const sessionObj = res.chart.result[0];
 
@@ -1543,6 +1480,8 @@
             }
 
             changePctPointsColor(previousClose);
+            formatPrice(pricePctContainers)
+            formatPrice(afterHoursContainer)
 
         }
 
