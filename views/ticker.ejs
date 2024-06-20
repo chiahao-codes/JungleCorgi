@@ -1163,10 +1163,12 @@
         const h2Box = document.querySelector("header>h2");
         const h2ChildNodes = h2Box.childNodes;
         const selection = window.getSelection();
+        const regularHoursContainer = document.getElementById("reg_container");
         const pricePctContainers = document.querySelectorAll(".reg_hours_container");
         const regularPrice = document.getElementById("reg_hours_price");
         const regPointsPctContainer = document.querySelector("#reg_hours_pct_container");
         const afterHrsPrice = document.getElementById("after_hours_price");
+        const afterPointsPctContainer = document.querySelector("#after_hours_pct_container");
         const afterHrsChange = document.getElementById("after_hours_change");
         const afterHrsPct = document.getElementById("after_hours_pct");
         const afterHoursContainer = document.querySelector("#after_container");
@@ -1300,7 +1302,6 @@
         }
 
         const changePctPointsColor = (prevClosePrice) => {
-            // let green = "#096344", red = "#b11e31";
 
             let currentPrice = regularPrice.innerText;
             currentPrice = parseFloat(currentPrice);
@@ -1331,158 +1332,144 @@
             }
 
         };
-        const formatPrice = (container) => {
+        const formatPrice = (curreprice, container) => {
 
-            let price = container.children[0].innerText;
-            let points = container.children[1].children[0].innerText;
-            let pct = container.children[1].children[1].innerText;
+            let price = curreprice.innerText;
+            let points = container.children[0].innerText;
+            let pct = container.children[1].innerText;
 
-            price = parseFloat(price);
-            points = parseFloat(points);
-            pct = parseFloat(pct);
+
+            price = parseFloat(price).toFixed(2);
+            points = parseFloat(points).toFixed(2);
+            pct = parseFloat(pct).toFixed(2);
 
             let pArr = [price, points, pct], format;
+
+            /**
             for (let i = 0; i < pArr.length; i++) {
-                let curr = pArr[i];
-                format = new Intl.NumberFormat("en-US").format(curr);
+                //let curr = pArr[i];
+                //format = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(curr);
+                pArr[i] = pArr[i].toFixed(2)
+            }
+            */
+
+            container.children[0].innerText = pArr[0];
+            let regExp = /[-]/
+            let change = pArr[1], percent = pArr[2];
+
+            if (!regExp.test(change)) {
+                change = `+${change}`
+                percent = `+${percent}`
             }
 
-            container.children[0].innerText = format[0];
-
-            let change = format[1], percent = format[2];
-            container.children[1].children[0].innerText = ``;
-            container.children[1].children[0].innerText = `(${percent})`;
-
+            container.children[0].innerText = `${change}`;
+            container.children[1].innerText = `(${percent})`;
             return
         };
         const setSession = (res) => {
-            const sessionObj = res.chart.result[0];
+            return new Promise((resolve) => {
 
-            //current market session period;
-            const currTradingPeriod = sessionObj.meta.currentTradingPeriod;
-            const preTime = currTradingPeriod.pre;
-            const regTime = currTradingPeriod.regular;
-            const postTime = currTradingPeriod.post;
+                const sessionObj = res.chart.result[0];
 
-            //previous closing price;
-            let previousClose = sessionObj.meta.previousClose;
-            previousClose = parseFloat(previousClose);
+                //current market session period;
+                const currTradingPeriod = sessionObj.meta.currentTradingPeriod;
+                const preTime = currTradingPeriod.pre;
+                const regTime = currTradingPeriod.regular;
+                const postTime = currTradingPeriod.post;
 
-            //pre/reg/post prices cache;
-            let prices = {
-                pre: "",
-                reg: "",
-                post: ""
-            };
+                //previous closing price;
+                let previousClose = sessionObj.meta.previousClose;
+                previousClose = parseFloat(previousClose);
 
-            const timeStampsArr = sessionObj.timestamp;
-            const quotesArr = sessionObj.indicators.quote[0];
-            const openPriceArr = quotesArr.open;
-            const closePriceArr = quotesArr.close;
+                const timeStampsArr = sessionObj.timestamp;
+                const quotesArr = sessionObj.indicators.quote[0];
+                const openPriceArr = quotesArr.open;
+                const closePriceArr = quotesArr.close;
+                let ending = timeStampsArr.length - 1, regDateTime, currPrice, afterHoursPrice, prePostMarketState;
 
-            //update prices object:
-            for (let i = 0; i <= timeStampsArr.length; i++) {
-                let currTimeStamp = timeStampsArr[i];
-
-                if (currTimeStamp < preTime.end) {
-                    prices["pre"] = closePriceArr[i];
+                //set session time(s)
+                let currTimeStamp = timeStampsArr[ending];
+                //what's the current mkt session time/date?
+                if (currTimeStamp >= preTime.start && currTimeStamp < preTime.end) {
+                    prePostMarketState = "Pre-Market:";
                 }
 
-                if (currTimeStamp === preTime.end) {
-                    prices["pre"] = openPriceArr[i];
+                if (currTimeStamp >= postTime.start && currTimeStamp <= postTime.end) {
+                    prePostMarketState = "After Hours:";
+
                 }
 
-                if (currTimeStamp > regTime.start && currTimeStamp < regTime.end) {
-                    prices["reg"] = closePriceArr[i];
-                }
-
-                if (currTimeStamp === regTime.end) {
-                    prices["reg"] = closePriceArr[i];
-                }
-
-                if (currTimeStamp > postTime.start) {
-                    console.log("post")
-
-                    prices["post"] = closePriceArr[i];
-                }
-            }
-            console.log("prices obj:", prices)
-            //pre/post mkt price;
-            let preMktPrice = parseFloat(prices["pre"]).toFixed(2), postMktPrice = parseFloat(prices["post"]).toFixed(2), regMktPrice = parseFloat(prices["reg"]).toFixed(2), regDateTime, currPrice, afterHoursPrice;
-            let afterHoursPointsChng, afterHoursPctChng, regPointsChg, regPctChng, marketState;
-            //Set session in HTML;
-            //what time is it?
-            const currTimeInSeconds = Date.now() / 1000;
-            //set html elements with respective price values;
-            //pre-Mkt:
-            if (currTimeInSeconds < preTime.end) {
+                afterHoursPrice = closePriceArr[ending];
                 regDateTime = "Last Closed:";
-                currPrice = previousClose;
-                afterHoursPrice = preMktPrice;
-                marketState = "Pre-Market:"
-            }
 
-            if (currTimeInSeconds >= regTime.start && currTimeInSeconds < regTime.end) {
-                regDateTime = "Current Session:";
-                currPrice = regMktPrice;
-            }
+                //current session;
+                if (currTimeStamp >= regTime.start && currTimeStamp < regTime.end) {
+                    regDateTime = "Current Session:"
+                }
+                currPrice = sessionObj.meta.regularMarketPrice;
 
-            if (currTimeInSeconds >= postTime.start) {
-                regDateTime = "Last Closed:";
-                currPrice = regMktPrice;
-                afterHoursPrice = postMktPrice;
-                marketState = "After Hours:"
-            }
+                //pre/post mkt price;
+                let afterHoursPointsChng, afterHoursPctChng, regPointsChg, regPctChng;
 
-            //update reg-mkt points and percentage changes;
-            regPointsChg = currPrice - previousClose;
-            regPointsChg = regPointsChg.toFixed(2);
+                //calculate reg-mkt points and percentage changes;
+                regPointsChg = currPrice - previousClose;
+                regPointsChg = regPointsChg.toFixed(2);
 
-            regPctChng = (regPointsChg / previousClose) * 100;
-            regPctChng = regPctChng.toFixed(2);
+                regPctChng = (regPointsChg / previousClose) * 100;
+                regPctChng = regPctChng.toFixed(2);
 
-            regularPrice.innerText = currPrice;
-            regPointsPctContainer.children[0].innerText = regPointsChg;
-            regPointsPctContainer.children[1].innerText = regPctChng;
+                //set regular market price updates:
+                regularPrice.innerText = currPrice;
+                regPointsPctContainer.children[0].innerText = regPointsChg;
+                regPointsPctContainer.children[1].innerText = regPctChng;
 
-            atCloseContainer.children[0].innerText = regDateTime;
-            atCloseContainer.children[1].innerText = setMarketTime(currTimeInSeconds);
-            if (currTimeInSeconds >= regTime.end) {
-                atCloseContainer.children[1].innerText = setMarketTime(regTime.end);
-            }
+                atCloseContainer.children[0].innerText = regDateTime;
 
-            if (currTimeInSeconds < preTime.start) {
-                let prevCloseDate = regTime.end - 86400;
-                atCloseContainer.children[1].innerText = setMarketTime(prevCloseDate);
-            }
+                if (regDateTime === "Last Closed:") {
+                    //find 4pm
+                    let hour, mins, closingTime;
+                    for (let i = timeStampsArr[ending]; i >= 0; i--) {
+                        let currTime = timeStampsArr[i];
+                        let date = new Date(currTime * 1000);
+                        hour = date.getHours();
+                        mins = date.getMinutes();
+                        if (hour === 13 && mins === 0) {
+                            closingTime = currTime;
+                            break;
+                        }
+                    }
+                    atCloseContainer.children[1].innerText = setMarketTime(closingTime)
+                } else {
+                    atCloseContainer.children[1].innerText = setMarketTime(timeStampsArr[ending]);
+                };
 
-            //****Pre/Post Mkt:
-            //html
-            afterHoursPointsChng = afterHoursPrice - currPrice;
-            afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
+                //****Pre/Post Mkt:
+                //html
+                afterHoursPointsChng = afterHoursPrice - currPrice;
+                afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
 
-            afterHrsPrice.innerText = afterHoursPrice;
-            afterHrsChange.innerText = afterHoursPointsChng.toFixed(2);
-            afterHrsPct.innerText = afterHoursPctChng.toFixed(2);
+                afterHrsPrice.innerText = afterHoursPrice;
+                afterHrsChange.innerText = afterHoursPointsChng.toFixed(2);
+                afterHrsPct.innerText = afterHoursPctChng.toFixed(2);
 
-            //set after-hours time container;
-            if (regDateTime === "Current Session") {
-                afterHoursContainer.style.display = "none";
-            } else {
-                afterHoursTimeContainer.children[0].innerText = marketState;
-                afterHoursTimeContainer.children[1].innerText = setMarketTime(currTimeInSeconds);
-            }
+                //set after-hours time container;
 
-            if (companyDesc.innerText === "") {
-                summaryProfileContainer.style.display = "none";
-                ratioContainer.style.display = "none";
-                prevCloseContainer.style.maxWidth = "100%";
-            }
+                if (regDateTime === "Current Session:") {
+                    afterHoursContainer.style.display = "none";
+                } else {
+                    afterHoursTimeContainer.children[0].innerText = prePostMarketState;
+                    afterHoursTimeContainer.children[1].innerText = setMarketTime(currTimeStamp);
+                }
 
-            changePctPointsColor(previousClose);
-            formatPrice(pricePctContainers)
-            formatPrice(afterHoursContainer)
+                if (companyDesc.innerText === "") {
+                    summaryProfileContainer.style.display = "none";
+                    ratioContainer.style.display = "none";
+                    prevCloseContainer.style.maxWidth = "100%";
+                }
 
+                changePctPointsColor(previousClose);
+                resolve("done")
+            })
         }
 
         const grabChartData = async (symbol, range) => {
@@ -1625,7 +1612,7 @@
         };
 
         const runChart = async (range) => {
-            console.log("range:", range)
+
             progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
@@ -1633,9 +1620,11 @@
             let grabchart, fillchart, response;
 
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
+            console.log("response:", response)
             //set session
             if (range === "1d") {
-                setSession(response);
+                setSession(response).then(() => formatPrice(regularPrice, regPointsPctContainer)).then(() => formatPrice(afterHrsPrice, afterPointsPctContainer))
+                    .catch((e) => console.log(e))
             }
 
             fillchart = await fillChartData(response, range).then((res) => { return res }).catch((e) => console.log(e));
@@ -1644,7 +1633,7 @@
             stockChart.style.display = "initial";
 
             let chartResult = fillchart, options;
-            console.log("chartResult:", chartResult)
+
             options = {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -1668,7 +1657,7 @@
                             callback: (index) => {
                                 let label = chartResult.labels[index], labelStr, str1, str2, regExprColon = /[:]/, regExpComma = /[,]/, startIndex = 0, endIndex;
                                 let colonIndex = label.search(regExprColon), commaIndex = label.search(regExpComma);
-                                console.log(label)
+
                                 if (range === "1d") {
                                     startIndex = commaIndex + 2;
                                     endIndex = colonIndex + 3;
@@ -1734,25 +1723,25 @@
                 runChart(range);
             }, 0)
         }
-
-        const idlePage = () => {
-            if (timeout) {
-                clearInterval(timeout);
-            }
-            timeout = setInterval(() => {
-                location.reload();
-            }, 60000);
-        }
-        const activePage = () => {
-            if (timeout2) clearInterval(timeout2);
-            timeout2 = setTimeout(async () => {
-                await getRapidPrices(apiKey, stockTicker);
-                formatPrice(pricesAndPercents);
-                changePctPointsColor(pricePctContainers);
-                console.log("active");
-            }, 180000);
-        }
-
+        /**
+                const idlePage = () => {
+                    if (timeout) {
+                        clearInterval(timeout);
+                    }
+                    timeout = setInterval(() => {
+                        location.reload();
+                    }, 60000);
+                }
+                const activePage = () => {
+                    if (timeout2) clearInterval(timeout2);
+                    timeout2 = setTimeout(async () => {
+                        await getRapidPrices(apiKey, stockTicker);
+                        formatPrice(pricesAndPercents);
+                        changePctPointsColor(pricePctContainers);
+                        console.log("active");
+                    }, 180000);
+                }
+        */
         const setEventListeners = () => {
             //timeline links: 1d 5d ytd 1y 2yr
             let timelineLinks = chartTimelineContainer.children;
@@ -1876,8 +1865,6 @@
         afterHoursContainer.removeAttribute("style");
         summaryProfileContainer.removeAttribute("style");
         runProgressBar("1d");
-        changePctPointsColor(pricePctContainers, stockPriceChange);
-
         setEventListeners();
     </script>
 
