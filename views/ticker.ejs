@@ -1287,16 +1287,21 @@
             setSliderPosition()
         }
 
-        const setMarketTime = (timeStamp) => {
+        const setMarketTime = (timeStamp, dateObj = "") => {
             let date, formatted;
 
-            date = new Date(timeStamp * 1000);
+            if (dateObj) {
+                date = dateObj
+            } else {
+                date = new Date(timeStamp * 1000);
+            }
+
             formatted = new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short',
                 timeStyle: 'long',
                 timeZone: 'America/New_York',
             }).format(date)
-
+            console.log("formatted:", formatted)
             return formatted
 
         }
@@ -1370,7 +1375,7 @@
             return new Promise((resolve) => {
 
                 const sessionObj = res.chart.result[0];
-
+                console.log("sessionObj", sessionObj);
                 //current market session period;
                 const currTradingPeriod = sessionObj.meta.currentTradingPeriod;
                 const preTime = currTradingPeriod.pre;
@@ -1389,16 +1394,17 @@
 
                 //set session time(s)
                 let currTimeStamp = timeStampsArr[ending];
+
                 //what's the current mkt session time/date?
                 if (currTimeStamp >= preTime.start && currTimeStamp < preTime.end) {
                     prePostMarketState = "Pre-Market:";
                 }
 
-                if (currTimeStamp >= postTime.start && currTimeStamp <= postTime.end) {
+                if (currTimeStamp >= postTime.start || currTimeStamp < preTime.start) {
                     prePostMarketState = "After Hours:";
-
                 }
 
+                console.log("closePrice ending:", closePriceArr[ending])
                 afterHoursPrice = closePriceArr[ending];
                 regDateTime = "Last Closed:";
 
@@ -1406,6 +1412,7 @@
                 if (currTimeStamp >= regTime.start && currTimeStamp < regTime.end) {
                     regDateTime = "Current Session:"
                 }
+
                 currPrice = sessionObj.meta.regularMarketPrice;
 
                 //pre/post mkt price;
@@ -1419,46 +1426,50 @@
                 regPctChng = regPctChng.toFixed(2);
 
                 //set regular market price updates:
-                regularPrice.innerText = currPrice;
+                regularPrice.innerText = currPrice.toFixed(2);
                 regPointsPctContainer.children[0].innerText = regPointsChg;
                 regPointsPctContainer.children[1].innerText = regPctChng;
-
                 atCloseContainer.children[0].innerText = regDateTime;
 
-                if (regDateTime === "Last Closed:") {
-                    //find 4pm
-                    let hour, mins, closingTime;
-                    for (let i = timeStampsArr[ending]; i >= 0; i--) {
-                        let currTime = timeStampsArr[i];
-                        let date = new Date(currTime * 1000);
-                        hour = date.getHours();
-                        mins = date.getMinutes();
-                        if (hour === 13 && mins === 0) {
-                            closingTime = currTime;
-                            break;
-                        }
+                let lastTimestamp = timeStampsArr[ending];
+
+                if (regDateTime === "Current Session:") {
+                    atCloseContainer.children[1].innerText = setMarketTime(lastTimestamp);
+                }
+
+                if (prePostMarketState === "Pre-Market:" || prePostMarketState === "After Hours:" || regDateTime === "Last Closed:") {
+
+                    let lastCloseTS = new Date(lastTimestamp * 1000);
+                    let month = lastCloseTS.getMonth() + 1;
+                    let year = lastCloseTS.getFullYear();
+                    let date = lastCloseTS.getDate();
+                    if (prePostMarketState === "Pre-Market:") {
+                        date -= 1;
                     }
-                    atCloseContainer.children[1].innerText = setMarketTime(closingTime)
-                } else {
-                    atCloseContainer.children[1].innerText = setMarketTime(timeStampsArr[ending]);
-                };
+
+                    let dateStr = `${month}/${date}/${year}, 4:00:00 PM EDT`;
+                    atCloseContainer.children[1].innerText = dateStr
+                }
 
                 //****Pre/Post Mkt:
                 //html
-                afterHoursPointsChng = afterHoursPrice - currPrice;
-                afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
+                if (afterHoursPrice) {
+                    afterHoursPointsChng = afterHoursPrice - currPrice;
+                    afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
 
-                afterHrsPrice.innerText = afterHoursPrice;
-                afterHrsChange.innerText = afterHoursPointsChng.toFixed(2);
-                afterHrsPct.innerText = afterHoursPctChng.toFixed(2);
+                    afterHrsPrice.innerText = afterHoursPrice.toFixed(2);
+                    afterHrsChange.innerText = afterHoursPointsChng.toFixed(2);
+                    afterHrsPct.innerText = afterHoursPctChng.toFixed(2);
+                }
+
 
                 //set after-hours time container;
 
-                if (regDateTime === "Current Session:") {
+                if (regDateTime === "Current Session:" || !afterHoursPrice) {
                     afterHoursContainer.style.display = "none";
                 } else {
                     afterHoursTimeContainer.children[0].innerText = prePostMarketState;
-                    afterHoursTimeContainer.children[1].innerText = setMarketTime(currTimeStamp);
+                    afterHoursTimeContainer.children[1].innerText = setMarketTime(lastTimestamp);
                 }
 
                 if (companyDesc.innerText === "") {

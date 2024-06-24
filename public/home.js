@@ -1,5 +1,6 @@
 const h2Box = document.querySelector("header>h2");
 const todaysDateH4 = document.querySelector("#timer_container > #todayDate");
+const nycTimeZone = "America/New_York";
 const mktNotification = document.querySelector(
   "body > #mkt_status_notification_container > #mkt_status_notification"
 );
@@ -28,8 +29,9 @@ const indexContainers2 = document.querySelectorAll(
 
 const setTodaysDate = () => {
   const todaysDate = new Date();
-  const dateFormat = new Intl.DateTimeFormat("en-GB", {
+  const dateFormat = new Intl.DateTimeFormat("en-US", {
     dateStyle: "full",
+    timeZone: nycTimeZone,
   });
 
   const todaysDateFormat = dateFormat.format(todaysDate);
@@ -45,7 +47,9 @@ const mktStatusNotification = (mktstatus, mktnotify) => {
 };
 
 const marketStatusCheck = () => {
-  let currFullDate = new Date();
+  let dateNow = Date();
+
+  let currFullDate = new Date(dateNow.toLocaleString("en-US", { nycTimeZone }));
   let dayOfWeek = currFullDate.getDay();
   let currHour = currFullDate.getHours();
   let currMin = currFullDate.getMinutes();
@@ -53,7 +57,10 @@ const marketStatusCheck = () => {
   let status = "Opening";
 
   if (0 < dayOfWeek && dayOfWeek < 6) {
-    if ((currHour === 6 && currMin >= 30) || (currHour < 13 && currHour >= 7)) {
+    if (
+      (currHour === 9 && currMin >= 30) ||
+      (currHour < 16 && currHour >= 10)
+    ) {
       //market is open:
       status = "Closing";
     }
@@ -64,20 +71,27 @@ const marketStatusCheck = () => {
 
 const startCountDown = (mkt) => {
   let currFullDate = new Date();
+  currFullDate = new Date(
+    currFullDate.toLocaleString("en-US", { nycTimeZone })
+  );
   let currDate = currFullDate.getDate();
   let currMonth = currFullDate.getMonth();
   let currYear = currFullDate.getFullYear();
   let dayOfWeek = currFullDate.getDay();
   let currHour = currFullDate.getHours();
   let nextDay = currDate + 1;
-  if (currHour >= 0 && currHour <= 6) nextDay = currDate;
+  if (currHour >= 0 && currHour <= 9) nextDay = currDate;
+
+  let now = new Date();
+  now = new Date(now.toLocaleString("en-US", { nycTimeZone }));
+  now = now.getTime();
 
   //dayOfWeek, nextDay, currDate, currHour, currYear, currMonth
   let openingBellCountdown = () => {
     //if next day is a weekend:
 
     if (dayOfWeek === 5) {
-      if (currHour >= 0 && currHour <= 6) {
+      if (currHour >= 0 && currHour <= 9) {
         nextDay = currDate;
       } else {
         nextDay = currDate + 3;
@@ -93,7 +107,7 @@ const startCountDown = (mkt) => {
     if (currMonth === 1 && nextDay === 19) nextDay = nextDay + 1; //president's day
     if (currMonth === 4 && nextDay === 27) nextDay = nextDay + 1; //memorial day
     if (currMonth === 5 && nextDay === 19) nextDay = nextDay + 1; //Juneteenth
-    if (currMonth === 6 && nextDay === 4) nextDay = nextDay + 1; //July 4th
+    if (currMonth === 6 && nextDay === 4) nextDay = nextDay + 1; //Juneteenth
 
     let openingBell = new Date(
       currYear,
@@ -105,7 +119,6 @@ const startCountDown = (mkt) => {
       0
     ).getTime();
 
-    let now = Date.now();
     let timeUntilOpening = openingBell - now;
 
     let days = Math.floor(timeUntilOpening / (1000 * 60 * 60 * 24));
@@ -131,9 +144,7 @@ const startCountDown = (mkt) => {
       0
     ).getTime();
 
-    let rightNow = Date.now();
-
-    let timeUntilClosing = closingBell - rightNow;
+    let timeUntilClosing = closingBell - now;
 
     let hours = Math.floor(
       (timeUntilClosing % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -168,7 +179,6 @@ const indexContainerEvents = (symbol) => {
       console.log("symbol", symbol[i]);
       let stockSym = symbol[i];
       window.location.href = tickrUrl + stockSym;
-      // `${tickrUrl}${symbol[i]}`;
     });
   }
 };
