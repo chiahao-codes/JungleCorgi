@@ -31,7 +31,6 @@ const setTodaysDate = () => {
   const todaysDate = new Date();
   const dateFormat = new Intl.DateTimeFormat("en-US", {
     dateStyle: "full",
-    timeZone: nycTimeZone,
   });
 
   const todaysDateFormat = dateFormat.format(todaysDate);
@@ -47,19 +46,44 @@ const mktStatusNotification = (mktstatus, mktnotify) => {
 };
 
 const marketStatusCheck = () => {
-  let dateNow = Date();
+  let localDate = new Date();
+  let localDayOfWeek = localDate.getDay();
+  let localHour = localDate.getHours();
 
-  let currFullDate = new Date(dateNow.toLocaleString("en-US", { nycTimeZone }));
-  let dayOfWeek = currFullDate.getDay();
-  let currHour = currFullDate.getHours();
-  let currMin = currFullDate.getMinutes();
+  let localMins = localDate.getMinutes();
+
+  let currFullNycDate = new Date().toLocaleString("en-US", {
+    timeZone: nycTimeZone,
+  });
+  currFullNycDate = new Date(currFullNycDate);
+
+  let currNycHour = currFullNycDate.getHours();
+
+  let closingHour = 16,
+    hourDiff,
+    nyc10Am = 10,
+    nyc9Am = 9;
+
+  //check time differences;
+  if (localHour <= currNycHour) {
+    hourDiff = currNycHour - localHour;
+    nyc9Am = nyc9Am - hourDiff;
+    closingHour = closingHour - hourDiff;
+    nyc10Am = nyc10Am - hourDiff;
+  } else {
+    hourDiff = localHour - currNycHour;
+    nyc9Am = nyc9Am + hourDiff;
+    nyc10Am = nyc10Am + hourDiff;
+    closingHour = closingHour + hourDiff;
+  }
 
   let status = "Opening";
 
-  if (0 < dayOfWeek && dayOfWeek < 6) {
+  //monday to friday would have closing:
+  if (0 < localDayOfWeek && localDayOfWeek < 6) {
     if (
-      (currHour === 9 && currMin >= 30) ||
-      (currHour < 16 && currHour >= 10)
+      (localHour === nyc9Am && localMins >= 30) ||
+      (localHour < closingHour && localHour >= nyc10Am)
     ) {
       //market is open:
       status = "Closing";
@@ -70,50 +94,73 @@ const marketStatusCheck = () => {
 };
 
 const startCountDown = (mkt) => {
-  let currFullDate = new Date();
-  currFullDate = new Date(
-    currFullDate.toLocaleString("en-US", { nycTimeZone })
-  );
-  let currDate = currFullDate.getDate();
-  let currMonth = currFullDate.getMonth();
-  let currYear = currFullDate.getFullYear();
-  let dayOfWeek = currFullDate.getDay();
-  let currHour = currFullDate.getHours();
-  let nextDay = currDate + 1;
-  if (currHour >= 0 && currHour <= 9) nextDay = currDate;
+  let currFullNycDate = new Date().toLocaleString("en-US", {
+    timeZone: nycTimeZone,
+  });
+  let currHourNyc = new Date(currFullNycDate);
+  currHourNyc = currHourNyc.getHours();
+  let local = new Date();
+  let localDate = local.getDate();
+  let localNextDate = localDate + 1;
+  let localDay = local.getDay();
+  let localYear = local.getFullYear();
+  let localHour = local.getHours();
+  let localMonth = local.getMonth();
+  let hourDifference,
+    openingMktHour = 9,
+    closingMktHour = 16;
 
-  let now = new Date();
-  now = new Date(now.toLocaleString("en-US", { nycTimeZone }));
-  now = now.getTime();
+  //adjust for nyc time;
+  if (localHour <= currHourNyc) {
+    hourDifference = currHourNyc - localHour;
+    openingMktHour = openingMktHour - hourDifference;
 
-  //dayOfWeek, nextDay, currDate, currHour, currYear, currMonth
+    closingMktHour = closingMktHour - hourDifference;
+  }
+
+  if (localHour > currHourNyc) {
+    hourDifference = localHour - currHourNyc;
+    openingMktHour = openingMktHour + hourDifference;
+    closingMktHour = closingMktHour + hourDifference;
+  }
+
+  let now = Date.now();
+
+  //dayOfWeekNyc, nextDay, currNycDate, currHourNyc, currNycYear, currNycMonth
   let openingBellCountdown = () => {
-    //if next day is a weekend:
-
-    if (dayOfWeek === 5) {
-      if (currHour >= 0 && currHour <= 9) {
-        nextDay = currDate;
-      } else {
-        nextDay = currDate + 3;
-      }
+    //if Friday-Sunday:
+    if (localDay === 5) {
+      localNextDate = localDate + 3;
     }
-    if (dayOfWeek === 6) nextDay = currDate + 2;
-    if (dayOfWeek === 0) nextDay = currDate + 1;
+    if (localDay === 6) localNextDate = localDate + 2;
+    if (localDay === 0) localNextDate = localDate + 1;
 
-    //check for bank holidays:
-    if (currMonth === 11 && nextDay === 25) nextDay = nextDay + 1; //xmas
-    if (currMonth === 11 && nextDay === 32) nextDay = nextDay + 1; //nye
-    if (currMonth === 0 && nextDay === 15) nextDay = nextDay + 1; //mlk
-    if (currMonth === 1 && nextDay === 19) nextDay = nextDay + 1; //president's day
-    if (currMonth === 4 && nextDay === 27) nextDay = nextDay + 1; //memorial day
-    if (currMonth === 5 && nextDay === 19) nextDay = nextDay + 1; //Juneteenth
-    if (currMonth === 6 && nextDay === 4) nextDay = nextDay + 1; //Juneteenth
+    //pre-mkt hours
+    if (localHour >= 0 && localHour <= openingMktHour) {
+      localNextDate = localDate;
+    }
+
+    //bank holidays:
+    if (localMonth === 11 && localNextDate === 25)
+      localNextDate = localNextDate + 1; //xmas
+    if (localMonth === 11 && localNextDate === 32)
+      localNextDate = localNextDate + 1; //nye
+    if (localMonth === 0 && localNextDate === 15)
+      localNextDate = localNextDate + 1; //mlk
+    if (localMonth === 1 && localNextDate === 19)
+      localNextDate = localNextDate + 1; //president's day
+    if (localMonth === 4 && localNextDate === 27)
+      localNextDate = localNextDate + 1; //memorial day
+    if (localMonth === 5 && localNextDate === 19)
+      localNextDate = localNextDate + 1; //Juneteenth
+    if (localMonth === 6 && localNextDate === 4)
+      localNextDate = localNextDate + 1; //July4
 
     let openingBell = new Date(
-      currYear,
-      currMonth,
-      nextDay,
-      9,
+      localYear,
+      localMonth,
+      localNextDate,
+      openingMktHour,
       30,
       0,
       0
@@ -136,10 +183,10 @@ const startCountDown = (mkt) => {
 
   let closingBellCountdown = () => {
     let closingBell = new Date(
-      currYear,
-      currMonth,
-      currDate,
-      16,
+      localYear,
+      localMonth,
+      localDate,
+      closingMktHour,
       0,
       0
     ).getTime();

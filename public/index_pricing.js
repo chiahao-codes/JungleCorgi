@@ -443,5 +443,175 @@ let symbols = [
             balanceSheet();
             cashFlow()
         }
+        
+
+           <% let arrLastEle %>
+                    <% let ccy="--" %>
+
+                       <% if(incomeResult){%>
+                                            <%if(incomeResult.summaryDetail){%>
+                                                <%if(incomeResult.summaryDetail.currency){%>
+                                                    <%ccy=incomeResult.summaryDetail.currency%>
+                                                        <% }}} %>
+                                                            (<%=ccy%>)
+
+                                                               <% let annYr={"one":"--", "two" :"--"}%>
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){%>
+                                                    <% if(incomeResult.timeSeries.timestamp){ %>
+                                                        <% let arrTimeStp=incomeResult.timeSeries.timestamp %>
+                                                            <% let arrLastEle=arrTimeStp.length-1 %>
+                                                                <% annYr["one"]=arrTimeStp[arrLastEle] %>
+                                                                    <% annYr["two"]=arrTimeStp[arrLastEle - 1] %>
+                                                                        <% }}} %>
+                                                                            <%=annYr["one"] %>
+                                                                                <%=annYr["two"] %>
+
+                                                                                                           <%let ttmRev%>
+                                            <% let ttmValue="--" %>
+                                                <% if(incomeResult){%>
+                                                    <% if(incomeResult.timeSeries){ %>
+                                                        <% if(incomeResult.timeSeries.trailingTotalRevenue){ %>
+                                                            <% ttmRev=incomeResult.timeSeries.trailingTotalRevenue %>
+                                                                <% if(ttmRev.length>0){ %>
+                                                                    <% arrLastEle=ttmRev.length-1 %>
+                                                                        <%
+                                                                            ttmValue=ttmRev[arrLastEle].reportedValue.fmt%>
+                                                                            <% }%>
+                                                                                <% }}} %>
+                                                                                    <%=ttmValue %>
+
+                                                                                         <% let ttmGP%>
+                                        <% let grossProfitVal="--" %>
+                                            <div class="slide-data ttm">
+                                                <% if(incomeResult){%>
+                                                    <% if(incomeResult.timeSeries){ %>
+                                                        <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
+                                                            <% ttmGP=incomeResult.timeSeries.trailingGrossProfit %>
+                                                                <% if(ttmGP.length>0){ %>
+                                                                    <% arrLastEle=ttmGP.length-1 %>
+                                                                        <%
+                                                                            grossProfitVal=ttmGP[arrLastEle].reportedValue.fmt%>
+                                                                            <% }%>
+                                                                                <% }}}%>
+
+                                                                                   <%=grossProfitVal%>
+
+                                                                                                               <% let ttmOpExp="--" %>
+                                        <% let opExpArr %>
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingGrossProfit){ %>
+                                                        <% opExpArr=incomeResult.timeSeries.trailingGrossProfit%>
+                                                            <% if(opExpArr.length>0){ %>
+                                                                <% arrLastEle=opExpArr.length-1%>
+                                                                    <% ttmOpExp=opExpArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
+
+                                                                               <%=ttmOpExp %>
+
+                                                                                     <% let ttmOpInc="--" %>
+                                        <% let opIncArr %>
+                                            <% if(incomeResult){%>
+                                                <% if(incomeResult.timeSeries){ %>
+                                                    <% if(incomeResult.timeSeries.trailingOperatingIncome){ %>
+                                                        <% opIncArr=incomeResult.timeSeries.trailingOperatingIncome%>
+                                                            <% if(opIncArr.length>0){ %>
+                                                                <% arrLastEle=opIncArr.length-1%>
+                                                                    <% ttmOpInc=opIncArr[arrLastEle].reportedValue.fmt%>
+                                                                        <% }%>
+                                                                            <% }}} %>
+
+                                                                                <%=ttmOpInc %>
+
+                                                                                       <% let ttmPreTaxInc="--" %>
+                            <% let preTaxArr %>
+                                <% if(incomeResult){%>
+                                    <% if(incomeResult.timeSeries){ %>
+                                        <% if(incomeResult.timeSeries.trailingPretaxIncome){ %>
+                                            <% preTaxArr=incomeResult.timeSeries.trailingPretaxIncome%>
+                                                <% if(preTaxArr.length>0){ %>
+                                                    <% arrLastEle=preTaxArr.length-1 %>
+                                                        <% ttmPreTaxInc=preTaxArr[arrLastEle].reportedValue.fmt%>
+                                                            <% }%>
+                                                                <% }}} %>
+
+                                                                      <%=ttmPreTaxInc %>
+
+                                                                                            <% let ttmOthIncExp="--" %>
+                            <% let otInArr %>
+                                <% if(incomeResult){%>
+                                    <% if(incomeResult.timeSeries){ %>
+                                        <% if(incomeResult.timeSeries.trailingOtherIncomeExpense){ %>
+                                            <% otInArr=incomeResult.timeSeries.trailingOtherIncomeExpense%>
+                                                <% if(otInArr.length>0){ %>
+                                                    <% arrLastEle=otInArr.length-1 %>
+                                                        <% ttmOthIncExp=otInArr[arrLastEle].reportedValue.fmt%>
+                                                            <% }%>
+                                                                <% }}} %>
+
+                                                                         <%=ttmOthIncExp %>
+
+                                                                                                <% let ttmBasicEps="--" %>
+                            <% let basicEpArr %>
+                                <% if(incomeResult){%>
+                                    <% if(incomeResult.timeSeries){ %>
+                                        <% if(incomeResult.timeSeries.trailingBasicEPS){ %>
+                                            <% basicEpArr=incomeResult.timeSeries.trailingBasicEPS%>
+                                                <% if(opExpArr.length>0){ %>
+                                                    <% arrLastEle=opExpArr.length-1%>
+                                                        <% ttmBasicEps=basicEpArr[arrLastEle].reportedValue.fmt%>
+                                                            <% }%>
+                                                                <% }}} %>
+                                                                  <%=ttmBasicEps %>
+
+                                                                                   <% let netIncArr %>
+                            <% let ttmNetInc="--" %>
+                                <% if(incomeResult){%>
+                                    <% if(incomeResult.timeSeries){ %>
+                                        <% if(incomeResult.timeSeries.trailingNetIncome){ %>
+                                            <% netIncArr=incomeResult.timeSeries.trailingNetIncome%>
+                                                <% if(netIncArr.length>0){ %>
+                                                    <% arrLastEle=netIncArr.length-1%>
+                                                        <% ttmNetInc=netIncArr[arrLastEle].reportedValue.fmt%>
+                                                            <% }%>
+                                                                <% }}} %>
+                                                                    <%=ttmNetInc%>
+
+
+                                                                                        <% let balanceYear={"zero":"--","one":"--", "two" :"--"}%>
+                            <% if(balanceResult){%>
+                                <%if(balanceResult.summaryDetail){%>
+                                    <%if(balanceResult.summaryDetail.currency){%>
+                                        <%ccy=balanceResult.summaryDetail.currency%>
+                                            <% }%>
+                                                <% if(balanceResult.timeSeries.timestamp){ %>
+                                                    <% let balanceTimestamp%>
+                                                        <%balanceTimestamp=balanceResult.timeSeries.timestamp%>
+                                                            <%balanceYear["zero"]=balanceTimestamp[0]%>
+                                                                <%balanceYear["one"]=balanceTimestamp[1]%>
+                                                                    <%balanceYear["two"]=balanceTimestamp[2]%>
+                                                                        <% }}} %>
+
+                                                                            (<%=ccy%>)
+                                                                               <%=balanceYear["two"] %>
+                                                                                   <%=balanceYear["one"] %>
+                                                                                             <%=balanceYear["zero"] %>
+
+                                                                                                                    <% let totalAssets={0:"--", 1:"--", 2:"--"} %>
+                            <% if(balanceResult){ %>
+                                <% if(balanceResult.timeSeries){ %>
+                                    <% let annTotalAss %>
+                                        <%annTotalAss=balanceResult.timeSeries.annualTotalAssets%>
+
+                                            <% for(let i=0; i<annTotalAss.length; i++){ %>
+                                                <% let curr=annTotalAss[i] %>
+                                                    <% if(curr){ %>
+                                                        <% if(curr.reportedValue){ %>
+                                                            <% if(totalAssets[i]){ %>
+                                                                <% totalAssets[i]=curr.reportedValue.fmt %>
+                                                                    <% }}}} %>
+                                                                        <% }} %>
 
         */

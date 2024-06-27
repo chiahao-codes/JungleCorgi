@@ -8,6 +8,10 @@ const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
 const CURR_DOMAIN = process.env.DOMAIN;
 
+const BALANCE_URL = process.env.BALANCEURL;
+const CASHFLOW_URL = process.env.CASHFLOWURL;
+const URL_END = process.env.URLEND;
+
 const chartJS = Chart;
 const app = express();
 
@@ -25,20 +29,9 @@ const apiOptions = {
   },
 };
 
-let runQuery = async (symbol = "") => {
-  let url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
-  if (!symbol) {
-    url =
-      "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT";
-  }
-
-  const apiOptions = {
-    method: "GET",
-    headers: {
-      "X-RapidAPI-Key": "626350d676msh4d1dc66afe62e86p1adf8ejsndc3d7f1bb723",
-      "X-RapidAPI-Host": "apidojo-yahoo-finance-v1.p.rapidapi.com",
-    },
-  };
+let runQuery = async () => {
+  let url =
+    "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT";
 
   try {
     const response = await fetch(url, apiOptions);
@@ -95,75 +88,47 @@ app.get("/contact", async (req, res, next) => {
 
 app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
-    getSumm,
-    incomeResult,
-    balanceResult,
-    cashFlowRes;
-
-  const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US'`;
-  const cashFlowURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
-  const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
-  const getSummURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary?region=US&symbol=${symbol}`;
-
+    financials,
+    insights,
+    previousClose;
+  //no more financialsary;
+  // const financialsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary?region=US&symbol=${symbol}`;
+  //use following:
+  const insightsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-insights?symbol=${symbol}`;
+  const financialsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US`;
+  const statsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v4/get-statistics?symbol=${symbol}&region=US&lang=en-US`;
+  const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`;
   //check quote type:
-  getSumm = await fetch(getSummURL, apiOptions)
+  financials = await fetch(financialsURL, apiOptions)
     .then((res) => res.json())
     .catch((e) => console.log(e));
 
-  console.log("getSumm:", getSumm);
-
+  console.log("financials:", financials);
+  let quoteType = financials.quoteType.quoteType;
   if (
-    !getSumm ||
-    getSumm.quoteType.quoteType === "ECNQUOTE" ||
-    getSumm.quoteType.quoteType === "MUTUALFUND"
+    !financials ||
+    financials.quoteType.quoteType === "ECNQUOTE" ||
+    financials.quoteType.quoteType === "MUTUALFUND"
   ) {
     return res.render("404");
   }
-
-  if (getSumm.quoteType.quoteType === "EQUITY") {
-    let getIncomeStmt = fetch(incomeStmtURL, apiOptions);
-
-    let getBalanceSht = fetch(balanceShtURL, apiOptions);
-
-    let getCashFlow = fetch(cashFlowURL, apiOptions);
-
-    let fetchResultsArr = await Promise.all([
-      getIncomeStmt,
-      getBalanceSht,
-      getCashFlow,
-    ])
-      .then((results) => Promise.all(results.map((r) => r.json())))
-      .then((jsonDataArray) => {
-        let jsonIncome = jsonDataArray[0];
-        let jsonBalance = jsonDataArray[1];
-        let jsonCashflow = jsonDataArray[2];
-        return [jsonIncome, jsonBalance, jsonCashflow];
-      })
-      .catch((e) => console.log(e));
-
-    if (!fetchResultsArr) {
-      //res.render a server error 500 page;
+  if (financials.price) {
+    if (financials.price.regularMarketPreviousClose) {
+      previousClose = financials.price.regularMarketPreviousClose.raw;
     }
-
-    incomeResult = fetchResultsArr[0];
-    // console.log("incomeRes:", incomeResult);
-
-    balanceResult = fetchResultsArr[1];
-    //console.log("balanceRes:", balanceResult);
-
-    cashFlowRes = fetchResultsArr[2];
-    //console.log("cashflowRes:", cashFlowRes);
   }
 
   res.render("ticker", {
     chartJS,
-    getSumm,
-    incomeResult,
-    balanceResult,
-    cashFlowRes,
+    financials,
+    previousClose,
     API_KEY,
     RAPID,
     CURR_DOMAIN,
+    BALANCE_URL,
+    CASHFLOW_URL,
+    URL_END,
+    quoteType,
   });
 });
 
