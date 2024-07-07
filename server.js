@@ -8,6 +8,7 @@ const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
 const CURR_DOMAIN = process.env.DOMAIN;
 
+const INCOME_URL = process.env.INCOMEURL;
 const BALANCE_URL = process.env.BALANCEURL;
 const CASHFLOW_URL = process.env.CASHFLOWURL;
 const URL_END = process.env.URLEND;
@@ -88,47 +89,95 @@ app.get("/contact", async (req, res, next) => {
 
 app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
-    financials,
+    quotes,
+    analysisFetch,
+    insightsFetch,
+    profileFetch,
+    previousClose,
+    profile,
     insights,
-    previousClose;
-  //no more financialsary;
-  // const financialsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary?region=US&symbol=${symbol}`;
-  //use following:
+    analysis,
+    quoteType;
+
+  const quotesURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
   const insightsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-insights?symbol=${symbol}`;
-  const financialsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US`;
-  const statsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v4/get-statistics?symbol=${symbol}&region=US&lang=en-US`;
   const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`;
+  const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${symbol}&region=US`;
   //check quote type:
-  financials = await fetch(financialsURL, apiOptions)
+  quotes = await fetch(quotesURL, apiOptions)
     .then((res) => res.json())
     .catch((e) => console.log(e));
 
-  console.log("financials:", financials);
-  let quoteType = financials.quoteType.quoteType;
-  if (
-    !financials ||
-    financials.quoteType.quoteType === "ECNQUOTE" ||
-    financials.quoteType.quoteType === "MUTUALFUND"
-  ) {
+  if (quotes) {
+    quotes = quotes.quoteResponse.result[0];
+    if (quotes.quoteType) quoteType = quotes.quoteType;
+  }
+
+  if (!quoteType || quoteType === "ECNQUOTE" || quoteType === "MUTUALFUND") {
     return res.render("404");
   }
-  if (financials.price) {
-    if (financials.price.regularMarketPreviousClose) {
-      previousClose = financials.price.regularMarketPreviousClose.raw;
+
+  if (quotes.regularMarketPreviousClose)
+    previousClose = quotes.regularMarketPreviousClose;
+
+  if (quoteType === "EQUITY") {
+    analysisFetch = fetch(analysisURL, apiOptions);
+    profileFetch = fetch(profileURL, apiOptions);
+    insightsFetch = fetch(insightsURL, apiOptions);
+
+    let stockInfo = await Promise.all([
+      analysisFetch,
+      profileFetch,
+      insightsFetch,
+    ])
+      .then((resp) => {
+        return Promise.all(resp.map((r) => r.json()));
+      })
+      .then((arr) => {
+        let analysisResp = arr[0];
+        let profileResp = arr[1];
+        let insightsResp = arr[2];
+
+        return [analysisResp, profileResp, insightsResp];
+      })
+      .catch((e) => console.log(e));
+
+    if (stockInfo) {
+      if (stockInfo[0]) {
+        analysis = stockInfo[0];
+      }
+
+      if (stockInfo[1].quoteSummary) {
+        if (stockInfo[1].quoteSummary.result[0]) {
+          profile = stockInfo[1].quoteSummary.result[0];
+          // console.log("profile:", profile);
+        }
+      }
+
+      if (stockInfo[2]) {
+        if (stockInfo[2].finance) {
+          insights = stockInfo[2].finance.result;
+          // console.log("insights:", insights);
+        }
+      }
     }
   }
 
   res.render("ticker", {
     chartJS,
-    financials,
     previousClose,
     API_KEY,
     RAPID,
     CURR_DOMAIN,
+    INCOME_URL,
     BALANCE_URL,
     CASHFLOW_URL,
     URL_END,
     quoteType,
+    profile,
+    insights,
+    analysis,
+    quotes,
   });
 });
 
