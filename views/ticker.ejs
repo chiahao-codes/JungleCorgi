@@ -25,57 +25,68 @@
                                             <%=symb%>
                     </span>
                 </div>
-                <div id="price_hours_container">
-                    <h5 id="company_name">
-                        <% let name="" %>
-                            <% if(quotes){%>
-                                <% if(quotes.shortName){ %>
-                                    <% name=quotes.shortName %>
-                                        <% if(quotes.longName){ %>
-                                            <% name=quotes.longName %>
-                                                <% }}} %>
-                                                    <%= name %>
-                    </h5>
-                    <div id="price_time_container">
-                        <div id="reg_container" class="reg_after_container">
-                            <div id="reg_hours_container" class="reg_hours_container">
-                                <h3 id="reg_hours_price" class="price">
+                <div id="price-insight-container">
+                    <div id="price_hours_container">
+                        <h5 id="company_name">
+                            <% let name="" %>
+                                <% if(quotes){%>
+                                    <% if(quotes.shortName){ %>
+                                        <% name=quotes.shortName %>
+                                            <% if(quotes.longName){ %>
+                                                <% name=quotes.longName %>
+                                                    <% }}} %>
+                                                        <%= name %>
+                        </h5>
+                        <div id="price_time_container">
+                            <div id="reg_container" class="reg_after_container">
+                                <div id="reg_hours_container" class="reg_hours_container">
+                                    <h3 id="reg_hours_price" class="price">
 
-                                </h3>
-                                <div id="reg_hours_pct_container" class="hours_pct_container">
-                                    <h5 id="reg_hours_change" class="price">
+                                    </h3>
+                                    <div id="reg_hours_pct_container" class="hours_pct_container">
+                                        <h5 id="reg_hours_change" class="price">
 
-                                    </h5>
-                                    <h5 id="reg_hours_pct" class="price">
+                                        </h5>
+                                        <h5 id="reg_hours_pct" class="price">
 
-                                    </h5>
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div id="at_close_container" class="trading_hours_container">
+                                    <h6 id="at_close_txt"></h6>
+                                    <h6 id="at_close_time"></h6>
                                 </div>
                             </div>
-                            <div id="at_close_container" class="trading_hours_container">
-                                <h6 id="at_close_txt"></h6>
-                                <h6 id="at_close_time"></h6>
-                            </div>
-                        </div>
-                        <div id="after_container" class="reg_after_container">
-                            <div id="after_hours_pp_container" class="reg_hours_container">
-                                <h5 id="after_hours_price" class="price">
+                            <div id="after_container" class="reg_after_container">
+                                <div id="after_hours_pp_container" class="reg_hours_container">
+                                    <h5 id="after_hours_price" class="price">
 
-                                </h5>
-                                <div id="after_hours_pct_container" class="hours_pct_container">
-                                    <h6 id="after_hours_change" class="price">
+                                    </h5>
+                                    <div id="after_hours_pct_container" class="hours_pct_container">
+                                        <h6 id="after_hours_change" class="price">
 
-                                    </h6>
-                                    <h6 id="after_hours_pct" class="price">
-                                    </h6>
+                                        </h6>
+                                        <h6 id="after_hours_pct" class="price">
+                                        </h6>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id="after_hours_time_container" class="trading_hours_container">
-                                <h6 id="after_hours_txt"></h6>
-                                <h6 id="after_hours_time"></h6>
+                                <div id="after_hours_time_container" class="trading_hours_container">
+                                    <h6 id="after_hours_txt"></h6>
+                                    <h6 id="after_hours_time"></h6>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div id="insights-container">
+                        <h5 id="article-title"></h5>
+                        <div id="source-time-container">
+                            <h6 id="article-source"><a id="article-link" href="" target="_blank">
+                                </a></h6>
+                            <div id="article-time"></div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
             <div id="chart_container">
                 <div id="progress-bar-container">
@@ -393,55 +404,54 @@
                     <div class="slide-boxes">
                         <div class="slide-data-wrapper income-slide-years slide-years">
                             <div class="slide-data slide-headers data-align-left currency">
-                                us dollars
+                                <%=currencyCode %>
                             </div>
                             <div class="slide-data slide-headers ttm">TTM
                             </div>
                             <div class="slide-data slide-headers year1 endingyr1">
-                                2023
+                                <%=incomeYr1%>
                             </div>
                             <div class="slide-data slide-headers year2 endingyr2">
-                                2022
+                                <%=incomeYr2%>
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-revenue">
                             <div class="slide-data data-align-left">
                                 Revenue</div>
                             <div class="slide-data  ttm">
-                                546465456
-
+                                <%=ttmRev %>
                             </div>
                             <div class="slide-data year1">
-                                20234564
+                                <%=annualRev1 %>
                             </div>
                             <div class="slide-data year2">
-                                2022465
+                                <%=annualRev2 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper gross-profit">
                             <div class="slide-data data-align-left">Gross profit</div>
 
                             <div class="slide-data ttm">
-                                4561565
+                                <%=ttmGrossProfit %>
                             </div>
                             <div class="slide-data year1">
-                                1561156165
+                                <%=annualGrossProfit1 %>
                             </div>
                             <div class="slide-data year2">
-                                1561156165
+                                <%=annualGrossProfit2 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper operating-expense">
                             <div class="slide-data data-align-left">Operating expense</div>
 
                             <div class="slide-data  ttm">
-                                156456465
+                                <%=ttmOpExp %>
                             </div>
                             <div class="slide-data year1">
-                                45641564
+                                <%=annualOpExp1 %>
                             </div>
                             <div class="slide-data year2">
-                                4564516
+                                <%=annualOpExp2 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper operating-income">
@@ -449,37 +459,37 @@
                             <div class="slide-data data-align-left">
                                 Operating income</div>
                             <div class="slide-data  ttm">
-                                45645
+                                <%=ttmOpIncome %>
                             </div>
                             <div class="slide-data year1">
-                                415655555
+                                <%=annualOpIncome1 %>
                             </div>
                             <div class="slide-data year2">
-                                456456
+                                <%=annualOpIncome2 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper pre-tax-income">
                             <div class="slide-data data-align-left">Pre tax income</div>
                             <div class="slide-data  ttm">
-                                456156156
+                                <%=ttmPreTaxInc %>
                             </div>
                             <div class="slide-data year1">
-                                46546
+                                <%=annualPreTaxInc1 %>
                             </div>
                             <div class="slide-data year2">
-                                4564156
+                                <%=annualPreTaxInc2 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper other-income-expense">
                             <div class="slide-data data-align-left">Other income exp</div>
                             <div class="slide-data ttm">
-                                456456
+                                <%=ttmOtherIncExp %>
                             </div>
                             <div class="slide-data year1">
-                                456446516
+                                <%=annualOtherIncExp1 %>
                             </div>
                             <div class="slide-data year2">
-                                4561565
+                                <%=annualOtherIncExp2 %>
                             </div>
                         </div>
 
@@ -487,26 +497,26 @@
                             <div class="slide-data data-align-left">Basic eps</div>
 
                             <div class="slide-data  ttm">
-                                4564456
+                                <%=ttmBasicEps %>
                             </div>
                             <div class="slide-data year1">
-                                45646
+                                <%=annualBasicEps1%>
                             </div>
                             <div class="slide-data year2">
-                                456456
+                                <%=annualBasicEps2%>
                             </div>
                         </div>
                         <div class="slide-data-wrapper net-income">
                             <div class="slide-data data-align-left">Net income</div>
 
                             <div class="slide-data  ttmNetIncome">
-
+                                <%=ttmNetIncome %>
                             </div>
                             <div class="slide-data year1">
-
+                                <%=annualNetIncome1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=annualNetIncome2%>
                             </div>
                         </div>
 
@@ -519,122 +529,122 @@
                         <div class="slide-data-wrapper balance-slide-years slide-years">
 
                             <div class="slide-data slide-headers data-align-left currency">
-                                USD
+                                <%=currencyCode %>
                             </div>
 
                             <div class="slide-data slide-headers year1 endingyr1">
-                                2023
+                                <%=balYr1 %>
                             </div>
                             <div class="slide-data slide-headers year2 endingyr2">
-                                2022
+                                <%=balYr2 %>
                             </div>
                             <div class="slide-data slide-headers year3 endingyr3">
-                                2021
+                                <%=balYr3%>
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-assets">
                             <div class="slide-data data-align-left">Total assets</div>
 
                             <div class="slide-data year1">
-
+                                <%=totalAssets1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=totalAssets2%>
                             </div>
                             <div class="slide-data year3">
-
+                                <%=totalAssets3 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-liab">
-                            <div class="slide-data data-align-left">Total liabilities</div>
+                            <div class="slide-data data-align-left">Total liab.</div>
 
                             <div class="slide-data year1">
-
+                                <%=totalLiab1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=totalLiab2 %>
                             </div>
                             <div class="slide-data year3">
-
+                                <%=totalLiab3 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-equity">
                             <div class="slide-data data-align-left">Total equity</div>
 
                             <div class="slide-data year1">
-
-                            </div>
-                            <div class="slide-data">
-
-                            </div>
-                            <div class="slide-data">
-
-                            </div>
-                        </div>
-                        <div class="slide-data-wrapper total-capitalization">
-                            <div class="slide-data data-align-left">Total capitalization</div>
-
-                            <div class="slide-data year1">
-
+                                <%=totalEqu1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=totalEqu2 %>
                             </div>
                             <div class="slide-data year3">
+                                <%=totalEqu3 %>
+                            </div>
+                        </div>
+                        <div class="slide-data-wrapper current-debt">
+                            <div class="slide-data data-align-left">Current Debt</div>
 
+                            <div class="slide-data year1">
+                                <%=currentDebt1 %>
+                            </div>
+                            <div class="slide-data year2">
+                                <%=currentDebt2 %>
+                            </div>
+                            <div class="slide-data year3">
+                                <%=currentDebt3 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper long-term-debt">
                             <div class="slide-data data-align-left">Long term debt</div>
 
                             <div class="slide-data year1">
-
+                                <%=longTermDebt1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=longTermDebt2 %>
                             </div>
                             <div class="slide-data year3">
-
+                                <%=longTermDebt3 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper working-capital">
-                            <div class="slide-data data-align-left">Accounts receivable</div>
+                            <div class="slide-data data-align-left">Accts. receivable</div>
 
                             <div class="slide-data year1">
-
+                                <%=acctsRecv1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=acctsRecv2 %>
                             </div>
                             <div class="slide-data year3">
-
+                                <%=acctsRecv3 %>
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-debt">
-                            <div class="slide-data data-align-left">Accounts payable</div>
+                            <div class="slide-data data-align-left">Accts. payable</div>
 
                             <div class="slide-data year1">
-
+                                <%=acctsPay1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=acctsPay2%>
                             </div>
                             <div class="slide-data year3">
-
+                                <%=acctsPay3 %>
                             </div>
                         </div>
 
                         <div class="slide-data-wrapper shares-issued">
-                            <div class="slide-data data-align-left">Retained Earnings</div>
+                            <div class="slide-data data-align-left">Ret. Earnings</div>
 
                             <div class="slide-data year1">
-
+                                <%=retEarn1 %>
                             </div>
                             <div class="slide-data year2">
-
+                                <%=retEarn2 %>
                             </div>
                             <div class="slide-data year3">
-
+                                <%=retEarn3 %>
                             </div>
                         </div>
                     </div>
@@ -642,21 +652,22 @@
                 <div id="cash-flow" class="slide">
                     <h6>Cash Flow</h6>
                     <div class="annual-label">Annual</div>
-                    <div class="slide-boxes">
+                    <div id="cashflow-slide-boxes" class="slide-boxes">
                         <div class="slide-data-wrapper slide-years cash-flow-slide-years">
-                            <div class="slide-data slide-headers data-align-left currency">USD</div>
+                            <div class="slide-data slide-headers data-align-left currency">
+                                <%=currencyCode %>
+                            </div>
                             <div class="slide-data slide-headers ttm">TTM</div>
-                            TTM
                             <div class="slide-data slide-headers year1 endingyr1">
-                                2023
+
                             </div>
                             <div class="slide-data slide-headers year2 endingyr2">
-                                2022
+
                             </div>
                         </div>
 
                         <div class="slide-data-wrapper operating-cash-flow">
-                            <div class="slide-data data-align-left">Operating cash flow</div>
+                            <div class="slide-data data-align-left">Operating cash</div>
 
                             <div class="slide-data ttm">
 
@@ -669,7 +680,7 @@
                             </div>
                         </div>
                         <div class="slide-data-wrapper investing-cash-flow">
-                            <div class="slide-data data-align-left">Investing cash flow</div>
+                            <div class="slide-data data-align-left">Investing cash</div>
 
                             <div class="slide-data ttm">
 
@@ -684,7 +695,7 @@
                         <div class="slide-data-wrapper cash-dividends-paid">
 
                             <div class="slide-data data-align-left">
-                                Cash dividends paid
+                                Cash dividends
                             </div>
                             <div class="slide-data ttm">
 
@@ -699,7 +710,7 @@
                         <div class="slide-data-wrapper end-cash-position">
 
                             <div class="slide-data data-align-left">
-                                End cash position</div>
+                                End cash pos.</div>
                             <div class="slide-data ttm">
 
                             </div>
@@ -714,7 +725,7 @@
 
 
                             <div class="slide-data data-align-left">
-                                Capital expenditure
+                                Capital exp.
                             </div>
                             <div class="slide-data ttm">
 
@@ -729,7 +740,7 @@
                         <div class="slide-data-wrapper common-stock-iss">
 
                             <div class="slide-data data-align-left">
-                                Common stock Issuance</div>
+                                Common stock</div>
                             <div class="slide-data ttm">
 
                             </div>
@@ -743,7 +754,7 @@
                         <div class="slide-data-wrapper repayment-of-debt">
 
                             <div class="slide-data data-align-left">
-                                Repayment of debt</div>
+                                Repay debt</div>
                             <div class="slide-data ttm">
 
                             </div>
@@ -853,7 +864,7 @@
                                                         <%if(profile.summaryProfile){ %>
                                                             <% if(profile.summaryProfile.website){ %>
                                                                 <%resultWeb=profile.summaryProfile.website}}}%>
-                                                                    <a href="<%=resultWeb%>" target="_blank">
+                                                                    <a id="link" href="<%=resultWeb%>" target="_blank">
                                                                         <%=resultWeb%>
                                                                     </a>
 
@@ -913,14 +924,9 @@
         localStorage.setItem("url", pageUrl);
         const stockTicker = '<%=quotes.symbol%>';
         const quoteType = '<%=quoteType%>';
-        const marketState = '<%=quotes.marketState%>';
         const KEY = '<%=API_KEY%>';
         const HOST = '<%=RAPID%>';
-
-        const incomeURL = '<%INCOME_URL%>'
-        const balanceURL = '<%=BALANCE_URL%>';
-        const cashflowURL = '<%=CASHFLOW_URL%>';
-        const endURL = '<%=URL_END%>';
+        const NEWS = '<%=NEWS%>'
         const apiOptions = {
             method: "GET",
             headers: {
@@ -928,6 +934,14 @@
                 "x-rapidapi-host": HOST,
             },
         };
+
+        const newsApiOptions = {
+            method: "GET",
+            headers: {
+                "x-rapidapi-key": KEY,
+                "x-rapidapi-host": NEWS,
+            },
+        }
 
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
@@ -964,10 +978,6 @@
         const slidesWrapper = document.querySelector('.slides-wrapper');
         const slides = Array.from(document.querySelectorAll(".slide"));
         const slideNavChevrons = Array.from(document.querySelectorAll(".chevrons"));
-
-        const endingyr1 = document.querySelectorAll(".endingyr1")
-        const endingyr2 = document.querySelectorAll(".endingyr2");
-        const endingyr3 = document.querySelectorAll(".endingyr3");
 
         //starting variables;
         let isDragging = false, startPosition = 0, currTranslateX = 0, prevTranslateX = 0, animationId = 0, currSlideIndex = 0;
@@ -1075,7 +1085,7 @@
                 timeStyle: 'long',
                 timeZone: 'America/New_York',
             }).format(date)
-            console.log("formatted:", formatted)
+
             return formatted
 
         }
@@ -1122,7 +1132,7 @@
                     pct = `+${pct}`
                 }
                 container.children[0].innerText = `${points}`;
-                container.children[1].innerText = `(${pct})`;
+                container.children[1].innerText = `(${pct}%)`;
             }
 
             if (divClass === "commas") {
@@ -1151,7 +1161,7 @@
                                 //slice up to the 2nd decimal, excluding it.
                                 formatted = commaCheck.slice(startIndex, endIndex);
                                 //format 
-                                console.log("formatted til this point:", formatted)
+
                                 formatted = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 5, minimumSignificantDigits: 3 }).format(
                                     formatted
                                 );
@@ -1182,8 +1192,8 @@
 
                 //current market session period;
                 const currTradingPeriod = sessionObj.meta.currentTradingPeriod;
-                let preTime = currTradingPeriod.pre;
                 let regTime = currTradingPeriod.regular;
+                let preTime = currTradingPeriod.pre;
                 let postTime = currTradingPeriod.post;
 
                 //previous closing price;
@@ -1203,29 +1213,18 @@
                 let afterHoursPointsChng, afterHoursPctChng, regPointsChg, regPctChng;
 
                 //set session time(s)
-                let regMktTime = sessionObj.meta.regularMarketTime;
-                let currTimeStamp = regMktTime;
-                let prePostTime = timeStampsArr[ending]
+                let regMarketTime = sessionObj.meta.regularMarketTime;
+                let timeStampEnding = timeStampsArr[ending];
 
-                afterHoursPrice = closePriceArr[ending];
-                regDateTime = "Last Closed:";
+                regDateTime = "At Close:";
                 currPrice = sessionObj.meta.regularMarketPrice;
+                let currency = sessionObj.meta.currency;
 
                 //what's the current mkt session time/date?
-                if (currTimeStamp >= preTime.start && currTimeStamp < preTime.end) {
-                    prePostMarketState = "Pre-Market:";
-                }
-
-                if (currTimeStamp >= postTime.start || currTimeStamp < preTime.start) {
-                    prePostMarketState = "After Hours:";
-                    if (prePostTime < postTime.end && prePostTime >= postTime.start) { prePostTime = postTime.end }
-                }
-
                 //current session;
-                if (currTimeStamp >= regTime.start && currTimeStamp < regTime.end) {
+                if (regMarketTime >= regTime.start && regMarketTime < regTime.end) {
                     regDateTime = "Current Session:"
                 }
-
                 //calculate reg-mkt points and percentage changes;
                 regPointsChg = currPrice - previousClose;
                 regPointsChg = regPointsChg.toFixed(2);
@@ -1233,114 +1232,98 @@
                 regPctChng = (regPointsChg / previousClose) * 100;
                 regPctChng = regPctChng.toFixed(2);
 
-                //****Pre/Post Mkt:
-                afterHoursPointsChng = afterHoursPrice - currPrice;
-                afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
-
                 //format prices:
                 currPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(currPrice);
                 regPointsChg = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(regPointsChg);
                 regPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(regPctChng);
 
-                afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
-                afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
-                afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
-                const analysis = '<%=analysis%>'
-                /**
-                                if (analysis) {
-                                    //need to declare each ejs variable (let mktState = analysis.price.marketState)
-                                    //just like analysis
-                                
-                                    let mktState = ''analysis.price.marketState;
-                                    currPrice = analysis.price.regularMarketPrice.fmt;
-                                    regPointsChg = analysis.price.regularMarketChange.fmt;
-                                    regPctChng = analysis.price.regularMarketChangePercent.fmt;
-                                    console.log("regPctChng:", regPctChng)
-                                    currTimeStamp = setMarketTime(analysis.price.regularMarketTime);
-                
-                                    if (mktState === "PREPRE" || mktState === "PRE") {
-                                        prePostMarketState = "Pre-Market:";
-                
-                                        if (analysis.price.preMarketTime) {
-                                            prePostTime = analysis.price.preMarketTime
-                                        }
-                
-                                        if (analysis.price.preMarketPrice) {
-                                            if (analysis.price.preMarketPrice.fmt) {
-                                                afterHoursPrice = analysis.price.preMarketPrice.fmt
-                                            }
-                                        }
-                
-                                        if (analysis.price.preMarketChange) {
-                                            if (analysis.price.preMarketChange.fmt) {
-                                                afterHoursPointsChng = analysis.price.preMarketChange.fmt
-                                            }
-                                        }
-                
-                                        if (analysis.price.preMarketChangePercent) {
-                                            if (analysis.price.preMarketChangePercent.fmt) {
-                                                afterHoursPctChng = analysis.price.preMarketChangePercent.fmt
-                                            }
-                                        }
-                                    }
-                
-                                    if (mktState === "REGULAR" || mktState === "REGULARREGULAR") {
-                                        regDateTime = "Current Session:"
-                                    }
-                
-                                    if (mktState === "POST" || mktState === "POSTPOST") {
-                                        prePostMarketState = "After Hours:";
-                
-                                        if (analysis.price.postMarketTime) {
-                                            prePostTime = analysis.price.postMarketTime
-                                        }
-                
-                                        if (analysis.price.postMarketPrice) {
-                                            if (analysis.price.postMarketPrice.fmt) {
-                                                afterHoursPrice = analysis.price.postMarketPrice.fmt
-                                            }
-                                        }
-                
-                                        if (analysis.price.postMarketChange) {
-                                            if (analysis.price.postMarketChange.fmt) {
-                                                afterHoursPointsChng = analysis.price.postMarketChange.fmt
-                                            }
-                                        }
-                
-                                        if (analysis.price.postMarketChangePercent) {
-                                            if (analysis.price.postMarketChangePercent.fmt) {
-                                                afterHoursPctChng = analysis.price.postMarketChangePercent.fmt
-                                            }
-                                        }
-                                    }
-                
-                                }
-                */
-                //set html
                 regularPrice.innerText = currPrice;
                 regPointsPctContainer.children[0].innerText = regPointsChg;
                 regPointsPctContainer.children[1].innerText = regPctChng;
+
                 atCloseContainer.children[0].innerText = regDateTime;
-                atCloseContainer.children[1].innerText = setMarketTime(currTimeStamp);
+                atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
+
+                const analysis = '<%=analysis%>'
+                if (analysis) {
+
+                    let preMarketPrice = '<%=preMarketPrice%>';
+                    let preMarketChange = '<%=preMarketChange%>'
+                    let preMarketChangePercent = '<%=preMarketChangePercent%>'
+
+                    let postMarketPrice = '<%=postMarketPrice%>';
+                    let postMarketChange = '<%=postMarketChange%>'
+                    let postMarketChangePercent = '<%=postMarketChangePercent%>'
+                    console.log("regmarkettime:", regMarketTime, "regTime.start:", regTime.start)
+                    console.log("post time.end:", postTime.end)
+                    if (regMarketTime >= preTime.start && regMarketTime < preTime.end) {
+                        prePostMarketState = "Pre-Market:"
+                        console.log("pre")
+
+                        if (preMarketPrice.raw) {
+                            afterHoursPrice = preMarketPrice.raw
+                        }
+                        if (preMarketChange.raw) {
+                            afterHoursPointsChng = preMarketChange.raw
+                        }
+                        if (preMarketChangePercent.raw) {
+                            afterHoursPctChng = preMarketChangePercent.raw
+                        }
+                    }
+
+                    if (regMarketTime >= regTime.end && regMarketTime <= postTime.end || regMarketTime < preTime.start && regMarketTime < regTime.start) {
+                        prePostMarketState = "After Hours:"
+                        console.log("post")
+                        if (timeStampEnding < regMarketTime) timeStampEnding = regMarketTime;
+                        if (postMarketPrice) {
+                            if (postMarketPrice.raw) {
+                                afterHoursPrice = postMarketPrice.raw
+                            }
+                        }
+                        if (postMarketChange) {
+                            if (postMarketChange.raw) {
+                                afterHoursPointsChng = postMarketChange.raw
+                            }
+                        }
+                        if (postMarketChangePercent) {
+                            if (postMarketChangePercent.raw) {
+                                afterHoursPctChng = postMarketChangePercent.raw
+                            }
+                        }
+                    }
+
+                }
+
+                //****Pre/Post Mkt:
+                if (!afterHoursPrice) {
+                    afterHoursPrice = closePriceArr[ending]
+                }
+
+                afterHoursPointsChng = afterHoursPrice - currPrice;
+                afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
+                afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
+                afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
+                afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
 
                 afterHrsPrice.innerText = afterHoursPrice;
                 afterHrsChange.innerText = afterHoursPointsChng;
                 afterHrsPct.innerText = afterHoursPctChng;
                 afterHoursTimeContainer.children[0].innerText = prePostMarketState;
-                afterHoursTimeContainer.children[1].innerText = setMarketTime(prePostTime);
+                afterHoursTimeContainer.children[1].innerText = setMarketTime(timeStampEnding);
                 //remove elements if necessary;
-                if (regDateTime === "Current Session:") {
+                if (regDateTime === "Current Session:" || quoteType !== "EQUITY") {
                     afterHoursContainer.style.display = "none";
                 }
 
                 if (quoteType !== "EQUITY") {
                     slideContainer.style.display = "none";
+                    ratioContainer.style.display = "none";
+                    prevCloseContainer.style.maxWidth = "100%";
                 }
 
                 if (companyDesc.innerText === "") {
                     summaryProfileContainer.style.display = "none";
-                    ratioContainer.style.display = "none";
-                    prevCloseContainer.style.maxWidth = "100%";
+
                 }
                 resolve("done")
             })
@@ -1350,25 +1333,22 @@
             switch (range) {
                 case "1d":
                     url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&region=US&symbol=${symbol}&range=1d`
-                //url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=5m&symbol=${symbol}&range=1d&region=US&includePrePost=false&useYfid=true&includeAdjustedClose=true`
+
                 case "5d":
                     url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d`
-                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=60m&region=US&symbol=${symbol}&range=5d&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 case "1mo":
                     url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo`
-                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1d&region=US&symbol=${symbol}&range=1mo&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 case "YTD":
                     url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&region=US&symbol=${symbol}&range=ytd`
-                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1wk&region=US&symbol=${symbol}&range=ytd&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 case "2y":
                     url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&region=US&symbol=${symbol}&range=2y`
-                    //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=1mo&region=US&symbol=${symbol}&range=2y&includePrePost=false&useYfid=true&includeAdjustedClose=true`;
                     break;
                 default:
                     console.log("Range not found");
+                    break;
             }
 
             const apiOptions = {
@@ -1379,10 +1359,8 @@
                 },
             };
 
-            let response = await fetch(url, apiOptions)
-                .then((resp) => resp.json())
-                .catch((e) => console.log(e));
-
+            let response = await fetch(url, apiOptions).catch((e) => console.log(e));
+            response = await response.json();
             return response;
         };
         const fillChartData = async (responseData, range) => {
@@ -1413,11 +1391,11 @@
 
             //return chartdata object;
             //start from the last one and go backwards;
-            let firstChartPrice, finalChartPrice, nextTimestamp, currTimestamp, date, formatted;
+            let firstChartPrice, finalChartPrice, nextTimestamp, regMarketTime, date, formatted;
             for (let i = timestampEnd; i >= 0; i--) {
-                currTimestamp = chartTimes[i];
+                regMarketTime = chartTimes[i];
 
-                date = new Date(currTimestamp * 1000);
+                date = new Date(regMarketTime * 1000);
 
                 formatted = new Intl.DateTimeFormat("en-US", {
                     dateStyle: "short",
@@ -1485,9 +1463,8 @@
             stockChart.style.display = "none";
 
             let grabchart, fillchart, response;
-
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
-
+            console.log("response:", response)
             currPrice = response.chart.result[0].meta.regularMarketPrice;
             previousClose = '<%=previousClose%>'
 
@@ -1587,11 +1564,177 @@
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
-            progressBar.setAttribute("class", "run-progress-animation")
+            progressBar.setAttribute("class", "run-progress-animation");
+
+            //settimeout allows for animation to run for a bit;
             timeoutId = setTimeout(() => {
-                runChart(range);
+                runChart(range).then(() => {
+                    if (quoteType === "EQUITY") {
+                        populateNews(stockTicker);
+
+                    }
+                }).then(() => {
+                    if (quoteType === "EQUITY") {
+                        populateCashFlowData(stockTicker);
+                    }
+                }).catch((e) => console.log(e));
             }, 0)
         }
+        const getCashFlow = async (symbol) => {
+            const cashFlowStURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
+            const response = await fetch(cashFlowStURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
+            const result = await response.json();
+            return result
+        }
+
+        let checkStmtProp = (property) => {
+            return property && property.reportedValue.fmt
+                ? property.reportedValue.fmt
+                : "n/a";
+        };
+        const populateCashFlowData = async (symbol) => {
+            let cashJsonData = await getCashFlow(symbol);
+            cashJsonData = cashJsonData.timeSeries;
+            console.log(cashJsonData);
+
+            //set years
+            let cashTimeStampsArr = cashJsonData.timestamp;
+            let timestampLength = cashTimeStampsArr.length;
+
+            let cashYr1 = cashTimeStampsArr[timestampLength - 1];
+            let cashYr2 = cashTimeStampsArr[timestampLength - 2];
+            cashYr1 = new Date(cashYr1 * 1000);
+            cashYr2 = new Date(cashYr2 * 1000);
+            cashYr1 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(cashYr1);
+            cashYr2 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(cashYr2);
+            document.querySelector(".cash-flow-slide-years > .year1").innerText = cashYr1;
+            document.querySelector(".cash-flow-slide-years > .year2").innerText = cashYr2;
+
+            //operating cash flow
+            let ttmOpCash, opCashYr1, opCashYr2;
+            ttmOpCash = checkStmtProp(cashJsonData.trailingOperatingCashFlow[0]);
+            opCashYr1 = checkStmtProp(cashJsonData.annualOperatingCashFlow[timestampLength - 1]);
+            opCashYr2 = checkStmtProp(cashJsonData.annualOperatingCashFlow[timestampLength - 2]);
+            document.querySelector(".operating-cash-flow > .ttm").innerText = ttmOpCash;
+            document.querySelector(".operating-cash-flow > .year1").innerText = opCashYr1;
+            document.querySelector(".operating-cash-flow > .year2").innerText = opCashYr2;
+
+
+            //investing-cash-flow
+            let ttmInvCF, invCFYr1, invCFYr2;
+            ttmInvCF = checkStmtProp(cashJsonData.trailingInvestingCashFlow[0]);
+            invCFYr1 = checkStmtProp(cashJsonData.annualInvestingCashFlow[timestampLength - 1]);
+            invCFYr2 = checkStmtProp(cashJsonData.annualInvestingCashFlow[timestampLength - 2]);
+            document.querySelector(".investing-cash-flow > .ttm").innerText = ttmInvCF;
+            document.querySelector(".investing-cash-flow > .year1").innerText = invCFYr1;
+            document.querySelector(".investing-cash-flow > .year2").innerText = invCFYr2;
+
+            //cash dividends
+            let ttmCashDivs, cashDivsYr1, cashDivsYr2;
+            ttmCashDivs = checkStmtProp(cashJsonData.trailingCashDividendsPaid[0]);
+            cashDivsYr1 = checkStmtProp(cashJsonData.annualCashDividendsPaid[timestampLength - 1]);
+            cashDivsYr2 = checkStmtProp(cashJsonData.annualCashDividendsPaid[timestampLength - 2]);
+            document.querySelector(".cash-dividends-paid > .ttm").innerText = ttmCashDivs;
+            document.querySelector(".cash-dividends-paid > .year1").innerText = cashDivsYr1;
+            document.querySelector(".cash-dividends-paid > .year2").innerText = cashDivsYr2;
+
+            //end-cash-position
+            let ttmEndCashPos, endCashPosYr1, endCashPosY2;
+            ttmEndCashPos = checkStmtProp(cashJsonData.trailingEndCashPosition[0]);
+            endCashPosYr1 = checkStmtProp(cashJsonData.annualEndCashPosition[timestampLength - 1]);
+            endCashPosY2 = checkStmtProp(cashJsonData.annualEndCashPosition[timestampLength - 2]);
+            document.querySelector(".end-cash-position > .ttm").innerText = ttmEndCashPos;
+            document.querySelector(".end-cash-position > .year1").innerText = endCashPosYr1;
+            document.querySelector(".end-cash-position > .year2").innerText = endCashPosY2;
+
+            //capital-expenditure
+            let ttmCapEx, capExYr1, capExY2;
+            ttmCapEx = checkStmtProp(cashJsonData.trailingCapitalExpenditure[0]);
+            capExYr1 = checkStmtProp(cashJsonData.annualCapitalExpenditure[timestampLength - 1]);
+            capExY2 = checkStmtProp(cashJsonData.annualCapitalExpenditure[timestampLength - 2]);
+            document.querySelector(".capital-expenditure > .ttm").innerText = ttmCapEx;
+            document.querySelector(".capital-expenditure > .year1").innerText = capExYr1;
+            document.querySelector(".capital-expenditure > .year2").innerText = capExY2;
+
+            //common-stock-iss
+            let ttmcommStockIss, commStockIssYr1, commStockIssY2;
+            ttmcommStockIss = checkStmtProp(cashJsonData.trailingCommonStockIssuance[0]);
+            commStockIssYr1 = checkStmtProp(cashJsonData.annualCommonStockIssuance[timestampLength - 1]);
+            commStockIssY2 = checkStmtProp(cashJsonData.annualCommonStockIssuance[timestampLength - 2]);
+            document.querySelector(".common-stock-iss > .ttm").innerText = ttmcommStockIss;
+            document.querySelector(".common-stock-iss > .year1").innerText = commStockIssYr1;
+            document.querySelector(".common-stock-iss > .year2").innerText = commStockIssY2;
+
+            //repayment-of-debt
+            let ttmRepayDebt, repayDebtYr1, repayDebtY2;
+            ttmRepayDebt = checkStmtProp(cashJsonData.trailingRepaymentOfDebt[0]);
+            repayDebtYr1 = checkStmtProp(cashJsonData.annualRepaymentOfDebt[timestampLength - 1]);
+            repayDebtY2 = checkStmtProp(cashJsonData.annualRepaymentOfDebt[timestampLength - 2]);
+            document.querySelector(".repayment-of-debt > .ttm").innerText = ttmRepayDebt;
+            document.querySelector(".repayment-of-debt > .year1").innerText = repayDebtYr1;
+            document.querySelector(".repayment-of-debt > .year2").innerText = repayDebtY2;
+
+            //free-cash-flow
+            let ttmFreeCashFlow, freeCashFlowYr1, freeCashFlowY2;
+            ttmFreeCashFlow = checkStmtProp(cashJsonData.trailingFreeCashFlow[0]);
+            freeCashFlowYr1 = checkStmtProp(cashJsonData.annualFreeCashFlow[timestampLength - 1]);
+            freeCashFlowY2 = checkStmtProp(cashJsonData.annualFreeCashFlow[timestampLength - 2]);
+            document.querySelector(".free-cash-flow > .ttm").innerText = ttmFreeCashFlow;
+            document.querySelector(".free-cash-flow > .year1").innerText = freeCashFlowYr1;
+            document.querySelector(".free-cash-flow > .year2").innerText = freeCashFlowY2;
+        }
+        const getNews = async (symbol) => {
+            const url = `https://real-time-finance-data.p.rapidapi.com/stock-news?symbol=${symbol}%3ANASDAQ&language=en`;
+            let response,
+                result
+            try {
+                response = await fetch(url, newsApiOptions);
+                result = await response.json();
+            } catch (error) {
+                console.error(error);
+            }
+            return result
+        }
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        const populateNews = async (symbol) => {
+            let news = await getNews(symbol).then((res) => { return res }).catch((e) => console.log(e));
+
+            let newsArr = news.data.news;
+            let title, articleUrl, source, date;
+            let length = newsArr.length - 1;
+            let i = getRandomInt(length);
+            let curr = newsArr[i];
+            while (curr === null || curr === undefined) {
+                i = getRandomInt(length);
+                curr = newsArr[i];
+            }
+
+            title = curr.article_title;
+            articleUrl = curr.article_url;
+            source = curr.source;
+            date = curr.post_time_utc;
+            let dateOb = new Date(date);
+            let hr = dateOb.getHours();
+            let dateOfMonth = dateOb.getDate();
+            console.log(hr, dateOfMonth)
+            const insightContainer = document.querySelector("#insights-container");
+            if (news) {
+                document.querySelector("#article-title").innerText = `"${title}"`;
+                document.querySelector("#article-source > #article-link").setAttribute("href", articleUrl)
+                document.querySelector("#article-source > #article-link").innerText = source;
+
+                console.log("date:", date, typeof date)
+                document.querySelector("#article-time").innerText = `${date} UTC`;
+            } else {
+                insightContainer.style.display = "none";
+            }
+
+        }
+
+
         /**
                 const idlePage = () => {
                     if (timeout) {
@@ -1611,51 +1754,6 @@
                     }, 180000);
                 }
         */
-        const setSlideYears = () => {
-
-        }
-        const grabIncomeStmt = () => {
-            const incomeStmtURL = `${incomeURL}${stockTicker}${endURL}`
-            let getIncomeStmt = fetch(incomeStmtURL, apiOptions);
-            return getIncomeStmt
-        }
-        const grabBalanceSht = () => {
-            const balanceShtURL = `${balanceURL}${stockTicker}${endURL}`
-            let getBalanceSht = fetch(balanceShtURL, apiOptions);
-            return getBalanceSht
-        }
-        const grabCashFlowSt = () => {
-            const cashFlowStURL = `${cashflowURL}${stockTicker}${endURL}`
-            let getCashFlowSt = fetch(cashFlowStURL, apiOptions);
-            return getCashFlowSt
-        }
-        const grabSlides = async () => {
-            if (quoteType) {
-                if (quoteType === "EQUITY") {
-                    let fetchResultsArr = await Promise.all([
-                        grabIncomeStmt(),
-                        grabBalanceSht(),
-                        grabCashFlowSt(),
-                    ])
-                        .then((resArr) => { return Promise.all(resArr.map(resp => resp.json())) })
-                        .then((jsonDataArray) => {
-
-                            let jsonIncome = jsonDataArray[0];
-                            let jsonBalance = jsonDataArray[1];
-                            let jsonCashflow = jsonDataArray[2];
-                            return [jsonIncome, jsonBalance, jsonCashflow];
-                        })
-                        .catch((e) => console.log(e));
-
-                    console.log("fetched:", fetchResultsArr[0])
-                    return fetchResultsArr
-                }
-            }
-        }
-        const populateIncomeSt = () => {
-        }
-        const populateBalanceSht = () => { };
-        const populateCashflowSt = () => { };
 
         const setEventListeners = () => {
             //timeline links: 1d 5d ytd 1y 2yr
@@ -1781,8 +1879,8 @@
         summaryProfileContainer.removeAttribute("style");
         runProgressBar("1d");
         setEventListeners();
-        formatPrice(commas, "commas")
-        // grabSlides().then((resp) => console.log(resp[0])).then(() => populateIncomeSt()).catch((e) => console.log(e))
+        formatPrice(commas, "commas");
+
         //set interval to fetch/grab chart data "1d", and set session for periodic price update
     </script>
 

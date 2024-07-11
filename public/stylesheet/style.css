@@ -253,7 +253,7 @@
     justify-content: space-between;
     row-gap: 10px;
     height: max-content;
-    width: max-content;
+    width: 100%;
   }
 
   #chart_container {
@@ -345,17 +345,29 @@
     font-weight: bold;
     font-size: 12px;
   }
+
+  #price-insight-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+  }
+
   #price_hours_container {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     row-gap: 5px;
+    width: 100%;
   }
 
   #price_hours_container > #company_name {
-    width: 315px;
-    max-width: 315px;
+    width: 100%;
+    max-width: 100%;
     overflow: hidden;
     text-wrap: wrap;
   }
@@ -366,6 +378,7 @@
     flex-direction: column;
     justify-content: center;
     row-gap: 6px;
+    width: 100%;
   }
 
   #price_hours_container > #price_time_container > .reg_after_container {
@@ -394,6 +407,57 @@
     display: flex;
     justify-content: flex-start;
     column-gap: 5px;
+  }
+  #insights-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 8px;
+    align-items: center;
+    font-family: inherit;
+    overflow: hidden;
+    text-wrap: wrap;
+    width: 100%;
+  }
+
+  #source-time-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 5px;
+    width: 100%;
+    overflow: hidden;
+    text-wrap: wrap;
+  }
+  #article-title {
+    font-size: 12.5px;
+    font-family: "Crimson Text", sans-serif;
+    color: var(--greenish);
+    font-weight: 800;
+  }
+
+  #article-source {
+    color: var(--greenish);
+    font-size: 10px;
+  }
+
+  #article-link {
+    text-decoration: none;
+    color: var(--greenish);
+  }
+
+  #article-link:hover {
+    text-decoration: underline;
+    color: var(--purp);
+    cursor: pointer;
+  }
+
+  #article-time {
+    font-size: 9px;
+    color: var(--greenish);
   }
 
   #technical-opinion-container {
@@ -524,7 +588,7 @@
   }
 
   .slide-data {
-    font-size: 12px;
+    font-size: 75%;
     font-weight: 200;
     width: 20%;
     min-width: 20%;
@@ -541,10 +605,9 @@
 
   .data-align-left {
     text-align: left;
-
-    width: 40%;
-    min-width: 40%;
-    max-width: 40%;
+    width: 25%;
+    min-width: 25%;
+    max-width: 30%;
   }
 
   #ratio-container,
@@ -632,15 +695,15 @@
     column-gap: 3.5px;
   }
 
-  #website > a:link {
+  #address_container > #website > #link {
     text-decoration: none;
     color: var(--eve);
   }
 
-  #website > a:hover {
+  #address_container > #website > #link:hover {
     cursor: pointer;
     text-decoration: underline;
-    color: var(--bluish);
+    color: var(--purp);
   }
 
   #profile_container2 > #key_execs_container {
@@ -913,7 +976,10 @@
     width: 175px;
   }
 
-  body footer .container .second-child {
+  body footer #footer-bottom-row > .second-child {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 2px;
     width: 100px;
   }
 
@@ -936,13 +1002,7 @@
     font-size: 9px;
   }
 
-  body footer #footer-bottom-row > .second-child {
-    display: flex;
-    justify-content: flex-start;
-    column-gap: 2px;
-  }
-
-  body footer #footer-bottom-row > .second-child > a {
+  body footer #footer-bottom-row > .second-child > .link {
     font-size: 10px;
     color: inherit;
     font-weight: 400;
@@ -950,7 +1010,31 @@
     text-decoration: none;
   }
 }
+@media screen and (min-width: 470px) {
+  #price-insight-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    column-gap: 15px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+  }
+  #article-title {
+    font-size: 13px;
+  }
+  #article-source {
+    font-size: 11px;
+  }
+  #article-time {
+    font-size: 10px;
+  }
 
+  #source-time-container {
+    align-items: flex-end;
+    padding-right: 7%;
+  }
+}
 @media screen and (min-width: 500px) {
   #home_body #index_section_container .index_container {
     font-size: 13.5px;

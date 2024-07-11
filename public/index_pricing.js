@@ -613,5 +613,51 @@ let symbols = [
                                                                 <% totalAssets[i]=curr.reportedValue.fmt %>
                                                                     <% }}}} %>
                                                                         <% }} %>
+  const grabIncomeStmt = () => {
+            const incomeStmtURL =
+                `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${stockTicker}&region=US`
+            //`${incomeURL}${stockTicker}${endURL}`
+            let getIncomeStmt = fetch(incomeStmtURL, apiOptions);
+            return getIncomeStmt
+        }
+        const grabBalanceSht = () => {
+            const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${stockTicker}&region=US`
+            // `${balanceURL}${stockTicker}${endURL}`
+            let getBalanceSht = fetch(balanceShtURL, apiOptions);
+            return getBalanceSht
+        }
+        const grabCashFlowSt = () => {
+            const cashFlowStURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${stockTicker}&region=US`
+            //`${cashflowURL}${stockTicker}${endURL}`
+            let getCashFlowSt = fetch(cashFlowStURL, apiOptions);
+            return getCashFlowSt
+        }
+        const grabSlides = async () => {
+            if (quoteType) {
+                if (quoteType === "EQUITY") {
+                    let fetchResultsArr = await Promise.all([
+                        grabIncomeStmt(),
+                        grabBalanceSht(),
+                        grabCashFlowSt(),
+                    ])
+                        .then((resArr) => { return Promise.all(resArr.map(resp => resp.json())) })
+                        .then((jsonDataArray) => {
+
+                            let jsonIncome = jsonDataArray[0];
+                            let jsonBalance = jsonDataArray[1];
+                            let jsonCashflow = jsonDataArray[2];
+                            return [jsonIncome, jsonBalance, jsonCashflow];
+                        })
+                        .catch((e) => console.log(e));
+
+                    console.log("fetched:", fetchResultsArr)
+                    return fetchResultsArr
+                }
+            }
+        }
+        const populateIncomeSt = () => {
+        }
+        const populateBalanceSht = () => { };
+        const populateCashflowSt = () => { };
 
         */

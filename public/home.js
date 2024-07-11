@@ -94,6 +94,7 @@ const marketStatusCheck = () => {
 };
 
 const startCountDown = (mkt) => {
+  //later: simulate "Sunday night"
   let currFullNycDate = new Date().toLocaleString("en-US", {
     timeZone: nycTimeZone,
   });
