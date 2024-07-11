@@ -350,7 +350,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    row-gap: 15px;
+    row-gap: 18px;
     justify-content: center;
     align-items: flex-start;
     width: 100%;
