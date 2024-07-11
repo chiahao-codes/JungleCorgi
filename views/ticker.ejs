@@ -1256,7 +1256,8 @@
                     let postMarketChangePercent = '<%=postMarketChangePercent%>'
                     console.log("regmarkettime:", regMarketTime, "regTime.start:", regTime.start)
                     console.log("post time.end:", postTime.end)
-                    if (regMarketTime >= preTime.start && regMarketTime < preTime.end) {
+
+                    if (regMarketTime >= preTime.start && regMarketTime < preTime.end || timeStampEnding < preTime.end && timeStampEnding >= preTime.start) {
                         prePostMarketState = "Pre-Market:"
                         console.log("pre")
 
@@ -1271,7 +1272,7 @@
                         }
                     }
 
-                    if (regMarketTime >= regTime.end && regMarketTime <= postTime.end || regMarketTime < preTime.start && regMarketTime < regTime.start) {
+                    if (regMarketTime >= regTime.end && regMarketTime <= postTime.end || timeStampEnding < postTime.end && timeStampEnding >= postTime.start) {
                         prePostMarketState = "After Hours:"
                         console.log("post")
                         if (timeStampEnding < regMarketTime) timeStampEnding = regMarketTime;
@@ -1693,6 +1694,7 @@
             } catch (error) {
                 console.error(error);
             }
+
             return result
         }
         function getRandomInt(max) {
@@ -1701,27 +1703,27 @@
 
         const populateNews = async (symbol) => {
             let news = await getNews(symbol).then((res) => { return res }).catch((e) => console.log(e));
+            console.log("news:", news)
+            if (news.data.news) {
+                let newsArr = news.data.news;
+                let title, articleUrl, source, date;
+                let length = newsArr.length - 1;
+                let i = getRandomInt(length);
+                let curr = newsArr[i];
+                while (curr === null || curr === undefined) {
+                    i = getRandomInt(length);
+                    curr = newsArr[i];
+                }
 
-            let newsArr = news.data.news;
-            let title, articleUrl, source, date;
-            let length = newsArr.length - 1;
-            let i = getRandomInt(length);
-            let curr = newsArr[i];
-            while (curr === null || curr === undefined) {
-                i = getRandomInt(length);
-                curr = newsArr[i];
-            }
+                title = curr.article_title;
+                articleUrl = curr.article_url;
+                source = curr.source;
+                date = curr.post_time_utc;
+                let dateOb = new Date(date);
+                let hr = dateOb.getHours();
+                let dateOfMonth = dateOb.getDate();
+                console.log(hr, dateOfMonth)
 
-            title = curr.article_title;
-            articleUrl = curr.article_url;
-            source = curr.source;
-            date = curr.post_time_utc;
-            let dateOb = new Date(date);
-            let hr = dateOb.getHours();
-            let dateOfMonth = dateOb.getDate();
-            console.log(hr, dateOfMonth)
-            const insightContainer = document.querySelector("#insights-container");
-            if (news) {
                 document.querySelector("#article-title").innerText = `"${title}"`;
                 document.querySelector("#article-source > #article-link").setAttribute("href", articleUrl)
                 document.querySelector("#article-source > #article-link").innerText = source;
@@ -1729,9 +1731,9 @@
                 console.log("date:", date, typeof date)
                 document.querySelector("#article-time").innerText = `${date} UTC`;
             } else {
+                const insightContainer = document.querySelector("#insights-container");
                 insightContainer.style.display = "none";
             }
-
         }
 
 

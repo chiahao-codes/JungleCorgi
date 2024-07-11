@@ -92,7 +92,6 @@ let checkStmtProp = (property) => {
     ? property.reportedValue.fmt
     : "n/a";
 };
-let cache = {};
 
 app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
@@ -186,27 +185,26 @@ app.get("/:symbol", async (req, res) => {
   const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
 
   //check cache first;
-  if (cache[symbol]) {
-    quotes = cache[symbol].quote;
-    quoteType = cache[symbol].quote.quoteType;
-  } else {
-    quotes = await fetch(quotesURL, apiOptions)
-      .then((res) => res.json())
-      .catch((e) => console.log(e));
 
-    if (quotes) {
-      if (quotes.quoteResponse.result.length > 0) {
-        quotes = quotes.quoteResponse.result[0];
-        quoteType = quotes.quoteType;
-      }
+  quotes = cache[symbol].quote;
+  quoteType = cache[symbol].quote.quoteType;
+
+  quotes = await fetch(quotesURL, apiOptions)
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+
+  if (quotes) {
+    if (quotes.quoteResponse.result.length > 0) {
+      quotes = quotes.quoteResponse.result[0];
+      quoteType = quotes.quoteType;
     }
+  }
 
-    /**
+  /**
      * must save in external database;
      * Object.defineProperty(cache, symbol, { value: { quote: quotes } });
     console.log("cache quotes:", cache[symbol]);
      */
-  }
 
   if (
     !quoteType ||
