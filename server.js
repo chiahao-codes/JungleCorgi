@@ -50,9 +50,10 @@ app.get("/", async (req, res, next) => {
     .catch((e) => console.log(e));
 
   if (prices) {
-    console.log("prices:", prices);
     res.render("home", { prices });
   }
+
+  //server error page;
 });
 
 app.get("/disclaimer", async (req, res, next) => {
@@ -95,13 +96,11 @@ let checkStmtProp = (property) => {
 
 app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
-    quotes,
+    yahuSearch,
     analysisFetch,
-    insightsFetch,
     profileFetch,
     previousClose,
     profile,
-    insights,
     analysis,
     quoteType,
     analysisMktState,
@@ -175,37 +174,44 @@ app.get("/:symbol", async (req, res) => {
     retEarn1,
     retEarn2,
     retEarn3,
-    currencyCode;
+    currencyCode,
+    shortName,
+    longName,
+    yahuNews;
 
-  const quotesURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
-  //const insightsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-insights?symbol=${symbol}`;
-  const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`;
-  const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${symbol}&region=US`;
-  const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US`;
-  const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
+  symbol = symbol.toUpperCase();
+  const yahuSearchURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete?region=US&q=%5E${symbol}`;
+  //`https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
+  //const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`;
+  //const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${symbol}&region=US`;
 
-  //check cache first;
+  //check for company name or symbol via search;
 
-  quotes = cache[symbol].quote;
-  quoteType = cache[symbol].quote.quoteType;
-
-  quotes = await fetch(quotesURL, apiOptions)
+  //if index; use quotes;
+  //or, make the homepage search bar more specific in terms of symbols and company names;
+  //no ^gspc or index allowed.
+  yahuSearch = await fetch(yahuSearchURL, apiOptions)
     .then((res) => res.json())
     .catch((e) => console.log(e));
 
-  if (quotes) {
-    if (quotes.quoteResponse.result.length > 0) {
-      quotes = quotes.quoteResponse.result[0];
-      quoteType = quotes.quoteType;
+  if (yahuSearch) {
+    if (yahuSearch.quotes.length > 0) {
+      for (let ele of yahuSearch.quotes) {
+        if (ele.symbol === symbol) {
+          quoteType = ele.quoteType;
+          shortName = ele.shortName;
+          longName = ele.longName;
+          if (ele.news.length > 0) {
+            yahuNews = ele.news;
+          }
+        }
+      }
+      //  quotes = quotes.quoteResponse.result[0];
+      // previousClose = quotes.regularMarketPreviousClose;
     }
   }
-
-  /**
-     * must save in external database;
-     * Object.defineProperty(cache, symbol, { value: { quote: quotes } });
-    console.log("cache quotes:", cache[symbol]);
-     */
-
+  console.log(yahuSearch);
+  console.log(quoteType);
   if (
     !quoteType ||
     quoteType === "ECNQUOTE" ||
@@ -215,23 +221,17 @@ app.get("/:symbol", async (req, res) => {
     return res.render("404");
   }
 
-  if (quotes.regularMarketPreviousClose)
-    previousClose = quotes.regularMarketPreviousClose;
-
   if (quoteType === "EQUITY") {
-    analysisFetch = await fetch(analysisURL, apiOptions);
-    analysisResp = await analysisFetch.json();
-
-    profileFetch = await fetch(profileURL, apiOptions);
-    profileResp = await profileFetch.json();
-    // insightsFetch = fetch(insightsURL, apiOptions);
-    getIncomeStmtFetch = await fetch(incomeStmtURL, apiOptions);
-    incomeResp = await getIncomeStmtFetch.json();
-
-    getBalanceShtFetch = await fetch(balanceShtURL, apiOptions);
-    balanceResp = await getBalanceShtFetch.json();
-
+    // analysisFetch = await fetch(analysisURL, apiOptions);
+    // analysisResp = await analysisFetch.json();
+    // profileFetch = await fetch(profileURL, apiOptions);
+    // profileResp = await profileFetch.json();
+    // getIncomeStmtFetch = await fetch(incomeStmtURL, apiOptions);
+    // incomeResp = await getIncomeStmtFetch.json();
+    // getBalanceShtFetch = await fetch(balanceShtURL, apiOptions);
+    // balanceResp = await getBalanceShtFetch.json();
     //equity analysis values;
+    /** 
     analysis = analysisResp;
     preMarketPrice = analysis.price.preMarketPrice;
     preMarketChange = analysis.price.preMarketChange;
@@ -242,8 +242,9 @@ app.get("/:symbol", async (req, res) => {
 
     //stock profile info;
     profile = profileResp.quoteSummary.result[0];
-
+*/
     //income statement:
+    /**
     income = incomeResp.timeSeries;
     let length = income.timestamp.length;
     incomeYr1 = income.timestamp[length - 1];
@@ -353,6 +354,8 @@ app.get("/:symbol", async (req, res) => {
     retEarn1 = checkStmtProp(balance.annualRetainedEarnings[balLength - 1]);
     retEarn2 = checkStmtProp(balance.annualRetainedEarnings[balLength - 2]);
     retEarn3 = checkStmtProp(balance.annualRetainedEarnings[balLength - 3]);
+
+     */
   }
 
   res.render("ticker", {
@@ -432,6 +435,8 @@ app.get("/:symbol", async (req, res) => {
     retEarn3,
     currencyCode,
     NEWS,
+    symbol,
+    yahuNews,
   });
 });
 

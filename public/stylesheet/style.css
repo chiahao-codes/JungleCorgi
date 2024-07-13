@@ -417,7 +417,7 @@
     align-items: center;
     font-family: inherit;
     overflow: hidden;
-    text-wrap: wrap;
+
     width: 100%;
   }
 
@@ -437,6 +437,7 @@
     font-family: "Crimson Text", sans-serif;
     color: var(--greenish);
     font-weight: 800;
+    text-wrap: wrap;
   }
 
   #article-source {

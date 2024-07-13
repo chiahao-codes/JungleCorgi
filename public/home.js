@@ -13,7 +13,7 @@ const symbols = [
   "^HSI",
   "^FTSE",
   "BTC-USD",
-  "^VIX",
+  "^VVIX",
   "GC=F",
   "CL=F",
   "NG=F",

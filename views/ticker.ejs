@@ -18,11 +18,11 @@
                     <span id="arrow">></span>
                     <span id="symbol">
                         <% let symb="" %>
-                            <% if(quotes){ %>
-                                <% if(quotes.symbol){%>
-                                    <% symb=quotes.symbol%>
-                                        <% }}%>
-                                            <%=symb%>
+                            <% if(symbol){ %>
+
+                                <% symb=symbol%>
+                                    <% }%>
+                                        <%=symb%>
                     </span>
                 </div>
                 <div id="price-insight-container">
@@ -922,7 +922,7 @@
     <script>
         const pageUrl = window.location.href;
         localStorage.setItem("url", pageUrl);
-        const stockTicker = '<%=quotes.symbol%>';
+        const stockTicker = '<%=symbol%>';
         const quoteType = '<%=quoteType%>';
         const KEY = '<%=API_KEY%>';
         const HOST = '<%=RAPID%>';
@@ -1186,7 +1186,7 @@
             return
         };
         const setSession = (res) => {
-            return new Promise((resolve) => {
+            return new Promise(async (resolve) => {
 
                 const sessionObj = res.chart.result[0];
 
@@ -1244,7 +1244,9 @@
                 atCloseContainer.children[0].innerText = regDateTime;
                 atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
 
-                const analysis = '<%=analysis%>'
+                const analysis = '<%=analysis%>';
+                //run analysis function here;
+                await runAnalysis(stockTicker);
                 if (analysis) {
 
                     let preMarketPrice = '<%=preMarketPrice%>';
@@ -1569,25 +1571,55 @@
 
             //settimeout allows for animation to run for a bit;
             timeoutId = setTimeout(() => {
-                runChart(range).then(() => {
+                runChart(range).then(async () => {
                     if (quoteType === "EQUITY") {
-                        populateNews(stockTicker);
-
+                        await populateNews(stockTicker);
+                    }
+                }).then(async () => {
+                    if (quoteType === "EQUITY") {
+                        await populateIncomeData(stockTicker)
+                    }
+                }).then(async () => {
+                    if (quoteType === "EQUITY") {
+                        await populateBalanceData(stockTicker)
+                    }
+                }).then(async () => {
+                    if (quoteType === "EQUITY") {
+                        await populateCashFlowData(stockTicker)
                     }
                 }).then(() => {
                     if (quoteType === "EQUITY") {
-                        populateCashFlowData(stockTicker);
+                        populateProfile(stockTicker)
                     }
                 }).catch((e) => console.log(e));
             }, 0)
         }
-        const getCashFlow = async (symbol) => {
-            const cashFlowStURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
-            const response = await fetch(cashFlowStURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
+        const getBalanceSht = async (symbol) => {
+            const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
+            const response = await fetch(balanceShtURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
             const result = await response.json();
             return result
         }
-
+        const getIncomeStmt = async (symbol) => {
+            const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US`;
+            const response = await fetch(incomeStmtURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
+            const result = await response.json();
+            return result
+        }
+        const getCashFlow = async (symbol) => {
+            const cashFlowStURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
+            const response = await fetch(cashFlowStURL, apiOptions).catch((e) => console.log(e));
+            const result = await response.json();
+            return result
+        }
+        const populateIncomeData = async (symbol) => {
+            let incomeData = await getIncomeStmt(symbol).then((res) => { return res }).catch((e) => console.log(e));
+            console.log("income data:", incomeData)
+        }
+        const populateBalanceData = async (symbol) => {
+            let balanceData = await getBalanceSht(symbol).then((res) => { return res }).catch((e) => console.log(e));
+            console.log("balance data:", balanceData)
+        }
         let checkStmtProp = (property) => {
             return property && property.reportedValue.fmt
                 ? property.reportedValue.fmt
@@ -1700,7 +1732,6 @@
         function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
-
         const populateNews = async (symbol) => {
             let news = await getNews(symbol).then((res) => { return res }).catch((e) => console.log(e));
             console.log("news:", news)
@@ -1735,8 +1766,23 @@
                 insightContainer.style.display = "none";
             }
         }
+        const runAnalysis = async (symbol) => {
+            let analysisFetch, analysisResp;
 
+            const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${symbol}&region=US`;
+            analysisFetch = await fetch(analysisURL, apiOptions);
+            analysisResp = await analysisFetch.json();
+            console.log("analysis response:", analysisResp)
+        }
+        const populateProfile = async (symbol) => {
+            let profileFetch,
+                profileResp;
+            const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`;
 
+            profileFetch = await fetch(profileURL, apiOptions);
+            profileResp = await profileFetch.json();
+            console.log("profile:", profileResp)
+        }
         /**
                 const idlePage = () => {
                     if (timeout) {
