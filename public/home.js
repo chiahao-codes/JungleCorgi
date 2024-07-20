@@ -260,7 +260,7 @@ setInterval(() => {
 h2Box.addEventListener("focus", () => {
   const h2ChildNodes = h2Box.childNodes;
   const selection = window.getSelection();
-  if (h2Box.innerText === "Enter ticker...") {
+  if (h2Box.innerText === "Enter ticker or company...") {
     h2Box.innerText = "";
   }
   //set caret position after text node
@@ -274,7 +274,7 @@ h2Box.addEventListener("focus", () => {
 });
 
 h2Box.addEventListener("focusout", () => {
-  if (h2Box.innerText === "") h2Box.innerText = "Enter ticker...";
+  if (h2Box.innerText === "") h2Box.innerText = "Enter ticker or company...";
   if (h2Box.style.backgroundColor === "#15192f") {
     h2Box.style.backgroundColor = "#012c12";
   }
@@ -282,7 +282,7 @@ h2Box.addEventListener("focusout", () => {
 
 h2Box.addEventListener("keydown", (e) => {
   const textString = h2Box.innerText;
-  if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
+  if (textString.length >= 20 && e.key !== "Backspace" && e.key !== "Enter") {
     e.preventDefault();
     alert("Character amount exceeded");
   }

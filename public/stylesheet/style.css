@@ -62,6 +62,7 @@
     position: relative;
     font-family: inherit;
     font-weight: 700;
+    font-size: 18px;
     padding: 3px 1px 1px 2px;
     height: 40px;
     width: 250px;
@@ -269,7 +270,6 @@
     padding: 1px;
   }
 
-  /**/
   #progress-bar-container {
     position: absolute;
     margin: auto;
@@ -301,7 +301,22 @@
       width: 95%;
     }
   }
+  #not-available-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: var(--bluish);
+  }
 
+  #not-available {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    font-family: "Noto Sans", sans-serif;
+    color: var(--cold-white);
+  }
   .run-progress-animation {
     animation: progress-animation 2s ease-in forwards;
   }
@@ -417,7 +432,6 @@
     align-items: center;
     font-family: inherit;
     overflow: hidden;
-
     width: 100%;
   }
 
@@ -610,7 +624,16 @@
     min-width: 25%;
     max-width: 30%;
   }
-
+  #index-data-kids-container {
+    width: 100%;
+    min-width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 50px;
+  }
   #ratio-container,
   #prev-close-container {
     position: relative;
@@ -642,7 +665,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    row-gap: 12px;
+    row-gap: 15px;
     width: 100%;
     height: max-content;
     overflow: hidden;
@@ -685,10 +708,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    row-gap: 3px;
-    font-size: 12.5px;
+    row-gap: 3.5px;
   }
 
+  .address-details {
+    font-size: 11px;
+  }
   #profile_container2 > #address_container > #city_state_container {
     position: relative;
     display: flex;
@@ -707,29 +732,26 @@
     color: var(--purp);
   }
 
-  #profile_container2 > #key_execs_container {
+  #profile_container2 > #ceo-employee-container {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    row-gap: 10px;
-    font-size: 12.5px;
+    justify-content: flex-start;
+    row-gap: 2px;
+    align-items: flex-start;
   }
 
-  #profile_container2 > #key_execs_container > ul {
-    list-style: none;
-    color: inherit;
-  }
-
-  #profile_container2 > #employee_container {
+  .ceo-employee {
     position: relative;
     display: flex;
+    flex-direction: row;
     justify-content: flex-start;
-    column-gap: 8px;
+    align-items: center;
+    column-gap: 5px;
   }
 
-  #profile_container2 > #employee_container > p {
-    font-size: 12.5px;
+  .ceo-employee > p {
+    font-size: 11px;
   }
 
   #error_body main {
@@ -1046,6 +1068,11 @@
   body header h2 {
     width: 275px;
   }
+  #index-data-kids-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 50px;
+  }
 }
 
 @media screen and (min-width: 600px) {
@@ -1106,7 +1133,7 @@
     max-width: 760px;
   }
 
-  #index_data_container > .index-data-kids {
+  .index-data-kids {
     max-width: 400px;
     border: 1px solid var(--eve);
     border-radius: 3.7px;
@@ -1129,16 +1156,6 @@
     flex-direction: row;
     justify-content: flex-start;
     column-gap: 70px;
-  }
-
-  #profile_container2 > #key_execs_container {
-    justify-content: flex-start;
-  }
-
-  #profile_container2 > #employee_container {
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 7px;
   }
 }
 

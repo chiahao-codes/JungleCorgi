@@ -29,13 +29,12 @@
                     <div id="price_hours_container">
                         <h5 id="company_name">
                             <% let name="" %>
-                                <% if(quotes){%>
-                                    <% if(quotes.shortName){ %>
-                                        <% name=quotes.shortName %>
-                                            <% if(quotes.longName){ %>
-                                                <% name=quotes.longName %>
-                                                    <% }}} %>
-                                                        <%= name %>
+                                <% if(shortName){ %>
+                                    <% name=shortName %>
+                                        <% if(longName){ %>
+                                            <% name=longName %>
+                                                <% }} %>
+                                                    <%= name %>
                         </h5>
                         <div id="price_time_container">
                             <div id="reg_container" class="reg_after_container">
@@ -92,6 +91,9 @@
                 <div id="progress-bar-container">
                     <div id="progress-bar" style="--width:35">Loading...</div>
                 </div>
+                <div id="not-available-container">
+                    <div id="not-available">Chart Not Available</div>
+                </div>
                 <canvas id="chart" class="charts"></canvas>
             </div>
         </div>
@@ -104,287 +106,187 @@
         </div>
         </div>
         <section id="index_data_container" class="index_data_container">
-            <div id="ratio-container" class="index-data-kids">
-                <div class="border-line">
-                    <div id="fwdPeRatio">Forward P/E</div>
-                    <% let fwdPeRatio="N/A" %>
-                        <% if(analysis){ %>
-                            <% if(analysis.summaryDetail){ %>
-                                <% if(analysis.summaryDetail.forwardPE.fmt){ %>
-                                    <% fwdPeRatio=analysis.summaryDetail.forwardPE.fmt}}} %>
-                                        <div id="fwdPeRatioData" class="indexData">
-                                            <%=fwdPeRatio %>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="ttmPeRatio">P/E (TTM)</div>
-                    <% let ttmPeRatio="N/A" %>
-                        <% if(analysis){ %>
-                            <% if(analysis.summaryDetail){ %>
-                                <% if(analysis.summaryDetail.trailingPE){ %>
-                                    <% ttmPeRatio=analysis.summaryDetail.trailingPE.fmt}}} %>
-                                        <div id="ttmPeRatioData" class="indexData">
-                                            <%=ttmPeRatio %>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="revGrow">Revenue Growth</div>
-                    <% let revGrow="N/A" %>
-                        <% if(analysis){%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.revenueGrowth){ %>
-                                    <% revGrow=analysis.financialData.revenueGrowth.fmt}}} %>
-                                        <div id="revGrowData" class="indexData">
-                                            <%=revGrow%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="ebitMarg">Ebitda Margin</div>
-                    <% let ebitMarg="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.ebitdaMargins.fmt){ %>
-                                    <% ebitMarg=analysis.financialData.ebitdaMargins.fmt}}} %>
-                                        <div id="ebitMarg" class="indexData">
-                                            <%=ebitMarg%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="curr-ratio">Current Ratio</div>
-                    <% let currRatio="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.currentRatio.fmt){ %>
-                                    <% currRatio=analysis.financialData.currentRatio.fmt}}} %>
-                                        <div id="curr-ratio" class="indexData">
-                                            <%=currRatio%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="quick-ratio">Quick Ratio</div>
-                    <% let quickRatio="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.quickRatio.fmt){ %>
-                                    <% quickRatio=analysis.financialData.quickRatio.fmt}}}%>
-                                        <div id="quick-ratio" class="indexData">
-                                            <%=quickRatio%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="debt-ratio">Debt-to-Equity Ratio</div>
-                    <% let debtRatio="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.debtToEquity.fmt){ %>
-                                    <% debtRatio=analysis.financialData.debtToEquity.fmt}}}%>
-                                        <div id="debt-ratio" class="indexData">
-                                            <%=debtRatio%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="retEqu">Return On Equity</div>
-                    <% let rEq="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.returnOnEquity.fmt){ %>
-                                    <% rEq=analysis.financialData.returnOnEquity.fmt}}} %>
-                                        <div id="retEqu" class="indexData">
-                                            <%=rEq%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="op-Margin">Operating Margin</div>
-                    <% let opMargin="N/A" %>
-                        <% if(analysis){ %>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.operatingMargins.fmt){ %>
-                                    <% opMargin=analysis.financialData.operatingMargins.fmt}}} %>
-                                        <div id="op-Margin" class="indexData">
-                                            <%=opMargin%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="prof-Margin">Profit Margin</div>
-                    <% let profMargin="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.profitMargins.fmt){ %>
-                                    <% profMargin=analysis.financialData.profitMargins.fmt}}} %>
-                                        <div id="prof-Margin" class="indexData">
-                                            <%=profMargin%>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="grossMargin">Gross Margin</div>
-                    <% let grossMargin="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.financialData){ %>
-                                <% if(analysis.financialData.grossMargins.fmt){ %>
-                                    <% grossMargin=analysis.financialData.grossMargins.fmt}}}%>
-                                        <div id="grossMarginPct" class="indexData">
-                                            <%=grossMargin %>
-                                        </div>
-                </div>
-                <div class="border-line">
-                    <div id="dividend">Dividend Rate</div>
-                    <% let divRate="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.summaryDetail){%>
-                                <% if(analysis.summaryDetail.dividendRate){ %>
-                                    <% if(analysis.summaryDetail.dividendRate.fmt){ %>
-                                        <% divRate=analysis.summaryDetail.dividendRate.fmt}}}}%>
-                                            <div id="dividendRate" class="indexData div-rate">
-                                                <%=divRate %>
-                                            </div>
-                </div>
-                <div class="border-line no-border-bottom">
-                    <div id="exDividend">Ex-Dividend Date</div>
-                    <% let exDiv="N/A" %>
-                        <% if(analysis) {%>
-                            <% if(analysis.summaryDetail){ %>
-                                <% if(analysis.summaryDetail.exDividendDate){ %>
-                                    <% if(analysis.summaryDetail.exDividendDate.fmt){ %>
-                                        <% exDiv=analysis.summaryDetail.exDividendDate.fmt}}}}%>
-                                            <div id="exDivDate" class="indexData exDivDate">
-                                                <%=exDiv %>
-                                            </div>
-                </div>
-            </div>
-            <div id="prev-close-container" class="index-data-kids">
-                <div class="border-line">
-                    <div id="prevClose">Previous Close</div>
+            <div id="index-data-kids-container">
+                <div id="ratio-container" class="index-data-kids">
 
-                    <div id="prevClosData" class="indexData commas">
+                    <div class="border-line">
+                        <div id="fwdPeRatio">Forward P/E</div>
+                        <div id="fwdPeRatioData" class="indexData">
+                        </div>
+                    </div>
 
+                    <div class="border-line">
+                        <div id="ttmPeRatio">P/E (TTM)</div>
+                        <div id="ttmPeRatioData" class="indexData">
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="revGrow">Revenue Growth</div>
+                        <div id="revGrowData" class="indexData">
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="ebitMarg">Ebitda Margin</div>
+
+                        <div id="ebitMarginData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="curr-ratio">Current Ratio</div>
+                        <div id="currRatioData" class="indexData">
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="quick-ratio">Quick Ratio</div>
+
+                        <div id="quickRatioData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="debt-ratio">Debt-to-Equity Ratio</div>
+
+                        <div id="debtRatioData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="retEqu">Return On Equity</div>
+
+                        <div id="retEquData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="op-Margin">Operating Margin</div>
+
+                        <div id="opMarginData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="prof-Margin">Profit Margin</div>
+
+                        <div id="profMarginData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="grossMargin">Gross Margin</div>
+
+                        <div id="grossMarginData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="dividend">Dividend Rate</div>
+
+
+                        <div id="dividendRateData" class="indexData div-rate">
+
+                        </div>
+                    </div>
+                    <div class="border-line no-border-bottom">
+                        <div id="exDividend">Ex-Dividend Date</div>
+
+                        <div id="exDividendData" class="indexData exDivDate">
+
+                        </div>
                     </div>
                 </div>
-                <div class="border-line">
-                    <div id="open">Market Open</div>
-                    <% let open="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes){ %>
-                                <% if(quotes.regularMarketOpen){ %>
-                                    <% open=quotes.regularMarketOpen}}}%>
-                                        <div id="openData" class="indexData commas">
-                                            <%=open %>
-                                        </div>
+                <div id="prev-close-container" class="index-data-kids">
+                    <div class="border-line">
+                        <div id="prevClose">Previous Close</div>
+
+                        <div id="prevClosData" class="indexData commas">
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="open">Market Open</div>
+
+                        <div id="openData" class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="dayLow">Day's Low</div>
+
+                        <div id="dayLowData" class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="dayHigh">Day's High</div>
+
+                        <div id="dayHighData" class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="fifty2WkLow">52 Week Low</div>
+
+                        <div id="fifty2WkLowData" class="indexData commas">
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="fifty2WkHigh">52 Week High</div>
+
+                        <div id="fifty2WkHighData" class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="twoHundDayAvg">200 Day Avg</div>
+
+                        <div id="twoHundDayAvgData" class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id='bid'>Bid</div>
+
+                        <div id='bidData' class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="ask">Ask</div>
+
+
+                        <div id="askData" class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="beta">Beta</div>
+
+                        <div id="betaData" class="indexData commas">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="mktCap">Market Cap</div>
+
+                        <div id="mktCapData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="volume">Volume</div>
+
+                        <div id="volumeData" class="indexData commas volume">
+
+                        </div>
+                    </div>
+                    <div class="border-line no-border-bottom">
+                        <div id="avgVolume">Avg. 10 Day Vol.</div>
+
+                        <div id="avgVolData" class="indexData commas volume">
+
+                        </div>
+                    </div>
                 </div>
-                <div class="border-line">
-                    <div id="dayLow">Day's Low</div>
-                    <% let dayLow="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.regularMarketDayLow){ %>
-                                <% dayLow=quotes.regularMarketDayLow}}%>
-                                    <div id="dayLowData" class="indexData commas">
-                                        <%=dayLow %>
-                                    </div>
-                </div>
-                <div class="border-line">
-                    <div id="dayHigh">Day's High</div>
-                    <% let dayHigh="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.regularMarketDayHigh){ %>
-                                <% dayHigh=quotes.regularMarketDayHigh}} %>
-                                    <div id="dayHighData" class="indexData commas">
-                                        <%=dayHigh %>
-                                    </div>
-                </div>
-                <div class="border-line">
-                    <div id="fifty2WkLow">52 Week Low</div>
-                    <% let fifty2WkLo="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.fiftyTwoWeekLow){ %>
-                                <% fifty2WkLo=quotes.fiftyTwoWeekLow}}%>
-                                    <div id="fifty2WkLowData" class="indexData commas">
-                                        <%=fifty2WkLo %>
-                                    </div>
-                </div>
-                <div class="border-line">
-                    <div id="fifty2WkHigh">52 Week High</div>
-                    <% let fifty2WkHi="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.fiftyTwoWeekHigh){ %>
-                                <% fifty2WkHi=quotes.fiftyTwoWeekHigh}} %>
-                                    <div id="fifty2WkHighData" class="indexData commas">
-                                        <%=fifty2WkHi %>
-                                    </div>
-                </div>
-                <div class="border-line">
-                    <div id="twoHundDayAvg">200 Day Avg</div>
-                    <% let twoHDAvg="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.twoHundredDayAverage){ %>
-                                <% twoHDAvg=quotes.twoHundredDayAverage}} %>
-                                    <div id="twoHundDayAvgData" class="indexData commas">
-                                        <%=twoHDAvg %>
-                                    </div>
-                </div>
-                <div class="border-line">
-                    <div id='bid'>Bid</div>
-                    <% let bid="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.bid){ %>
-                                <% bid=quotes.bid}}%>
-                                    <div id='bidData' class="indexData commas">
-                                        <%=bid %>
-                                    </div>
-                </div>
-                <div class="border-line">
-                    <div id="ask">Ask</div>
-                    <%let ask="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.ask){ %>
-                                <% ask=quotes.ask}}%>
-                                    <div id="askData" class="indexData commas">
-                                        <%=ask %>
-                                    </div>
-                </div>
-                <div class="border-line">
-                    <div id="beta">Beta</div>
-                    <%let beta="N/A" %>
-                        <% if(analysis){ %>
-                            <% if(analysis.summaryDetail){ %>
-                                <% if(analysis.summaryDetail.beta){ %>
-                                    <% if(analysis.summaryDetail.beta.fmt){ %>
-                                        <% beta=analysis.summaryDetail.beta.fmt}}}} %>
-                                            <div id="beta" class="indexData commas">
-                                                <%=beta %>
-                                            </div>
-                </div>
-                <div class="border-line">
-                    <div id="mktCap">Market Cap</div>
-                    <%let mktCap="N/A" %>
-                        <% if(analysis){ %>
-                            <% if(analysis.price){ %>
-                                <% if(analysis.price.marketCap){ %>
-                                    <% if(analysis.price.marketCap){ %>
-                                        <% mktCap=analysis.price.marketCap.fmt}}}}%>
-                                            <div id="mktCap" class="indexData">
-                                                <%=mktCap %>
-                                            </div>
-                </div>
-                <div class="border-line">
-                    <div id="volume">Volume</div>
-                    <%let volume="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.regularMarketVolume){ %>
-                                <% volume=quotes.regularMarketVolume}}%>
-                                    <div id="mktVol" class="indexData commas volume">
-                                        <%=volume %>
-                                    </div>
-                </div>
-                <div class="border-line no-border-bottom">
-                    <div id="avgVolume">Avg. 10 Day Vol.</div>
-                    <%let avgVol="N/A" %>
-                        <% if(quotes){ %>
-                            <% if(quotes.averageDailyVolume10Day){ %>
-                                <% avgVol=quotes.averageDailyVolume10Day}}%>
-                                    <div id="avgVol" class="indexData commas volume">
-                                        <%=avgVol %>
-                                    </div>
-                </div>
-            </div>
         </section>
         <section id="slide-container">
             <!-- If we need navigation buttons -->
@@ -404,54 +306,54 @@
                     <div class="slide-boxes">
                         <div class="slide-data-wrapper income-slide-years slide-years">
                             <div class="slide-data slide-headers data-align-left currency">
-                                <%=currencyCode %>
+
                             </div>
                             <div class="slide-data slide-headers ttm">TTM
                             </div>
                             <div class="slide-data slide-headers year1 endingyr1">
-                                <%=incomeYr1%>
+
                             </div>
                             <div class="slide-data slide-headers year2 endingyr2">
-                                <%=incomeYr2%>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-revenue">
                             <div class="slide-data data-align-left">
                                 Revenue</div>
                             <div class="slide-data  ttm">
-                                <%=ttmRev %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualRev1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualRev2 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper gross-profit">
                             <div class="slide-data data-align-left">Gross profit</div>
 
                             <div class="slide-data ttm">
-                                <%=ttmGrossProfit %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualGrossProfit1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualGrossProfit2 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper operating-expense">
                             <div class="slide-data data-align-left">Operating expense</div>
 
                             <div class="slide-data  ttm">
-                                <%=ttmOpExp %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualOpExp1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualOpExp2 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper operating-income">
@@ -459,37 +361,37 @@
                             <div class="slide-data data-align-left">
                                 Operating income</div>
                             <div class="slide-data  ttm">
-                                <%=ttmOpIncome %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualOpIncome1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualOpIncome2 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper pre-tax-income">
                             <div class="slide-data data-align-left">Pre tax income</div>
                             <div class="slide-data  ttm">
-                                <%=ttmPreTaxInc %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualPreTaxInc1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualPreTaxInc2 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper other-income-expense">
                             <div class="slide-data data-align-left">Other income exp</div>
                             <div class="slide-data ttm">
-                                <%=ttmOtherIncExp %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualOtherIncExp1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualOtherIncExp2 %>
+
                             </div>
                         </div>
 
@@ -497,26 +399,26 @@
                             <div class="slide-data data-align-left">Basic eps</div>
 
                             <div class="slide-data  ttm">
-                                <%=ttmBasicEps %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualBasicEps1%>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualBasicEps2%>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper net-income">
                             <div class="slide-data data-align-left">Net income</div>
 
                             <div class="slide-data  ttmNetIncome">
-                                <%=ttmNetIncome %>
+
                             </div>
                             <div class="slide-data year1">
-                                <%=annualNetIncome1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=annualNetIncome2%>
+
                             </div>
                         </div>
 
@@ -529,108 +431,108 @@
                         <div class="slide-data-wrapper balance-slide-years slide-years">
 
                             <div class="slide-data slide-headers data-align-left currency">
-                                <%=currencyCode %>
+
                             </div>
 
                             <div class="slide-data slide-headers year1 endingyr1">
-                                <%=balYr1 %>
+
                             </div>
                             <div class="slide-data slide-headers year2 endingyr2">
-                                <%=balYr2 %>
+
                             </div>
                             <div class="slide-data slide-headers year3 endingyr3">
-                                <%=balYr3%>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-assets">
                             <div class="slide-data data-align-left">Total assets</div>
 
                             <div class="slide-data year1">
-                                <%=totalAssets1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=totalAssets2%>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=totalAssets3 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-liab">
                             <div class="slide-data data-align-left">Total liab.</div>
 
                             <div class="slide-data year1">
-                                <%=totalLiab1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=totalLiab2 %>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=totalLiab3 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-equity">
                             <div class="slide-data data-align-left">Total equity</div>
 
                             <div class="slide-data year1">
-                                <%=totalEqu1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=totalEqu2 %>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=totalEqu3 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper current-debt">
                             <div class="slide-data data-align-left">Current Debt</div>
 
                             <div class="slide-data year1">
-                                <%=currentDebt1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=currentDebt2 %>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=currentDebt3 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper long-term-debt">
                             <div class="slide-data data-align-left">Long term debt</div>
 
                             <div class="slide-data year1">
-                                <%=longTermDebt1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=longTermDebt2 %>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=longTermDebt3 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper working-capital">
                             <div class="slide-data data-align-left">Accts. receivable</div>
 
                             <div class="slide-data year1">
-                                <%=acctsRecv1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=acctsRecv2 %>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=acctsRecv3 %>
+
                             </div>
                         </div>
                         <div class="slide-data-wrapper total-debt">
                             <div class="slide-data data-align-left">Accts. payable</div>
 
                             <div class="slide-data year1">
-                                <%=acctsPay1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=acctsPay2%>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=acctsPay3 %>
+
                             </div>
                         </div>
 
@@ -638,13 +540,13 @@
                             <div class="slide-data data-align-left">Ret. Earnings</div>
 
                             <div class="slide-data year1">
-                                <%=retEarn1 %>
+
                             </div>
                             <div class="slide-data year2">
-                                <%=retEarn2 %>
+
                             </div>
                             <div class="slide-data year3">
-                                <%=retEarn3 %>
+
                             </div>
                         </div>
                     </div>
@@ -655,7 +557,7 @@
                     <div id="cashflow-slide-boxes" class="slide-boxes">
                         <div class="slide-data-wrapper slide-years cash-flow-slide-years">
                             <div class="slide-data slide-headers data-align-left currency">
-                                <%=currencyCode %>
+
                             </div>
                             <div class="slide-data slide-headers ttm">TTM</div>
                             <div class="slide-data slide-headers year1 endingyr1">
@@ -788,127 +690,50 @@
             <div id="summary_container">
                 <h6>Summary</h6>
                 <p id="company_desc">
-                    <%let resultLB="" %>
-                        <% if(profile){ %>
-                            <%if(profile.summaryProfile){ %>
-                                <%resultLB=profile.summaryProfile.longBusinessSummary}}%>
-                                    <%=resultLB%>
+
                 </p>
             </div>
             <div id="profile_container">
-                <% let h="" %>
-                    <% if(profile){ %>
-                        <%if(profile.summaryProfile){ %>
-                            <%if(profile.summaryProfile.address1){ %>
-                                <% h="Profile" }}}%>
-                                    <h6>
-                                        <%=h %>
-                                    </h6>
-                                    <div id="profile_container2">
-                                        <div id="address_container">
-                                            <p id="address">
-                                                <%let resultAd="" %>
-                                                    <% if(profile){ %>
-                                                        <%if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.address1) %>
-                                                                <%resultAd=profile.summaryProfile.address1}}%>
-                                                                    <%=resultAd%>
-                                            </p>
-                                            <div id="city_state_container">
-                                                <p id="city">
-                                                    <%let resultCi="" %>
 
-                                                        <% if(profile){ %>
-                                                            <%if(profile.summaryProfile){ %>
-                                                                <% if(profile.summaryProfile.city){ %>
-                                                                    <%resultCi=profile.summaryProfile.city}}}%>
-                                                                        <%=resultCi%>
-                                                </p>
-                                                <p id="state">
-                                                    <%let resultSt="" %>
-                                                        <% if(profile) {%>
-                                                            <%if(profile.summaryProfile){ %>
-                                                                <% if(profile.summaryProfile.state) %>
-                                                                    <%resultSt=profile.summaryProfile.state}}%>
-                                                                        <%=resultSt%>
-                                                </p>
-                                                <p id="zip">
-                                                    <%let resultZ="" %>
-                                                        <% if(profile){ %>
-                                                            <%if(profile.summaryProfile){ %>
-                                                                <% if(profile.summaryProfile.zip) %>
-                                                                    <%resultZ=profile.summaryProfile.zip}}%>
-                                                                        <%=resultZ%>
-                                                </p>
-                                            </div>
+                </h6>
+                <div id="profile_container2">
+                    <div id="address_container">
+                        <div id="address-header">
+                            <h6>Address</h6>
+                        </div>
+                        <p id="address" class="address-details">
 
-                                            <p id="country">
-                                                <%let resultCoun="" %>
-                                                    <% if(profile){ %>
-                                                        <%if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.country) %>
-                                                                <%resultCoun=profile.summaryProfile.country}}%>
-                                                                    <%=resultCoun%>
-                                            </p>
-                                            <p id="phone">
-                                                <%let resultPh="" %>
-                                                    <% if(profile){ %>
-                                                        <%if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.phone) %>
-                                                                <%resultPh=profile.summaryProfile.phone}}%>
-                                                                    <%=resultPh%>
-                                            </p>
-                                            <p id="website">
-                                                <%let resultWeb="" %>
-                                                    <% if(profile){ %>
-                                                        <%if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.website){ %>
-                                                                <%resultWeb=profile.summaryProfile.website}}}%>
-                                                                    <a id="link" href="<%=resultWeb%>" target="_blank">
-                                                                        <%=resultWeb%>
-                                                                    </a>
+                        </p>
+                        <div id="city_state_container" class="address-details">
+                            <p id="city">
 
+                            </p>
+                            <p id="state">
 
-                                            </p>
-                                            <p id="industry">
-                                                <%let rInd="" %>
-                                                    <% if(profile){ %>
-                                                        <%if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.industry){%>
-                                                                <%rInd=profile.summaryProfile.industry%>
-                                                                    <% rInd=`Industry: ${rInd}` }}}%>
-                                                                        <%=rInd %>
-                                            </p>
-                                            <p id="sector">
-                                                <%let rSec="" %>
-                                                    <% if(profile){ %>
-                                                        <%if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.sector){%>
-                                                                <%rSec=profile.summaryProfile.sector%>
-                                                                    <% rSec=`Sector: ${rSec}`}}} %>
-                                                                        <%=rSec%>
-                                            </p>
-                                        </div>
-                                        <div id="employee_container">
-                                            <p>
-                                                <% let emH="" %>
-                                                    <% if(profile){ %>
-                                                        <% if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.fullTimeEmployees){%>
-                                                                <%emH="Full Time Employees:"%>
-                                                                    <% }}} %>
-                                                                        <%=emH%>
-                                            </p>
-                                            <p>
-                                                <% let em="" %>
-                                                    <% if(profile){ %>
-                                                        <% if(profile.summaryProfile){ %>
-                                                            <% if(profile.summaryProfile.fullTimeEmployees){%>
-                                                                <% em=profile.summaryProfile.fullTimeEmployees}}} %>
-                                                                    <%= em %>
-                                            </p>
-                                        </div>
-                                    </div>
+                            </p>
+                        </div>
+                        <p id="country" class="address-details">
+
+                        </p>
+                        <div id="website">
+                            <a id="link" href="" target="_blank" class="address-details">
+                            </a>
+                        </div>
+                    </div>
+                    <div id="ceo-employee-container">
+                        <div id="title-parent" class="ceo-employee">
+                            <h6>CEO:</h6>
+                            <p id="ceo">
+                            </p>
+                        </div>
+
+                        <div id="employees-parent" class="ceo-employee">
+                            <h6>Full-Time Employees:</h6>
+                            <p id="full_time_employees">
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -927,6 +752,7 @@
         const KEY = '<%=API_KEY%>';
         const HOST = '<%=RAPID%>';
         const NEWS = '<%=NEWS%>'
+        let quote = '<%=quote%>';
         const apiOptions = {
             method: "GET",
             headers: {
@@ -935,7 +761,7 @@
             },
         };
 
-        const newsApiOptions = {
+        const realApiOptions = {
             method: "GET",
             headers: {
                 "x-rapidapi-key": KEY,
@@ -981,127 +807,20 @@
 
         //starting variables;
         let isDragging = false, startPosition = 0, currTranslateX = 0, prevTranslateX = 0, animationId = 0, currSlideIndex = 0;
-        slides.forEach((slide, index) => {
-            //touch events
-            slide.addEventListener('touchstart', touchStart(index))
-            slide.addEventListener('touchend', touchEnd);
-            slide.addEventListener('touchmove', touchMove)
-            //mouse events
-            slide.addEventListener('mousedown', touchStart(index))
-            slide.addEventListener('mouseup', touchEnd)
-            slide.addEventListener('mouseleave', touchEnd)
-            slide.addEventListener('mousemove', touchMove)
-        })
-
-        slideNavChevrons.forEach((chevron) => {
-            chevron.addEventListener("click", () => {
-                //next button
-                let chevronDirection = chevron.classList.contains("slide-next");
-                isDragging = true;
-                animationId = requestAnimationFrame(animation);
-                if (chevronDirection) {
-                    if (currSlideIndex < slides.length - 1) {
-                        currSlideIndex += 1
-                    }
-                }
-
-                //prev button
-                if (!chevronDirection) {
-                    if (currSlideIndex > 0) {
-                        currSlideIndex -= 1;
-                    }
-                }
-
-
-                isDragging = false;
-                cancelAnimationFrame(animationId);
-                setPostionByIndex()
-            })
-        })
-
-        function touchStart(index) {
-            return function (event) {
-                currSlideIndex = index;
-                startPosition = getPositionX(event);
-
-                isDragging = true;
-                animationId = requestAnimationFrame(animation);
-                slidesWrapper.style.cursor = "grabbing";
-            }
-        }
-
-        function touchEnd() {
-            isDragging = false;
-            cancelAnimationFrame(animationId);
-            const movedBy = currTranslateX - prevTranslateX;
-
-            if (movedBy < -50 && currSlideIndex < slides.length - 1) {
-                currSlideIndex += 1
-
-            }
-            if (movedBy > 50 && currSlideIndex > 0) currSlideIndex -= 1;
-            setPostionByIndex()
-            slidesWrapper.style.cursor = "grab";
-        }
-
-        function touchMove(event) {
-            if (isDragging) {
-                const currentPosition = getPositionX(event)
-                currTranslateX = prevTranslateX + currentPosition - startPosition;
-
-            }
-        }
-
-        function getPositionX(event) {
-            return event.type.includes("mouse") ? event.pageX : event.touches[0].clientX;
-        }
-
-        function animation() {
-            setSliderPosition()
-            if (isDragging) requestAnimationFrame(animation)
-        }
-
-        function setSliderPosition() {
-            slidesWrapper.style.transform = `translateX(${currTranslateX}%)`;
-        }
-
-        function setPostionByIndex() {
-            currTranslateX = currSlideIndex * -105;
-            prevTranslateX = currTranslateX;
-            setSliderPosition()
-        }
-
-        const setMarketTime = (timeStamp, dateObj = "") => {
-            let date, formatted;
-
-            if (dateObj) {
-                date = dateObj
-            } else {
-                date = new Date(timeStamp * 1000);
-            }
-
-            formatted = new Intl.DateTimeFormat('en-US', {
-                dateStyle: 'short',
-                timeStyle: 'long',
-                timeZone: 'America/New_York',
-            }).format(date)
-
-            return formatted
-
-        }
-
+        let previousClose = "",
+            regularMarketPrice = "";
         const changePctPointsColor = (currentPrice, prevClosePrice) => {
+            console.log("current price", currentPrice, typeof currentPrice)
+            console.log("previous price:", prevClosePrice, typeof prevClosePrice)
 
-            let currP, prevP;
-
-            currP = parseFloat(currentPrice);
-            prevP = parseFloat(prevClosePrice);
+            currentPrice = Math.floor(parseFloat(currentPrice));
+            prevClosePrice = Math.floor(parseFloat(prevClosePrice));
 
             regularPrice.style.color = green;
             regPointsPctContainer.children[0].style.color = green;
             regPointsPctContainer.children[1].style.color = green;
 
-            if (currP < prevP) {
+            if (currentPrice < prevClosePrice) {
                 regularPrice.style.color = red;
                 regPointsPctContainer.children[0].style.color = red;
                 regPointsPctContainer.children[1].style.color = red;
@@ -1112,7 +831,7 @@
             afterHrsPct.style.color = green;
 
 
-            if (afterHoursPrice < currP) {
+            if (afterHoursPrice < currentPrice) {
                 afterHrsPrice.style.color = red;
                 afterHrsChange.style.color = red;
                 afterHrsPct.style.color = red;
@@ -1185,135 +904,186 @@
             }
             return
         };
-        const setSession = (res) => {
+        const setSession = () => {
             return new Promise(async (resolve) => {
+                let analysis, preMarketPrice = "",
+                    preMarketChange = "",
+                    preMarketChangePercent = "",
+                    preMarketTime = "",
+                    postMarketPrice = "",
+                    postMarketChange = "",
+                    postMarketChangePercent = "",
+                    postMarketTime = "",
+                    regularMarketTime,
+                    marketState,
+                    afterHoursPointsChng, afterHoursPctChng, regularMarketChangePercent, regularMarketChange;
+                let regDateTime = "", prePostMarketState = "";
 
-                const sessionObj = res.chart.result[0];
+                console.log("quote:", quote)
+                let quoteCode = quote.quoteSummary.errorResult.code;
 
-                //current market session period;
-                const currTradingPeriod = sessionObj.meta.currentTradingPeriod;
-                let regTime = currTradingPeriod.regular;
-                let preTime = currTradingPeriod.pre;
-                let postTime = currTradingPeriod.post;
+                if (quoteCode === "Not Found") {
+                    let realStockURL = `https://real-time-finance-data.p.rapidapi.com/stock-quote?symbol=%5E${stockTicker}&language=en`
+                    let stock = await fetch(realStockURL, realApiOptions).catch((e) => console.log(e));
+                    stock = await stock.json();
+                    console.log("stock:", stock);
 
-                //previous closing price;
-                let previousClose = '<%=previousClose%>';
-                previousClose = parseFloat(previousClose);
+                    previousClose = stock.data.previous_close;
+                    regularMarketPrice = stock.data.price;
+                    regularMarketTime = stock.data.last_update_utc;
+                    regularMarketChange = stock.data.change;
+                    regularMarketChangePercent = stock.data.change_percent;
 
-                let formatted = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(previousClose)
-                previousCloseElem.innerText = formatted;
+                    if (quoteType === "EQUITY") {
+                    }
+                }
 
-                const timeStampsArr = sessionObj.timestamp;
-                const quotesArr = sessionObj.indicators.quote[0];
-                const openPriceArr = quotesArr.open;
-                const closePriceArr = quotesArr.close;
-                let ending = timeStampsArr.length - 1, regDateTime = "", currPrice, prePostMarketState = "";
+                if (quote === undefined || quote === "" || !quote) {
 
-                //pre/post mkt price;
-                let afterHoursPointsChng, afterHoursPctChng, regPointsChg, regPctChng;
+                    let quoteURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${stockTicker}`;
+                    quote = await fetch(quoteURL, apiOptions).catch((e) => console.log(e));
+                    quote = await quote.json();
+                    quote = quote.quoteResponse.result[0];
+                    console.log("quote:", quote)
 
-                //set session time(s)
-                let regMarketTime = sessionObj.meta.regularMarketTime;
-                let timeStampEnding = timeStampsArr[ending];
+                    //if quote is still undefined, run realtime stock quote;
+
+
+                    previousClose = quote.regularMarketPreviousClose;
+                    regularMarketPrice = quote.regularMarketPrice;
+                    regularMarketTime = quote.regularMarketTime;
+                    regularMarketChange = quote.regularMarketChangePercent;
+                    regularMarketChangePercent = quote.regularMarketChange;
+
+                    if (quoteType === "EQUITY") {
+                        if (quote.preMarketPrice) {
+                            preMarketPrice = quote.preMarketPrice;
+                        }
+                        if (quote.preMarketChange) {
+                            preMarketChange = quote.preMarketChange;
+                        }
+                        if (quote.preMarketPrice) {
+                            preMarketChangePercent = quote.preMarketPrice;
+                        }
+                        if (quote.preMarketTime) {
+                            preMarketTime = quote.preMarketTime;
+                        }
+                        if (quote.postMarketPrice) {
+                            postMarketPrice = quote.postMarketPrice;
+                        }
+                        if (quote.postMarketChange) {
+                            postMarketChange = quote.postMarketChange;
+                        }
+                        if (quote.postMarketChangePercent) {
+                            postMarketChangePercent = quote.postMarketChangePercent;
+                        }
+                        if (quote.postMarketTime) {
+                            postMarketTime = quote.postMarketTime;
+                        }
+                        if (quote.marketState) {
+                            marketState = quote.marketState;
+                        }
+                    }
+                } else {
+                    //must use ejs syntax if quote exists already;
+                    previousClose = '<%=previousClose%>';
+                    regularMarketPrice = '<%=regularMarketPrice%>';
+                    regularMarketTime = '<%=regularMarketTime%>';
+                    regularMarketChange = '<%=regularMarketChangePercent%>';
+                    regularMarketChangePercent = '<%=regularMarketChange%>';
+
+                    if (quoteType === "EQUITY") {
+                        preMarketPrice = '<%=preMarketPrice%>';
+                        preMarketChange = '<%=preMarketChange%>';
+                        preMarketChangePercent = '<%=preMarketChangePercent%>';
+                        preMarketTime = '<%=preMarketTime%>'
+                        postMarketPrice = '<%=postMarketPrice%>'
+                        postMarketChange = '<%=postMarketChange%>'
+                        postMarketChangePercent = '<%=postMarketChangePercent%>'
+                        postMarketTime = '<%=postMarketTime%>'
+                        marketState = quote.marketState;
+                    }
+                }
+
 
                 regDateTime = "At Close:";
-                currPrice = sessionObj.meta.regularMarketPrice;
-                let currency = sessionObj.meta.currency;
 
-                //what's the current mkt session time/date?
-                //current session;
-                if (regMarketTime >= regTime.start && regMarketTime < regTime.end) {
+                if (marketState === "REGULAR" || regularMarketTime > preMarketTime && !postMarketTime) {
                     regDateTime = "Current Session:"
                 }
-                //calculate reg-mkt points and percentage changes;
-                regPointsChg = currPrice - previousClose;
-                regPointsChg = regPointsChg.toFixed(2);
-
-                regPctChng = (regPointsChg / previousClose) * 100;
-                regPctChng = regPctChng.toFixed(2);
 
                 //format prices:
-                currPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(currPrice);
-                regPointsChg = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(regPointsChg);
-                regPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(regPctChng);
+                regularMarketPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(regularMarketPrice);
+                regularMarketChangePercent = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(regularMarketChangePercent);
+                regularMarketChange = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(regularMarketChange);
 
-                regularPrice.innerText = currPrice;
-                regPointsPctContainer.children[0].innerText = regPointsChg;
-                regPointsPctContainer.children[1].innerText = regPctChng;
+                regularPrice.innerText = regularMarketPrice;
+                regPointsPctContainer.children[0].innerText = regularMarketChangePercent;
+                regPointsPctContainer.children[1].innerText = regularMarketChange;
 
                 atCloseContainer.children[0].innerText = regDateTime;
-                atCloseContainer.children[1].innerText = setMarketTime(regMarketTime);
+                atCloseContainer.children[1].innerText = setMarketTime(regularMarketTime);
+                let prePostTime;
+                if (marketState === "PREPRE" || marketState === "PRE" || preMarketTime >= regularMarketTime) {
+                    prePostMarketState = "Pre-Market:"
+                    console.log("pre")
 
-                const analysis = '<%=analysis%>';
-                //run analysis function here;
-                await runAnalysis(stockTicker);
-                if (analysis) {
-
-                    let preMarketPrice = '<%=preMarketPrice%>';
-                    let preMarketChange = '<%=preMarketChange%>'
-                    let preMarketChangePercent = '<%=preMarketChangePercent%>'
-
-                    let postMarketPrice = '<%=postMarketPrice%>';
-                    let postMarketChange = '<%=postMarketChange%>'
-                    let postMarketChangePercent = '<%=postMarketChangePercent%>'
-                    console.log("regmarkettime:", regMarketTime, "regTime.start:", regTime.start)
-                    console.log("post time.end:", postTime.end)
-
-                    if (regMarketTime >= preTime.start && regMarketTime < preTime.end || timeStampEnding < preTime.end && timeStampEnding >= preTime.start) {
-                        prePostMarketState = "Pre-Market:"
-                        console.log("pre")
-
-                        if (preMarketPrice.raw) {
-                            afterHoursPrice = preMarketPrice.raw
-                        }
-                        if (preMarketChange.raw) {
-                            afterHoursPointsChng = preMarketChange.raw
-                        }
-                        if (preMarketChangePercent.raw) {
-                            afterHoursPctChng = preMarketChangePercent.raw
-                        }
+                    if (preMarketPrice) {
+                        afterHoursPrice = preMarketPrice
                     }
+                    if (preMarketChange) {
+                        afterHoursPointsChng = preMarketChange
+                    }
+                    if (preMarketChangePercent) {
+                        afterHoursPctChng = preMarketChangePercent
+                    }
+                    if (preMarketTime) {
+                        prePostTime = preMarketTime
+                    }
+                }
 
-                    if (regMarketTime >= regTime.end && regMarketTime <= postTime.end || timeStampEnding < postTime.end && timeStampEnding >= postTime.start) {
-                        prePostMarketState = "After Hours:"
-                        console.log("post")
-                        if (timeStampEnding < regMarketTime) timeStampEnding = regMarketTime;
+                if (marketState === "POST" || marketState === "POSTPOST" || postMarketTime >= regularMarketTime && postMarketTime > preMarketTime) {
+                    prePostMarketState = "After Hours:"
+                    console.log("post")
+
+                    if (postMarketPrice) {
                         if (postMarketPrice) {
-                            if (postMarketPrice.raw) {
-                                afterHoursPrice = postMarketPrice.raw
-                            }
-                        }
-                        if (postMarketChange) {
-                            if (postMarketChange.raw) {
-                                afterHoursPointsChng = postMarketChange.raw
-                            }
-                        }
-                        if (postMarketChangePercent) {
-                            if (postMarketChangePercent.raw) {
-                                afterHoursPctChng = postMarketChangePercent.raw
-                            }
+                            afterHoursPrice = postMarketPrice
+                            console.log("afterHoursPrice:", afterHoursPrice)
                         }
                     }
 
+                    if (postMarketChange) {
+                        if (postMarketChange) {
+                            afterHoursPointsChng = postMarketChange
+                        }
+                    }
+                    if (postMarketChangePercent) {
+                        if (postMarketChangePercent) {
+                            afterHoursPctChng = postMarketChangePercent
+                        }
+                    }
+
+                    if (postMarketTime) {
+                        prePostTime = postMarketTime;
+                    }
                 }
 
-                //****Pre/Post Mkt:
-                if (!afterHoursPrice) {
-                    afterHoursPrice = closePriceArr[ending]
+
+                if (prePostTime) {
+                    afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
+                    afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
+                    afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
+                    afterHrsPrice.innerText = afterHoursPrice;
+                    afterHrsChange.innerText = afterHoursPointsChng;
+                    afterHrsPct.innerText = afterHoursPctChng;
+                    afterHoursTimeContainer.children[0].innerText = prePostMarketState;
+                    afterHoursTimeContainer.children[1].innerText = setMarketTime(prePostTime);
                 }
 
-                afterHoursPointsChng = afterHoursPrice - currPrice;
-                afterHoursPctChng = (afterHoursPointsChng / currPrice) * 100;
-                afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
-                afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
-                afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
+                //previous closing price;
+                previousCloseElem.innerText = previousClose;
 
-                afterHrsPrice.innerText = afterHoursPrice;
-                afterHrsChange.innerText = afterHoursPointsChng;
-                afterHrsPct.innerText = afterHoursPctChng;
-                afterHoursTimeContainer.children[0].innerText = prePostMarketState;
-                afterHoursTimeContainer.children[1].innerText = setMarketTime(timeStampEnding);
-                //remove elements if necessary;
                 if (regDateTime === "Current Session:" || quoteType !== "EQUITY") {
                     afterHoursContainer.style.display = "none";
                 }
@@ -1322,12 +1092,10 @@
                     slideContainer.style.display = "none";
                     ratioContainer.style.display = "none";
                     prevCloseContainer.style.maxWidth = "100%";
-                }
-
-                if (companyDesc.innerText === "") {
                     summaryProfileContainer.style.display = "none";
-
                 }
+
+
                 resolve("done")
             })
         }
@@ -1460,7 +1228,7 @@
             return chartData;
         };
         const runChart = async (range) => {
-            let currPrice, previousClose;
+
             progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
@@ -1468,100 +1236,108 @@
             let grabchart, fillchart, response;
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
             console.log("response:", response)
-            currPrice = response.chart.result[0].meta.regularMarketPrice;
-            previousClose = '<%=previousClose%>'
 
             //set session
             if (range === "1d") {
-                setSession(response).then(() => formatPrice(regPointsPctContainer, "reg_after_container")).then(() => formatPrice(afterPointsPctContainer, "reg_after_container"))
+                setSession().then(() => formatPrice(regPointsPctContainer, "reg_after_container")).then(() => formatPrice(afterPointsPctContainer, "reg_after_container")).then(() => changePctPointsColor(regularMarketPrice, previousClose))
                     .catch((e) => console.log(e))
             }
 
-            fillchart = await fillChartData(response, range).then((res) => { return res }).catch((e) => console.log(e));
-            changePctPointsColor(currPrice, previousClose);
-            progressBarContainer.style.display = "none"
-            stockChart.style.display = "initial";
+            if (response.chart.result === null) {
+                document.getElementById("not-available-container").style.display = "flex";
+                document.getElementById("not-available-container").style.justifyContent = "center";
+                document.getElementById("not-available-container").style.alignItems = "center";
+                progressBarContainer.style.display = "none";
+                document.getElementById("chart").style.display = "none";
+            }
 
-            let chartResult = fillchart, options;
+            if (response.chart.result !== null) {
+                fillchart = await fillChartData(response, range).then((res) => { return res }).catch((e) => console.log(e));
+                progressBarContainer.style.display = "none"
+                stockChart.style.display = "initial";
+                populateAnalysis(stockTicker);
+                let chartResult = fillchart, options;
 
-            options = {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        grid: {
-                            display: true,
-                            color: "black"
-                        }
-                    },
-                    x: {
-                        display: true,
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            major: {
-                                enabled: true
-                            },
-                            callback: (index) => {
-                                let label = chartResult.labels[index], labelStr, str1, str2, regExprColon = /[:]/, regExpComma = /[,]/, startIndex = 0, endIndex;
-                                let colonIndex = label.search(regExprColon), commaIndex = label.search(regExpComma);
-
-                                if (range === "1d") {
-                                    startIndex = commaIndex + 2;
-                                    endIndex = colonIndex + 3;
-                                    str2 = label.slice(-6);
-                                } else {
-                                    startIndex = 0;
-                                    endIndex = commaIndex;
-                                    str2 = ""
-                                }
-
-                                str1 = label.slice(startIndex, endIndex);
-
-                                labelStr = `${str1} ${str2}`;
-
-                                return labelStr
+                options = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                display: true,
+                                color: "black"
                             }
                         },
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    labels: {
-                        font: {
-                            size: 9
+                        x: {
+                            display: true,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                major: {
+                                    enabled: true
+                                },
+                                callback: (index) => {
+                                    let label = chartResult.labels[index], labelStr, str1, str2, regExprColon = /[:]/, regExpComma = /[,]/, startIndex = 0, endIndex;
+                                    let colonIndex = label.search(regExprColon), commaIndex = label.search(regExpComma);
+
+                                    if (range === "1d") {
+                                        startIndex = commaIndex + 2;
+                                        endIndex = colonIndex + 3;
+                                        str2 = label.slice(-6);
+                                    } else {
+                                        startIndex = 0;
+                                        endIndex = commaIndex;
+                                        str2 = ""
+                                    }
+
+                                    str1 = label.slice(startIndex, endIndex);
+
+                                    labelStr = `${str1} ${str2}`;
+
+                                    return labelStr
+                                }
+                            },
                         }
-                    }
-                },
-                animations: {
-                    radius: {
-                        duration: 600,
-                        easing: 'linear',
-                        loop: true,
-                        radius: 1,
-                    }
-                },
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        labels: {
+                            font: {
+                                size: 9
+                            }
+                        }
+                    },
+                    animations: {
+                        radius: {
+                            duration: 600,
+                            easing: 'linear',
+                            loop: true,
+                            radius: 1,
+                        }
+                    },
 
-                interaction: {
-                    mode: 'nearest',
-                    intersect: false,
-                    axis: 'x'
+                    interaction: {
+                        mode: 'nearest',
+                        intersect: false,
+                        axis: 'x'
+                    }
                 }
+
+                const config = {
+                    type: "line",
+                    data: chartResult,
+                    options: options
+                }
+
+                chart = new Chart(canvas, config);
+
+                return chart
             }
 
-            const config = {
-                type: "line",
-                data: chartResult,
-                options: options
-            }
-
-            chart = new Chart(canvas, config);
-
-            return chart
         }
         const runProgressBar = (range) => {
             if (timeoutId) {
@@ -1572,26 +1348,16 @@
             //settimeout allows for animation to run for a bit;
             timeoutId = setTimeout(() => {
                 runChart(range).then(async () => {
+                    populateNews(stockTicker);
                     if (quoteType === "EQUITY") {
-                        await populateNews(stockTicker);
-                    }
-                }).then(async () => {
-                    if (quoteType === "EQUITY") {
+
                         await populateIncomeData(stockTicker)
-                    }
-                }).then(async () => {
-                    if (quoteType === "EQUITY") {
-                        await populateBalanceData(stockTicker)
-                    }
-                }).then(async () => {
-                    if (quoteType === "EQUITY") {
-                        await populateCashFlowData(stockTicker)
-                    }
-                }).then(() => {
-                    if (quoteType === "EQUITY") {
+                        populateBalanceData(stockTicker)
+                        populateCashFlowData(stockTicker)
                         populateProfile(stockTicker)
                     }
-                }).catch((e) => console.log(e));
+                })
+                    .catch((e) => console.log(e));
             }, 0)
         }
         const getBalanceSht = async (symbol) => {
@@ -1721,7 +1487,7 @@
             let response,
                 result
             try {
-                response = await fetch(url, newsApiOptions);
+                response = await fetch(url, realApiOptions);
                 result = await response.json();
             } catch (error) {
                 console.error(error);
@@ -1773,15 +1539,216 @@
             analysisFetch = await fetch(analysisURL, apiOptions);
             analysisResp = await analysisFetch.json();
             console.log("analysis response:", analysisResp)
+            return analysisResp
+        }
+        const trueOrFalse = (exp, val) => {
+            if (!exp) exp = val;
+
+            return exp ? exp : val;
+        }
+
+        const hideElem = (elem, val, na) => {
+            elem.innerText = trueOrFalse(val, na);
+            if (elem.innerText === na) elem.style.display = "none";
+            return;
+        }
+        const populateAnalysis = async (symbol) => {
+            const ratioContainer = document.getElementById("ratio-container");
+            const prevCloseContainer = document.getElementById("prev-close-container");
+            let analysis = await runAnalysis(symbol);
+            let fwdPE = "n/a", ttmPE = "n/a", revGrowth = "n/a", ebitdaMargins = "n/a",
+                currentRatio = "n/a", quickRatio = "n/a",
+                debtToEquityRatio = "n/a",
+                returnOnEquity = "n/a",
+                operatingMargins = "n/a",
+                profitMargins = "n/a",
+                grossMargins = "n/a",
+                dividendRate = "n/a",
+                exDividendDate = "n/a",
+                regularMarketOpen = "n/a",
+                regularMarketDayHigh = "n/a",
+                regularMarketDayLow = "n/a",
+                fiftyTwoWeekHigh = "n/a",
+                fiftyTwoWeekLow = "n/a",
+                twoHundredDayAverage = "n/a",
+                bid = "n/a",
+                ask = "n/a",
+                volume = "n/a",
+                averageVolume10Days = "n/a",
+                beta = "n/a",
+                marketCap = "n/a";
+
+
+            //populate html;
+            if (analysis.summaryDetail.forwardPE) {
+                fwdPE = trueOrFalse(analysis.summaryDetail.forwardPE.fmt, fwdPE);
+            }
+            document.getElementById("fwdPeRatioData").innerText = fwdPE;
+
+            if (analysis.summaryDetail.trailingPE) {
+                ttmPE = trueOrFalse(analysis.summaryDetail.trailingPE.fmt, ttmPE)
+            }
+            document.getElementById("ttmPeRatioData").innerText = ttmPE;
+
+            if (analysis.financialData.revenueGrowth) {
+                revGrowth = trueOrFalse(analysis.financialData.revenueGrowth.fmt, revGrowth)
+            }
+            document.getElementById("revGrowData").innerText = revGrowth;
+
+            if (analysis.financialData.ebitdaMargins) {
+                ebitdaMargins = trueOrFalse(analysis.financialData.ebitdaMargins.fmt, ebitdaMargins)
+            }
+            document.getElementById("ebitMarginData").innerText = ebitdaMargins;
+
+            if (analysis.financialData.currentRatio) {
+                currentRatio = trueOrFalse(analysis.financialData.currentRatio.fmt, currentRatio)
+            }
+            document.getElementById("currRatioData").innerText = currentRatio;
+
+            if (analysis.financialData.quickRatio) {
+                quickRatio = trueOrFalse(analysis.financialData.quickRatio.fmt, quickRatio)
+            }
+            document.getElementById("quickRatioData").innerText = quickRatio;
+
+            if (analysis.financialData.debtToEquity) {
+                debtToEquityRatio = trueOrFalse(analysis.financialData.debtToEquity.fmt, debtToEquityRatio)
+            }
+            document.getElementById("debtRatioData").innerText = debtToEquityRatio;
+
+            if (analysis.financialData.returnOnEquity) {
+                returnOnEquity = trueOrFalse(analysis.financialData.returnOnEquity.fmt, returnOnEquity)
+            }
+            document.getElementById("retEquData").innerText = returnOnEquity;
+
+            if (analysis.financialData.operatingMargins) {
+                operatingMargins = trueOrFalse(analysis.financialData.operatingMargins.fmt, operatingMargins)
+            }
+            document.getElementById("opMarginData").innerText = operatingMargins;
+
+            if (analysis.financialData.profitMargins) {
+                profitMargins = trueOrFalse(analysis.financialData.profitMargins.fmt, profitMargins)
+            }
+            document.getElementById("profMarginData").innerText = profitMargins;
+
+            if (analysis.financialData.grossMargins) {
+                grossMargins = trueOrFalse(analysis.financialData.grossMargins.fmt, grossMargins)
+            }
+            document.getElementById("grossMarginData").innerText = grossMargins;
+
+            if (analysis.summaryDetail.dividendRate) {
+                dividendRate = trueOrFalse(analysis.summaryDetail.dividendRate.fmt, dividendRate);
+            }
+            document.getElementById("dividendRateData").innerText = dividendRate;
+
+            if (analysis.summaryDetail.exDividendDate) {
+                exDividendDate = trueOrFalse(analysis.summaryDetail.exDividendDate.fmt, exDividendDate);
+            }
+            document.getElementById("exDividendData").innerText = exDividendDate;
+
+            if (analysis.price.regularMarketOpen) {
+                regularMarketOpen = trueOrFalse(analysis.price.regularMarketOpen.fmt, regularMarketOpen)
+            }
+            document.getElementById("openData").innerText = regularMarketOpen;
+
+            if (analysis.summaryDetail.regularMarketDayLow) {
+                regularMarketDayLow = trueOrFalse(analysis.summaryDetail.regularMarketDayLow.fmt, regularMarketDayLow);
+            }
+            document.getElementById("dayLowData").innerText = regularMarketDayLow;
+
+            if (analysis.summaryDetail.regularMarketDayHigh) {
+                regularMarketDayHigh = trueOrFalse(analysis.summaryDetail.regularMarketDayHigh.fmt, regularMarketDayHigh);
+            }
+            document.getElementById("dayHighData").innerText = regularMarketDayHigh;
+
+            if (analysis.summaryDetail.fiftyTwoWeekHigh) {
+                fiftyTwoWeekHigh = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekHigh.fmt, fiftyTwoWeekHigh);
+            }
+            document.getElementById("fifty2WkHighData").innerText = fiftyTwoWeekHigh;
+
+            if (analysis.summaryDetail.fiftyTwoWeekLow) {
+                fiftyTwoWeekLow = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekLow.fmt, fiftyTwoWeekLow);
+            }
+            document.getElementById("fifty2WkLowData").innerText = fiftyTwoWeekLow;
+
+            if (analysis.summaryDetail.twoHundredDayAverage) {
+                twoHundredDayAverage = trueOrFalse(analysis.summaryDetail.twoHundredDayAverage.fmt, twoHundredDayAverage);
+            }
+            document.getElementById("twoHundDayAvgData").innerText = twoHundredDayAverage;
+
+            if (analysis.summaryDetail.bid) {
+                bid = trueOrFalse(analysis.summaryDetail.bid.fmt, bid);
+            }
+            document.getElementById("bidData").innerText = bid;
+
+            if (analysis.summaryDetail.ask) {
+                ask = trueOrFalse(analysis.summaryDetail.ask.fmt, ask);
+            }
+            document.getElementById("askData").innerText = ask;
+
+            if (analysis.summaryDetail.beta) {
+                beta = trueOrFalse(analysis.summaryDetail.beta.fmt, beta);
+            }
+            document.getElementById("betaData").innerText = beta;
+
+            if (analysis.summaryDetail.marketCap) {
+                marketCap = trueOrFalse(analysis.summaryDetail.marketCap.fmt, marketCap);
+            }
+            document.getElementById("mktCapData").innerText = marketCap;
+
+            if (analysis.summaryDetail.volume) {
+                volume = trueOrFalse(analysis.summaryDetail.volume.fmt, volume);
+            }
+            document.getElementById("volumeData").innerText = volume;
+
+            if (analysis.summaryDetail.averageVolume10days) {
+                averageVolume10Days = trueOrFalse(analysis.summaryDetail.averageVolume10days.fmt, averageVolume10Days);
+            }
+            document.getElementById("avgVolData").innerText = averageVolume10Days;
         }
         const populateProfile = async (symbol) => {
             let profileFetch,
                 profileResp;
-            const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`;
+            const profileURL = `https://real-time-finance-data.p.rapidapi.com/stock-overview?symbol=${symbol}&language=en`
 
-            profileFetch = await fetch(profileURL, apiOptions);
-            profileResp = await profileFetch.json();
-            console.log("profile:", profileResp)
+            try {
+                profileFetch = await fetch(profileURL, realApiOptions)
+                profileResp = await profileFetch.json();
+                console.log("profile:", profileResp)
+            } catch (error) {
+                console.log(error)
+            }
+
+            let summary = profileResp.data.about;
+            let streetAddress = profileResp.data.company_street_address;
+            let country = profileResp.data.company_country;
+            let state = profileResp.data.company_state;
+            let city = profileResp.data.company_city;
+            let ceo = profileResp.data.company_ceo;
+            console.log(ceo)
+            let employees = profileResp.data.company_employees;
+            let website = profileResp.data.company_website;
+            let founded = profileResp.data.company_founded_date;
+
+            let na = "n/a";
+            /*
+            document.getElementById("company_desc").innerText = trueOrFalse(summary, na);
+            document.getElementById("address").innerText = trueOrFalse(streetAddress, na);
+            document.getElementById("city").innerText = `${trueOrFalse(city, na)},`;
+            document.getElementById("state").innerText = trueOrFalse(state, na);
+            document.getElementById("country").innerText = trueOrFalse(country, na);
+            document.getElementById("link").innerText = trueOrFalse(website, na);
+            document.getElementById("ceo").innerText = trueOrFalse(ceo, na);
+            document.getElementById("full_time_employees").innerText = trueOrFalse(employees, na);
+            */
+
+            hideElem(document.getElementById("company_desc"), summary, na)
+            hideElem(document.getElementById("address"), streetAddress, na)
+            hideElem(document.getElementById("city"), city, na)
+            hideElem(document.getElementById("state"), state, na)
+            hideElem(document.getElementById("country"), country, na)
+            hideElem(document.getElementById("link"), website, na)
+            hideElem(document.getElementById("ceo"), ceo, na)
+            hideElem(document.getElementById("full_time_employees"), employees, na)
         }
         /**
                 const idlePage = () => {
@@ -1802,6 +1769,114 @@
                     }, 180000);
                 }
         */
+        slides.forEach((slide, index) => {
+            //touch events
+            slide.addEventListener('touchstart', touchStart(index))
+            slide.addEventListener('touchend', touchEnd);
+            slide.addEventListener('touchmove', touchMove)
+            //mouse events
+            slide.addEventListener('mousedown', touchStart(index))
+            slide.addEventListener('mouseup', touchEnd)
+            slide.addEventListener('mouseleave', touchEnd)
+            slide.addEventListener('mousemove', touchMove)
+        })
+
+        slideNavChevrons.forEach((chevron) => {
+            chevron.addEventListener("click", () => {
+                //next button
+                let chevronDirection = chevron.classList.contains("slide-next");
+                isDragging = true;
+                animationId = requestAnimationFrame(animation);
+                if (chevronDirection) {
+                    if (currSlideIndex < slides.length - 1) {
+                        currSlideIndex += 1
+                    }
+                }
+
+                //prev button
+                if (!chevronDirection) {
+                    if (currSlideIndex > 0) {
+                        currSlideIndex -= 1;
+                    }
+                }
+
+
+                isDragging = false;
+                cancelAnimationFrame(animationId);
+                setPostionByIndex()
+            })
+        })
+
+        function touchStart(index) {
+            return function (event) {
+                currSlideIndex = index;
+                startPosition = getPositionX(event);
+
+                isDragging = true;
+                animationId = requestAnimationFrame(animation);
+                slidesWrapper.style.cursor = "grabbing";
+            }
+        }
+
+        function touchEnd() {
+            isDragging = false;
+            cancelAnimationFrame(animationId);
+            const movedBy = currTranslateX - prevTranslateX;
+
+            if (movedBy < -50 && currSlideIndex < slides.length - 1) {
+                currSlideIndex += 1
+
+            }
+            if (movedBy > 50 && currSlideIndex > 0) currSlideIndex -= 1;
+            setPostionByIndex()
+            slidesWrapper.style.cursor = "grab";
+        }
+
+        function touchMove(event) {
+            if (isDragging) {
+                const currentPosition = getPositionX(event)
+                currTranslateX = prevTranslateX + currentPosition - startPosition;
+
+            }
+        }
+
+        function getPositionX(event) {
+            return event.type.includes("mouse") ? event.pageX : event.touches[0].clientX;
+        }
+
+        function animation() {
+            setSliderPosition()
+            if (isDragging) requestAnimationFrame(animation)
+        }
+
+        function setSliderPosition() {
+            slidesWrapper.style.transform = `translateX(${currTranslateX}%)`;
+        }
+
+        function setPostionByIndex() {
+            currTranslateX = currSlideIndex * -105;
+            prevTranslateX = currTranslateX;
+            setSliderPosition()
+        }
+
+        const setMarketTime = (timeStamp, dateObj = "") => {
+            let date, formatted;
+
+            if (dateObj) {
+                date = dateObj
+            } else {
+                date = new Date(timeStamp * 1000);
+            }
+
+            formatted = new Intl.DateTimeFormat('en-US', {
+                dateStyle: 'short',
+                timeStyle: 'long',
+                timeZone: 'America/New_York',
+            }).format(date)
+
+            return formatted
+
+        }
 
         const setEventListeners = () => {
             //timeline links: 1d 5d ytd 1y 2yr
@@ -1840,7 +1915,7 @@
             h2Box.addEventListener("focus", () => {
                 const h2ChildNodes = h2Box.childNodes;
                 const selection = window.getSelection();
-                if (h2Box.innerText === "Enter ticker...") {
+                if (h2Box.innerText === "Enter ticker or company...") {
                     h2Box.innerText = "";
                 }
                 //set caret position after text node
@@ -1853,14 +1928,14 @@
                 return;
             });
             h2Box.addEventListener("focusout", () => {
-                if (h2Box.innerText === "") h2Box.innerText = "Enter ticker...";
+                if (h2Box.innerText === "") h2Box.innerText = "Enter ticker or company...";
                 if (h2Box.style.backgroundColor === "#15192f") {
                     h2Box.style.backgroundColor === "#012c12";
                 }
             });
             h2Box.addEventListener("keydown", (e) => {
                 const textString = h2Box.innerText;
-                if (textString.length >= 5 && e.key !== "Backspace" && e.key !== "Enter") {
+                if (textString.length >= 20 && e.key !== "Backspace" && e.key !== "Enter") {
                     e.preventDefault();
                     alert("Character amount exceeded");
                 }
@@ -1928,7 +2003,7 @@
         runProgressBar("1d");
         setEventListeners();
         formatPrice(commas, "commas");
-
+        // runAnalysis(stockTicker)
         //set interval to fetch/grab chart data "1d", and set session for periodic price update
     </script>
 
