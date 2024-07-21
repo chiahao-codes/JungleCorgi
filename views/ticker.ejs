@@ -993,6 +993,9 @@
                     let realStockURL = `https://real-time-finance-data.p.rapidapi.com/stock-quote?symbol=%5E${stockTicker}&language=en`
                     stock = await fetch(realStockURL, realApiOptions).catch((e) => console.log(e));
                     stock = await stock.json();
+                    console.log("stock:", stock)
+                    //if stock not found, reroute to 404...
+
                     stockName = stock.data.name;
                     document.getElementById("company_name").innerText = stockName;
                     previousCloseSearch = stock.data.previous_close;

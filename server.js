@@ -93,6 +93,10 @@ app.get("/privacy", async (req, res, next) => {
   res.render("privacy");
 });
 
+app.get("/404", async (req, res, next) => {
+  res.render("404");
+});
+
 app.get("/contact", async (req, res, next) => {
   res.render("contact");
 });
@@ -100,6 +104,7 @@ app.get("/contact", async (req, res, next) => {
 let cache = {
   GOOGLE: "GOOG",
   FACEBOOK: "META",
+  MICROSOFT: "MSFT",
 };
 app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
