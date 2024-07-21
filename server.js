@@ -125,7 +125,8 @@ app.get("/:symbol", async (req, res) => {
     marketState,
     regularMarketChange,
     regularMarketChangePercent,
-    regularMarketPrice;
+    regularMarketPrice,
+    quoteSummErrorCode;
 
   symbol = symbol.toUpperCase();
   console.log("symbol:", symbol);
@@ -158,6 +159,17 @@ app.get("/:symbol", async (req, res) => {
         shortName = ele.shortName;
         longName = ele.longName;
         quoteType = ele.quoteType;
+
+        if (ele.quoteSummary) {
+          if (ele.quoteSummary.errorResult) {
+            if (ele.quoteSummary.errorResult.code) {
+              quoteSummErrorCode = ele.quoteSummary.errorResult.code;
+              breakStatement = true;
+              break;
+            }
+          }
+        }
+
         previousClose = ele.regularMarketPreviousClose;
         marketState = ele.marketState;
         regularMarketPrice = ele.regularMarketPrice;
@@ -235,6 +247,7 @@ app.get("/:symbol", async (req, res) => {
 
   res.render("ticker", {
     chartJS,
+    quoteSummErrorCode,
     API_KEY,
     RAPID,
     CURR_DOMAIN,

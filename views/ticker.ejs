@@ -810,11 +810,9 @@
         let previousClose = "",
             regularMarketPrice = "";
         const changePctPointsColor = (currentPrice, prevClosePrice) => {
-            console.log("current price", currentPrice, typeof currentPrice)
-            console.log("previous price:", prevClosePrice, typeof prevClosePrice)
 
-            currentPrice = Math.floor(parseFloat(currentPrice));
-            prevClosePrice = Math.floor(parseFloat(prevClosePrice));
+            currentPrice = parseFloat(currentPrice);
+            prevClosePrice = parseFloat(prevClosePrice);
 
             regularPrice.style.color = green;
             regPointsPctContainer.children[0].style.color = green;
@@ -829,9 +827,10 @@
             afterHrsPrice.style.color = green;
             afterHrsChange.style.color = green;
             afterHrsPct.style.color = green;
+            let afterPrice = afterHrsPrice.innerText;
+            afterPrice = parseFloat(afterPrice);
 
-
-            if (afterHoursPrice < currentPrice) {
+            if (afterPrice < currentPrice) {
                 afterHrsPrice.style.color = red;
                 afterHrsChange.style.color = red;
                 afterHrsPct.style.color = red;
@@ -917,99 +916,131 @@
                     regularMarketTime,
                     marketState,
                     afterHoursPointsChng, afterHoursPctChng, regularMarketChangePercent, regularMarketChange;
-                let regDateTime = "", prePostMarketState = "";
+                let regDateTime = "", prePostMarketState = "", postTimeSearch,
+                    postPriceSearch,
+                    postPriceChangeSearch,
+                    postPriceChangePercentSearch,
+                    preTimeSearch,
+                    prePriceSearch,
+                    prePriceChangeSearch, stock, lastUpdateUtcDate, last_update_utc, stockName,
+                    formatLastUpdateUtc,
+                    prePriceChangePercentSearch, preOrPostPrice, preOrPostChange, preOrPostChangePct, preOrPostTime;
 
-                console.log("quote:", quote)
-                let quoteCode = quote.quoteSummary.errorResult.code;
+                let quoteCode = '<%=quoteSummErrorCode%>';
+                let previousCloseSearch, regularPriceSearch, regularChangeSearch, regularChangePercentSearch, regularTimeSearch;
+                //yahu results:
+                if (quote && !quoteCode) {
 
-                if (quoteCode === "Not Found") {
-                    let realStockURL = `https://real-time-finance-data.p.rapidapi.com/stock-quote?symbol=%5E${stockTicker}&language=en`
-                    let stock = await fetch(realStockURL, realApiOptions).catch((e) => console.log(e));
-                    stock = await stock.json();
-                    console.log("stock:", stock);
-
-                    previousClose = stock.data.previous_close;
-                    regularMarketPrice = stock.data.price;
-                    regularMarketTime = stock.data.last_update_utc;
-                    regularMarketChange = stock.data.change;
-                    regularMarketChangePercent = stock.data.change_percent;
-
+                    previousCloseSearch = '<%=previousClose%>';
+                    regularPriceSearch = '<%=regularMarketPrice%>';
+                    regularTimeSearch = '<%=regularMarketTime%>';
+                    regularChangeSearch = '<%=regularMarketChangePercent%>';
+                    regularChangePercentSearch = '<%=regularMarketChange%>';
+                    marketState = quote.marketState;
                     if (quoteType === "EQUITY") {
+                        prePriceSearch = '<%=preMarketPrice%>';
+                        prePriceChangeSearch = '<%=preMarketChange%>';
+                        prePriceChangePercentSearch = '<%=preMarketChangePercent%>';
+                        preTimeSearch = '<%=preMarketTime%>'
+                        postPriceSearch = '<%=postMarketPrice%>'
+                        postPriceChangeSearch = '<%=postMarketChange%>'
+                        postPriceChangePercentSearch = '<%=postMarketChangePercent%>'
+                        postTimeSearch = '<%=postMarketTime%>'
                     }
                 }
 
-                if (quote === undefined || quote === "" || !quote) {
-
+                //yahu api search
+                if (!quote && !quoteCode) {
                     let quoteURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${stockTicker}`;
                     quote = await fetch(quoteURL, apiOptions).catch((e) => console.log(e));
                     quote = await quote.json();
                     quote = quote.quoteResponse.result[0];
-                    console.log("quote:", quote)
-
-                    //if quote is still undefined, run realtime stock quote;
 
 
-                    previousClose = quote.regularMarketPreviousClose;
-                    regularMarketPrice = quote.regularMarketPrice;
-                    regularMarketTime = quote.regularMarketTime;
-                    regularMarketChange = quote.regularMarketChangePercent;
-                    regularMarketChangePercent = quote.regularMarketChange;
-
-                    if (quoteType === "EQUITY") {
-                        if (quote.preMarketPrice) {
-                            preMarketPrice = quote.preMarketPrice;
-                        }
-                        if (quote.preMarketChange) {
-                            preMarketChange = quote.preMarketChange;
-                        }
-                        if (quote.preMarketPrice) {
-                            preMarketChangePercent = quote.preMarketPrice;
-                        }
-                        if (quote.preMarketTime) {
-                            preMarketTime = quote.preMarketTime;
-                        }
-                        if (quote.postMarketPrice) {
-                            postMarketPrice = quote.postMarketPrice;
-                        }
-                        if (quote.postMarketChange) {
-                            postMarketChange = quote.postMarketChange;
-                        }
-                        if (quote.postMarketChangePercent) {
-                            postMarketChangePercent = quote.postMarketChangePercent;
-                        }
-                        if (quote.postMarketTime) {
-                            postMarketTime = quote.postMarketTime;
-                        }
-                        if (quote.marketState) {
+                    if (quote.quoteSummary) {
+                        if (quote.quoteSummary.errorResult) {
+                            if (quote.quoteSummary.errorResult.code) {
+                                quoteCode = quote.quoteSummary.errorResult.code;
+                            }
+                        } else {
+                            previousCloseSearch = quote.regularMarketPreviousClose;
+                            regularPriceSearch = quote.regularMarketPrice;
+                            regularChangeSearch = quote.regularMarketChange;
+                            regularChangePercentSearch = quote.regularMarketChangePercent;
+                            regularTimeSearch = quote.regularMarketTime;
                             marketState = quote.marketState;
-                        }
-                    }
-                } else {
-                    //must use ejs syntax if quote exists already;
-                    previousClose = '<%=previousClose%>';
-                    regularMarketPrice = '<%=regularMarketPrice%>';
-                    regularMarketTime = '<%=regularMarketTime%>';
-                    regularMarketChange = '<%=regularMarketChangePercent%>';
-                    regularMarketChangePercent = '<%=regularMarketChange%>';
+                            if (quoteType === "EQUITY") {
+                                if (quote.postMarketPrice) {
+                                    postTimeSearch = quote.postMarketTime;
+                                    postPriceSearch = quote.postMarketPrice
+                                    postPriceChangeSearch = quote.postMarketChange;
+                                    postPriceChangePercentSearch = quote.postMarketChangePercent;
+                                }
 
-                    if (quoteType === "EQUITY") {
-                        preMarketPrice = '<%=preMarketPrice%>';
-                        preMarketChange = '<%=preMarketChange%>';
-                        preMarketChangePercent = '<%=preMarketChangePercent%>';
-                        preMarketTime = '<%=preMarketTime%>'
-                        postMarketPrice = '<%=postMarketPrice%>'
-                        postMarketChange = '<%=postMarketChange%>'
-                        postMarketChangePercent = '<%=postMarketChangePercent%>'
-                        postMarketTime = '<%=postMarketTime%>'
-                        marketState = quote.marketState;
+                                if (quote.preMarketPrice) {
+                                    preTimeSearch = quote.preMarketTime;
+                                    prePriceSearch = quote.preMarketPrice
+                                    prePriceChangeSearch = quote.preMarketChange;
+                                    prePriceChangePercentSearch = quote.preMarketChangePercent;
+                                }
+                            }
+                        }
                     }
                 }
 
+                //real time api search;
+                if (quoteCode === "Not Found") {
+                    let realStockURL = `https://real-time-finance-data.p.rapidapi.com/stock-quote?symbol=%5E${stockTicker}&language=en`
+                    stock = await fetch(realStockURL, realApiOptions).catch((e) => console.log(e));
+                    stock = await stock.json();
+                    stockName = stock.data.name;
+                    document.getElementById("company_name").innerText = stockName;
+                    previousCloseSearch = stock.data.previous_close;
+                    regularPriceSearch = stock.data.price;
+                    regularChangeSearch = stock.data.change;
+                    regularChangePercentSearch = stock.data.change_percent;
+                    regularTimeSearch = stock.data.last_update_utc;
+
+                    if (stock.data.pre_or_post_market) {
+                        preOrPostPrice = stock.data.pre_or_post_market;
+                        preOrPostChange = stock.data.pre_or_post_market_change;
+                        preOrPostChangePct = stock.data.pre_or_post_market_change_percent;
+                        last_update_utc = stock.data.last_update_utc;
+                    }
+                }
+
+                previousClose = previousCloseSearch;
+                regularMarketPrice = regularPriceSearch;
+                regularMarketTime = regularTimeSearch;
+                regularMarketChange = regularChangeSearch;
+                regularMarketChangePercent = regularChangePercentSearch;
+
+                if (prePriceSearch) {
+                    preMarketPrice = prePriceSearch;
+                    preMarketChange = prePriceChangeSearch
+                    preMarketChangePercent = prePriceChangePercentSearch;
+                    preMarketTime = preTimeSearch;
+                }
+
+                if (postPriceSearch) {
+                    postMarketPrice = postPriceSearch;
+                    postMarketChange = postPriceChangeSearch;
+                    postMarketChangePercent = postPriceChangePercentSearch;
+                    postMarketTime = postTimeSearch;
+                }
 
                 regDateTime = "At Close:";
 
                 if (marketState === "REGULAR" || regularMarketTime > preMarketTime && !postMarketTime) {
                     regDateTime = "Current Session:"
+                }
+
+                //realtime api
+                if (last_update_utc) {
+                    //format 
+                    lastUpdateUtcDate = new Date(last_update_utc);
+
+                    regDateTime = "Last Update:"
                 }
 
                 //format prices:
@@ -1020,13 +1051,19 @@
                 regularPrice.innerText = regularMarketPrice;
                 regPointsPctContainer.children[0].innerText = regularMarketChangePercent;
                 regPointsPctContainer.children[1].innerText = regularMarketChange;
-
                 atCloseContainer.children[0].innerText = regDateTime;
-                atCloseContainer.children[1].innerText = setMarketTime(regularMarketTime);
-                let prePostTime;
+
+                if (lastUpdateUtcDate) {
+
+                    atCloseContainer.children[1].innerText = setMarketTime("", lastUpdateUtcDate);
+                } else {
+                    atCloseContainer.children[1].innerText = setMarketTime(regularMarketTime);
+                }
+
+                let prePostTime; //yahu api
                 if (marketState === "PREPRE" || marketState === "PRE" || preMarketTime >= regularMarketTime) {
                     prePostMarketState = "Pre-Market:"
-                    console.log("pre")
+
 
                     if (preMarketPrice) {
                         afterHoursPrice = preMarketPrice
@@ -1044,24 +1081,17 @@
 
                 if (marketState === "POST" || marketState === "POSTPOST" || postMarketTime >= regularMarketTime && postMarketTime > preMarketTime) {
                     prePostMarketState = "After Hours:"
-                    console.log("post")
+
 
                     if (postMarketPrice) {
-                        if (postMarketPrice) {
-                            afterHoursPrice = postMarketPrice
-                            console.log("afterHoursPrice:", afterHoursPrice)
-                        }
+                        afterHoursPrice = postMarketPrice
                     }
 
                     if (postMarketChange) {
-                        if (postMarketChange) {
-                            afterHoursPointsChng = postMarketChange
-                        }
+                        afterHoursPointsChng = postMarketChange
                     }
                     if (postMarketChangePercent) {
-                        if (postMarketChangePercent) {
-                            afterHoursPctChng = postMarketChangePercent
-                        }
+                        afterHoursPctChng = postMarketChangePercent
                     }
 
                     if (postMarketTime) {
@@ -1069,17 +1099,30 @@
                     }
                 }
 
+                //realTime api 
+                if (preOrPostPrice) {
+                    afterHoursPrice = preOrPostPrice;
+                    afterHoursPointsChng = preOrPostChange;
+                    afterHoursPctChng = preOrPostChangePct;
+                    prePostMarketState = "Last Updated:";
+                    prePostTime = lastUpdateUtcDate
+                }
 
-                if (prePostTime) {
-                    afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
-                    afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
-                    afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
-                    afterHrsPrice.innerText = afterHoursPrice;
-                    afterHrsChange.innerText = afterHoursPointsChng;
-                    afterHrsPct.innerText = afterHoursPctChng;
-                    afterHoursTimeContainer.children[0].innerText = prePostMarketState;
+                afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
+                afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
+                afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
+                afterHrsPrice.innerText = afterHoursPrice;
+                afterHrsChange.innerText = afterHoursPointsChng;
+                afterHrsPct.innerText = afterHoursPctChng;
+                afterHoursTimeContainer.children[0].innerText = prePostMarketState;
+                if (prePostMarketState === "Last Updated:") {
+
+                    afterHoursTimeContainer.children[1].innerText = setMarketTime("", prePostTime);
+                } else {
                     afterHoursTimeContainer.children[1].innerText = setMarketTime(prePostTime);
                 }
+
+
 
                 //previous closing price;
                 previousCloseElem.innerText = previousClose;
@@ -1235,7 +1278,6 @@
 
             let grabchart, fillchart, response;
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
-            console.log("response:", response)
 
             //set session
             if (range === "1d") {
@@ -1255,7 +1297,7 @@
                 fillchart = await fillChartData(response, range).then((res) => { return res }).catch((e) => console.log(e));
                 progressBarContainer.style.display = "none"
                 stockChart.style.display = "initial";
-                populateAnalysis(stockTicker);
+
                 let chartResult = fillchart, options;
 
                 options = {
@@ -1349,12 +1391,14 @@
             timeoutId = setTimeout(() => {
                 runChart(range).then(async () => {
                     populateNews(stockTicker);
-                    if (quoteType === "EQUITY") {
 
+                    if (quoteType === "EQUITY") {
+                        populateAnalysis(stockTicker);
+                        populateProfile(stockTicker)
                         await populateIncomeData(stockTicker)
                         populateBalanceData(stockTicker)
                         populateCashFlowData(stockTicker)
-                        populateProfile(stockTicker)
+
                     }
                 })
                     .catch((e) => console.log(e));
@@ -1519,13 +1563,13 @@
                 let dateOb = new Date(date);
                 let hr = dateOb.getHours();
                 let dateOfMonth = dateOb.getDate();
-                console.log(hr, dateOfMonth)
+
 
                 document.querySelector("#article-title").innerText = `"${title}"`;
                 document.querySelector("#article-source > #article-link").setAttribute("href", articleUrl)
                 document.querySelector("#article-source > #article-link").innerText = source;
 
-                console.log("date:", date, typeof date)
+
                 document.querySelector("#article-time").innerText = `${date} UTC`;
             } else {
                 const insightContainer = document.querySelector("#insights-container");
@@ -1724,7 +1768,7 @@
             let state = profileResp.data.company_state;
             let city = profileResp.data.company_city;
             let ceo = profileResp.data.company_ceo;
-            console.log(ceo)
+
             let employees = profileResp.data.company_employees;
             let website = profileResp.data.company_website;
             let founded = profileResp.data.company_founded_date;
@@ -1862,7 +1906,7 @@
         const setMarketTime = (timeStamp, dateObj = "") => {
             let date, formatted;
 
-            if (dateObj) {
+            if (dateObj && !timeStamp) {
                 date = dateObj
             } else {
                 date = new Date(timeStamp * 1000);
@@ -1979,7 +2023,7 @@
                         let url = '<%=CURR_DOMAIN%>'
 
                         url = `${url}${textString}`
-                        console.log(url);
+
                         //check ticker string
                         window.location.href = url;
                     }
