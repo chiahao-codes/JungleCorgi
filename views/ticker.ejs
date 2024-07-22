@@ -310,10 +310,10 @@
                             </div>
                             <div class="slide-data slide-headers ttm">TTM
                             </div>
-                            <div class="slide-data slide-headers year1 endingyr1">
+                            <div id="income-slide-yr1" class="slide-data slide-headers year1 endingyr1">
 
                             </div>
-                            <div class="slide-data slide-headers year2 endingyr2">
+                            <div id="income-slide-yr2" class="slide-data slide-headers year2 endingyr2">
 
                             </div>
                         </div>
@@ -344,7 +344,7 @@
                             </div>
                         </div>
                         <div class="slide-data-wrapper operating-expense">
-                            <div class="slide-data data-align-left">Operating expense</div>
+                            <div class="slide-data data-align-left">Operating exp.</div>
 
                             <div class="slide-data  ttm">
 
@@ -383,7 +383,7 @@
                             </div>
                         </div>
                         <div class="slide-data-wrapper other-income-expense">
-                            <div class="slide-data data-align-left">Other income exp</div>
+                            <div class="slide-data data-align-left">Other expense</div>
                             <div class="slide-data ttm">
 
                             </div>
@@ -411,7 +411,7 @@
                         <div class="slide-data-wrapper net-income">
                             <div class="slide-data data-align-left">Net income</div>
 
-                            <div class="slide-data  ttmNetIncome">
+                            <div class="slide-data ttm">
 
                             </div>
                             <div class="slide-data year1">
@@ -484,7 +484,7 @@
                             </div>
                         </div>
                         <div class="slide-data-wrapper current-debt">
-                            <div class="slide-data data-align-left">Current Debt</div>
+                            <div class="slide-data data-align-left">Current debt</div>
 
                             <div class="slide-data year1">
 
@@ -509,7 +509,7 @@
 
                             </div>
                         </div>
-                        <div class="slide-data-wrapper working-capital">
+                        <div class="slide-data-wrapper accts-receive">
                             <div class="slide-data data-align-left">Accts. receivable</div>
 
                             <div class="slide-data year1">
@@ -522,7 +522,7 @@
 
                             </div>
                         </div>
-                        <div class="slide-data-wrapper total-debt">
+                        <div class="slide-data-wrapper accts-pay">
                             <div class="slide-data data-align-left">Accts. payable</div>
 
                             <div class="slide-data year1">
@@ -536,7 +536,7 @@
                             </div>
                         </div>
 
-                        <div class="slide-data-wrapper shares-issued">
+                        <div class="slide-data-wrapper retained-earn">
                             <div class="slide-data data-align-left">Ret. Earnings</div>
 
                             <div class="slide-data year1">
@@ -715,10 +715,10 @@
                         <p id="country" class="address-details">
 
                         </p>
-                        <div id="website">
-                            <a id="link" href="" target="_blank" class="address-details">
-                            </a>
-                        </div>
+
+                        <a id="website-link" href="" target="_blank" class="address-details">
+                        </a>
+
                     </div>
                     <div id="ceo-employee-container">
                         <div id="title-parent" class="ceo-employee">
@@ -753,6 +753,7 @@
         const HOST = '<%=RAPID%>';
         const NEWS = '<%=NEWS%>'
         let quote = '<%=quote%>';
+        let realElemStock = '<%=realElemStock%>'
         const apiOptions = {
             method: "GET",
             headers: {
@@ -769,6 +770,7 @@
             },
         }
 
+        //for keyboard key values
         const regExp = /[a-zA-Z.^]/;
         const regExNums = /[0-9]/;
 
@@ -795,7 +797,7 @@
         const commas = document.querySelectorAll("#index_data_container > div > .border-line > .commas");
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
-        let chart, timeoutId, currMktState, timeout = undefined, timeout2 = undefined, red = "#b11e31", green = "#148a61", afterHoursPrice;
+        let chart, finCurrency, timeoutId, currMktState, timeout = undefined, timeout2 = undefined, red = "#b11e31", green = "#148a61", afterHoursPrice;
 
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
@@ -804,7 +806,11 @@
         const slidesWrapper = document.querySelector('.slides-wrapper');
         const slides = Array.from(document.querySelectorAll(".slide"));
         const slideNavChevrons = Array.from(document.querySelectorAll(".chevrons"));
-
+        let checkStmtProp = (property) => {
+            return property && property.reportedValue.fmt
+                ? property.reportedValue.fmt
+                : "n/a";
+        };
         //starting variables;
         let isDragging = false, startPosition = 0, currTranslateX = 0, prevTranslateX = 0, animationId = 0, currSlideIndex = 0;
         let previousClose = "",
@@ -845,12 +851,14 @@
                 let points = container.children[0].innerText;
                 let pct = container.children[1].innerText;
 
-                if (!regExp.test(points)) {
-                    points = `+${points}`
-                    pct = `+${pct}`
+                if (points && pct) {
+                    if (!regExp.test(points)) {
+                        points = `+${points}`
+                        pct = `+${pct}`
+                    }
+                    container.children[0].innerText = `${points}`;
+                    container.children[1].innerText = `(${pct}%)`;
                 }
-                container.children[0].innerText = `${points}`;
-                container.children[1].innerText = `(${pct}%)`;
             }
 
             if (divClass === "commas") {
@@ -930,13 +938,15 @@
                 let previousCloseSearch, regularPriceSearch, regularChangeSearch, regularChangePercentSearch, regularTimeSearch;
                 //yahu results:
                 if (quote && !quoteCode) {
-
                     previousCloseSearch = '<%=previousClose%>';
                     regularPriceSearch = '<%=regularMarketPrice%>';
                     regularTimeSearch = '<%=regularMarketTime%>';
+
                     regularChangeSearch = '<%=regularMarketChangePercent%>';
                     regularChangePercentSearch = '<%=regularMarketChange%>';
                     marketState = quote.marketState;
+                    console.log("market state:", marketState)
+                    console.log("regular time search", regularTimeSearch)
                     if (quoteType === "EQUITY") {
                         prePriceSearch = '<%=preMarketPrice%>';
                         prePriceChangeSearch = '<%=preMarketChange%>';
@@ -954,34 +964,35 @@
                     let quoteURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${stockTicker}`;
                     quote = await fetch(quoteURL, apiOptions).catch((e) => console.log(e));
                     quote = await quote.json();
-                    quote = quote.quoteResponse.result[0];
-
-
-                    if (quote.quoteSummary) {
-                        if (quote.quoteSummary.errorResult) {
-                            if (quote.quoteSummary.errorResult.code) {
-                                quoteCode = quote.quoteSummary.errorResult.code;
-                            }
-                        } else {
-                            previousCloseSearch = quote.regularMarketPreviousClose;
-                            regularPriceSearch = quote.regularMarketPrice;
-                            regularChangeSearch = quote.regularMarketChange;
-                            regularChangePercentSearch = quote.regularMarketChangePercent;
-                            regularTimeSearch = quote.regularMarketTime;
-                            marketState = quote.marketState;
-                            if (quoteType === "EQUITY") {
-                                if (quote.postMarketPrice) {
-                                    postTimeSearch = quote.postMarketTime;
-                                    postPriceSearch = quote.postMarketPrice
-                                    postPriceChangeSearch = quote.postMarketChange;
-                                    postPriceChangePercentSearch = quote.postMarketChangePercent;
+                    if (quote.quoteResponse.result.length > 0) {
+                        quote = quote.quoteResponse.result[0];
+                        if (quote.quoteSummary) {
+                            if (quote.quoteSummary.errorResult) {
+                                if (quote.quoteSummary.errorResult.code) {
+                                    quoteCode = quote.quoteSummary.errorResult.code;
                                 }
+                            } else {
+                                console.log("quote:", quote)
+                                previousCloseSearch = quote.regularMarketPreviousClose;
+                                regularPriceSearch = quote.regularMarketPrice;
+                                regularChangeSearch = quote.regularMarketChange;
+                                regularChangePercentSearch = quote.regularMarketChangePercent;
+                                regularTimeSearch = quote.regularMarketTime;
+                                marketState = quote.marketState;
+                                if (quoteType === "EQUITY") {
+                                    if (quote.postMarketPrice) {
+                                        postTimeSearch = quote.postMarketTime;
+                                        postPriceSearch = quote.postMarketPrice
+                                        postPriceChangeSearch = quote.postMarketChange;
+                                        postPriceChangePercentSearch = quote.postMarketChangePercent;
+                                    }
 
-                                if (quote.preMarketPrice) {
-                                    preTimeSearch = quote.preMarketTime;
-                                    prePriceSearch = quote.preMarketPrice
-                                    prePriceChangeSearch = quote.preMarketChange;
-                                    prePriceChangePercentSearch = quote.preMarketChangePercent;
+                                    if (quote.preMarketPrice) {
+                                        preTimeSearch = quote.preMarketTime;
+                                        prePriceSearch = quote.preMarketPrice
+                                        prePriceChangeSearch = quote.preMarketChange;
+                                        prePriceChangePercentSearch = quote.preMarketChangePercent;
+                                    }
                                 }
                             }
                         }
@@ -989,26 +1000,36 @@
                 }
 
                 //real time api search;
-                if (quoteCode === "Not Found") {
+                if (quoteCode === "Not Found" || !quote) {
                     let realStockURL = `https://real-time-finance-data.p.rapidapi.com/stock-quote?symbol=%5E${stockTicker}&language=en`
                     stock = await fetch(realStockURL, realApiOptions).catch((e) => console.log(e));
                     stock = await stock.json();
-                    console.log("stock:", stock)
                     //if stock not found, reroute to 404...
-
-                    stockName = stock.data.name;
-                    document.getElementById("company_name").innerText = stockName;
-                    previousCloseSearch = stock.data.previous_close;
-                    regularPriceSearch = stock.data.price;
-                    regularChangeSearch = stock.data.change;
-                    regularChangePercentSearch = stock.data.change_percent;
-                    regularTimeSearch = stock.data.last_update_utc;
-
-                    if (stock.data.pre_or_post_market) {
-                        preOrPostPrice = stock.data.pre_or_post_market;
-                        preOrPostChange = stock.data.pre_or_post_market_change;
-                        preOrPostChangePct = stock.data.pre_or_post_market_change_percent;
+                    let keys = Object.keys(stock.data);
+                    if (keys.length > 0) {
+                        stockName = stock.data.name;
+                        document.getElementById("company_name").innerText = stockName;
+                        previousCloseSearch = stock.data.previous_close;
+                        regularPriceSearch = stock.data.price;
+                        regularChangeSearch = stock.data.change;
+                        regularChangePercentSearch = stock.data.change_percent;
+                        regularTimeSearch = stock.data.last_update_utc;
                         last_update_utc = stock.data.last_update_utc;
+                        if (stock.data.pre_or_post_market) {
+                            preOrPostPrice = stock.data.pre_or_post_market;
+                            preOrPostChange = stock.data.pre_or_post_market_change;
+                            preOrPostChangePct = stock.data.pre_or_post_market_change_percent;
+                        }
+                    }
+
+                    if (keys.length === 0 && realElemStock) {
+                        //must use server side realtimestockelem variables here:
+                        stockName
+                        regularPriceSearch
+                        regularChangeSearch
+                        regularChangePercentSearch
+                        last_update_utc
+                        previousCloseSearch
                     }
                 }
 
@@ -1034,16 +1055,18 @@
 
                 regDateTime = "At Close:";
 
-                if (marketState === "REGULAR" || regularMarketTime > preMarketTime && !postMarketTime) {
-                    regDateTime = "Current Session:"
+                if (regularMarketTime) {
+                    if (preMarketTime) {
+                        if (regularMarketTime > preMarketTime && !postMarketTime) {
+                            regDateTime = "Current Session:"
+                        }
+                    }
                 }
 
                 //realtime api
                 if (last_update_utc) {
-                    //format 
-                    lastUpdateUtcDate = new Date(last_update_utc);
-
                     regDateTime = "Last Update:"
+                    regularMarketTime = last_update_utc
                 }
 
                 //format prices:
@@ -1055,49 +1078,42 @@
                 regPointsPctContainer.children[0].innerText = regularMarketChangePercent;
                 regPointsPctContainer.children[1].innerText = regularMarketChange;
                 atCloseContainer.children[0].innerText = regDateTime;
-
-                if (lastUpdateUtcDate) {
-
-                    atCloseContainer.children[1].innerText = setMarketTime("", lastUpdateUtcDate);
-                } else {
-                    atCloseContainer.children[1].innerText = setMarketTime(regularMarketTime);
-                }
+                atCloseContainer.children[1].innerText = setMarketTime(regularMarketTime);
 
                 let prePostTime; //yahu api
-                if (marketState === "PREPRE" || marketState === "PRE" || preMarketTime >= regularMarketTime) {
+                if (preMarketTime >= regularMarketTime) {
                     prePostMarketState = "Pre-Market:"
 
-
-                    if (preMarketPrice) {
+                    if (preMarketPrice !== null || preMarketPrice !== undefined) {
                         afterHoursPrice = preMarketPrice
                     }
-                    if (preMarketChange) {
+                    if (preMarketChange !== null || preMarketChange !== undefined) {
                         afterHoursPointsChng = preMarketChange
                     }
-                    if (preMarketChangePercent) {
+                    if (preMarketChangePercent !== null || preMarketChangePercent !== undefined) {
                         afterHoursPctChng = preMarketChangePercent
                     }
-                    if (preMarketTime) {
+                    if (preMarketTime !== null || preMarketTime !== undefined) {
                         prePostTime = preMarketTime
                     }
                 }
 
-                if (marketState === "POST" || marketState === "POSTPOST" || postMarketTime >= regularMarketTime && postMarketTime > preMarketTime) {
+                if (postMarketTime >= regularMarketTime && postMarketTime > preMarketTime) {
                     prePostMarketState = "After Hours:"
 
 
-                    if (postMarketPrice) {
+                    if (postMarketPrice !== undefined || postMarketPrice !== null) {
                         afterHoursPrice = postMarketPrice
                     }
-
-                    if (postMarketChange) {
+                    console.log("post market change:", postMarketChange)
+                    if (postMarketChange !== undefined || postMarketChange !== null) {
                         afterHoursPointsChng = postMarketChange
                     }
-                    if (postMarketChangePercent) {
+                    if (postMarketChangePercent !== undefined || postMarketChangePercent !== null) {
                         afterHoursPctChng = postMarketChangePercent
                     }
 
-                    if (postMarketTime) {
+                    if (postMarketTime !== undefined || postMarketTime !== null) {
                         prePostTime = postMarketTime;
                     }
                 }
@@ -1108,23 +1124,21 @@
                     afterHoursPointsChng = preOrPostChange;
                     afterHoursPctChng = preOrPostChangePct;
                     prePostMarketState = "Last Updated:";
-                    prePostTime = lastUpdateUtcDate
+                    prePostTime = last_update_utc
                 }
 
-                afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
-                afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
-                afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
-                afterHrsPrice.innerText = afterHoursPrice;
-                afterHrsChange.innerText = afterHoursPointsChng;
-                afterHrsPct.innerText = afterHoursPctChng;
-                afterHoursTimeContainer.children[0].innerText = prePostMarketState;
-                if (prePostMarketState === "Last Updated:") {
 
-                    afterHoursTimeContainer.children[1].innerText = setMarketTime("", prePostTime);
-                } else {
+                if (prePostMarketState) {
+                    afterHoursPrice = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPrice);
+                    afterHoursPointsChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPointsChng);
+                    afterHoursPctChng = new Intl.NumberFormat("en-US", { style: "decimal", maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(afterHoursPctChng);
+                    afterHrsPrice.innerText = afterHoursPrice;
+                    afterHrsChange.innerText = afterHoursPointsChng;
+                    afterHrsPct.innerText = afterHoursPctChng;
+                    afterHoursTimeContainer.children[0].innerText = prePostMarketState;
+
                     afterHoursTimeContainer.children[1].innerText = setMarketTime(prePostTime);
                 }
-
 
 
                 //previous closing price;
@@ -1278,6 +1292,9 @@
             progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
             stockChart.style.display = "none";
+            document.getElementById("slide-container").style.display = "none";
+            document.getElementById("summary_profile_container").style.display = "none";
+            document.getElementById("index_data_container").style.display = "none";
 
             let grabchart, fillchart, response;
             response = await grabChartData(stockTicker, range).then((res) => { return res }).catch((e) => console.log(e));
@@ -1388,15 +1405,15 @@
             if (timeoutId) {
                 clearTimeout(timeoutId);
             }
+
             progressBar.setAttribute("class", "run-progress-animation");
 
             //settimeout allows for animation to run for a bit;
             timeoutId = setTimeout(() => {
                 runChart(range).then(async () => {
                     populateNews(stockTicker);
-
+                    populateAnalysis(stockTicker);
                     if (quoteType === "EQUITY") {
-                        populateAnalysis(stockTicker);
                         populateProfile(stockTicker)
                         await populateIncomeData(stockTicker)
                         populateBalanceData(stockTicker)
@@ -1408,126 +1425,331 @@
             }, 0)
         }
         const getBalanceSht = async (symbol) => {
+            let result;
             const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
             const response = await fetch(balanceShtURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
-            const result = await response.json();
+            console.log("balance response:", response)
+            if (response.status === 200) {
+                result = await response.json();
+            }
             return result
         }
         const getIncomeStmt = async (symbol) => {
             const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US`;
+            let result;
             const response = await fetch(incomeStmtURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
-            const result = await response.json();
+            console.log("response:", response)
+            if (response.status === 200) {
+                result = await response.json();
+            }
             return result
         }
         const getCashFlow = async (symbol) => {
+            let result;
             const cashFlowStURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=${symbol}&region=US`;
             const response = await fetch(cashFlowStURL, apiOptions).catch((e) => console.log(e));
-            const result = await response.json();
+            if (response.status === 200) {
+                result = await response.json();
+            }
             return result
         }
         const populateIncomeData = async (symbol) => {
             let incomeData = await getIncomeStmt(symbol).then((res) => { return res }).catch((e) => console.log(e));
             console.log("income data:", incomeData)
+            if (incomeData) {
+                let currency, incomeTimeStampsArr,
+                    timestampLength;
+
+                if (incomeData.earnings) {
+                    if (incomeData.earnings.financialCurrency) {
+                        currency = incomeData.earnings.financialCurrency;
+                    }
+                } else {
+                    currency = finCurrency;
+                }
+
+                incomeData = incomeData.timeSeries;
+                //set currency code;
+                let currencyElemList = document.querySelectorAll(".currency");
+                for (let ele of currencyElemList) {
+                    ele.innerText = currency;
+                }
+
+                //set years
+                incomeTimeStampsArr = incomeData.timestamp;
+
+                timestampLength = incomeTimeStampsArr.length;
+
+                let incomeYr1 = incomeTimeStampsArr[timestampLength - 1];
+                let incomeYr2 = incomeTimeStampsArr[timestampLength - 2];
+                incomeYr1 = new Date(incomeYr1 * 1000);
+                incomeYr2 = new Date(incomeYr2 * 1000);
+                incomeYr1 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(incomeYr1);
+                incomeYr2 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(incomeYr2);
+                document.querySelector(".income-slide-years > .year1").innerText = incomeYr1;
+                document.querySelector(".income-slide-years > .year2").innerText = incomeYr2
+
+                //revenue cash flow
+                let ttmRevenue, revenueYr1, revenueYr2;
+                ttmRevenue = checkStmtProp(incomeData.trailingTotalRevenue[0]);
+                revenueYr1 = checkStmtProp(incomeData.annualTotalRevenue[timestampLength - 1]);
+                revenueYr2 = checkStmtProp(incomeData.annualTotalRevenue[timestampLength - 2]);
+                document.querySelector(".total-revenue > .ttm").innerText = ttmRevenue;
+                document.querySelector(".total-revenue > .year1").innerText = revenueYr1;
+                document.querySelector(".total-revenue > .year2").innerText = revenueYr2;
+
+                //gross profit
+                let ttmGrossProfit, grossProfitYr1, grossProfitYr2;
+                ttmGrossProfit = checkStmtProp(incomeData.trailingGrossProfit[0]);
+                grossProfitYr1 = checkStmtProp(incomeData.annualGrossProfit[timestampLength - 1]);
+                grossProfitYr2 = checkStmtProp(incomeData.annualGrossProfit[timestampLength - 2]);
+                document.querySelector(".gross-profit > .ttm").innerText = ttmGrossProfit;
+                document.querySelector(".gross-profit > .year1").innerText = grossProfitYr1;
+                document.querySelector(".gross-profit > .year2").innerText = grossProfitYr2;
+
+                let ttmOperatingExpense, operatingExpenseYr1, operatingExpenseYr2;
+                ttmOperatingExpense = checkStmtProp(incomeData.trailingOperatingExpense[0]);
+                operatingExpenseYr1 = checkStmtProp(incomeData.annualOperatingExpense[timestampLength - 1]);
+                operatingExpenseYr2 = checkStmtProp(incomeData.annualOperatingExpense[timestampLength - 2]);
+                document.querySelector(".operating-expense > .ttm").innerText = ttmOperatingExpense;
+                document.querySelector(".operating-expense > .year1").innerText = operatingExpenseYr1;
+                document.querySelector(".operating-expense > .year2").innerText = operatingExpenseYr2;
+
+                let ttmOperatingIncome, operatingIncomeYr1, operatingIncomeYr2;
+                ttmOperatingIncome = checkStmtProp(incomeData.trailingOperatingIncome[0]);
+                operatingIncomeYr1 = checkStmtProp(incomeData.annualOperatingIncome[timestampLength - 1]);
+                operatingIncomeYr2 = checkStmtProp(incomeData.annualOperatingIncome[timestampLength - 2]);
+                document.querySelector(".operating-income > .ttm").innerText = ttmOperatingIncome;
+                document.querySelector(".operating-income > .year1").innerText = operatingIncomeYr1;
+                document.querySelector(".operating-income > .year2").innerText = operatingIncomeYr2;
+
+                let ttmPreTaxIncome, preTaxIncomeYr1, preTaxIncomeYr2;
+                ttmPreTaxIncome = checkStmtProp(incomeData.trailingPretaxIncome[0]);
+                preTaxIncomeYr1 = checkStmtProp(incomeData.annualPretaxIncome[timestampLength - 1]);
+                preTaxIncomeYr2 = checkStmtProp(incomeData.annualPretaxIncome[timestampLength - 2]);
+                document.querySelector(".pre-tax-income > .ttm").innerText = ttmPreTaxIncome;
+                document.querySelector(".pre-tax-income > .year1").innerText = preTaxIncomeYr1;
+                document.querySelector(".pre-tax-income > .year2").innerText = preTaxIncomeYr2;
+
+                let ttmOtherIncomeExp, otherIncomeExpYr1, otherIncomeExpYr2;
+                ttmOtherIncomeExp = checkStmtProp(incomeData.trailingOtherIncomeExpense[0]);
+                otherIncomeExpYr1 = checkStmtProp(incomeData.annualOtherIncomeExpense[timestampLength - 1]);
+                otherIncomeExpYr2 = checkStmtProp(incomeData.annualOtherIncomeExpense[timestampLength - 2]);
+                document.querySelector(".other-income-expense > .ttm").innerText = ttmOtherIncomeExp;
+                document.querySelector(".other-income-expense > .year1").innerText = otherIncomeExpYr1;
+                document.querySelector(".other-income-expense > .year2").innerText = otherIncomeExpYr2;
+
+                let ttmBasicEps, basicEpsYr1, basicEpsYr2;
+                ttmBasicEps = checkStmtProp(incomeData.trailingBasicEPS[0]);
+                basicEpsYr1 = checkStmtProp(incomeData.annualBasicEPS[timestampLength - 1]);
+                basicEpsYr2 = checkStmtProp(incomeData.annualBasicEPS[timestampLength - 2]);
+                document.querySelector(".basic-eps > .ttm").innerText = ttmBasicEps;
+                document.querySelector(".basic-eps > .year1").innerText = basicEpsYr1;
+                document.querySelector(".basic-eps > .year2").innerText = basicEpsYr2;
+
+                let ttmNetIncome, netIncomeYr1, netIncomeYr2;
+                ttmNetIncome = checkStmtProp(incomeData.trailingNetIncome[0]);
+                netIncomeYr1 = checkStmtProp(incomeData.annualNetIncome[timestampLength - 1]);
+                netIncomeYr2 = checkStmtProp(incomeData.annualNetIncome[timestampLength - 2]);
+                document.querySelector(".net-income > .ttm").innerText = ttmNetIncome;
+                document.querySelector(".net-income > .year1").innerText = netIncomeYr1;
+                document.querySelector(".net-income > .year2").innerText = netIncomeYr2;
+
+                document.getElementById("slide-container").style.display = "flex";
+            }
         }
         const populateBalanceData = async (symbol) => {
             let balanceData = await getBalanceSht(symbol).then((res) => { return res }).catch((e) => console.log(e));
             console.log("balance data:", balanceData)
+            if (balanceData) {
+                balanceData = balanceData.timeSeries;
+                let balanceTimeStampArr = balanceData.timestamp;
+                let timestampLength = balanceTimeStampArr.length;
+                //set years, recent 3 years;
+                let balanceYr1 = balanceTimeStampArr[timestampLength - 1];
+                let balanceYr2 = balanceTimeStampArr[timestampLength - 2];
+                let balanceYr3 = balanceTimeStampArr[timestampLength - 3];
+
+                balanceYr1 = new Date(balanceYr1 * 1000);
+                balanceYr2 = new Date(balanceYr2 * 1000);
+                balanceYr3 = new Date(balanceYr3 * 1000);
+
+                balanceYr1 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(balanceYr1);
+                balanceYr2 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(balanceYr2);
+                balanceYr3 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(balanceYr3);
+
+                document.querySelector(".balance-slide-years > .year1").innerText = balanceYr1;
+                document.querySelector(".balance-slide-years > .year2").innerText = balanceYr2;
+                document.querySelector(".balance-slide-years > .year3").innerText = balanceYr3;
+
+                //total assets
+                let totalAssetsYr1, totalAssetsYr2, totalAssetsYr3;
+                totalAssetsYr1 = checkStmtProp(balanceData.annualTotalAssets[timestampLength - 1]);
+                totalAssetsYr2 = checkStmtProp(balanceData.annualTotalAssets[timestampLength - 2]);
+                totalAssetsYr3 = checkStmtProp(balanceData.annualTotalAssets[timestampLength - 3]);
+                document.querySelector(".total-assets > .year1").innerText = totalAssetsYr1;
+                document.querySelector(".total-assets > .year2").innerText = totalAssetsYr2;
+                document.querySelector(".total-assets > .year3").innerText = totalAssetsYr3;
+
+                //total liabilities
+                let totalLiabYr1, totalLiabYr2, totalLiabYr3;
+                totalLiabYr1 = checkStmtProp(balanceData.annualTotalLiabilitiesNetMinorityInterest[timestampLength - 1]);
+                totalLiabYr2 = checkStmtProp(balanceData.annualTotalLiabilitiesNetMinorityInterest[timestampLength - 2]);
+                totalLiabYr3 = checkStmtProp(balanceData.annualTotalLiabilitiesNetMinorityInterest[timestampLength - 3]);
+                document.querySelector(".total-liab > .year1").innerText = totalLiabYr1;
+                document.querySelector(".total-liab > .year2").innerText = totalLiabYr2;
+                document.querySelector(".total-liab > .year3").innerText = totalLiabYr3;
+
+                //total equity
+                let totalEquityYr1, totalEquityYr2, totalEquityYr3;
+                totalEquityYr1 = checkStmtProp(balanceData.annualStockholdersEquity[timestampLength - 1]);
+                totalEquityYr2 = checkStmtProp(balanceData.annualStockholdersEquity[timestampLength - 2]);
+                totalEquityYr3 = checkStmtProp(balanceData.annualStockholdersEquity[timestampLength - 3]);
+                document.querySelector(".total-equity > .year1").innerText = totalEquityYr1;
+                document.querySelector(".total-equity > .year2").innerText = totalEquityYr2;
+                document.querySelector(".total-equity > .year3").innerText = totalEquityYr3;
+
+                //current debt
+                let currentDebtYr1, currentDebtYr2, currentDebtYr3;
+                currentDebtYr1 = checkStmtProp(balanceData.annualCurrentDebt[timestampLength - 1]);
+                currentDebtYr2 = checkStmtProp(balanceData.annualCurrentDebt[timestampLength - 2]);
+                currentDebtYr3 = checkStmtProp(balanceData.annualCurrentDebt[timestampLength - 3]);
+                document.querySelector(".current-debt > .year1").innerText = currentDebtYr1;
+                document.querySelector(".current-debt > .year2").innerText = currentDebtYr2;
+                document.querySelector(".current-debt > .year3").innerText = currentDebtYr3;
+
+                //current debt
+                let longTermDebtYr1, longTermDebtYr2, longTermDebtYr3;
+                longTermDebtYr1 = checkStmtProp(balanceData.annualLongTermDebt[timestampLength - 1]);
+                longTermDebtYr2 = checkStmtProp(balanceData.annualLongTermDebt[timestampLength - 2]);
+                longTermDebtYr3 = checkStmtProp(balanceData.annualLongTermDebt[timestampLength - 3]);
+                document.querySelector(".long-term-debt > .year1").innerText = longTermDebtYr1;
+                document.querySelector(".long-term-debt > .year2").innerText = longTermDebtYr2;
+                document.querySelector(".long-term-debt > .year3").innerText = longTermDebtYr3;
+
+
+                //accts receivable;
+                let acctsRecYr1, acctsRecYr2, acctsRecYr3;
+                acctsRecYr1 = checkStmtProp(balanceData.annualAccountsReceivable[timestampLength - 1]);
+                acctsRecYr2 = checkStmtProp(balanceData.annualAccountsReceivable[timestampLength - 2]);
+                acctsRecYr3 = checkStmtProp(balanceData.annualAccountsReceivable[timestampLength - 3]);
+                document.querySelector(".accts-receive > .year1").innerText = acctsRecYr1;
+                document.querySelector(".accts-receive > .year2").innerText = acctsRecYr2;
+                document.querySelector(".accts-receive > .year3").innerText = acctsRecYr3;
+
+
+                //accts payable;
+                let acctsPayYr1, acctsPayYr2, acctsPayYr3;
+                acctsPayYr1 = checkStmtProp(balanceData.annualAccountsPayable[timestampLength - 1]);
+                acctsPayYr2 = checkStmtProp(balanceData.annualAccountsPayable[timestampLength - 2]);
+                acctsPayYr3 = checkStmtProp(balanceData.annualAccountsPayable[timestampLength - 3]);
+                document.querySelector(".accts-pay > .year1").innerText = acctsPayYr1;
+                document.querySelector(".accts-pay > .year2").innerText = acctsPayYr2;
+                document.querySelector(".accts-pay > .year3").innerText = acctsPayYr3;
+
+                //retained earnings;
+                let retainedEarnYr1, retainedEarnYr2, retainedEarnYr3;
+                retainedEarnYr1 = checkStmtProp(balanceData.annualRetainedEarnings[timestampLength - 1]);
+                retainedEarnYr2 = checkStmtProp(balanceData.annualRetainedEarnings[timestampLength - 2]);
+                retainedEarnYr3 = checkStmtProp(balanceData.annualRetainedEarnings[timestampLength - 3]);
+                document.querySelector(".retained-earn > .year1").innerText = retainedEarnYr1;
+                document.querySelector(".retained-earn > .year2").innerText = retainedEarnYr2;
+                document.querySelector(".retained-earn > .year3").innerText = retainedEarnYr3;
+            }
         }
-        let checkStmtProp = (property) => {
-            return property && property.reportedValue.fmt
-                ? property.reportedValue.fmt
-                : "n/a";
-        };
+
         const populateCashFlowData = async (symbol) => {
             let cashJsonData = await getCashFlow(symbol);
-            cashJsonData = cashJsonData.timeSeries;
             console.log(cashJsonData);
+            if (cashJsonData) {
+                cashJsonData = cashJsonData.timeSeries;
 
-            //set years
-            let cashTimeStampsArr = cashJsonData.timestamp;
-            let timestampLength = cashTimeStampsArr.length;
+                //set years
+                let cashTimeStampsArr = cashJsonData.timestamp;
+                let timestampLength = cashTimeStampsArr.length;
 
-            let cashYr1 = cashTimeStampsArr[timestampLength - 1];
-            let cashYr2 = cashTimeStampsArr[timestampLength - 2];
-            cashYr1 = new Date(cashYr1 * 1000);
-            cashYr2 = new Date(cashYr2 * 1000);
-            cashYr1 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(cashYr1);
-            cashYr2 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(cashYr2);
-            document.querySelector(".cash-flow-slide-years > .year1").innerText = cashYr1;
-            document.querySelector(".cash-flow-slide-years > .year2").innerText = cashYr2;
+                let cashYr1 = cashTimeStampsArr[timestampLength - 1];
+                let cashYr2 = cashTimeStampsArr[timestampLength - 2];
+                cashYr1 = new Date(cashYr1 * 1000);
+                cashYr2 = new Date(cashYr2 * 1000);
+                cashYr1 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(cashYr1);
+                cashYr2 = Intl.DateTimeFormat("en-US", { dateStyle: "short" }).format(cashYr2);
+                document.querySelector(".cash-flow-slide-years > .year1").innerText = cashYr1;
+                document.querySelector(".cash-flow-slide-years > .year2").innerText = cashYr2;
 
-            //operating cash flow
-            let ttmOpCash, opCashYr1, opCashYr2;
-            ttmOpCash = checkStmtProp(cashJsonData.trailingOperatingCashFlow[0]);
-            opCashYr1 = checkStmtProp(cashJsonData.annualOperatingCashFlow[timestampLength - 1]);
-            opCashYr2 = checkStmtProp(cashJsonData.annualOperatingCashFlow[timestampLength - 2]);
-            document.querySelector(".operating-cash-flow > .ttm").innerText = ttmOpCash;
-            document.querySelector(".operating-cash-flow > .year1").innerText = opCashYr1;
-            document.querySelector(".operating-cash-flow > .year2").innerText = opCashYr2;
+                //operating cash flow
+                let ttmOpCash, opCashYr1, opCashYr2;
+                ttmOpCash = checkStmtProp(cashJsonData.trailingOperatingCashFlow[0]);
+                opCashYr1 = checkStmtProp(cashJsonData.annualOperatingCashFlow[timestampLength - 1]);
+                opCashYr2 = checkStmtProp(cashJsonData.annualOperatingCashFlow[timestampLength - 2]);
+                document.querySelector(".operating-cash-flow > .ttm").innerText = ttmOpCash;
+                document.querySelector(".operating-cash-flow > .year1").innerText = opCashYr1;
+                document.querySelector(".operating-cash-flow > .year2").innerText = opCashYr2;
 
 
-            //investing-cash-flow
-            let ttmInvCF, invCFYr1, invCFYr2;
-            ttmInvCF = checkStmtProp(cashJsonData.trailingInvestingCashFlow[0]);
-            invCFYr1 = checkStmtProp(cashJsonData.annualInvestingCashFlow[timestampLength - 1]);
-            invCFYr2 = checkStmtProp(cashJsonData.annualInvestingCashFlow[timestampLength - 2]);
-            document.querySelector(".investing-cash-flow > .ttm").innerText = ttmInvCF;
-            document.querySelector(".investing-cash-flow > .year1").innerText = invCFYr1;
-            document.querySelector(".investing-cash-flow > .year2").innerText = invCFYr2;
+                //investing-cash-flow
+                let ttmInvCF, invCFYr1, invCFYr2;
+                ttmInvCF = checkStmtProp(cashJsonData.trailingInvestingCashFlow[0]);
+                invCFYr1 = checkStmtProp(cashJsonData.annualInvestingCashFlow[timestampLength - 1]);
+                invCFYr2 = checkStmtProp(cashJsonData.annualInvestingCashFlow[timestampLength - 2]);
+                document.querySelector(".investing-cash-flow > .ttm").innerText = ttmInvCF;
+                document.querySelector(".investing-cash-flow > .year1").innerText = invCFYr1;
+                document.querySelector(".investing-cash-flow > .year2").innerText = invCFYr2;
 
-            //cash dividends
-            let ttmCashDivs, cashDivsYr1, cashDivsYr2;
-            ttmCashDivs = checkStmtProp(cashJsonData.trailingCashDividendsPaid[0]);
-            cashDivsYr1 = checkStmtProp(cashJsonData.annualCashDividendsPaid[timestampLength - 1]);
-            cashDivsYr2 = checkStmtProp(cashJsonData.annualCashDividendsPaid[timestampLength - 2]);
-            document.querySelector(".cash-dividends-paid > .ttm").innerText = ttmCashDivs;
-            document.querySelector(".cash-dividends-paid > .year1").innerText = cashDivsYr1;
-            document.querySelector(".cash-dividends-paid > .year2").innerText = cashDivsYr2;
+                //cash dividends
+                let ttmCashDivs, cashDivsYr1, cashDivsYr2;
+                ttmCashDivs = checkStmtProp(cashJsonData.trailingCashDividendsPaid[0]);
+                cashDivsYr1 = checkStmtProp(cashJsonData.annualCashDividendsPaid[timestampLength - 1]);
+                cashDivsYr2 = checkStmtProp(cashJsonData.annualCashDividendsPaid[timestampLength - 2]);
+                document.querySelector(".cash-dividends-paid > .ttm").innerText = ttmCashDivs;
+                document.querySelector(".cash-dividends-paid > .year1").innerText = cashDivsYr1;
+                document.querySelector(".cash-dividends-paid > .year2").innerText = cashDivsYr2;
 
-            //end-cash-position
-            let ttmEndCashPos, endCashPosYr1, endCashPosY2;
-            ttmEndCashPos = checkStmtProp(cashJsonData.trailingEndCashPosition[0]);
-            endCashPosYr1 = checkStmtProp(cashJsonData.annualEndCashPosition[timestampLength - 1]);
-            endCashPosY2 = checkStmtProp(cashJsonData.annualEndCashPosition[timestampLength - 2]);
-            document.querySelector(".end-cash-position > .ttm").innerText = ttmEndCashPos;
-            document.querySelector(".end-cash-position > .year1").innerText = endCashPosYr1;
-            document.querySelector(".end-cash-position > .year2").innerText = endCashPosY2;
+                //end-cash-position
+                let ttmEndCashPos, endCashPosYr1, endCashPosY2;
+                ttmEndCashPos = checkStmtProp(cashJsonData.trailingEndCashPosition[0]);
+                endCashPosYr1 = checkStmtProp(cashJsonData.annualEndCashPosition[timestampLength - 1]);
+                endCashPosY2 = checkStmtProp(cashJsonData.annualEndCashPosition[timestampLength - 2]);
+                document.querySelector(".end-cash-position > .ttm").innerText = ttmEndCashPos;
+                document.querySelector(".end-cash-position > .year1").innerText = endCashPosYr1;
+                document.querySelector(".end-cash-position > .year2").innerText = endCashPosY2;
 
-            //capital-expenditure
-            let ttmCapEx, capExYr1, capExY2;
-            ttmCapEx = checkStmtProp(cashJsonData.trailingCapitalExpenditure[0]);
-            capExYr1 = checkStmtProp(cashJsonData.annualCapitalExpenditure[timestampLength - 1]);
-            capExY2 = checkStmtProp(cashJsonData.annualCapitalExpenditure[timestampLength - 2]);
-            document.querySelector(".capital-expenditure > .ttm").innerText = ttmCapEx;
-            document.querySelector(".capital-expenditure > .year1").innerText = capExYr1;
-            document.querySelector(".capital-expenditure > .year2").innerText = capExY2;
+                //capital-expenditure
+                let ttmCapEx, capExYr1, capExY2;
+                ttmCapEx = checkStmtProp(cashJsonData.trailingCapitalExpenditure[0]);
+                capExYr1 = checkStmtProp(cashJsonData.annualCapitalExpenditure[timestampLength - 1]);
+                capExY2 = checkStmtProp(cashJsonData.annualCapitalExpenditure[timestampLength - 2]);
+                document.querySelector(".capital-expenditure > .ttm").innerText = ttmCapEx;
+                document.querySelector(".capital-expenditure > .year1").innerText = capExYr1;
+                document.querySelector(".capital-expenditure > .year2").innerText = capExY2;
 
-            //common-stock-iss
-            let ttmcommStockIss, commStockIssYr1, commStockIssY2;
-            ttmcommStockIss = checkStmtProp(cashJsonData.trailingCommonStockIssuance[0]);
-            commStockIssYr1 = checkStmtProp(cashJsonData.annualCommonStockIssuance[timestampLength - 1]);
-            commStockIssY2 = checkStmtProp(cashJsonData.annualCommonStockIssuance[timestampLength - 2]);
-            document.querySelector(".common-stock-iss > .ttm").innerText = ttmcommStockIss;
-            document.querySelector(".common-stock-iss > .year1").innerText = commStockIssYr1;
-            document.querySelector(".common-stock-iss > .year2").innerText = commStockIssY2;
+                //common-stock-iss
+                let ttmcommStockIss, commStockIssYr1, commStockIssY2;
+                ttmcommStockIss = checkStmtProp(cashJsonData.trailingCommonStockIssuance[0]);
+                commStockIssYr1 = checkStmtProp(cashJsonData.annualCommonStockIssuance[timestampLength - 1]);
+                commStockIssY2 = checkStmtProp(cashJsonData.annualCommonStockIssuance[timestampLength - 2]);
+                document.querySelector(".common-stock-iss > .ttm").innerText = ttmcommStockIss;
+                document.querySelector(".common-stock-iss > .year1").innerText = commStockIssYr1;
+                document.querySelector(".common-stock-iss > .year2").innerText = commStockIssY2;
 
-            //repayment-of-debt
-            let ttmRepayDebt, repayDebtYr1, repayDebtY2;
-            ttmRepayDebt = checkStmtProp(cashJsonData.trailingRepaymentOfDebt[0]);
-            repayDebtYr1 = checkStmtProp(cashJsonData.annualRepaymentOfDebt[timestampLength - 1]);
-            repayDebtY2 = checkStmtProp(cashJsonData.annualRepaymentOfDebt[timestampLength - 2]);
-            document.querySelector(".repayment-of-debt > .ttm").innerText = ttmRepayDebt;
-            document.querySelector(".repayment-of-debt > .year1").innerText = repayDebtYr1;
-            document.querySelector(".repayment-of-debt > .year2").innerText = repayDebtY2;
+                //repayment-of-debt
+                let ttmRepayDebt, repayDebtYr1, repayDebtY2;
+                ttmRepayDebt = checkStmtProp(cashJsonData.trailingRepaymentOfDebt[0]);
+                repayDebtYr1 = checkStmtProp(cashJsonData.annualRepaymentOfDebt[timestampLength - 1]);
+                repayDebtY2 = checkStmtProp(cashJsonData.annualRepaymentOfDebt[timestampLength - 2]);
+                document.querySelector(".repayment-of-debt > .ttm").innerText = ttmRepayDebt;
+                document.querySelector(".repayment-of-debt > .year1").innerText = repayDebtYr1;
+                document.querySelector(".repayment-of-debt > .year2").innerText = repayDebtY2;
 
-            //free-cash-flow
-            let ttmFreeCashFlow, freeCashFlowYr1, freeCashFlowY2;
-            ttmFreeCashFlow = checkStmtProp(cashJsonData.trailingFreeCashFlow[0]);
-            freeCashFlowYr1 = checkStmtProp(cashJsonData.annualFreeCashFlow[timestampLength - 1]);
-            freeCashFlowY2 = checkStmtProp(cashJsonData.annualFreeCashFlow[timestampLength - 2]);
-            document.querySelector(".free-cash-flow > .ttm").innerText = ttmFreeCashFlow;
-            document.querySelector(".free-cash-flow > .year1").innerText = freeCashFlowYr1;
-            document.querySelector(".free-cash-flow > .year2").innerText = freeCashFlowY2;
+                //free-cash-flow
+                let ttmFreeCashFlow, freeCashFlowYr1, freeCashFlowY2;
+                ttmFreeCashFlow = checkStmtProp(cashJsonData.trailingFreeCashFlow[0]);
+                freeCashFlowYr1 = checkStmtProp(cashJsonData.annualFreeCashFlow[timestampLength - 1]);
+                freeCashFlowY2 = checkStmtProp(cashJsonData.annualFreeCashFlow[timestampLength - 2]);
+                document.querySelector(".free-cash-flow > .ttm").innerText = ttmFreeCashFlow;
+                document.querySelector(".free-cash-flow > .year1").innerText = freeCashFlowYr1;
+                document.querySelector(".free-cash-flow > .year2").innerText = freeCashFlowY2;
+            }
         }
         const getNews = async (symbol) => {
             const url = `https://real-time-finance-data.p.rapidapi.com/stock-news?symbol=${symbol}%3ANASDAQ&language=en`;
@@ -1545,9 +1767,10 @@
         function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
+
         const populateNews = async (symbol) => {
             let news = await getNews(symbol).then((res) => { return res }).catch((e) => console.log(e));
-            console.log("news:", news)
+
             if (news.data.news) {
                 let newsArr = news.data.news;
                 let title, articleUrl, source, date;
@@ -1584,8 +1807,10 @@
 
             const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${symbol}&region=US`;
             analysisFetch = await fetch(analysisURL, apiOptions);
-            analysisResp = await analysisFetch.json();
-            console.log("analysis response:", analysisResp)
+            console.log("analysis fetch:", analysisFetch);
+            if (analysisFetch.status === 200) {
+                analysisResp = await analysisFetch.json();
+            }
             return analysisResp
         }
         const trueOrFalse = (exp, val) => {
@@ -1593,7 +1818,6 @@
 
             return exp ? exp : val;
         }
-
         const hideElem = (elem, val, na) => {
             elem.innerText = trueOrFalse(val, na);
             if (elem.innerText === na) elem.style.display = "none";
@@ -1602,155 +1826,165 @@
         const populateAnalysis = async (symbol) => {
             const ratioContainer = document.getElementById("ratio-container");
             const prevCloseContainer = document.getElementById("prev-close-container");
+
             let analysis = await runAnalysis(symbol);
-            let fwdPE = "n/a", ttmPE = "n/a", revGrowth = "n/a", ebitdaMargins = "n/a",
-                currentRatio = "n/a", quickRatio = "n/a",
-                debtToEquityRatio = "n/a",
-                returnOnEquity = "n/a",
-                operatingMargins = "n/a",
-                profitMargins = "n/a",
-                grossMargins = "n/a",
-                dividendRate = "n/a",
-                exDividendDate = "n/a",
-                regularMarketOpen = "n/a",
-                regularMarketDayHigh = "n/a",
-                regularMarketDayLow = "n/a",
-                fiftyTwoWeekHigh = "n/a",
-                fiftyTwoWeekLow = "n/a",
-                twoHundredDayAverage = "n/a",
-                bid = "n/a",
-                ask = "n/a",
-                volume = "n/a",
-                averageVolume10Days = "n/a",
-                beta = "n/a",
-                marketCap = "n/a";
+            if (analysis) {
+                let fwdPE = "n/a", ttmPE = "n/a", revGrowth = "n/a", ebitdaMargins = "n/a",
+                    currentRatio = "n/a", quickRatio = "n/a",
+                    debtToEquityRatio = "n/a",
+                    returnOnEquity = "n/a",
+                    operatingMargins = "n/a",
+                    profitMargins = "n/a",
+                    grossMargins = "n/a",
+                    dividendRate = "n/a",
+                    exDividendDate = "n/a",
+                    regularMarketOpen = "n/a",
+                    regularMarketDayHigh = "n/a",
+                    regularMarketDayLow = "n/a",
+                    fiftyTwoWeekHigh = "n/a",
+                    fiftyTwoWeekLow = "n/a",
+                    twoHundredDayAverage = "n/a",
+                    bid = "n/a",
+                    ask = "n/a",
+                    volume = "n/a",
+                    averageVolume10Days = "n/a",
+                    beta = "n/a",
+                    marketCap = "n/a";
+                if (analysis.financialData) {
+                    if (analysis.financialData.financialCurrency) {
+                        finCurrency = analysis.financialData.financialCurrency
+                    }
+                }
 
+                if (analysis.summaryDetail) {
+                    //populate html;
+                    if (analysis.summaryDetail.forwardPE) {
+                        fwdPE = trueOrFalse(analysis.summaryDetail.forwardPE.fmt, fwdPE);
+                    }
+                    document.getElementById("fwdPeRatioData").innerText = fwdPE;
 
-            //populate html;
-            if (analysis.summaryDetail.forwardPE) {
-                fwdPE = trueOrFalse(analysis.summaryDetail.forwardPE.fmt, fwdPE);
+                    if (analysis.summaryDetail.trailingPE) {
+                        ttmPE = trueOrFalse(analysis.summaryDetail.trailingPE.fmt, ttmPE)
+                    }
+                    document.getElementById("ttmPeRatioData").innerText = ttmPE;
+
+                    if (analysis.financialData.revenueGrowth) {
+                        revGrowth = trueOrFalse(analysis.financialData.revenueGrowth.fmt, revGrowth)
+                    }
+                    document.getElementById("revGrowData").innerText = revGrowth;
+
+                    if (analysis.financialData.ebitdaMargins) {
+                        ebitdaMargins = trueOrFalse(analysis.financialData.ebitdaMargins.fmt, ebitdaMargins)
+                    }
+                    document.getElementById("ebitMarginData").innerText = ebitdaMargins;
+
+                    if (analysis.financialData.currentRatio) {
+                        currentRatio = trueOrFalse(analysis.financialData.currentRatio.fmt, currentRatio)
+                    }
+                    document.getElementById("currRatioData").innerText = currentRatio;
+
+                    if (analysis.financialData.quickRatio) {
+                        quickRatio = trueOrFalse(analysis.financialData.quickRatio.fmt, quickRatio)
+                    }
+                    document.getElementById("quickRatioData").innerText = quickRatio;
+
+                    if (analysis.financialData.debtToEquity) {
+                        debtToEquityRatio = trueOrFalse(analysis.financialData.debtToEquity.fmt, debtToEquityRatio)
+                    }
+                    document.getElementById("debtRatioData").innerText = debtToEquityRatio;
+
+                    if (analysis.financialData.returnOnEquity) {
+                        returnOnEquity = trueOrFalse(analysis.financialData.returnOnEquity.fmt, returnOnEquity)
+                    }
+                    document.getElementById("retEquData").innerText = returnOnEquity;
+
+                    if (analysis.financialData.operatingMargins) {
+                        operatingMargins = trueOrFalse(analysis.financialData.operatingMargins.fmt, operatingMargins)
+                    }
+                    document.getElementById("opMarginData").innerText = operatingMargins;
+
+                    if (analysis.financialData.profitMargins) {
+                        profitMargins = trueOrFalse(analysis.financialData.profitMargins.fmt, profitMargins)
+                    }
+                    document.getElementById("profMarginData").innerText = profitMargins;
+
+                    if (analysis.financialData.grossMargins) {
+                        grossMargins = trueOrFalse(analysis.financialData.grossMargins.fmt, grossMargins)
+                    }
+                    document.getElementById("grossMarginData").innerText = grossMargins;
+
+                    if (analysis.summaryDetail.dividendRate) {
+                        dividendRate = trueOrFalse(analysis.summaryDetail.dividendRate.fmt, dividendRate);
+                    }
+                    document.getElementById("dividendRateData").innerText = dividendRate;
+
+                    if (analysis.summaryDetail.exDividendDate) {
+                        exDividendDate = trueOrFalse(analysis.summaryDetail.exDividendDate.fmt, exDividendDate);
+                    }
+                    document.getElementById("exDividendData").innerText = exDividendDate;
+
+                    if (analysis.price.regularMarketOpen) {
+                        regularMarketOpen = trueOrFalse(analysis.price.regularMarketOpen.fmt, regularMarketOpen)
+                    }
+                    document.getElementById("openData").innerText = regularMarketOpen;
+
+                    if (analysis.summaryDetail.regularMarketDayLow) {
+                        regularMarketDayLow = trueOrFalse(analysis.summaryDetail.regularMarketDayLow.fmt, regularMarketDayLow);
+                    }
+                    document.getElementById("dayLowData").innerText = regularMarketDayLow;
+
+                    if (analysis.summaryDetail.regularMarketDayHigh) {
+                        regularMarketDayHigh = trueOrFalse(analysis.summaryDetail.regularMarketDayHigh.fmt, regularMarketDayHigh);
+                    }
+                    document.getElementById("dayHighData").innerText = regularMarketDayHigh;
+
+                    if (analysis.summaryDetail.fiftyTwoWeekHigh) {
+                        fiftyTwoWeekHigh = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekHigh.fmt, fiftyTwoWeekHigh);
+                    }
+                    document.getElementById("fifty2WkHighData").innerText = fiftyTwoWeekHigh;
+
+                    if (analysis.summaryDetail.fiftyTwoWeekLow) {
+                        fiftyTwoWeekLow = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekLow.fmt, fiftyTwoWeekLow);
+                    }
+                    document.getElementById("fifty2WkLowData").innerText = fiftyTwoWeekLow;
+
+                    if (analysis.summaryDetail.twoHundredDayAverage) {
+                        twoHundredDayAverage = trueOrFalse(analysis.summaryDetail.twoHundredDayAverage.fmt, twoHundredDayAverage);
+                    }
+                    document.getElementById("twoHundDayAvgData").innerText = twoHundredDayAverage;
+
+                    if (analysis.summaryDetail.bid) {
+                        bid = trueOrFalse(analysis.summaryDetail.bid.fmt, bid);
+                    }
+                    document.getElementById("bidData").innerText = bid;
+
+                    if (analysis.summaryDetail.ask) {
+                        ask = trueOrFalse(analysis.summaryDetail.ask.fmt, ask);
+                    }
+                    document.getElementById("askData").innerText = ask;
+
+                    if (analysis.summaryDetail.beta) {
+                        beta = trueOrFalse(analysis.summaryDetail.beta.fmt, beta);
+                    }
+                    document.getElementById("betaData").innerText = beta;
+
+                    if (analysis.summaryDetail.marketCap) {
+                        marketCap = trueOrFalse(analysis.summaryDetail.marketCap.fmt, marketCap);
+                    }
+                    document.getElementById("mktCapData").innerText = marketCap;
+
+                    if (analysis.summaryDetail.volume) {
+                        volume = trueOrFalse(analysis.summaryDetail.volume.fmt, volume);
+                    }
+                    document.getElementById("volumeData").innerText = volume;
+
+                    if (analysis.summaryDetail.averageVolume10days) {
+                        averageVolume10Days = trueOrFalse(analysis.summaryDetail.averageVolume10days.fmt, averageVolume10Days);
+                    }
+                    document.getElementById("avgVolData").innerText = averageVolume10Days;
+                }
+                document.getElementById("index_data_container").style.display = "flex";
             }
-            document.getElementById("fwdPeRatioData").innerText = fwdPE;
-
-            if (analysis.summaryDetail.trailingPE) {
-                ttmPE = trueOrFalse(analysis.summaryDetail.trailingPE.fmt, ttmPE)
-            }
-            document.getElementById("ttmPeRatioData").innerText = ttmPE;
-
-            if (analysis.financialData.revenueGrowth) {
-                revGrowth = trueOrFalse(analysis.financialData.revenueGrowth.fmt, revGrowth)
-            }
-            document.getElementById("revGrowData").innerText = revGrowth;
-
-            if (analysis.financialData.ebitdaMargins) {
-                ebitdaMargins = trueOrFalse(analysis.financialData.ebitdaMargins.fmt, ebitdaMargins)
-            }
-            document.getElementById("ebitMarginData").innerText = ebitdaMargins;
-
-            if (analysis.financialData.currentRatio) {
-                currentRatio = trueOrFalse(analysis.financialData.currentRatio.fmt, currentRatio)
-            }
-            document.getElementById("currRatioData").innerText = currentRatio;
-
-            if (analysis.financialData.quickRatio) {
-                quickRatio = trueOrFalse(analysis.financialData.quickRatio.fmt, quickRatio)
-            }
-            document.getElementById("quickRatioData").innerText = quickRatio;
-
-            if (analysis.financialData.debtToEquity) {
-                debtToEquityRatio = trueOrFalse(analysis.financialData.debtToEquity.fmt, debtToEquityRatio)
-            }
-            document.getElementById("debtRatioData").innerText = debtToEquityRatio;
-
-            if (analysis.financialData.returnOnEquity) {
-                returnOnEquity = trueOrFalse(analysis.financialData.returnOnEquity.fmt, returnOnEquity)
-            }
-            document.getElementById("retEquData").innerText = returnOnEquity;
-
-            if (analysis.financialData.operatingMargins) {
-                operatingMargins = trueOrFalse(analysis.financialData.operatingMargins.fmt, operatingMargins)
-            }
-            document.getElementById("opMarginData").innerText = operatingMargins;
-
-            if (analysis.financialData.profitMargins) {
-                profitMargins = trueOrFalse(analysis.financialData.profitMargins.fmt, profitMargins)
-            }
-            document.getElementById("profMarginData").innerText = profitMargins;
-
-            if (analysis.financialData.grossMargins) {
-                grossMargins = trueOrFalse(analysis.financialData.grossMargins.fmt, grossMargins)
-            }
-            document.getElementById("grossMarginData").innerText = grossMargins;
-
-            if (analysis.summaryDetail.dividendRate) {
-                dividendRate = trueOrFalse(analysis.summaryDetail.dividendRate.fmt, dividendRate);
-            }
-            document.getElementById("dividendRateData").innerText = dividendRate;
-
-            if (analysis.summaryDetail.exDividendDate) {
-                exDividendDate = trueOrFalse(analysis.summaryDetail.exDividendDate.fmt, exDividendDate);
-            }
-            document.getElementById("exDividendData").innerText = exDividendDate;
-
-            if (analysis.price.regularMarketOpen) {
-                regularMarketOpen = trueOrFalse(analysis.price.regularMarketOpen.fmt, regularMarketOpen)
-            }
-            document.getElementById("openData").innerText = regularMarketOpen;
-
-            if (analysis.summaryDetail.regularMarketDayLow) {
-                regularMarketDayLow = trueOrFalse(analysis.summaryDetail.regularMarketDayLow.fmt, regularMarketDayLow);
-            }
-            document.getElementById("dayLowData").innerText = regularMarketDayLow;
-
-            if (analysis.summaryDetail.regularMarketDayHigh) {
-                regularMarketDayHigh = trueOrFalse(analysis.summaryDetail.regularMarketDayHigh.fmt, regularMarketDayHigh);
-            }
-            document.getElementById("dayHighData").innerText = regularMarketDayHigh;
-
-            if (analysis.summaryDetail.fiftyTwoWeekHigh) {
-                fiftyTwoWeekHigh = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekHigh.fmt, fiftyTwoWeekHigh);
-            }
-            document.getElementById("fifty2WkHighData").innerText = fiftyTwoWeekHigh;
-
-            if (analysis.summaryDetail.fiftyTwoWeekLow) {
-                fiftyTwoWeekLow = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekLow.fmt, fiftyTwoWeekLow);
-            }
-            document.getElementById("fifty2WkLowData").innerText = fiftyTwoWeekLow;
-
-            if (analysis.summaryDetail.twoHundredDayAverage) {
-                twoHundredDayAverage = trueOrFalse(analysis.summaryDetail.twoHundredDayAverage.fmt, twoHundredDayAverage);
-            }
-            document.getElementById("twoHundDayAvgData").innerText = twoHundredDayAverage;
-
-            if (analysis.summaryDetail.bid) {
-                bid = trueOrFalse(analysis.summaryDetail.bid.fmt, bid);
-            }
-            document.getElementById("bidData").innerText = bid;
-
-            if (analysis.summaryDetail.ask) {
-                ask = trueOrFalse(analysis.summaryDetail.ask.fmt, ask);
-            }
-            document.getElementById("askData").innerText = ask;
-
-            if (analysis.summaryDetail.beta) {
-                beta = trueOrFalse(analysis.summaryDetail.beta.fmt, beta);
-            }
-            document.getElementById("betaData").innerText = beta;
-
-            if (analysis.summaryDetail.marketCap) {
-                marketCap = trueOrFalse(analysis.summaryDetail.marketCap.fmt, marketCap);
-            }
-            document.getElementById("mktCapData").innerText = marketCap;
-
-            if (analysis.summaryDetail.volume) {
-                volume = trueOrFalse(analysis.summaryDetail.volume.fmt, volume);
-            }
-            document.getElementById("volumeData").innerText = volume;
-
-            if (analysis.summaryDetail.averageVolume10days) {
-                averageVolume10Days = trueOrFalse(analysis.summaryDetail.averageVolume10days.fmt, averageVolume10Days);
-            }
-            document.getElementById("avgVolData").innerText = averageVolume10Days;
         }
         const populateProfile = async (symbol) => {
             let profileFetch,
@@ -1759,43 +1993,48 @@
 
             try {
                 profileFetch = await fetch(profileURL, realApiOptions)
-                profileResp = await profileFetch.json();
-                console.log("profile:", profileResp)
+                if (profileFetch.status === 200) {
+                    profileResp = await profileFetch.json();
+                }
+
             } catch (error) {
                 console.log(error)
             }
+            if (profileResp) {
+                let summary = profileResp.data.about;
+                let streetAddress = profileResp.data.company_street_address;
+                let country = profileResp.data.company_country;
+                let state = profileResp.data.company_state;
+                let city = profileResp.data.company_city;
+                city = `${city},`
+                let ceo = profileResp.data.company_ceo;
 
-            let summary = profileResp.data.about;
-            let streetAddress = profileResp.data.company_street_address;
-            let country = profileResp.data.company_country;
-            let state = profileResp.data.company_state;
-            let city = profileResp.data.company_city;
-            let ceo = profileResp.data.company_ceo;
+                let employees = profileResp.data.company_employees;
+                let website = profileResp.data.company_website;
+                let founded = profileResp.data.company_founded_date;
 
-            let employees = profileResp.data.company_employees;
-            let website = profileResp.data.company_website;
-            let founded = profileResp.data.company_founded_date;
+                let na = "n/a";
+                /*
+                document.getElementById("company_desc").innerText = trueOrFalse(summary, na);
+                document.getElementById("address").innerText = trueOrFalse(streetAddress, na);
+                document.getElementById("city").innerText = `${trueOrFalse(city, na)},`;
+                document.getElementById("state").innerText = trueOrFalse(state, na);
+                document.getElementById("country").innerText = trueOrFalse(country, na);
+                document.getElementById("link").innerText = trueOrFalse(website, na);
+                document.getElementById("ceo").innerText = trueOrFalse(ceo, na);
+                document.getElementById("full_time_employees").innerText = trueOrFalse(employees, na);
+                */
 
-            let na = "n/a";
-            /*
-            document.getElementById("company_desc").innerText = trueOrFalse(summary, na);
-            document.getElementById("address").innerText = trueOrFalse(streetAddress, na);
-            document.getElementById("city").innerText = `${trueOrFalse(city, na)},`;
-            document.getElementById("state").innerText = trueOrFalse(state, na);
-            document.getElementById("country").innerText = trueOrFalse(country, na);
-            document.getElementById("link").innerText = trueOrFalse(website, na);
-            document.getElementById("ceo").innerText = trueOrFalse(ceo, na);
-            document.getElementById("full_time_employees").innerText = trueOrFalse(employees, na);
-            */
-
-            hideElem(document.getElementById("company_desc"), summary, na)
-            hideElem(document.getElementById("address"), streetAddress, na)
-            hideElem(document.getElementById("city"), city, na)
-            hideElem(document.getElementById("state"), state, na)
-            hideElem(document.getElementById("country"), country, na)
-            hideElem(document.getElementById("link"), website, na)
-            hideElem(document.getElementById("ceo"), ceo, na)
-            hideElem(document.getElementById("full_time_employees"), employees, na)
+                hideElem(document.getElementById("company_desc"), summary, na)
+                hideElem(document.getElementById("address"), streetAddress, na)
+                hideElem(document.getElementById("city"), city, na)
+                hideElem(document.getElementById("state"), state, na)
+                hideElem(document.getElementById("country"), country, na)
+                hideElem(document.getElementById("website-link"), website, na)
+                hideElem(document.getElementById("ceo"), ceo, na)
+                hideElem(document.getElementById("full_time_employees"), employees, na)
+                document.getElementById("summary_profile_container").style.display = "flex";
+            }
         }
         /**
                 const idlePage = () => {
@@ -1906,15 +2145,15 @@
             setSliderPosition()
         }
 
-        const setMarketTime = (timeStamp, dateObj = "") => {
-            let date, formatted;
+        const setMarketTime = (timeStamp) => {
+            let date, formatted, regExpNumbers = /[:-]/;
 
-            if (dateObj && !timeStamp) {
-                date = dateObj
-            } else {
-                date = new Date(timeStamp * 1000);
+            if (!regExpNumbers.test(timeStamp)) {
+                timeStamp = timeStamp * 1000;
             }
 
+            date = new Date(timeStamp);
+            console.log("date:", date)
             formatted = new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short',
                 timeStyle: 'long',
@@ -1982,7 +2221,7 @@
             });
             h2Box.addEventListener("keydown", (e) => {
                 const textString = h2Box.innerText;
-                if (textString.length >= 20 && e.key !== "Backspace" && e.key !== "Enter") {
+                if (textString.length >= 20 && e.key !== "Backspace" && e.key !== "Enter" && e.key !== " ") {
                     e.preventDefault();
                     alert("Character amount exceeded");
                 }
@@ -2034,8 +2273,8 @@
                 //prevent non-letters
                 //Allow Backspace, Enter keys;
                 //Note: navigation keys are failing the regexp test;
-                if (regExp.test(e.key) === false) {
-                    if (e.key !== "Backspace" && e.key !== "Enter") {
+                if (!regExp.test(e.key)) {
+                    if (e.key !== "Backspace" && e.key !== "Enter" && e.key !== " ") {
                         e.preventDefault();
                         alert("Invalid entry");
                     }
@@ -2050,7 +2289,7 @@
         runProgressBar("1d");
         setEventListeners();
         formatPrice(commas, "commas");
-        // runAnalysis(stockTicker)
+
         //set interval to fetch/grab chart data "1d", and set session for periodic price update
     </script>
 

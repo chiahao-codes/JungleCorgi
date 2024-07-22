@@ -238,6 +238,8 @@
     <script src="home.js">
     </script>
     <script async="false">
+        const KEY = '<%=API_KEY%>';
+        const HOST = '<%=RAPID%>'
         const indexContainers = document.querySelectorAll("body > section > .index_container");
         const priceOfIndex = document.querySelectorAll("body > section > .index_container > .price");
         const formatPrice = (container) => {
@@ -294,19 +296,19 @@
                 }
             }
         };
-        const getPrices = async (indexContainers, api) => {
-            const url = yf;
+        const getPrices = async (indexContainers) => {
+            const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT`
             const options = {
                 method: "GET",
                 headers: {
-                    "X-RapidAPI-Key": api,
-                    "X-RapidAPI-Host": rapidURL
+                    "X-RapidAPI-Key": KEY,
+                    "X-RapidAPI-Host": HOST
                 }
             };
 
             const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
-            const results = await response.text();
-
+            const results = await response.json();
+            console.log("results:", results)
             let regMktPrice, regMktChange, regMktChangePercent;
             for (let i = 0; i < indexContainers.length; i++) {
 
@@ -318,30 +320,45 @@
                 indexContainers[i].children[2].children[0].innerText = regMktChange;
                 indexContainers[i].children[2].children[1].innerText = regMktChangePercent;
             }
-            console.log(results);
             return;
         };
-        let timeout = undefined;
-        const idlePage = () => {
-            if (timeout) {
-                clearInterval(timeout);
-            }
-            timeout = setInterval(() => {
-                location.reload();
-            }, 10000);
-        }
-        let timeout2 = undefined;
-        const activePage = () => {
-            if (timeout2) clearInterval(timeout2);
-            timeout2 = setInterval(async () => {
-                await getPrices(indexContainers, apiKey);
-                changePctPointsColor(indexContainers, priceOfIndex);
-                console.log("active page");
-            }, 120000);
-        }
 
         formatPrice(priceOfIndex)
         changePctPointsColor(indexContainers, priceOfIndex);
+
+        /**
+         *  let timeout = undefined;
+        const idlePage = () => {
+            setInterval(() => {
+                if (timeout) {
+                    clearInterval(timeout);
+                }
+            }, 80000);
+        }
+
+        const activePage = () => {
+            if (timeout) clearInterval(timeout);
+            timeout = setInterval(async () => {
+                await getPrices(indexContainers);
+                formatPrice(priceOfIndex)
+                changePctPointsColor(indexContainers, priceOfIndex);
+
+                console.log("active page");
+            }, 80000);
+        }
+
+        window.addEventListener("mousemove", () => {
+            activePage();
+        })
+        window.addEventListener("mousedown", () => {
+            activePage()
+        });
+
+        window.addEventListener("keydown", () => activePage());
+        window.addEventListener("scroll", () => activePage());
+        window.addEventListener("touchstart", () => activePage());
+        window.addEventListener("touchmove", () => activePage());
+        */
 
     </script>
 </body>

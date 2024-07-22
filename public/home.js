@@ -134,11 +134,17 @@ const startCountDown = (mkt) => {
       localNextDate = localDate + 3;
     }
     if (localDay === 6) localNextDate = localDate + 2;
-    if (localDay === 0) localNextDate = localDate + 1;
-
-    //pre-mkt hours
-    if (localHour >= 0 && localHour <= openingMktHour) {
+    if (localDay === 0) {
       localNextDate = localDate;
+      if (localHour <= 6) {
+        localNextDate = localDate + 1;
+      }
+    }
+    //pre-mkt hours
+    if (localDay > 0 && localDay < 6) {
+      if (localHour >= 0 && localHour <= openingMktHour) {
+        localNextDate = localDate;
+      }
     }
 
     //bank holidays:
