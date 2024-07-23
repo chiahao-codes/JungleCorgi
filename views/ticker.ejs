@@ -816,8 +816,8 @@
             regularMarketPrice = "";
         const changePctPointsColor = (currentPrice, prevClosePrice) => {
 
-            currentPrice = parseFloat(currentPrice);
-            prevClosePrice = parseFloat(prevClosePrice);
+            currentPrice = new Intl.NumberFormat("en-US", { style: "decimal" }).format(currentPrice)
+            prevClosePrice = new Intl.NumberFormat("en-US", { style: "decimal" }).format(prevClosePrice)
 
             regularPrice.style.color = green;
             regPointsPctContainer.children[0].style.color = green;
