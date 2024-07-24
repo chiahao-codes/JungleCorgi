@@ -964,8 +964,9 @@
     align-items: center;
   }
 
-  #server-error-body {
+  #server-error-body > h1 {
     color: var(--cherry);
+    font-family: "Crimson Text", sans-serif;
   }
   body footer {
     display: flex;
