@@ -3,7 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import { Chart } from "chart.js";
 
-let PORT = process.env.PORT || 3000;
+let PORT = process.env.PORT || 443;
 const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
 const RAPID2 = process.env.RAPID2;
@@ -56,7 +56,7 @@ app.get("/", async (req, res, next) => {
       return data;
     })
     .catch((e) => console.log(e));
-
+  console.log("prices:", prices.quoteResponse.result);
   if (prices) {
     res.render("home", { prices, API_KEY, RAPID });
   }

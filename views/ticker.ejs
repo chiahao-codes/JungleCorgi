@@ -1819,7 +1819,7 @@
         }
         const hideElem = (elem, val, na) => {
             elem.innerText = trueOrFalse(val, na);
-            if (elem.innerText === na) elem.style.display = "none";
+            if (elem.innerText === na || elem.innerText === "undefined,") elem.style.display = "none";
             return;
         }
         const populateAnalysis = async (symbol) => {
