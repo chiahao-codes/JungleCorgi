@@ -3,6 +3,80 @@
 
 <head>
     <%- include('./partials/head.ejs') %>
+        <style>
+            body footer {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 6px;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: max-content;
+                padding: 10px 20px 8px;
+                font-family: "Noto Sans", sans-serif;
+                line-height: 24px;
+                color: var(--cold-white);
+                background-color: var(--greenish);
+            }
+
+            body footer .container {
+                display: flex;
+                justify-content: space-evenly;
+                position: relative;
+                column-gap: 5%;
+                width: 100%;
+                font-family: inherit;
+            }
+
+            body footer #footer-top-row {
+                padding-bottom: 5px;
+                border-bottom-width: 0.7px;
+                border-bottom-style: solid;
+                border-bottom-color: var(--cold-white);
+                font-family: inherit;
+            }
+
+            body footer .container .first-child {
+                width: 175px;
+            }
+
+            body footer #footer-bottom-row>.second-child {
+                display: flex;
+                justify-content: flex-start;
+                column-gap: 2px;
+                width: 100px;
+            }
+
+            body footer .container #about p {
+                font-size: 10px;
+                color: inherit;
+            }
+
+            body footer .container #links ul {
+                list-style: none;
+                font-size: 10px;
+            }
+
+            footer .container .first-child h6,
+            footer .container .second-child ul li .link,
+            footer .container .second-child h6,
+            footer .container .second-child h6 .link {
+                color: var(--cold-white);
+                text-decoration: none;
+                font-size: 9px;
+            }
+
+            body footer #footer-bottom-row>.second-child>.link {
+                font-size: 10px;
+                color: inherit;
+                font-weight: 400;
+                cursor: pointer;
+                text-decoration: none;
+            }
+        </style>
 </head>
 
 <body id="server-error-body" class="server-error body">

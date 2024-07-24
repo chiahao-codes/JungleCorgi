@@ -971,18 +971,22 @@
     justify-content: center;
     align-items: center;
     row-gap: 8%;
-    width: max-content;
-    height: max-content;
+    width: 300px;
+    max-width: 300px;
+    height: 100%;
     padding: 3%;
   }
+
   #server-error-msg-container > h1 {
     color: var(--cherry);
     font-family: "Crimson Text", sans-serif;
+    font-size: 90%;
   }
 
   #server-error-msg-container > h4 {
     color: var(--cherry);
     font-family: "Crimson Text", sans-serif;
+    font-size: 65%;
   }
 
   body footer {
@@ -991,14 +995,12 @@
     justify-content: center;
     gap: 6px;
     position: absolute;
-
     bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
     height: max-content;
     padding: 10px 20px 8px;
-
     font-family: "Noto Sans", sans-serif;
     line-height: 24px;
     color: var(--cold-white);
