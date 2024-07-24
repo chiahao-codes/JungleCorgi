@@ -166,7 +166,7 @@ app.get("/:symbol", async (req, res) => {
       return jsonsArr;
     })
     .catch((e) => console.log(e));
-
+  console.log(yahuQuoteResp);
   let yahuQuoteResp = results[0].quoteResponse.result;
   let realTimeResp = results[1].data;
   let breakStatement;
