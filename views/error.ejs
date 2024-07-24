@@ -103,6 +103,49 @@
                 cursor: pointer;
                 text-decoration: none;
             }
+
+            @media screen and (min-width: 600px) {
+                body footer>#footer-top-row {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    row-gap: 46px;
+                    font-family: inherit;
+                    width: 100%;
+                }
+
+                body footer>#footer-top-row .first-child {
+                    display: flex;
+                    justify-content: center;
+                    width: 500px;
+                    font-family: inherit;
+                    font-weight: 500;
+                    position: relative;
+                    top: 10px;
+                }
+
+                body footer>#footer-top-row .first-child p {
+                    font-size: 18px;
+                }
+
+                body footer>#footer-top-row .second-child {
+                    width: 100%;
+                    position: relative;
+                }
+
+                body footer .container .first-child h5,
+                body footer .container .second-child h5 {
+                    display: none;
+                }
+
+                body footer .container #links ul {
+                    display: flex;
+                    justify-content: space-evenly;
+                    font-size: 16px;
+                    font-weight: 400;
+                }
+            }
         </style>
 </head>
 
