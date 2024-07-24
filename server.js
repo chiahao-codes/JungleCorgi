@@ -43,7 +43,9 @@ let runQuery = async () => {
 
   try {
     let result;
-    const response = await fetch(url, apiOptions);
+    const response = await fetch(url, apiOptions).then((res) => {
+      return res;
+    });
     console.log("response:", response);
     if (response.status === 200) {
       result = await response.json();
