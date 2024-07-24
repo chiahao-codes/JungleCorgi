@@ -43,8 +43,8 @@ let runQuery = async () => {
 
   try {
     let result;
-    const response = await fetch(url, realTimeOptions);
-    console.log(response);
+    const response = await fetch(url, apiOptions);
+    console.log("response:", response);
     if (response.status === 200) {
       result = await response.json();
     }
