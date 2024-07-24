@@ -927,6 +927,7 @@
     transform: scale(0.95);
   }
 
+  /**
   #error_body main #container {
     display: flex;
     flex-direction: column;
@@ -957,7 +958,15 @@
     box-shadow: 0 0 0 #4a494e;
     margin: 3px 8px 0.5px 8px;
   }
+*/
+  #server-error-body {
+    justify-content: center;
+    align-items: center;
+  }
 
+  #server-error-body {
+    color: var(--cherry);
+  }
   body footer {
     display: flex;
     flex-direction: column;
