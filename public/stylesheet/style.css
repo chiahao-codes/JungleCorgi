@@ -960,11 +960,12 @@
   }
 */
   #server-error-body {
-    justify-content: center;
     align-items: center;
   }
 
   #server-error-body > h1 {
+    position: absolute;
+    top: 20%;
     color: var(--cherry);
     font-family: "Crimson Text", sans-serif;
   }
