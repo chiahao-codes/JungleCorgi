@@ -961,8 +961,8 @@
 */
   #server-error-body {
     align-items: center;
-    row-gap: 10%;
   }
+
   #server-error-msg-container {
     position: absolute;
     top: 20%;
