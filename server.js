@@ -45,9 +45,7 @@ let runQuery = async () => {
 
   try {
     let result;
-    const response = await fetch(url, apiOptions).then((res) => {
-      return res;
-    });
+    const response = await fetch(url, apiOptions);
     console.log("response:", response);
     if (response.status === 200) {
       result = await response.json();
@@ -65,13 +63,10 @@ app.get("/", async (req, res, next) => {
       return data;
     })
     .catch((e) => console.log(e));
-  /**
- *  if (!prices) {
+  if (!prices) {
     console.log(prices);
     res.render("error");
   }
-
- */
 
   if (prices) {
     res.render("home", { prices, API_KEY, RAPID });
