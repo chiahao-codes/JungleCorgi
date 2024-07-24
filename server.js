@@ -47,11 +47,12 @@ let runQuery = async () => {
     let result;
     const response = await fetch(url, apiOptions);
     console.log("response:", response);
-    if (response.status === 200) {
+    /**
+     *  if (response.status === 200) {
       result = await response.json();
+       return result;
     }
-
-    return result;
+     */
   } catch (error) {
     console.error(error);
   }
@@ -63,19 +64,17 @@ app.get("/", async (req, res, next) => {
       return data;
     })
     .catch((e) => console.log(e));
-  if (!prices) {
+
+  /*
+   if (!prices) {
     console.log(prices);
     res.render("error");
   }
-
-  if (prices) {
-    res.render("home", { prices, API_KEY, RAPID });
+    if (prices) {
+   
   }
-
-  /***
-   *  
-
-   */
+  * */
+  res.render("home", { prices, API_KEY, RAPID });
 });
 
 app.get("/disclaimer", async (req, res, next) => {
