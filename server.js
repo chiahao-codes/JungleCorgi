@@ -37,8 +37,8 @@ const realTimeOptions = {
 
 let runQuery = async () => {
   let url =
-    // "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%20%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2CBTC-USD%2C%5EVIX%2CGC%3DF%2CCL%3DF%2CNG%3DF%2C%5ETNX%2CJPY%3DX%2CEURUSD%3DX%2C%5ERUT";
-    "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT";
+    "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%20%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2CBTC-USD%2C%5EVIX%2CGC%3DF%2CCL%3DF%2CNG%3DF%2C%5ETNX%2CJPY%3DX%2CEURUSD%3DX%2C%5ERUT";
+  // "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT";
 
   try {
     let result;
