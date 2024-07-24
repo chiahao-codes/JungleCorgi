@@ -64,7 +64,7 @@ app.get("/", async (req, res, next) => {
       return data;
     })
     .catch((e) => console.log(e));
-
+  console.log("prices:", prices);
   /*
    if (!prices) {
     console.log(prices);
