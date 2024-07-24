@@ -3,7 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import { Chart } from "chart.js";
 
-let PORT = process.env.PORT || 80;
+let PORT = process.env.PORT || 3000;
 const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
 const RAPID2 = process.env.RAPID2;
