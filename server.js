@@ -43,6 +43,7 @@ let runQuery = async () => {
   try {
     let result;
     const response = await fetch(url, apiOptions);
+    console.log(response);
     if (response.status === 200) {
       result = await response.json();
     }
@@ -62,7 +63,7 @@ app.get("/", async (req, res, next) => {
   if (!prices) {
     res.render("error");
   }
-  console.log("prices:", prices.quoteResponse.result);
+
   if (prices) {
     res.render("home", { prices, API_KEY, RAPID });
   }
