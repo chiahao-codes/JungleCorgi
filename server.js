@@ -61,6 +61,7 @@ app.get("/", async (req, res, next) => {
     })
     .catch((e) => console.log(e));
   if (!prices) {
+    console.log(prices);
     res.render("error");
   }
 
