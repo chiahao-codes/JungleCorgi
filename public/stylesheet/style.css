@@ -961,6 +961,7 @@
 */
   #server-error-body {
     align-items: center;
+    row-gap: 10%;
   }
 
   #server-error-body > h1 {
@@ -969,6 +970,12 @@
     color: var(--cherry);
     font-family: "Crimson Text", sans-serif;
   }
+
+  #server-error-body > h4 {
+    color: var(--cherry);
+    font-family: "Crimson Text", sans-serif;
+  }
+
   body footer {
     display: flex;
     flex-direction: column;
