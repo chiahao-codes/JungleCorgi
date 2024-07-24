@@ -41,8 +41,11 @@ let runQuery = async () => {
     "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT";
 
   try {
+    let result;
     const response = await fetch(url, apiOptions);
-    let result = await response.json();
+    if (response.status === 200) {
+      result = await response.json();
+    }
 
     return result;
   } catch (error) {
@@ -56,6 +59,9 @@ app.get("/", async (req, res, next) => {
       return data;
     })
     .catch((e) => console.log(e));
+  if (!prices) {
+    res.render("error");
+  }
   console.log("prices:", prices.quoteResponse.result);
   if (prices) {
     res.render("home", { prices, API_KEY, RAPID });
