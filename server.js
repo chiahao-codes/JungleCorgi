@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 
 const apiOptions = {
+  credentials: "include",
   method: "GET",
   headers: {
     "x-rapidapi-key": API_KEY,
@@ -28,6 +29,7 @@ const apiOptions = {
 };
 
 const realTimeOptions = {
+  credentials: "include",
   method: "GET",
   headers: {
     "x-rapidapi-key": API_KEY,
