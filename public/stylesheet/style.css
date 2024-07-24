@@ -975,12 +975,12 @@
     height: max-content;
     padding: 3%;
   }
-  #server-error-body > h1 {
+  #server-error-msg-container > h1 {
     color: var(--cherry);
     font-family: "Crimson Text", sans-serif;
   }
 
-  #server-error-body > h4 {
+  #server-error-msg-container > h4 {
     color: var(--cherry);
     font-family: "Crimson Text", sans-serif;
   }
