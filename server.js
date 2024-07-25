@@ -17,7 +17,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static("assets"));
 app.use(express.json());
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "*", credentials: true }));
 
 const apiOptions = {
   method: "GET",
@@ -71,7 +71,6 @@ app.get("/", async (req, res, next) => {
     res.render("error");
   }
     if (prices) {
-   
   }
   * */
   res.render("home", { prices, API_KEY, RAPID });
