@@ -63,14 +63,10 @@ let runQuery = async () => {
 app.get("/", async (req, res, next) => {
   let prices = await runQuery();
   console.log("prices:", prices);
-  /*
-   if (!prices) {
+  if (!prices) {
     console.log(prices);
     res.render("error");
   }
-    if (prices) {
-  }
-  * */
   res.render("home", { prices, API_KEY, RAPID });
 });
 
@@ -176,7 +172,7 @@ app.get("/:symbol", async (req, res) => {
       return jsonsArr;
     })
     .catch((e) => console.log(e));
-  console.log(yahuQuoteResp);
+
   let yahuQuoteResp = results[0].quoteResponse.result;
   let realTimeResp = results[1].data;
   let breakStatement;
@@ -185,7 +181,7 @@ app.get("/:symbol", async (req, res) => {
       if (breakStatement) break;
       if (symbol === ele.symbol) {
         quote = ele;
-        console.log("quote ele:", quote);
+
         shortName = ele.shortName;
         longName = ele.longName;
         quoteType = ele.quoteType;
