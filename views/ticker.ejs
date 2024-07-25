@@ -815,9 +815,24 @@
         let previousClose = "",
             regularMarketPrice = "";
         const changePctPointsColor = (currentPrice, prevClosePrice) => {
+            let commaRegExp = /[,]/g;
+            let afterPrice = afterHrsPrice.innerText;
 
-            currentPrice = new Intl.NumberFormat("en-US", { style: "decimal" }).format(currentPrice)
-            prevClosePrice = new Intl.NumberFormat("en-US", { style: "decimal" }).format(prevClosePrice)
+            if (commaRegExp.test(currentPrice)) {
+                //remove commas
+                currentPrice = currentPrice.replace(commaRegExp, "");
+            }
+            if (commaRegExp.test(prevClosePrice)) {
+                //remove commas
+                prevClosePrice = prevClosePrice.replace(commaRegExp, "");
+            }
+            if (commaRegExp.test(afterPrice)) {
+                afterPrice = afterPrice.replace(commaRegExp, "");
+            }
+
+            currentPrice = parseFloat(currentPrice);
+            prevClosePrice = parseFloat(prevClosePrice);
+            afterPrice = parseFloat(afterPrice);
 
             regularPrice.style.color = green;
             regPointsPctContainer.children[0].style.color = green;
@@ -832,8 +847,6 @@
             afterHrsPrice.style.color = green;
             afterHrsChange.style.color = green;
             afterHrsPct.style.color = green;
-            let afterPrice = afterHrsPrice.innerText;
-            afterPrice = parseFloat(afterPrice);
 
             if (afterPrice < currentPrice) {
                 afterHrsPrice.style.color = red;
@@ -944,8 +957,7 @@
                     regularChangeSearch = '<%=regularMarketChangePercent%>';
                     regularChangePercentSearch = '<%=regularMarketChange%>';
                     marketState = quote.marketState;
-                    console.log("market state:", marketState)
-                    console.log("regular time search", regularTimeSearch)
+
                     if (quoteType === "EQUITY") {
                         prePriceSearch = '<%=preMarketPrice%>';
                         prePriceChangeSearch = '<%=preMarketChange%>';
@@ -971,7 +983,7 @@
                                     quoteCode = quote.quoteSummary.errorResult.code;
                                 }
                             } else {
-                                console.log("quote:", quote)
+
                                 previousCloseSearch = quote.regularMarketPreviousClose;
                                 regularPriceSearch = quote.regularMarketPrice;
                                 regularChangeSearch = quote.regularMarketChange;
@@ -1034,6 +1046,7 @@
 
                 previousClose = previousCloseSearch;
                 regularMarketPrice = regularPriceSearch;
+                console.log("regularMktPrice", regularPriceSearch)
                 regularMarketTime = regularTimeSearch;
                 regularMarketChange = regularChangeSearch;
                 regularMarketChangePercent = regularChangePercentSearch;
@@ -1139,7 +1152,6 @@
                     afterHoursTimeContainer.children[1].innerText = setMarketTime(prePostTime);
                 }
 
-
                 //previous closing price;
                 previousCloseElem.innerText = previousClose;
 
@@ -1153,7 +1165,6 @@
                     prevCloseContainer.style.maxWidth = "100%";
                     summaryProfileContainer.style.display = "none";
                 }
-
 
                 resolve("done")
             })
@@ -1300,6 +1311,7 @@
 
             //set session
             if (range === "1d") {
+                console.log("range:", range)
                 setSession().then(() => formatPrice(regPointsPctContainer, "reg_after_container")).then(() => formatPrice(afterPointsPctContainer, "reg_after_container")).then(() => changePctPointsColor(regularMarketPrice, previousClose))
                     .catch((e) => console.log(e))
             }
@@ -1766,7 +1778,6 @@
         function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
-
         const populateNews = async (symbol) => {
             let news = await getNews(symbol).then((res) => { return res }).catch((e) => console.log(e));
 
@@ -2013,16 +2024,6 @@
                 let founded = profileResp.data.company_founded_date;
 
                 let na = "n/a";
-                /*
-                document.getElementById("company_desc").innerText = trueOrFalse(summary, na);
-                document.getElementById("address").innerText = trueOrFalse(streetAddress, na);
-                document.getElementById("city").innerText = `${trueOrFalse(city, na)},`;
-                document.getElementById("state").innerText = trueOrFalse(state, na);
-                document.getElementById("country").innerText = trueOrFalse(country, na);
-                document.getElementById("link").innerText = trueOrFalse(website, na);
-                document.getElementById("ceo").innerText = trueOrFalse(ceo, na);
-                document.getElementById("full_time_employees").innerText = trueOrFalse(employees, na);
-                */
 
                 hideElem(document.getElementById("company_desc"), summary, na)
                 hideElem(document.getElementById("address"), streetAddress, na)
@@ -2191,11 +2192,6 @@
                 chart.destroy();
                 runProgressBar("2y");
             });
-
-            // document.addEventListener("click", idlePage);
-            // document.addEventListener("keypress", idlePage);
-            // document.addEventListener("mousemove", idlePage);
-            // document.addEventListener("scroll", idlePage);
 
             h2Box.addEventListener("focus", () => {
                 const h2ChildNodes = h2Box.childNodes;
