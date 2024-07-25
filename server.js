@@ -50,6 +50,8 @@ let runQuery = async () => {
 
     if (response.status === 200) {
       result = await response.json();
+    } else {
+      result = response.status;
     }
   } catch (error) {
     console.error(error);
@@ -59,11 +61,7 @@ let runQuery = async () => {
 };
 
 app.get("/", async (req, res, next) => {
-  let prices = await runQuery()
-    .then((data) => {
-      return data;
-    })
-    .catch((e) => console.log(e));
+  let prices = await runQuery();
   console.log("prices:", prices);
   /*
    if (!prices) {
