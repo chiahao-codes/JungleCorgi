@@ -1780,7 +1780,7 @@
         }
         const populateNews = async (symbol) => {
             let news = await getNews(symbol).then((res) => { return res }).catch((e) => console.log(e));
-
+            console.log("news:", news)
             if (news.data.news) {
                 let newsArr = news.data.news;
                 let title, articleUrl, source, date;
