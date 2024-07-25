@@ -25,6 +25,7 @@ const apiOptions = {
   headers: {
     "x-rapidapi-key": API_KEY,
     "x-rapidapi-host": RAPID,
+    "content-type": "application/json",
   },
 };
 
