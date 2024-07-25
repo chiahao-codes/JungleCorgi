@@ -451,7 +451,7 @@
     font-family: "Crimson Text", sans-serif;
     color: var(--greenish);
     font-weight: 800;
-    text-wrap: wrap;
+    text-wrap: pretty;
   }
 
   #article-source {
