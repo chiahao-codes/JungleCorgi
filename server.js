@@ -8,7 +8,7 @@ const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
 const RAPID2 = process.env.RAPID2;
 const CURR_DOMAIN = process.env.DOMAIN;
-const NEWS = process.env.NEWSHOST;
+const NEWS = RAPID2;
 
 const chartJS = Chart;
 const app = express();
