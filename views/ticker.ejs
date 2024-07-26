@@ -1439,7 +1439,7 @@
             let result;
             const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
             const response = await fetch(balanceShtURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
-            console.log("balance response:", response)
+
             if (response.status === 200) {
                 result = await response.json();
             }
@@ -1449,7 +1449,7 @@
             const incomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=${symbol}&region=US`;
             let result;
             const response = await fetch(incomeStmtURL, apiOptions).then((r) => { return r }).catch((e) => console.log(e));
-            console.log("response:", response)
+
             if (response.status === 200) {
                 result = await response.json();
             }
@@ -1466,7 +1466,7 @@
         }
         const populateIncomeData = async (symbol) => {
             let incomeData = await getIncomeStmt(symbol).then((res) => { return res }).catch((e) => console.log(e));
-            console.log("income data:", incomeData)
+
             if (incomeData) {
                 let currency, incomeTimeStampsArr,
                     timestampLength;
@@ -1571,7 +1571,7 @@
         }
         const populateBalanceData = async (symbol) => {
             let balanceData = await getBalanceSht(symbol).then((res) => { return res }).catch((e) => console.log(e));
-            console.log("balance data:", balanceData)
+
             if (balanceData) {
                 balanceData = balanceData.timeSeries;
                 let balanceTimeStampArr = balanceData.timestamp;
@@ -1671,7 +1671,7 @@
 
         const populateCashFlowData = async (symbol) => {
             let cashJsonData = await getCashFlow(symbol);
-            console.log(cashJsonData);
+
             if (cashJsonData) {
                 cashJsonData = cashJsonData.timeSeries;
 
@@ -1780,7 +1780,7 @@
         }
         const populateNews = async (symbol) => {
             let news = await getNews(symbol).then((res) => { return res }).catch((e) => console.log(e));
-            console.log("news:", news)
+
             if (news.data.news) {
                 let newsArr = news.data.news;
                 let title, articleUrl, source, date;
@@ -1817,7 +1817,7 @@
 
             const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${symbol}&region=US`;
             analysisFetch = await fetch(analysisURL, apiOptions);
-            console.log("analysis fetch:", analysisFetch);
+
             if (analysisFetch.status === 200) {
                 analysisResp = await analysisFetch.json();
             }
@@ -2153,7 +2153,7 @@
             }
 
             date = new Date(timeStamp);
-            console.log("date:", date)
+
             formatted = new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short',
                 timeStyle: 'long',
