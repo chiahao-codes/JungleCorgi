@@ -181,7 +181,7 @@ app.get("/:symbol", async (req, res) => {
       if (breakStatement) break;
       if (symbol === ele.symbol) {
         quote = ele;
-
+        console.log(ele);
         shortName = ele.shortName;
         longName = ele.longName;
         quoteType = ele.quoteType;

@@ -1046,7 +1046,7 @@
 
                 previousClose = previousCloseSearch;
                 regularMarketPrice = regularPriceSearch;
-                console.log("regularMktPrice", regularPriceSearch)
+
                 regularMarketTime = regularTimeSearch;
                 regularMarketChange = regularChangeSearch;
                 regularMarketChangePercent = regularChangePercentSearch;
@@ -1067,6 +1067,7 @@
 
                 regDateTime = "At Close:";
                 console.log("regularmkttime:", regularMarketTime);
+
                 if (regularMarketTime) {
                     if (regularMarketTime > preMarketTime && !postMarketTime) {
                         regDateTime = "Current Session:"
