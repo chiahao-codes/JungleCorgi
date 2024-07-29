@@ -1066,12 +1066,10 @@
                 }
 
                 regDateTime = "At Close:";
-
+                console.log("regularmkttime:", regularMarketTime);
                 if (regularMarketTime) {
-                    if (preMarketTime) {
-                        if (regularMarketTime > preMarketTime && !postMarketTime) {
-                            regDateTime = "Current Session:"
-                        }
+                    if (regularMarketTime > preMarketTime && !postMarketTime) {
+                        regDateTime = "Current Session:"
                     }
                 }
 

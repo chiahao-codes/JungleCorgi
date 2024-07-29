@@ -130,9 +130,17 @@ const startCountDown = (mkt) => {
 
   //dayOfWeekNyc, nextDay, currNycDate, currHourNyc, currNycYear, currNycMonth
   let openingBellCountdown = () => {
+    //pre-mkt hours;
+    if (localDay >= 1 && localDay <= 5) {
+      if (localHour >= 0 && localHour <= openingMktHour) {
+        localNextDate = localDate;
+      }
+    }
     //if Friday-Sunday:
     if (localDay === 5) {
-      localNextDate = localDate + 3;
+      if (localHour >= closingMktHour) {
+        localNextDate = localDate + 3;
+      }
     }
     if (localDay === 6) localNextDate = localDate + 2;
     if (localDay === 0) {
