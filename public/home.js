@@ -98,6 +98,7 @@ const startCountDown = (mkt) => {
   let currFullNycDate = new Date().toLocaleString("en-US", {
     timeZone: nycTimeZone,
   });
+
   let currHourNyc = new Date(currFullNycDate);
   currHourNyc = currHourNyc.getHours();
   let local = new Date();
@@ -135,16 +136,7 @@ const startCountDown = (mkt) => {
     }
     if (localDay === 6) localNextDate = localDate + 2;
     if (localDay === 0) {
-      localNextDate = localDate;
-      if (localHour <= 6) {
-        localNextDate = localDate + 1;
-      }
-    }
-    //pre-mkt hours
-    if (localDay > 0 && localDay < 6) {
-      if (localHour >= 0 && localHour <= openingMktHour) {
-        localNextDate = localDate;
-      }
+      localNextDate = localDate + 1;
     }
 
     //bank holidays:
