@@ -1066,7 +1066,7 @@
                 }
 
                 regDateTime = "At Close:";
-                console.log("regularmkttime:", regularMarketTime);
+
 
                 if (regularMarketTime) {
                     if (regularMarketTime > preMarketTime && !postMarketTime) {
@@ -1116,7 +1116,7 @@
                     if (postMarketPrice !== undefined || postMarketPrice !== null) {
                         afterHoursPrice = postMarketPrice
                     }
-                    console.log("post market change:", postMarketChange)
+
                     if (postMarketChange !== undefined || postMarketChange !== null) {
                         afterHoursPointsChng = postMarketChange
                     }
@@ -1147,7 +1147,6 @@
                     afterHrsChange.innerText = afterHoursPointsChng;
                     afterHrsPct.innerText = afterHoursPctChng;
                     afterHoursTimeContainer.children[0].innerText = prePostMarketState;
-
                     afterHoursTimeContainer.children[1].innerText = setMarketTime(prePostTime);
                 }
 
@@ -1164,7 +1163,6 @@
                     prevCloseContainer.style.maxWidth = "100%";
                     summaryProfileContainer.style.display = "none";
                 }
-
                 resolve("done")
             })
         }
@@ -1205,8 +1203,6 @@
         };
         const fillChartData = async (responseData, range) => {
             let chartResp, chartTimes, closeQuote, openQuote;
-
-            console.log("responseData:", responseData)
 
             let chartData = {
                 datasets: [
@@ -1310,7 +1306,6 @@
 
             //set session
             if (range === "1d") {
-                console.log("range:", range)
                 setSession().then(() => formatPrice(regPointsPctContainer, "reg_after_container")).then(() => formatPrice(afterPointsPctContainer, "reg_after_container")).then(() => changePctPointsColor(regularMarketPrice, previousClose))
                     .catch((e) => console.log(e))
             }
@@ -1667,7 +1662,6 @@
                 document.querySelector(".retained-earn > .year3").innerText = retainedEarnYr3;
             }
         }
-
         const populateCashFlowData = async (symbol) => {
             let cashJsonData = await getCashFlow(symbol);
 
@@ -2041,7 +2035,9 @@
                         clearInterval(timeout);
                     }
                     timeout = setInterval(() => {
-                        location.reload();
+                     if (timeout) {
+                        clearInterval(timeout);
+                    }
                     }, 60000);
                 }
                 const activePage = () => {
