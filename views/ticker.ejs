@@ -1032,16 +1032,6 @@
                             preOrPostChangePct = stock.data.pre_or_post_market_change_percent;
                         }
                     }
-
-                    if (keys.length === 0 && realElemStock) {
-                        //must use server side realtimestockelem variables here:
-                        stockName
-                        regularPriceSearch
-                        regularChangeSearch
-                        regularChangePercentSearch
-                        last_update_utc
-                        previousCloseSearch
-                    }
                 }
 
                 previousClose = previousCloseSearch;
@@ -1066,9 +1056,13 @@
                 }
 
                 regDateTime = "At Close:";
+                let currDateObj = new Date();
+                let getDate = currDateObj.getDate();
+                let regMktDateObj = new Date(regularMarketTime * 1000);
+                let getRegMktDate = regMktDateObj.getDate();
 
+                if (getDate === getRegMktDate) {
 
-                if (regularMarketTime) {
                     if (regularMarketTime > preMarketTime && !postMarketTime) {
                         regDateTime = "Current Session:"
                     }
