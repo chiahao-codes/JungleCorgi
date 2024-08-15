@@ -287,7 +287,7 @@ h2Box.addEventListener("focusout", () => {
 
 h2Box.addEventListener("keydown", (e) => {
   const textString = h2Box.innerText;
-  if (textString.length >= 20 && e.key !== "Backspace" && e.key !== "Enter") {
+  if (textString.length >= 30 && e.key !== "Backspace" && e.key !== "Enter") {
     e.preventDefault();
     alert("Character amount exceeded");
   }
@@ -321,7 +321,7 @@ h2Box.addEventListener("keydown", (e) => {
 
     if (textString === "" && e.key === "Enter") {
       e.preventDefault();
-      alert("enter a valid ticker");
+      alert("Invalid entry");
     }
 
     if (e.key === "Enter" && textString !== "") {
@@ -334,10 +334,10 @@ h2Box.addEventListener("keydown", (e) => {
     }
   }
   //prevent non-letters
-  //Allow Backspace, Enter keys;
+  //Allow Backspace, Enter, space bar keys;
   //Note: navigation keys are failing the regexp test;
   if (regExp.test(e.key) === false) {
-    if (e.key !== "Backspace" && e.key !== "Enter") {
+    if (e.key !== "Backspace" && e.key !== "Enter" && e.key !== " ") {
       e.preventDefault();
       alert("Invalid entry");
     }
