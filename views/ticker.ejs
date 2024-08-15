@@ -2207,12 +2207,13 @@
             });
             h2Box.addEventListener("keydown", (e) => {
                 const textString = h2Box.innerText;
-                if (textString.length >= 20 && e.key !== "Backspace" && e.key !== "Enter" && e.key !== " ") {
+                if (textString.length >= 25 && e.key !== "Backspace" && e.key !== "Enter") {
                     e.preventDefault();
                     alert("Character amount exceeded");
                 }
                 //prevent navigation keys;
                 if (textString.length > 0) {
+                    /**
                     let navKeys = [
                         "ArrowLeft",
                         "ArrowRight",
@@ -2237,7 +2238,7 @@
                             alert("Invalid entry");
                         }
                     }
-
+                    */
                     if (textString === "" && e.key === "Enter") {
                         e.preventDefault();
                         alert("enter a valid ticker");

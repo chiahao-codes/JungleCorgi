@@ -287,7 +287,7 @@ h2Box.addEventListener("focusout", () => {
 
 h2Box.addEventListener("keydown", (e) => {
   const textString = h2Box.innerText;
-  if (textString.length >= 30 && e.key !== "Backspace" && e.key !== "Enter") {
+  if (textString.length >= 25 && e.key !== "Backspace" && e.key !== "Enter") {
     e.preventDefault();
     alert("Character amount exceeded");
   }
