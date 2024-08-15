@@ -1012,6 +1012,7 @@
 
                 //real time api search;
                 if (quoteCode === "Not Found" || !quote) {
+                    console.log("quote type:", quoteType)
                     let realStockURL = `https://real-time-finance-data.p.rapidapi.com/stock-quote?symbol=%5E${stockTicker}&language=en`
                     stock = await fetch(realStockURL, realApiOptions).catch((e) => console.log(e));
                     stock = await stock.json();
@@ -1060,7 +1061,7 @@
                 let getDate = currDateObj.getDate();
                 let regMktDateObj = new Date(regularMarketTime * 1000);
                 let getRegMktDate = regMktDateObj.getDate();
-                console.log("postMarketTime:", postMarketTime);
+
                 if (getDate === getRegMktDate) {
                     if (regularMarketTime > preMarketTime && !postMarketTime) {
                         regDateTime = "Current Session:"
@@ -2133,19 +2134,22 @@
         }
 
         const setMarketTime = (timeStamp) => {
-            let date, formatted, regExpNumbers = /[:-]/;
+            let date, formatted = "Unavailable", regExpNumbers = /[:-]/;
 
-            if (!regExpNumbers.test(timeStamp)) {
-                timeStamp = timeStamp * 1000;
+            if (timeStamp) {
+                if (!regExpNumbers.test(timeStamp)) {
+                    timeStamp = timeStamp * 1000;
+                }
+
+                date = new Date(timeStamp);
+
+                formatted = new Intl.DateTimeFormat('en-US', {
+                    dateStyle: 'short',
+                    timeStyle: 'long',
+                    timeZone: 'America/New_York',
+                }).format(date)
+
             }
-
-            date = new Date(timeStamp);
-
-            formatted = new Intl.DateTimeFormat('en-US', {
-                dateStyle: 'short',
-                timeStyle: 'long',
-                timeZone: 'America/New_York',
-            }).format(date)
 
             return formatted
 

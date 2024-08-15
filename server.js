@@ -181,6 +181,7 @@ app.get("/:symbol", async (req, res) => {
       if (breakStatement) break;
       if (symbol === ele.symbol) {
         quote = ele;
+        console.log("yahu");
         console.log(ele);
         shortName = ele.shortName;
         longName = ele.longName;
@@ -221,6 +222,8 @@ app.get("/:symbol", async (req, res) => {
       }
     }
   } else {
+    console.log("realtime");
+    let currSymbol;
     for (let prop in realTimeResp) {
       if (realTimeResp[prop].length > 0) {
         if (breakStatement) break;
@@ -228,19 +231,34 @@ app.get("/:symbol", async (req, res) => {
           //check name;
           let curr = realTimeResp[prop][i];
           compName = curr.name;
+          if (!compName) {
+            if (curr.type) {
+              if (curr.type === "currency") {
+                compName = curr.from_currency_name;
+                currSymbol = curr.from_symbol;
+              }
+            } else {
+              return res.render("404");
+            }
+          }
+
           compName = compName.toUpperCase();
 
           //prep symbol;
-          let currSymbol = curr.symbol;
+          if (!currSymbol) {
+            currSymbol = curr.symbol;
+          }
+
           indexLast = currSymbol.indexOf(":");
-          if (indexLast) {
+
+          if (indexLast > -1) {
             slicedSymbol = currSymbol.slice(0, indexLast);
             currSymbol = slicedSymbol;
           }
+
           //check for a match;
           if (compName.includes(symbol) || symbol === currSymbol) {
-            longName = curr.name;
-            shortName = curr.name;
+            longName = compName;
             quoteType = curr.type;
             symbol = currSymbol;
             if (quoteType === "index") {
@@ -250,9 +268,6 @@ app.get("/:symbol", async (req, res) => {
               }
             }
             realElemStock = curr;
-            console.log("compName:", compName);
-            console.log("quoteType:", quoteType);
-            console.log("real time search elem:", curr);
             breakStatement = true;
             break;
           }
