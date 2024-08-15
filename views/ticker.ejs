@@ -1060,9 +1060,8 @@
                 let getDate = currDateObj.getDate();
                 let regMktDateObj = new Date(regularMarketTime * 1000);
                 let getRegMktDate = regMktDateObj.getDate();
-
+                console.log("postMarketTime:", postMarketTime);
                 if (getDate === getRegMktDate) {
-
                     if (regularMarketTime > preMarketTime && !postMarketTime) {
                         regDateTime = "Current Session:"
                     }
@@ -1105,7 +1104,6 @@
 
                 if (postMarketTime >= regularMarketTime && postMarketTime > preMarketTime) {
                     prePostMarketState = "After Hours:"
-
 
                     if (postMarketPrice !== undefined || postMarketPrice !== null) {
                         afterHoursPrice = postMarketPrice
