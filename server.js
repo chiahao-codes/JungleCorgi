@@ -6,9 +6,7 @@ import { Chart } from "chart.js";
 let PORT = process.env.PORT || 3000;
 const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
-const RAPID2 = process.env.RAPID2;
 const CURR_DOMAIN = process.env.DOMAIN;
-const NEWS = RAPID2;
 
 const chartJS = Chart;
 const app = express();
@@ -28,26 +26,13 @@ const apiOptions = {
   },
 };
 
-const realTimeOptions = {
-  credentials: "include",
-  method: "GET",
-  headers: {
-    "x-rapidapi-key": API_KEY,
-    "x-rapidapi-host": RAPID2,
-  },
-};
-
 let runQuery = async () => {
   let result;
   let url =
     "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT";
-  //`https://real-time-finance-data.p.rapidapi.com/stock-quote?symbol=.dji%2C%20.ixic&language=en`;
-  // "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%20%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2CBTC-USD%2C%5EVIX%2CGC%3DF%2CCL%3DF%2CNG%3DF%2C%5ETNX%2CJPY%3DX%2CEURUSD%3DX%2C%5ERUT";
 
   try {
     const response = await fetch(url, apiOptions);
-    console.log("response:", response);
-
     if (response.status === 200) {
       result = await response.json();
     } else {
@@ -107,6 +92,11 @@ app.get("/contact", async (req, res, next) => {
 });
 
 let cache = {
+  "DOGE COIN": "DOGE",
+  "THE DOGE COIN": "DOGE",
+  DOGEFATHER: "DOGE",
+  "THE DOGE FATHER": "DOGE",
+  DOGECOIN: "DOGE",
   GOOGLE: "GOOG",
   SNAPCHAT: "SNAP",
   "PAY PAL": "PYPL",
@@ -122,18 +112,110 @@ let cache = {
   TSMC: "TSM",
   "WALT DISNEY": "DIS",
   DISNEY: "DIS",
-  "WALT DISNEY COMPANY": "DIS",
+  "THE WALT DISNEY COMPANY": "DIS",
 };
 
 app.get("/:symbol", async (req, res) => {
   let symbol = req.params.symbol,
-    yahuQuoteSearch,
     quote,
+    quoteType,
+    quoteSymbol,
+    shortName,
+    longName,
+    yahuAutoComplete,
+    autoCompResp,
+    breakStatement;
+
+  symbol = symbol.toUpperCase();
+  //verify search/symbol exists;
+  //if so, render ejs and look up pricing info via yahu stock quote;
+  let firstChar = symbol.charAt(0);
+  if (firstChar === ".") symbol = symbol.replace(".", "^");
+  if (cache[symbol]) symbol = cache[symbol];
+  const yahuAutoCompURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete?region=US&q=${symbol}`;
+  //const yahuSearchURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
+  //const realTimeUrl = `https://real-time-finance-data.p.rapidapi.com/search?query=${symbol}&language=en`;
+
+  try {
+    yahuAutoComplete = await fetch(yahuAutoCompURL, apiOptions);
+    autoCompResp = await yahuAutoComplete.json();
+    console.log(autoCompResp);
+  } catch (error) {
+    console.log(error);
+    return res.render("error");
+  }
+
+  //iterate over quotes
+  let quotesArr = autoCompResp.quotes;
+  let newsArr = autoCompResp.news;
+  if (quotesArr.length === 0) return res.render("404");
+
+  if (quotesArr.length > 0) {
+    for (let i = 0; i < quotesArr.length; i++) {
+      if (breakStatement) break;
+      quote = quotesArr[i];
+      let quoteShortname = quote.shortname.toUpperCase();
+      if (quote.symbol === symbol || quoteShortname.includes(symbol)) {
+        quoteType = quote.quoteType;
+        shortName = quote.shortname;
+        longName = quote.longname;
+        quoteSymbol = quote.symbol;
+
+        breakStatement = true;
+        break;
+      }
+    }
+  }
+
+  if (
+    quoteType === "ECNQUOTE" ||
+    quoteType === "MUTUALFUND" ||
+    quoteType === "NONE" ||
+    quoteType === "mutual_fund"
+  ) {
+    return res.render("404");
+  }
+
+  let newsTitle, newsPublisher, newsLink, newsTime, breakNews;
+  if (newsArr.length > 0) {
+    for (let ele of newsArr) {
+      if (breakNews) break;
+      newsTitle = ele.title;
+      newsPublisher = ele.publisher;
+      newsLink = ele.link;
+      newsTime = ele.providerPublishTime;
+      breakNews = true;
+      break;
+    }
+  }
+  return res.render("ticker", {
+    autoCompResp,
     quoteType,
     shortName,
     longName,
-    compName,
-    indexLast,
+    newsTitle,
+    newsPublisher,
+    newsLink,
+    newsTime,
+    CURR_DOMAIN,
+    API_KEY,
+    RAPID,
+    chartJS,
+    symbol,
+    quoteSymbol,
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// const yahuQuoteSearch = fetch(yahuSearchURL, apiOptions);
+// realTimeSearch = fetch(realTimeUrl, realTimeOptions);
+
+/**
+   *  compName,
+indexLast,
     slicedSymbol,
     realTimeSearch,
     previousClose,
@@ -151,20 +233,9 @@ app.get("/:symbol", async (req, res) => {
     regularMarketChangePercent,
     regularMarketPrice,
     quoteSummErrorCode,
-    realElemStock;
-
-  symbol = symbol.toUpperCase();
-
-  let firstChar = symbol.charAt(0);
-  if (firstChar === ".") symbol = symbol.replace(".", "^");
-  if (cache[symbol]) symbol = cache[symbol];
-  const yahuSearchURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
-  const realTimeUrl = `https://real-time-finance-data.p.rapidapi.com/search?query=${symbol}&language=en`;
-
-  yahuQuoteSearch = fetch(yahuSearchURL, apiOptions);
-  realTimeSearch = fetch(realTimeUrl, realTimeOptions);
-
-  let results = await Promise.all([yahuQuoteSearch, realTimeSearch])
+    realElemStock,
+   *  let autoCompResp = ;
+     *   = await Promise.all([yahuQuoteSearch, realTimeSearch])
     .then((res) => {
       return Promise.all(res.map((r) => r.json()));
     })
@@ -172,11 +243,9 @@ app.get("/:symbol", async (req, res) => {
       return jsonsArr;
     })
     .catch((e) => console.log(e));
-
-  let yahuQuoteResp = results[0].quoteResponse.result;
-  let realTimeResp = results[1].data;
-  let breakStatement;
-  if (yahuQuoteResp.length > 0) {
+     */
+/**
+ *  if (yahuQuoteResp.length > 0) {
     for (let ele of yahuQuoteResp) {
       if (breakStatement) break;
       if (symbol === ele.symbol) {
@@ -275,16 +344,14 @@ app.get("/:symbol", async (req, res) => {
       }
     }
   }
+  
+   let yahuQuoteResp = autoCompResp[0].quoteResponse.result;
+  let realTimeResp = autoCompResp[1].data;
+  let breakStatement;
+ */
 
-  if (
-    !quoteType ||
-    quoteType === "ECNQUOTE" ||
-    quoteType === "MUTUALFUND" ||
-    quoteType === "NONE" ||
-    quoteType === "mutual_fund"
-  ) {
-    return res.render("404");
-  }
+/**
+   * 
   if (quoteType === "stock") quoteType = "EQUITY";
 
   res.render("ticker", {
@@ -315,8 +382,4 @@ app.get("/:symbol", async (req, res) => {
     regularMarketChangePercent,
     regularMarketPrice,
   });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+   */
