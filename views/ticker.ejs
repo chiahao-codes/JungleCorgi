@@ -793,7 +793,6 @@
         const chartTimelineContainer = document.querySelector("#chart-timeline-container");
         const canvas = document.querySelector("#chart");
         let chart, finCurrency, timeoutId, currMktState, timeout = undefined, timeout2 = undefined, red = "#b11e31", green = "#148a61", afterHoursPrice;
-
         const progressBarContainer = document.getElementById('progress-bar-container');
         const progressBar = document.getElementById('progress-bar');
 
@@ -1000,7 +999,7 @@
                 atCloseContainer.children[0].innerText = regDateTime;
                 atCloseContainer.children[1].innerText = setMarketTime(regularMarketTime);
 
-                let prePostTime; //yahu api
+                let prePostTime;
                 if (preMarketTime >= regularMarketTime) {
                     prePostMarketState = "Pre-Market:"
 
@@ -1201,13 +1200,13 @@
             document.getElementById("index_data_container").style.display = "none";
 
             let grabchart, fillchart, response;
-            response = await grabChartData(quoteSymbol, range).then((res) => { return res }).catch((e) => console.log(e));
 
-            //set session
             if (range === "1d") {
-                setSession().then(() => formatPrice(regPointsPctContainer, "reg_after_container")).then(() => formatPrice(afterPointsPctContainer, "reg_after_container")).then(() => changePctPointsColor(regularMarketPrice, previousClose))
+                await setSession().then(() => formatPrice(regPointsPctContainer, "reg_after_container")).then(() => formatPrice(afterPointsPctContainer, "reg_after_container")).then(() => changePctPointsColor(regularMarketPrice, previousClose))
                     .catch((e) => console.log(e))
             }
+
+            response = await grabChartData(quoteSymbol, range).then((res) => { return res }).catch((e) => console.log(e));
 
             if (response.chart.result === null) {
                 document.getElementById("not-available-container").style.display = "flex";
@@ -1300,10 +1299,9 @@
                 }
 
                 chart = new Chart(canvas, config);
-
-                return chart
             }
 
+            return chart
         }
         const runProgressBar = (range) => {
             if (timeoutId) {
