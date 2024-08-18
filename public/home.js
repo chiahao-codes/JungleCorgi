@@ -116,7 +116,6 @@ const startCountDown = (mkt) => {
   if (localHour <= currHourNyc) {
     hourDifference = currHourNyc - localHour;
     openingMktHour = openingMktHour - hourDifference;
-
     closingMktHour = closingMktHour - hourDifference;
   }
 
@@ -139,12 +138,25 @@ const startCountDown = (mkt) => {
     //if Friday-Sunday:
     if (localDay === 5) {
       if (localHour >= closingMktHour) {
-        localNextDate = localDate + 3;
+        localNextDate = localDate + 2;
       }
     }
-    if (localDay === 6) localNextDate = localDate + 2;
+
+    let hoursLeft = 24 - localHour;
+    if (localDay === 6) {
+      if (hoursLeft >= 18) {
+        localNextDate = localDate + 2;
+      } else {
+        localNextDate = localDate + 1;
+      }
+    }
+
     if (localDay === 0) {
-      localNextDate = localDate + 1;
+      if (hoursLeft >= 18) {
+        localNextDate = 1;
+      } else {
+        localNextDate = 0;
+      }
     }
 
     //bank holidays:
