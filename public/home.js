@@ -153,12 +153,7 @@ const startCountDown = (mkt) => {
     }
 
     if (localDay === 0) {
-      hoursLeft = 24 - localHour;
-      if (hoursLeft >= 18) {
-        localNextDate = localDate + 1;
-      } else {
-        localNextDate = localDate;
-      }
+      localNextDate = localDate + 1;
     }
 
     //bank holidays:
