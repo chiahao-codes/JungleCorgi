@@ -324,10 +324,9 @@
 
             const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
             const results = await response.json();
-            console.log("results:", results)
+
             let regMktPrice, regMktChange, regMktChangePercent;
             for (let i = 0; i < indexContainers.length; i++) {
-
                 regMktPrice = formatPrice(results.quoteResponse.result[i].regularMarketPrice);
                 regMktChange = formatPrice(results.quoteResponse.result[i].regularMarketChange);
                 regMktChangePercent = formatPrice(results.quoteResponse.result[i].regularMarketChangePercent);
