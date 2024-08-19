@@ -246,6 +246,15 @@
         const pingBalanceShtURL = '<%=pingBalanceShtURL%>'
         const pingCashFlowURL = '<%=pingCashFlowURL%>'
         const pingAnalysisURL = '<%=pingAnalysisURL%>'
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+
+        let pingArr = [pingIncomeStmtURL,
+            pingBalanceShtURL,
+            pingCashFlowURL,
+            pingAnalysisURL,]
+
         const options = {
             method: "GET",
             headers: {
@@ -340,9 +349,10 @@
 
         formatPrice(priceOfIndex)
         changePctPointsColor(indexContainers, priceOfIndex);
-        sendPing(autoCompURL).then(() => sendPing(pingIncomeStmtURL)).then(() => sendPing(pingCashFlowURL)).then(() => sendPing(pingAnalysisURL)).then(() => sendPing(pingBalanceShtURL)).catch((e) => console.log(e));
-
-
+        let index = getRandomInt(0, 4);
+        let selectedPing = pingArr[index];
+        sendPing(autoCompURL);
+        sendPing(selectedPing)
         /**
          *  let timeout = undefined;
         const idlePage = () => {
