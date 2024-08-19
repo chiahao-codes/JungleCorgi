@@ -143,11 +143,14 @@
   #home_body #mkt_status_notification_container {
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    row-gap: 5px;
   }
 
-  #home_body > #mkt_status_notification_container > #mkt_status_notification {
+  #mkt_status_notification,
+  #beta {
     color: var(--midnight);
   }
 
