@@ -240,7 +240,19 @@
     </script>
     <script async="false">
         const KEY = '<%=API_KEY%>';
-        const HOST = '<%=RAPID%>'
+        const HOST = '<%=RAPID%>';
+        const autoCompURL = '<%=pingAutoCompURL%>';
+        const pingIncomeStmtURL = '<%=pingIncomeStmtURL%>'
+        const pingBalanceShtURL = '<%=pingBalanceShtURL%>'
+        const pingCashFlowURL = '<%=pingCashFlowURL%>'
+        const pingAnalysisURL = '<%=pingAnalysisURL%>'
+        const options = {
+            method: "GET",
+            headers: {
+                "X-RapidAPI-Key": KEY,
+                "X-RapidAPI-Host": HOST
+            }
+        };
         const indexContainers = document.querySelectorAll("body > section > .index_container");
         const priceOfIndex = document.querySelectorAll("body > section > .index_container > .price");
         const formatPrice = (container) => {
@@ -299,13 +311,7 @@
         };
         const getPrices = async (indexContainers) => {
             const url = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=%5EGSPC%2C%20%5EIXIC%2C%5EDJI%2C%5EN225%2C%5EHSI%2C%5EFTSE%2C%20BTC-USD%2C%20%5EVVIX%2C%20GC%3DF%2C%20CL%3DF%2C%20NG%3DF%2C%5ETNX%2C%20JPY%3DX%2C%20EURUSD%3DX%2C%20%5ERUT`
-            const options = {
-                method: "GET",
-                headers: {
-                    "X-RapidAPI-Key": KEY,
-                    "X-RapidAPI-Host": HOST
-                }
-            };
+
 
             const response = await fetch(url, options).then((data) => { return data; }).catch((e) => console.log(e));
             const results = await response.json();
@@ -323,9 +329,19 @@
             }
             return;
         };
+        const sendPing = async (url) => {
+            try {
+                const response = await fetch(url, options)
+                console.log("ping:", response);
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
         formatPrice(priceOfIndex)
         changePctPointsColor(indexContainers, priceOfIndex);
+        sendPing(autoCompURL).then(() => sendPing(pingIncomeStmtURL)).then(() => sendPing(pingCashFlowURL)).then(() => sendPing(pingAnalysisURL)).then(() => sendPing(pingBalanceShtURL)).catch((e) => console.log(e));
+
 
         /**
          *  let timeout = undefined;

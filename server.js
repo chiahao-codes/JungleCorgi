@@ -45,6 +45,12 @@ let runQuery = async () => {
   return result;
 };
 
+let pingAutoCompURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete?region=US&q=apple/ping`;
+let pingCashFlowURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-cash-flow?symbol=aapl&region=US/ping`;
+let pingBalanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=aapl&region=US/ping`;
+let pingIncomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-financials?symbol=aapl&region=US/ping`;
+const pingAnalysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=aapl&region=US/ping`;
+
 app.get("/", async (req, res, next) => {
   let prices = await runQuery();
   console.log("prices:", prices);
@@ -52,7 +58,16 @@ app.get("/", async (req, res, next) => {
     console.log(prices);
     res.render("error");
   }
-  res.render("home", { prices, API_KEY, RAPID });
+  res.render("home", {
+    prices,
+    API_KEY,
+    RAPID,
+    pingAutoCompURL,
+    pingBalanceShtURL,
+    pingIncomeStmtURL,
+    pingCashFlowURL,
+    pingAnalysisURL,
+  });
 });
 
 app.get("/disclaimer", async (req, res, next) => {
