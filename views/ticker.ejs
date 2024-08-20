@@ -1316,10 +1316,10 @@
                     populateNews(quoteSymbol);
                     populateAnalysis(quoteSymbol);
                     if (quoteType === "EQUITY") {
-                        await populateProfile(quoteSymbol);
                         await populateIncomeData(quoteSymbol);
                         populateBalanceData(quoteSymbol);
                         populateCashFlowData(quoteSymbol);
+                        await populateProfile(quoteSymbol);
                     }
                 })
                     .catch((e) => console.log(e));
