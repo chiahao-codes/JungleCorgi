@@ -1318,8 +1318,8 @@
                     if (quoteType === "EQUITY") {
                         await populateProfile(quoteSymbol);
                         await populateIncomeData(quoteSymbol);
-                        await populateBalanceData(quoteSymbol);
-                        await populateCashFlowData(quoteSymbol);
+                        populateBalanceData(quoteSymbol);
+                        populateCashFlowData(quoteSymbol);
                     }
                 })
                     .catch((e) => console.log(e));
