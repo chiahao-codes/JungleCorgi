@@ -352,7 +352,10 @@
         let index = getRandomInt(0, 4);
         let selectedPing = pingArr[index];
         sendPing(autoCompURL);
-        sendPing(selectedPing)
+        sendPing(pingCashFlowURL);
+        sendPing(pingBalanceShtURL)
+        sendPing(pingIncomeStmtURL);
+        //sendPing(selectedPing)
         /**
          *  let timeout = undefined;
         const idlePage = () => {

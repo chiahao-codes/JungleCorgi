@@ -152,7 +152,7 @@ app.get("/:symbol", async (req, res) => {
   try {
     yahuAutoComplete = await fetch(yahuAutoCompURL, apiOptions);
     autoCompResp = await yahuAutoComplete.json();
-    console.log(autoCompResp);
+    console.log("auto-complete response:", autoCompResp);
   } catch (error) {
     console.log(error);
     return res.render("error");
@@ -179,7 +179,7 @@ app.get("/:symbol", async (req, res) => {
       }
     }
   }
-
+  console.log("quote symbol:", quoteSymbol);
   if (
     quoteType === "ECNQUOTE" ||
     quoteType === "MUTUALFUND" ||
