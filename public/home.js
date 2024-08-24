@@ -112,6 +112,10 @@ const startCountDown = (mkt) => {
     openingMktHour = 9,
     closingMktHour = 16;
 
+  if (currHourNyc >= 0 && currHourNyc <= 3) {
+    currHourNyc += 24;
+  }
+
   //adjust for nyc time;
   if (localHour <= currHourNyc) {
     hourDifference = currHourNyc - localHour;
@@ -138,7 +142,7 @@ const startCountDown = (mkt) => {
     //if Friday-Sunday:
     if (localDay === 5) {
       if (localHour >= closingMktHour) {
-        localNextDate = localDate + 2;
+        localNextDate = localDate + 3;
       }
     }
 
