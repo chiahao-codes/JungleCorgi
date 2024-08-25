@@ -146,14 +146,8 @@ const startCountDown = (mkt) => {
       }
     }
 
-    let hoursLeft = 0;
     if (localDay === 6) {
-      hoursLeft = 24 - localHour;
-      if (hoursLeft >= 18) {
-        localNextDate = localDate + 2;
-      } else {
-        localNextDate = localDate + 1;
-      }
+      localNextDate = localDate + 2;
     }
 
     if (localDay === 0) {
