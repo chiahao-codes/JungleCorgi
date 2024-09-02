@@ -169,6 +169,8 @@ const startCountDown = (mkt) => {
       localNextDate = localNextDate + 1; //Juneteenth
     if (localMonth === 6 && localNextDate === 4)
       localNextDate = localNextDate + 1; //July4
+    if (localMonth === 8 && localNextDate === 2)
+      localNextDate = localNextDate + 1; //Labor day
 
     let openingBell = new Date(
       localYear,
