@@ -172,6 +172,9 @@ const startCountDown = (mkt) => {
     if (localMonth === 8 && localNextDate === 2)
       localNextDate = localNextDate + 1; //Labor day
 
+    if (localMonth === 9 && localNextDate === 14)
+      localNextDate = localNextDate + 1; //Columbus day
+
     let openingBell = new Date(
       localYear,
       localMonth,
