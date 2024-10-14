@@ -139,6 +139,7 @@ const startCountDown = (mkt) => {
         localNextDate = localDate;
       }
     }
+
     //if Friday-Sunday:
     if (localDay === 5) {
       if (localHour >= closingMktHour) {
@@ -171,9 +172,8 @@ const startCountDown = (mkt) => {
       localNextDate = localNextDate + 1; //July4
     if (localMonth === 8 && localNextDate === 2)
       localNextDate = localNextDate + 1; //Labor day
-
-    if (localMonth === 9 && localNextDate === 14)
-      localNextDate = localNextDate + 1; //Columbus day
+    if (localMonth === 9 && localNextDate === 15)
+      localNextDate = localNextDate + 1; //Columbus day: hack adjustment made at midnight 10/14;
 
     let openingBell = new Date(
       localYear,
