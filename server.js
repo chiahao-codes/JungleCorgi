@@ -5,7 +5,7 @@ import { Chart } from "chart.js";
 import pkg from "@date/holidays-us";
 
 const holidays = pkg;
-console.log(holidays);
+//console.log(holidays);
 
 let PORT = process.env.PORT || 3000;
 const API_KEY = process.env.KEY;
