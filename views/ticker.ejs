@@ -1680,6 +1680,7 @@
         const runAnalysis = async (symbol) => {
             let analysisFetch, analysisResp;
 
+            //get-analysis deprecated;
             const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${quoteSymbol}&region=US`;
             analysisFetch = await fetch(analysisURL, apiOptions);
 
@@ -1907,27 +1908,7 @@
                 }
             }
         }
-        /**
-                const idlePage = () => {
-                    if (timeout) {
-                        clearInterval(timeout);
-                    }
-                    timeout = setInterval(() => {
-                     if (timeout) {
-                        clearInterval(timeout);
-                    }
-                    }, 60000);
-                }
-                const activePage = () => {
-                    if (timeout2) clearInterval(timeout2);
-                    timeout2 = setTimeout(async () => {
-                        await getRapidPrices(apiKey, stockTicker);
-                        formatPrice(pricesAndPercents);
-                        changePctPointsColor(pricePctContainers);
-                        console.log("active");
-                    }, 180000);
-                }
-        */
+
         slides.forEach((slide, index) => {
             //touch events
             slide.addEventListener('touchstart', touchStart(index))
