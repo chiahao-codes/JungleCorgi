@@ -57,7 +57,7 @@ const pingAnalysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v
 
 app.get("/", async (req, res, next) => {
   let prices = await runQuery();
-  console.log("prices:", prices);
+
   if (!prices) {
     console.log(prices);
     res.render("error");
@@ -71,6 +71,7 @@ app.get("/", async (req, res, next) => {
     pingIncomeStmtURL,
     pingCashFlowURL,
     pingAnalysisURL,
+    holidays,
   });
 });
 

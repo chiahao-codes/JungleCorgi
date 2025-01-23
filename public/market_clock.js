@@ -50,9 +50,9 @@ const startCountDown = (mkt) => {
     if (dayOfWeek === 0) nextDay = currDate + 1;
 
     //check for bank holidays:
+    if (currMonth === 10 && nextDay === 28) nextDay = nextDay + 1; //thnxgiving
     if (currMonth === 11 && nextDay === 25) nextDay = nextDay + 1; //xmas
-    if (currMonth === 11 && nextDay === 32) nextDay = nextDay + 1;//nye
-    
+    if (currMonth === 11 && nextDay === 32) nextDay = nextDay + 1; //nye
 
     //set next morning: 6:30am PST
     let openingBell = new Date(
