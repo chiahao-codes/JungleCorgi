@@ -107,7 +107,12 @@
         <section id="index_data_container" class="index_data_container">
             <div id="index-data-kids-container">
                 <div id="ratio-container" class="index-data-kids">
-
+                    <div class="border-line">
+                        <div id="peTTM">PE (TTM)
+                        </div>
+                        <div id="peTTMData" class="indexData">
+                        </div>
+                    </div>
                     <div class="border-line">
                         <div id="fwdPeRatio">Forward P/E</div>
                         <div id="fwdPeRatioData" class="indexData">
@@ -115,52 +120,47 @@
                     </div>
 
                     <div class="border-line">
-                        <div id="ttmPeRatio">P/E (TTM)</div>
-                        <div id="ttmPeRatioData" class="indexData">
+                        <div id="shortRatio">Short Ratio</div>
+                        <div id="shortRatioData" class="indexData">
                         </div>
                     </div>
                     <div class="border-line">
-                        <div id="revGrow">Revenue Growth</div>
-                        <div id="revGrowData" class="indexData">
-                        </div>
-                    </div>
-                    <div class="border-line">
-                        <div id="ebitMarg">Ebitda Margin</div>
+                        <div id="bookValue">Book Value</div>
 
-                        <div id="ebitMarginData" class="indexData">
+                        <div id="bookValueData" class="indexData">
 
                         </div>
                     </div>
                     <div class="border-line">
-                        <div id="curr-ratio">Current Ratio</div>
-                        <div id="currRatioData" class="indexData">
+                        <div id="ttmEPS">EPS (TTM)</div>
+                        <div id="ttmEpsData" class="indexData">
                         </div>
                     </div>
                     <div class="border-line">
-                        <div id="quick-ratio">Quick Ratio</div>
+                        <div id="fwd-eps">Forward EPS</div>
 
-                        <div id="quickRatioData" class="indexData">
-
-                        </div>
-                    </div>
-                    <div class="border-line">
-                        <div id="debt-ratio">Debt-to-Equity Ratio</div>
-
-                        <div id="debtRatioData" class="indexData">
+                        <div id="fwdEpsData" class="indexData">
 
                         </div>
                     </div>
                     <div class="border-line">
-                        <div id="retEqu">Return On Equity</div>
+                        <div id="earnings-quarterly-growth">Earnings Growth (quarterly)</div>
 
-                        <div id="retEquData" class="indexData">
+                        <div id="earningsQuarterlyGrowthData" class="indexData">
 
                         </div>
                     </div>
                     <div class="border-line">
-                        <div id="op-Margin">Operating Margin</div>
+                        <div id="most-recent-quarter">Most Recent Quarter</div>
 
-                        <div id="opMarginData" class="indexData">
+                        <div id="mostRecentQuarterData" class="indexData">
+
+                        </div>
+                    </div>
+                    <div class="border-line">
+                        <div id="shares-outstanding">Shares Outstanding</div>
+
+                        <div id="sharesOutstandingData" class="indexData">
 
                         </div>
                     </div>
@@ -172,9 +172,9 @@
                         </div>
                     </div>
                     <div class="border-line">
-                        <div id="grossMargin">Gross Margin</div>
+                        <div id="shares-held-institutions">Shares Held (institutions)</div>
 
-                        <div id="grossMarginData" class="indexData">
+                        <div id="sharesHeldInstitutionsData" class="indexData">
 
                         </div>
                     </div>
@@ -198,7 +198,7 @@
                     <div class="border-line">
                         <div id="prevClose">Previous Close</div>
 
-                        <div id="prevClosData" class="indexData commas">
+                        <div id="prevCloseData" class="indexData commas">
                         </div>
                     </div>
                     <div class="border-line">
@@ -272,7 +272,7 @@
                         </div>
                     </div>
                     <div class="border-line">
-                        <div id="volume">Volume</div>
+                        <div id="volume">Reg. Market Volume</div>
 
                         <div id="volumeData" class="indexData commas volume">
 
@@ -784,7 +784,7 @@
         const atCloseContainer = document.querySelector("#at_close_container");
         const afterHoursTimeContainer = document.querySelector("#after_hours_time_container");
         const pricesAndPercents = document.querySelectorAll(".price");
-        const previousCloseElem = document.getElementById("prevClosData");
+        const previousCloseElem = document.getElementById("prevCloseData");
         const summaryProfileContainer = document.querySelector("#summary_profile_container");
         const companyDesc = document.querySelector("#company_desc");
         const ratioContainer = document.querySelector("#ratio-container");
@@ -809,6 +809,40 @@
         let isDragging = false, startPosition = 0, currTranslateX = 0, prevTranslateX = 0, animationId = 0, currSlideIndex = 0;
         let previousClose = "",
             regularMarketPrice = "";
+        // Format the date using Intl.DateTimeFormat
+        const formattedDate = new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'short',  // Use 'long' for full month name if preferred
+            day: 'numeric'
+        });
+        const decimalNumberFormatter = new Intl.NumberFormat('en-US', {
+            style: "decimal",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })
+        // Create a formatter for large numbers (e.g., market cap, daily volume)
+        const largeNumberFormatter = new Intl.NumberFormat('en-US', {
+            notation: 'compact',       // Use compact notation (e.g., 1K, 1M, 1B)
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            compactDisplay: "short"
+        });
+
+        const formatLargeNumber = (value) => {
+            if (typeof value !== 'number' || isNaN(value)) {
+                return 'N/A';
+            }
+            return largeNumberFormatter.format(value);
+        };
+        const trueOrFalse = (exp, val) => {
+            if (!exp) exp = val;
+            return exp ? exp : val;
+        }
+        const hideElem = (elem, val, na) => {
+            elem.innerText = trueOrFalse(val, na);
+            if (elem.innerText === na || elem.innerText === "undefined,") elem.style.display = "none";
+            return;
+        }
         const changePctPointsColor = (currentPrice, prevClosePrice) => {
             let commaRegExp = /[,]/g;
             let afterPrice = afterHrsPrice.innerText;
@@ -947,7 +981,7 @@
                 let quoteURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${quoteSymbol}`;
                 quote = await fetch(quoteURL, apiOptions).then((res) => { return res }).catch((e) => console.log(e));
                 quoteResp = await quote.json();
-                console.log("quote:", quoteResp)
+                //console.log("quote:", quoteResp)
                 if (quoteResp) {
                     if (quoteResp.quoteResponse) {
                         if (quoteResp.quoteResponse.result.length > 0) {
@@ -1048,7 +1082,7 @@
                 }
 
                 //previous closing price;
-                previousCloseElem.innerText = previousClose;
+                //previousCloseElem.innerText = previousClose;
 
                 if (regDateTime === "Current Session:" || quoteType !== "EQUITY") {
                     afterHoursContainer.style.display = "none";
@@ -1190,7 +1224,7 @@
             }
             return chartData;
         };
-        const runChart = async (range) => {
+        const runChartAndStats = async (range) => {
 
             progressBarContainer.style.display = "initial"
             let stockChart = document.querySelector("#chart");
@@ -1308,23 +1342,41 @@
                 clearTimeout(timeoutId);
             }
 
-            progressBar.setAttribute("class", "run-progress-animation");
+            //progressBar.setAttribute("class", "run-progress-animation");
+            // Start the progress bar animation.
+            progressBar.classList.add("run-progress-animation");
 
-            //settimeout allows for animation to run for a bit;
-            timeoutId = setTimeout(() => {
-                runChart(range).then(async () => {
+            const updateData = async () => {
+                try {
+                    // Run the chart update.
+                    await runChartAndStats(range);
+
+                    // Populate various data sections.
                     populateNews(quoteSymbol);
-                    populateAnalysis(quoteSymbol);
-                    if (quoteType === "EQUITY") {
+                    await populateKeyStats(quoteSymbol);
+
+                    // If the symbol represents an equity, load additional financial data.
+                    /*
+                    
                         await populateIncomeData(quoteSymbol);
                         populateBalanceData(quoteSymbol);
                         populateCashFlowData(quoteSymbol);
+                       
+                
+                    */
+                    if (quoteType === "EQUITY") {
+                        // console.log("quoteType: ", quoteType)
                         await populateProfile(quoteSymbol);
                     }
-                })
-                    .catch((e) => console.log(e));
-            }, 0)
+
+                } catch (error) {
+                    console.error("Error during data update:", error);
+                }
+            };
+            // Use setTimeout to allow the animation to start before the data loads.
+            timeoutId = setTimeout(updateData, 0);
         }
+
         const getBalanceSht = async (symbol) => {
             let result;
             const balanceShtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-balance-sheet?symbol=${symbol}&region=US`;
@@ -1353,6 +1405,314 @@
                 result = await response.json();
             }
             return result
+        }
+        const runKeyStats = async (symbol) => {
+            try {
+                // Build the URLs using the provided symbol
+                const defaultStatsURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v4/get-statistics?symbol=${symbol}&region=US&lang=en-US`;
+                const marketQuoteURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-quotes?region=US&symbols=${symbol}`;
+
+                // Fetch both endpoints concurrently
+                const [defaultStatsResponse, marketQuoteResponse] = await Promise.all([
+                    fetch(defaultStatsURL, apiOptions),
+                    fetch(marketQuoteURL, apiOptions)
+                ]);
+
+                let defaultStatsData = null;
+                let marketQuoteData = null;
+
+                // Process default statistics response
+                if (defaultStatsResponse.ok) {
+                    defaultStatsData = await defaultStatsResponse.json();
+                    console.log("defaultStatsData", defaultStatsData);
+                } else {
+                    console.error(`Error fetching default stats: ${defaultStatsResponse.status} ${defaultStatsResponse.statusText}`);
+                }
+
+                // Process market quote response
+                if (marketQuoteResponse.ok) {
+                    marketQuoteData = await marketQuoteResponse.json();
+                    console.log("marketQuoteData", marketQuoteData);
+                } else {
+                    console.error(`Error fetching market quote: ${marketQuoteResponse.status} ${marketQuoteResponse.statusText}`);
+                }
+
+                // Return both responses as an object.
+                // Adjust the return value if you only need one of them.
+                return {
+                    defaultStats: defaultStatsData,
+                    marketQuote: marketQuoteData
+                };
+
+            } catch (error) {
+                console.error("Error in runKeyStats:", error);
+                throw error; // rethrow so the caller can handle it if needed
+            }
+        };
+        const populateKeyStats = async (symbol) => {
+            const ratioContainer = document.getElementById("ratio-container");
+            const prevCloseContainer = document.getElementById("prev-close-container");
+            const keyStats = await runKeyStats(symbol).catch((e) => { console.log("runKeyStats error: ", e); return e });
+            console.log("keyStats: ", keyStats);
+            try {
+                if (keyStats) {
+                    let defaultStats = null,
+                        marketQuote = null;
+                    if (keyStats.defaultStats) {
+                        defaultStats = keyStats.defaultStats.quoteSummary.result[0].defaultKeyStatistics;
+                    }
+                    if (keyStats.marketQuote) {
+                        marketQuote = keyStats.marketQuote.quoteResponse.result[0];
+                    }
+
+                    let fwdPE = "n/a", ttmPE = "n/a", shortRatio = "n/a", bookValue = "n/a",
+                        ttmEPS = "n/a", fwdEPS = "n/a",
+                        earningsGrowthQuarterly = "n/a",
+                        mostRecentQuarter = "n/a",
+                        sharesOutstanding = "n/a",
+                        profitMargins = "n/a",
+                        sharesHeldInstitutions = "n/a",
+                        dividendRate = "n/a",
+                        formattedDividendRate = "n/a",
+                        exDividendDate = "n/a",
+                        regularMarketOpen = "n/a",
+                        prevClose = "n/a",
+                        regularMarketDayHigh = "n/a",
+                        regularMarketDayLow = "n/a",
+                        fiftyTwoWeekHigh = "n/a",
+                        fiftyTwoWeekLow = "n/a",
+                        twoHundredDayAverage = "n/a",
+                        bid = "n/a",
+                        ask = "n/a",
+                        volume = "n/a",
+                        averageVolume10Days = "n/a",
+                        beta = "n/a",
+                        marketCap = "n/a";
+                    if (marketQuote.currency) {
+                        finCurrency = marketQuote.currency;
+                    }
+
+                    //populate html;
+                    /*
+                  */
+                    if (defaultStats.forwardPE) {
+                        fwdPE = trueOrFalse(defaultStats.forwardPE.fmt, fwdPE);
+                    }
+                    document.getElementById("fwdPeRatioData").innerText = fwdPE;
+
+                    if (marketQuote.trailingPE) {
+                        ttmPE = marketQuote.trailingPE;
+                        ttmPE = decimalNumberFormatter.format(ttmPE);
+                    }
+                    document.getElementById("peTTMData").innerText = ttmPE;
+
+                    if (defaultStats.shortRatio) {
+                        shortRatio = trueOrFalse(defaultStats.shortRatio.fmt, shortRatio)
+                    }
+                    document.getElementById("shortRatioData").innerText = shortRatio;
+
+                    if (defaultStats.bookValue) {
+                        bookValue = trueOrFalse(defaultStats.bookValue.fmt, bookValue)
+                    }
+                    document.getElementById("bookValueData").innerText = bookValue;
+
+                    if (defaultStats.trailingEps) {
+                        ttmEPS = trueOrFalse(defaultStats.trailingEps.fmt, ttmEPS)
+                    }
+                    document.getElementById("ttmEpsData").innerText = ttmEPS;
+
+                    if (defaultStats.forwardEps) {
+                        fwdEPS = trueOrFalse(defaultStats.forwardEps.fmt, fwdEPS)
+                        if (fwdEPS !== "n/a") {
+                            fwdEPS = decimalNumberFormatter.format(parseFloat(fwdEPS))
+                        }
+
+                    }
+                    document.getElementById("fwdEpsData").innerText = fwdEPS;
+
+                    if (defaultStats.earningsQuarterlyGrowth) {
+                        earningsGrowthQuarterly = trueOrFalse(defaultStats.earningsQuarterlyGrowth.fmt, earningsGrowthQuarterly)
+                        if (earningsGrowthQuarterly !== "n/a") {
+                            earningsGrowthQuarterly = decimalNumberFormatter.format(parseFloat(earningsGrowthQuarterly))
+                        }
+
+                    }
+                    document.getElementById("earningsQuarterlyGrowthData").innerText = earningsGrowthQuarterly;
+
+                    if (defaultStats.mostRecentQuarter) {
+                        mostRecentQuarter = defaultStats.mostRecentQuarter.raw * 1000;
+                        if (mostRecentQuarter !== "n/a") {
+                            mostRecentQuarter = formattedDate.format(mostRecentQuarter)
+                        }
+                    }
+                    document.getElementById("mostRecentQuarterData").innerText = mostRecentQuarter;
+
+                    if (defaultStats.sharesOutstanding) {
+                        sharesOutstanding = trueOrFalse(defaultStats.sharesOutstanding.fmt, sharesOutstanding)
+                    }
+                    document.getElementById("sharesOutstandingData").innerText = sharesOutstanding;
+
+                    if (defaultStats.profitMargins) {
+                        profitMargins = defaultStats.profitMargins.raw;
+                        profitMargins = decimalNumberFormatter.format(profitMargins);
+                    }
+                    document.getElementById("profMarginData").innerText = profitMargins;
+
+                    if (defaultStats.heldPercentInstitutions) {
+                        sharesHeldInstitutions = defaultStats.heldPercentInstitutions.raw;
+                        sharesHeldInstitutions = decimalNumberFormatter.format(sharesHeldInstitutions);
+                    }
+                    document.getElementById("sharesHeldInstitutionsData").innerText = sharesHeldInstitutions;
+
+                    if (marketQuote.dividendRate) {
+                        dividendRate = marketQuote.dividendRate;
+                        dividendRate = decimalNumberFormatter.format(dividendRate);
+                    }
+                    document.getElementById("dividendRateData").innerText = dividendRate;
+
+                    if (marketQuote.exDividendDate) {
+
+                        // Convert Unix timestamp (in seconds) to a JavaScript Date object (milliseconds)
+                        const date = new Date(marketQuote.exDividendDate * 1000);
+
+                        exDividendDate = formattedDate.format(date);
+                    }
+                    document.getElementById("exDividendData").innerText = exDividendDate;
+                    //prevCloseData
+                    if (marketQuote.regularMarketPreviousClose) {
+                        prevClose = marketQuote.regularMarketPreviousClose;
+                        prevClose = decimalNumberFormatter.format(prevClose);
+                    }
+                    document.getElementById("prevCloseData").innerText = prevClose;
+
+                    if (marketQuote.regularMarketOpen) {
+                        regularMarketOpen = marketQuote.regularMarketOpen;
+                        regularMarketOpen = decimalNumberFormatter.format(regularMarketOpen)
+                    }
+                    document.getElementById("openData").innerText = regularMarketOpen;
+
+                    if (marketQuote.regularMarketDayLow) {
+                        regularMarketDayLow = marketQuote.regularMarketDayLow;
+                        regularMarketDayLow = decimalNumberFormatter.format(regularMarketDayLow);
+                    }
+                    document.getElementById("dayLowData").innerText = regularMarketDayLow;
+
+                    if (marketQuote.regularMarketDayHigh) {
+                        regularMarketDayHigh = marketQuote.regularMarketDayHigh;
+                        regularMarketDayHigh = decimalNumberFormatter.format(regularMarketDayHigh);
+                    }
+                    document.getElementById("dayHighData").innerText = regularMarketDayHigh;
+
+                    if (marketQuote.fiftyTwoWeekHigh) {
+                        fiftyTwoWeekHigh = marketQuote.fiftyTwoWeekHigh;
+                        fiftyTwoWeekHigh = decimalNumberFormatter.format(fiftyTwoWeekHigh);
+                    }
+                    document.getElementById("fifty2WkHighData").innerText = fiftyTwoWeekHigh;
+
+                    if (marketQuote.fiftyTwoWeekLow) {
+                        fiftyTwoWeekLow = marketQuote.fiftyTwoWeekLow;
+                        fiftyTwoWeekLow = decimalNumberFormatter.format(fiftyTwoWeekLow);
+                    }
+                    document.getElementById("fifty2WkLowData").innerText = fiftyTwoWeekLow;
+
+                    if (marketQuote.twoHundredDayAverage) {
+                        twoHundredDayAverage = marketQuote.twoHundredDayAverage;
+                        twoHundredDayAverage = decimalNumberFormatter.format(twoHundredDayAverage);
+                    }
+                    document.getElementById("twoHundDayAvgData").innerText = twoHundredDayAverage;
+
+                    if (marketQuote.bid) {
+                        bid = marketQuote.bid;
+                    }
+                    document.getElementById("bidData").innerText = bid;
+
+                    if (marketQuote.ask) {
+                        ask = marketQuote.ask;
+                    }
+                    document.getElementById("askData").innerText = ask;
+
+                    if (marketQuote.beta) {
+                        beta = marketQuote.beta;
+                    }
+                    document.getElementById("betaData").innerText = beta;
+
+                    if (marketQuote.marketCap) {
+                        marketCap = marketQuote.marketCap;
+
+                        marketCap = largeNumberFormatter.format(marketCap);
+
+                    }
+                    document.getElementById("mktCapData").innerText = marketCap;
+
+                    if (marketQuote.regularMarketVolume) {
+                        volume = marketQuote.regularMarketVolume;
+                        volume = largeNumberFormatter.format(volume)
+                    }
+                    document.getElementById("volumeData").innerText = volume;
+
+                    if (marketQuote.averageDailyVolume10Day) {
+                        averageVolume10Days = marketQuote.averageDailyVolume10Day;
+                        averageVolume10Days = largeNumberFormatter.format(averageVolume10Days);
+                    }
+                    document.getElementById("avgVolData").innerText = averageVolume10Days;
+
+                    document.getElementById("index_data_container").style.display = "flex";
+                }
+
+            } catch (e) {
+                console.log("Error with populating key stats: ", e)
+                return e
+            }
+
+
+        }
+
+        const populateProfile = async (symbol) => {
+            let profileFetch,
+                profileResp;
+            const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`
+
+            try {
+                profileFetch = await fetch(profileURL, apiOptions)
+                if (profileFetch.status === 200) {
+                    profileResp = await profileFetch.json();
+                }
+
+            } catch (error) {
+                console.log(error)
+            }
+            if (profileResp) {
+                if (profileResp.quoteSummary.result) {
+                    if (profileResp.quoteSummary.result.length > 0) {
+                        let result = profileResp.quoteSummary.result[0].summaryProfile;
+
+                        let summary = result.longBusinessSummary;
+                        let streetAddress = result.address1;
+                        let country = result.country;
+                        let state;
+                        if (result.state) {
+                            state = result.state;
+                        }
+
+                        let city = result.city;
+                        let industry = result.industry;
+                        let employees = result.fullTimeEmployees;
+                        let website = result.website;
+
+                        let na = "n/a";
+
+                        hideElem(document.getElementById("company_desc"), summary, na)
+                        hideElem(document.getElementById("address"), streetAddress, na)
+                        hideElem(document.getElementById("city"), city, na)
+                        hideElem(document.getElementById("state"), state, na)
+                        hideElem(document.getElementById("country"), country, na)
+                        hideElem(document.getElementById("website-link"), website, na)
+                        hideElem(document.getElementById("industry"), industry, na)
+                        hideElem(document.getElementById("full_time_employees"), employees, na)
+                        document.getElementById("summary_profile_container").style.display = "flex";
+                    }
+                }
+            }
         }
         const populateIncomeData = async (symbol) => {
             let incomeData = await getIncomeStmt(symbol).then((res) => { return res }).catch((e) => console.log(e));
@@ -1651,7 +2011,6 @@
                 document.querySelector(".free-cash-flow > .year2").innerText = freeCashFlowY2;
             }
         }
-
         const populateNews = () => {
 
             if (newsTitle) {
@@ -1675,237 +2034,6 @@
                 insightContainer.style.display = "none";
 
                 //use recommendations instead; Argus Buy price;
-            }
-        }
-        const runAnalysis = async (symbol) => {
-            let analysisFetch, analysisResp;
-
-            //get-analysis deprecated;
-            const analysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=${quoteSymbol}&region=US`;
-            analysisFetch = await fetch(analysisURL, apiOptions);
-
-            if (analysisFetch.status === 200) {
-                analysisResp = await analysisFetch.json();
-            }
-            return analysisResp
-        }
-        const trueOrFalse = (exp, val) => {
-            if (!exp) exp = val;
-            return exp ? exp : val;
-        }
-        const hideElem = (elem, val, na) => {
-            elem.innerText = trueOrFalse(val, na);
-            if (elem.innerText === na || elem.innerText === "undefined,") elem.style.display = "none";
-            return;
-        }
-        const populateAnalysis = async (symbol) => {
-            const ratioContainer = document.getElementById("ratio-container");
-            const prevCloseContainer = document.getElementById("prev-close-container");
-
-            let analysis = await runAnalysis(symbol);
-            if (analysis) {
-                let fwdPE = "n/a", ttmPE = "n/a", revGrowth = "n/a", ebitdaMargins = "n/a",
-                    currentRatio = "n/a", quickRatio = "n/a",
-                    debtToEquityRatio = "n/a",
-                    returnOnEquity = "n/a",
-                    operatingMargins = "n/a",
-                    profitMargins = "n/a",
-                    grossMargins = "n/a",
-                    dividendRate = "n/a",
-                    exDividendDate = "n/a",
-                    regularMarketOpen = "n/a",
-                    regularMarketDayHigh = "n/a",
-                    regularMarketDayLow = "n/a",
-                    fiftyTwoWeekHigh = "n/a",
-                    fiftyTwoWeekLow = "n/a",
-                    twoHundredDayAverage = "n/a",
-                    bid = "n/a",
-                    ask = "n/a",
-                    volume = "n/a",
-                    averageVolume10Days = "n/a",
-                    beta = "n/a",
-                    marketCap = "n/a";
-                if (analysis.financialData) {
-                    if (analysis.financialData.financialCurrency) {
-                        finCurrency = analysis.financialData.financialCurrency
-                    }
-                }
-
-                if (analysis.summaryDetail) {
-                    //populate html;
-                    if (analysis.summaryDetail.forwardPE) {
-                        fwdPE = trueOrFalse(analysis.summaryDetail.forwardPE.fmt, fwdPE);
-                    }
-                    document.getElementById("fwdPeRatioData").innerText = fwdPE;
-
-                    if (analysis.summaryDetail.trailingPE) {
-                        ttmPE = trueOrFalse(analysis.summaryDetail.trailingPE.fmt, ttmPE)
-                    }
-                    document.getElementById("ttmPeRatioData").innerText = ttmPE;
-
-                    if (analysis.financialData.revenueGrowth) {
-                        revGrowth = trueOrFalse(analysis.financialData.revenueGrowth.fmt, revGrowth)
-                    }
-                    document.getElementById("revGrowData").innerText = revGrowth;
-
-                    if (analysis.financialData.ebitdaMargins) {
-                        ebitdaMargins = trueOrFalse(analysis.financialData.ebitdaMargins.fmt, ebitdaMargins)
-                    }
-                    document.getElementById("ebitMarginData").innerText = ebitdaMargins;
-
-                    if (analysis.financialData.currentRatio) {
-                        currentRatio = trueOrFalse(analysis.financialData.currentRatio.fmt, currentRatio)
-                    }
-                    document.getElementById("currRatioData").innerText = currentRatio;
-
-                    if (analysis.financialData.quickRatio) {
-                        quickRatio = trueOrFalse(analysis.financialData.quickRatio.fmt, quickRatio)
-                    }
-                    document.getElementById("quickRatioData").innerText = quickRatio;
-
-                    if (analysis.financialData.debtToEquity) {
-                        debtToEquityRatio = trueOrFalse(analysis.financialData.debtToEquity.fmt, debtToEquityRatio)
-                    }
-                    document.getElementById("debtRatioData").innerText = debtToEquityRatio;
-
-                    if (analysis.financialData.returnOnEquity) {
-                        returnOnEquity = trueOrFalse(analysis.financialData.returnOnEquity.fmt, returnOnEquity)
-                    }
-                    document.getElementById("retEquData").innerText = returnOnEquity;
-
-                    if (analysis.financialData.operatingMargins) {
-                        operatingMargins = trueOrFalse(analysis.financialData.operatingMargins.fmt, operatingMargins)
-                    }
-                    document.getElementById("opMarginData").innerText = operatingMargins;
-
-                    if (analysis.financialData.profitMargins) {
-                        profitMargins = trueOrFalse(analysis.financialData.profitMargins.fmt, profitMargins)
-                    }
-                    document.getElementById("profMarginData").innerText = profitMargins;
-
-                    if (analysis.financialData.grossMargins) {
-                        grossMargins = trueOrFalse(analysis.financialData.grossMargins.fmt, grossMargins)
-                    }
-                    document.getElementById("grossMarginData").innerText = grossMargins;
-
-                    if (analysis.summaryDetail.dividendRate) {
-                        dividendRate = trueOrFalse(analysis.summaryDetail.dividendRate.fmt, dividendRate);
-                    }
-                    document.getElementById("dividendRateData").innerText = dividendRate;
-
-                    if (analysis.summaryDetail.exDividendDate) {
-                        exDividendDate = trueOrFalse(analysis.summaryDetail.exDividendDate.fmt, exDividendDate);
-                    }
-                    document.getElementById("exDividendData").innerText = exDividendDate;
-
-                    if (analysis.price.regularMarketOpen) {
-                        regularMarketOpen = trueOrFalse(analysis.price.regularMarketOpen.fmt, regularMarketOpen)
-                    }
-                    document.getElementById("openData").innerText = regularMarketOpen;
-
-                    if (analysis.summaryDetail.regularMarketDayLow) {
-                        regularMarketDayLow = trueOrFalse(analysis.summaryDetail.regularMarketDayLow.fmt, regularMarketDayLow);
-                    }
-                    document.getElementById("dayLowData").innerText = regularMarketDayLow;
-
-                    if (analysis.summaryDetail.regularMarketDayHigh) {
-                        regularMarketDayHigh = trueOrFalse(analysis.summaryDetail.regularMarketDayHigh.fmt, regularMarketDayHigh);
-                    }
-                    document.getElementById("dayHighData").innerText = regularMarketDayHigh;
-
-                    if (analysis.summaryDetail.fiftyTwoWeekHigh) {
-                        fiftyTwoWeekHigh = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekHigh.fmt, fiftyTwoWeekHigh);
-                    }
-                    document.getElementById("fifty2WkHighData").innerText = fiftyTwoWeekHigh;
-
-                    if (analysis.summaryDetail.fiftyTwoWeekLow) {
-                        fiftyTwoWeekLow = trueOrFalse(analysis.summaryDetail.fiftyTwoWeekLow.fmt, fiftyTwoWeekLow);
-                    }
-                    document.getElementById("fifty2WkLowData").innerText = fiftyTwoWeekLow;
-
-                    if (analysis.summaryDetail.twoHundredDayAverage) {
-                        twoHundredDayAverage = trueOrFalse(analysis.summaryDetail.twoHundredDayAverage.fmt, twoHundredDayAverage);
-                    }
-                    document.getElementById("twoHundDayAvgData").innerText = twoHundredDayAverage;
-
-                    if (analysis.summaryDetail.bid) {
-                        bid = trueOrFalse(analysis.summaryDetail.bid.fmt, bid);
-                    }
-                    document.getElementById("bidData").innerText = bid;
-
-                    if (analysis.summaryDetail.ask) {
-                        ask = trueOrFalse(analysis.summaryDetail.ask.fmt, ask);
-                    }
-                    document.getElementById("askData").innerText = ask;
-
-                    if (analysis.summaryDetail.beta) {
-                        beta = trueOrFalse(analysis.summaryDetail.beta.fmt, beta);
-                    }
-                    document.getElementById("betaData").innerText = beta;
-
-                    if (analysis.summaryDetail.marketCap) {
-                        marketCap = trueOrFalse(analysis.summaryDetail.marketCap.fmt, marketCap);
-                    }
-                    document.getElementById("mktCapData").innerText = marketCap;
-
-                    if (analysis.summaryDetail.volume) {
-                        volume = trueOrFalse(analysis.summaryDetail.volume.fmt, volume);
-                    }
-                    document.getElementById("volumeData").innerText = volume;
-
-                    if (analysis.summaryDetail.averageVolume10days) {
-                        averageVolume10Days = trueOrFalse(analysis.summaryDetail.averageVolume10days.fmt, averageVolume10Days);
-                    }
-                    document.getElementById("avgVolData").innerText = averageVolume10Days;
-                }
-                document.getElementById("index_data_container").style.display = "flex";
-            }
-        }
-        const populateProfile = async (symbol) => {
-            let profileFetch,
-                profileResp;
-            const profileURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-profile?symbol=${symbol}&region=US&lang=en-US`
-
-            try {
-                profileFetch = await fetch(profileURL, apiOptions)
-                if (profileFetch.status === 200) {
-                    profileResp = await profileFetch.json();
-                }
-
-            } catch (error) {
-                console.log(error)
-            }
-            if (profileResp.quoteSummary) {
-                if (profileResp.quoteSummary.result) {
-                    if (profileResp.quoteSummary.result.length > 0) {
-                        let result = profileResp.quoteSummary.result[0].summaryProfile;
-
-                        let summary = result.longBusinessSummary;
-                        let streetAddress = result.address1;
-                        let country = result.country;
-                        let state;
-                        if (result.state) {
-                            state = result.state;
-                        }
-
-                        let city = result.city;
-                        let industry = result.industry;
-                        let employees = result.fullTimeEmployees;
-                        let website = result.website;
-
-                        let na = "n/a";
-
-                        hideElem(document.getElementById("company_desc"), summary, na)
-                        hideElem(document.getElementById("address"), streetAddress, na)
-                        hideElem(document.getElementById("city"), city, na)
-                        hideElem(document.getElementById("state"), state, na)
-                        hideElem(document.getElementById("country"), country, na)
-                        hideElem(document.getElementById("website-link"), website, na)
-                        hideElem(document.getElementById("industry"), industry, na)
-                        hideElem(document.getElementById("full_time_employees"), employees, na)
-                        document.getElementById("summary_profile_container").style.display = "flex";
-                    }
-                }
             }
         }
 

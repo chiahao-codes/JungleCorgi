@@ -59,7 +59,7 @@ app.get("/", async (req, res, next) => {
   let prices = await runQuery();
 
   if (!prices) {
-    console.log(prices);
+    // console.log(prices);
     res.render("error");
   }
   res.render("home", {
@@ -157,7 +157,7 @@ app.get("/:symbol", async (req, res) => {
   try {
     yahuAutoComplete = await fetch(yahuAutoCompURL, apiOptions);
     autoCompResp = await yahuAutoComplete.json();
-    console.log("auto-complete response:", autoCompResp);
+    //console.log("auto-complete response:", autoCompResp);
   } catch (error) {
     console.log(error);
     return res.render("error");
@@ -184,7 +184,7 @@ app.get("/:symbol", async (req, res) => {
       }
     }
   }
-  console.log("quote symbol:", quoteSymbol);
+
   if (
     quoteType === "ECNQUOTE" ||
     quoteType === "MUTUALFUND" ||
