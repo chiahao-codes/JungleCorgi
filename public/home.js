@@ -162,7 +162,7 @@ const startCountDown = (mkt) => {
       localNextDate = localNextDate + 1; //nye
     if (localMonth === 0 && localNextDate === 15)
       localNextDate = localNextDate + 1; //mlk
-    if (localMonth === 1 && localNextDate === 19)
+    if (localMonth === 1 && localNextDate === 17)
       localNextDate = localNextDate + 1; //president's day
     if (localMonth === 4 && localNextDate === 27)
       localNextDate = localNextDate + 1; //memorial day
