@@ -56,9 +56,10 @@ let pingIncomeStmtURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v
 const pingAnalysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-analysis?symbol=aapl&region=US/ping`;
 
 app.get("/", async (req, res, next) => {
-  let prices = await runQuery();
-
-  if (!prices) {
+  res.render("error");
+  /**
+   * let prices = await runQuery();
+ *   if (!prices) {
     // console.log(prices);
     res.render("error");
   }
@@ -73,6 +74,7 @@ app.get("/", async (req, res, next) => {
     pingAnalysisURL,
     holidays,
   });
+ */
 });
 
 app.get("/disclaimer", async (req, res, next) => {
