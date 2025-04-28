@@ -11,6 +11,8 @@ let PORT = process.env.PORT || 3000;
 const API_KEY = process.env.KEY;
 const RAPID = process.env.RAPID;
 const CURR_DOMAIN = process.env.DOMAIN;
+const RECAPTCHA_SITE_KEY = process.env.RECAPTCHA_SITE_KEY;
+const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
 
 const chartJS = Chart;
 const app = express();
@@ -19,7 +21,17 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static("assets"));
 app.use(express.json());
-app.use(cors({ origin: "*", credentials: true }));
+app.use(
+  cors({
+    origin: [
+      "https://junglecorgi.com",
+      "http://localhost:3000",
+      "https://www.junglecorgi.com",
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 
 const apiOptions = {
   method: "GET",
@@ -41,6 +53,7 @@ let runQuery = async () => {
       result = await response.json();
     } else {
       result = response.status;
+      console.log("Error fetching data:", response.statusText);
     }
   } catch (error) {
     console.error(error);
@@ -58,9 +71,11 @@ const pingAnalysisURL = `https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v
 app.get("/", async (req, res, next) => {
   res.render("error");
   /**
-   * let prices = await runQuery();
- *   if (!prices) {
-    // console.log(prices);
+ * 
+ 
+  let prices = await runQuery();
+
+  if (!prices) {
     res.render("error");
   }
   res.render("home", {
@@ -74,7 +89,7 @@ app.get("/", async (req, res, next) => {
     pingAnalysisURL,
     holidays,
   });
- */
+  */
 });
 
 app.get("/disclaimer", async (req, res, next) => {
